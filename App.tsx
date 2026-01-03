@@ -1,45 +1,61 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { useEffect, useState } from 'react';
+import SplashScreen from 'react-native-splash-screen';
+import OnboardingScreen from './src/screens/OnboardingScreen';
+// import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+// import {GestureHandlerRootView} from 'react-native-gesture-handler';
+// import SystemNavigationBar from 'react-native-system-navigation-bar';
+// import {Toaster} from 'sonner-native';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+// import AppModal from '@src/components/modals/AppModal';
+// import OfflineNotice from '@src/components/OfflineNotice';
+// import {useRequestNotificationPermissionAndroid} from '@src/hooks/usePermissions';
+// import {AppNavigator} from '@src/navigation/AppNavigator';
+// import navigationTheme from '@src/navigation/navigationTheme';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+// const queryClient = new QueryClient({
+//   defaultOptions: {
+//     queries: {
+//       staleTime: 5 * 60 * 1000, //number in milliseconds equals to 5 minutes, suitable time for refetching
+//       gcTime: 6 * 60 * 60 * 1000, // 6 hours before data is deleted
+//     },
+//     mutations: {
+//       retry: 0,
+//     },
+//   },
+// });
+
+const seconds = 1;
+
+export default function App() {
+  const [timeLeft, setTimeLeft] = useState(seconds);
+
+  useEffect(() => {
+    if (timeLeft < 1) return SplashScreen.hide();
+    const timer = setTimeout(() => {
+      setTimeLeft(timeLeft - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [timeLeft]);
+
+  // useEffect(() => {
+  //   SystemNavigationBar.setBarMode('dark');
+  // }, []);
+
+  // useRequestNotificationPermissionAndroid();
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
+    <OnboardingScreen />
+    // <GestureHandlerRootView>
+    // <SafeAreaProvider>
+    //   <SafeAreaView />
+    //   {/* <QueryClientProvider client={queryClient}>
+    //       <OfflineNotice />
+    //       <AppNavigator theme={{ ...navigationTheme, dark: true }} />
+    //       <Toaster richColors theme="light" />
+    //       <AppModal />
+    //     </QueryClientProvider> */}
+    // </SafeAreaProvider>
+    // </GestureHandlerRootView>
   );
 }
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-export default App;

@@ -77,9 +77,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.trysesa.resident"
+    namespace "com.trysesa.residents"
     defaultConfig {
-        applicationId "com.trysesa.resident"
+        applicationId "com.trysesa.residents"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

@@ -1,4 +1,4 @@
-package com.trysesa.resident
+package com.trysesa.residents
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

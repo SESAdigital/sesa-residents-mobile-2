@@ -7,10 +7,10 @@ import SystemNavigationBar from 'react-native-system-navigation-bar';
 import { Toaster } from 'sonner-native';
 
 // import AppModal from '@src/components/modals/AppModal';
-// import OfflineNotice from '@src/components/OfflineNotice';
 // import {useRequestNotificationPermissionAndroid} from '@src/hooks/usePermissions';
 import { AppNavigator } from '@src/navigation/AppNavigator';
 import navigationTheme from '@src/navigation/navigationTheme';
+import OfflineNotice from '@src/components/OfflineNotice';
 
 const queryClient = new QueryClient({
   defaultOptions: {

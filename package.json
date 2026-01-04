@@ -5,10 +5,10 @@
   "scripts": {
     "android": "react-native run-android --active-arch-only",
     "ios": "react-native run-ios",
-    "lint": "eslint .",
+    "lint": "tsc --noEmit && eslint .",
     "start": "react-native start",
     "test": "jest",
-    "dev": "yarn android",
+    "dev": "yarn lint && yarn android",
     "build": "yarn build:lint-version-android && cd android && gradlew clean && gradlew assembleRelease",
     "build:lint-version-android": "yarn lint && yarn release:patch",
     "build:no-clean": "yarn build:lint-version-android &&  cd android && gradlew assembleRelease",

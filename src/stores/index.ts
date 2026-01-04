@@ -1,11 +1,10 @@
-import {PersistStorage, StateStorage} from 'zustand/middleware';
-import {MMKV} from 'react-native-mmkv';
-
+import { PersistStorage, StateStorage } from 'zustand/middleware';
+import { createMMKV } from 'react-native-mmkv';
 import appConfig from '@src/utils/appConfig';
 
 const id = appConfig.APP_MMKV_ENCRYPTION_KEY;
 
-const storage = new MMKV({
+const storage = createMMKV({
   id: `${id}-storage`,
   encryptionKey: id,
 });
@@ -19,7 +18,7 @@ export const zustandStorage: StateStorage = {
     return value ?? null;
   },
   removeItem: name => {
-    return storage.delete(name);
+    return storage.remove(name);
   },
 };
 
@@ -34,7 +33,7 @@ export const transformMMKVStore = <T>(): PersistStorage<Readonly<T>> => {
       else return null;
     },
     removeItem: name => {
-      return storage.delete(name);
+      return storage.remove(name);
     },
   };
 };

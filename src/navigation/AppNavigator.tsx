@@ -36,6 +36,7 @@ const RootStack = createNativeStackNavigator({
   groups: {
     GUEST_USER: {
       if: useIsSignedOut,
+      initialRouteName: routes.ONBOARDING_SCREEN_1,
       screens: {
         [routes.ONBOARDING_SCREEN_1]: OnboardingScreen1,
         [routes.ONBOARDING_SCREEN_2]: OnboardingScreen2,

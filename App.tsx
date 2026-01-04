@@ -40,6 +40,7 @@ export default function App() {
 
   useEffect(() => {
     SystemNavigationBar.setBarMode('dark');
+    SystemNavigationBar.setNavigationColor('white');
   }, []);
 
   // useRequestNotificationPermissionAndroid();

@@ -11,7 +11,7 @@ import { getStatusBarPadding } from '@src/utils';
 const OfflineNotice = (): React.ReactNode => {
   const netInfo = useNetInfo();
 
-  if (netInfo?.type != 'unknown' && netInfo?.isInternetReachable === false)
+  if (netInfo?.type !== 'unknown' && netInfo?.isInternetReachable === false)
     return (
       <SafeAreaView style={styles.container}>
         <AppText style={styles.text}>No Internet Connection</AppText>

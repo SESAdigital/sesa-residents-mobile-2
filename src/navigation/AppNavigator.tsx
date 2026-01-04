@@ -47,7 +47,7 @@ const RootStack = createNativeStackNavigator({
       if: useIsSignedIn,
       screens: {
         // AUTH PAGES
-        [routes.DASHBOARD_SCREEN]: DashboardScreen,
+        [routes.HOME_BOTTOM_TABS_NAVIGATOR]: DashboardScreen,
       },
     },
   },

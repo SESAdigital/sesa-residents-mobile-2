@@ -1,4 +1,4 @@
-import Svg, { Path, SvgProps } from 'react-native-svg';
+import Svg, { Path, SvgProps, ClipPath, G, Defs } from 'react-native-svg';
 
 export function MaterialSymbolsDomainAdd(props: SvgProps) {
   return (
@@ -32,6 +32,33 @@ export function MaterialSymbolsPersonAdd(props: SvgProps) {
     </Svg>
   );
 }
+
+export function RiEyeOffFill(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M4.52 5.935L1.394 2.808l1.414-1.414l19.799 19.798l-1.414 1.415l-3.31-3.31A10.95 10.95 0 0 1 12 21c-5.392 0-9.878-3.88-10.818-9A11 11 0 0 1 4.52 5.935m10.238 10.237l-1.464-1.464a3 3 0 0 1-4.001-4.001L7.829 9.243a5 5 0 0 0 6.929 6.929M7.974 3.76C9.221 3.27 10.58 3 12 3c5.392 0 9.878 3.88 10.819 9a10.95 10.95 0 0 1-2.012 4.593l-3.86-3.86Q17 12.373 17 12a5 5 0 0 0-5.732-4.947z"
+      />
+    </Svg>
+  );
+}
+
+export const Eye2Line = (props: SvgProps) => (
+  <Svg fill="none" {...props}>
+    <G clipPath="url(#a)">
+      <Path
+        fill="currentColor"
+        d="M9 1.5a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15ZM9 3a6 6 0 1 0 0 12A6 6 0 0 0 9 3Zm0 2.25a3.75 3.75 0 1 1-3.585 2.645A1.874 1.874 0 0 0 9 7.125a1.875 1.875 0 0 0-1.105-1.71c.35-.107.72-.165 1.105-.165Z"
+      />
+    </G>
+    <Defs>
+      <ClipPath id="a">
+        <Path fill="#fff" d="M0 0h18v18H0z" />
+      </ClipPath>
+    </Defs>
+  </Svg>
+);
 
 export function MaterialSymbolsHome(props: SvgProps) {
   return (

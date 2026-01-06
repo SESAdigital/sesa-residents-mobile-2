@@ -8,3 +8,20 @@ export function getStatusBarPadding() {
   if (!hasNotch() && Number(getSystemVersion()) >= 9) return height;
   return 0;
 }
+
+export function truncateText(text: string, maxLength = 100) {
+  if (!text) return '';
+
+  if (text?.length <= maxLength) {
+    return text;
+  }
+  return text?.slice(0, maxLength) + '...';
+}
+
+export const formatNumberInput = (
+  inputValue: string | number | undefined | null,
+): string => {
+  if (!inputValue && inputValue !== 0) return ''; // Handle null, undefined, and empty values
+
+  return String(inputValue).replace(/[^0-9]/g, ''); // Remove non-numeric characters
+};

@@ -1,10 +1,13 @@
-import baseApi, { GenericApiResponse } from '.';
+import baseApi, { GenericApiResponse } from './index';
 import { LoginModeType, OnboardingStatusType } from './constants/default';
 
 // API STARTS HERE
 
 export const postPreLogin = (data: PreLoginReq) =>
   baseApi.post<GenericApiResponse>('/Auth/PreLogin', data);
+
+export const postLogin = (data: PostLoginReq) =>
+  baseApi.post<PostLoginRes>('/Auth/Login', data);
 
 // API ENDS HERE
 
@@ -24,7 +27,7 @@ export interface PostLoginReq extends PreLoginReq {
   pushNotificationToken: string;
 }
 
-export interface LoginRes extends GenericApiResponse {
+export interface PostLoginRes extends GenericApiResponse {
   data: {
     firstName: string;
     lastName: string;

@@ -1,4 +1,5 @@
 import { StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import OnboardingHeroImage from '@src/assets/images/onboarding-hero.png';
 import AppImage from '@src/components/AppImage';
@@ -7,9 +8,11 @@ import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
-import { appToast } from '@src/utils/appToast';
+import routes from '@src/navigation/routes';
 
 const OnboardingScreen1 = (): React.ReactNode => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <AppImage
@@ -28,9 +31,7 @@ const OnboardingScreen1 = (): React.ReactNode => {
         <SubmitButton
           title="Get Started"
           isLoading={false}
-          onPress={() => {
-            appToast.Success('Hello');
-          }}
+          onPress={() => navigation.navigate(routes.ONBOARDING_SCREEN_2)}
         />
       </View>
     </View>

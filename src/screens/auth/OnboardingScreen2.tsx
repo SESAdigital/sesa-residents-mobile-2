@@ -1,4 +1,5 @@
 import { StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
@@ -9,51 +10,103 @@ import {
 } from '@src/components/icons';
 import Size from '@src/utils/useResponsiveSize';
 import fonts from '@src/configs/fonts';
+import colors from '@src/configs/colors';
+import SubmitButton from '@src/components/forms/SubmitButton';
+import routes from '@src/navigation/routes';
+import { useGetCurrentLocation } from '@src/hooks/useCurrentLocation';
+
+const iconProps = {
+  color: colors.BLACK_100,
+  height: Size.calcAverage(23),
+  width: Size.calcAverage(23),
+};
 
 const data = [
   {
-    icon: <MaterialSymbolsDomainAdd />,
+    icon: <MaterialSymbolsDomainAdd {...iconProps} />,
     title: 'You reside in a SESA powered estate or gated-community.',
   },
   {
-    icon: <MaterialSymbolsPersonAdd />,
+    icon: <MaterialSymbolsPersonAdd {...iconProps} />,
     title: 'You have been onboarded by your estate manager.',
   },
   {
-    icon: <MaterialSymbolsMail />,
+    icon: <MaterialSymbolsMail {...iconProps} />,
     title:
       'You have access to your associated email - your login details will be sent there.',
   },
 ];
 
 const OnboardingScreen2 = (): React.ReactNode => {
+  const navigation = useNavigation();
+  useGetCurrentLocation();
+
   return (
-    <AppScreen style={styles.container}>
+    <AppScreen style={{ backgroundColor: colors.WHITE_200 }}>
       <AppText style={styles.title}>Before you get started</AppText>
       <AppText style={styles.subTitle}>Be sure of the following</AppText>
 
-      <View>
+      <View style={styles.contentWrapper}>
         {data.map((item, index) => (
-          <View key={index}>
-            <View>{item.icon}</View>
-            <AppText>{item.title}</AppText>
+          <View style={styles.contentContainer} key={index}>
+            {item?.icon}
+            <AppText style={styles.contentTitle}>{item?.title}</AppText>
           </View>
         ))}
+      </View>
+
+      <View style={styles.buttonWrapper}>
+        <SubmitButton
+          title="I don’t have my login credentials"
+          isLoading={false}
+          onPress={() => navigation.navigate(routes.LOGIN_SCREEN)}
+        />
+        <SubmitButton
+          title="I have my login credentials"
+          isLoading={false}
+          variant="SECONDARY"
+          onPress={() => navigation.navigate(routes.LOGIN_SCREEN)}
+        />
       </View>
     </AppScreen>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  buttonWrapper: {
+    marginTop: 'auto',
+    paddingBottom: Size.calcHeight(52),
+    rowGap: Size.calcHeight(24),
+  },
 
-  subTitle: {},
+  contentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  contentTitle: {
+    paddingLeft: Size.calcWidth(16),
+    flexShrink: 1,
+  },
+
+  contentWrapper: {
+    backgroundColor: colors.WHITE_300,
+    borderRadius: Size.calcAverage(8),
+    paddingVertical: Size.calcHeight(24),
+    paddingHorizontal: Size.calcWidth(18),
+    rowGap: Size.calcHeight(18),
+  },
+
+  subTitle: {
+    fontFamily: fonts.INTER_600,
+    paddingBottom: Size.calcHeight(40),
+  },
 
   title: {
     fontSize: Size.calcAverage(24),
     fontFamily: fonts.INTER_600,
-    textAlign: 'center',
-    marginHorizontal: 'auto',
+    paddingBottom: Size.calcHeight(12),
+    paddingTop: Size.calcHeight(54),
   },
 });
 

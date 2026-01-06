@@ -15,6 +15,8 @@ export default Object.freeze({
 
   APP_IMAGE_COMPRESS_VALUE: 0.2,
 
+  APP_NAME: 'SESA',
+
   APP_ICON:
     'https://res.cloudinary.com/dzgqixmj3/image/upload/v1752076853/sesa/ic_launcher_foreground_gcrsii.png',
 });

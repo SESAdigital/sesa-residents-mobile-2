@@ -34,6 +34,8 @@ export default Object.freeze({
   LIGHT_GRAY_200: '#F1F2F3',
   LIGHT_GRAY_300: '#E9E9E980',
   LIGHT_GRAY_400: '#E5E7EB',
+  LIGHT_GRAY_500: '#F8F8F8',
+  LIGHT_GRAY_600: '#DBDBDB',
 
   RED_100: '#D32F2F',
   RED_200: '#F7B9B4',

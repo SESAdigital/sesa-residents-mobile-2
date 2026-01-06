@@ -9,17 +9,18 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import colors from '@src/configs/colors';
-import { getStatusBarPadding } from '@src/utils';
 import Size from '@src/utils/useResponsiveSize';
 
 interface ScreenProps extends ViewProps {
   containerStyle?: ViewStyle;
+  contentContainerStyle?: ViewStyle;
   scrollable?: boolean;
 }
 // statusbarColor = colors.WHITE100,
 //   statusbarStyle = 'dark-content',
 const AppScreen = (props: ScreenProps): React.ReactNode => {
-  const { children, style, containerStyle, scrollable } = props;
+  const { children, style, containerStyle, scrollable, contentContainerStyle } =
+    props;
 
   return (
     <SafeAreaView style={[styles.screen, containerStyle]}>
@@ -29,6 +30,7 @@ const AppScreen = (props: ScreenProps): React.ReactNode => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={[styles.view, style]}
+          contentContainerStyle={contentContainerStyle}
         >
           {children}
         </ScrollView>
@@ -43,7 +45,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.WHITE_100,
-    paddingTop: getStatusBarPadding(),
+    // paddingTop: getStatusBarPadding(),
   },
   view: {
     flex: 1,

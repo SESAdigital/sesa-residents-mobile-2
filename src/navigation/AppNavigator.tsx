@@ -30,7 +30,7 @@ export type AppParamsNavigator = NativeStackNavigationProp<AppNavigatorParams>;
 const RootStack = createNativeStackNavigator({
   screenOptions: {
     headerShown: false,
-    animation: 'none',
+    // animation: 'fade_from_bottom',
   },
 
   groups: {

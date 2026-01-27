@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Joi from 'joi';
 import { Activity, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { getDeviceId } from 'react-native-device-info';
 
 import { postLogin } from '@src/api/auth.api';
@@ -13,16 +13,16 @@ import AppText from '@src/components/AppText';
 import AppKeyboardAvoidingView from '@src/components/custom/AppKeyboardAvoidingView';
 import AppTextInput from '@src/components/forms/AppTextInput';
 import SubmitButton from '@src/components/forms/SubmitButton';
-import PasswordToggle from '@src/components/icons/PasswordToggle';
+import { RiInformationFill } from '@src/components/icons';
 import colors from '@src/configs/colors';
-import fonts from '@src/configs/fonts';
 import { useGetCurrentLocation } from '@src/hooks/useCurrentLocation';
+import AppLoadingModal from '@src/modals/AppLoadingModal';
 import { useAuthStore } from '@src/stores/auth.store';
 import { appToast } from '@src/utils/appToast';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
 import LoginModeToggle from './components/LoginModeToggle';
-import AppLoadingModal from '@src/modals/AppLoadingModal';
+import { loginScreenStyles } from './LoginScreen';
 
 export interface LoginSchema {
   email?: string;
@@ -35,11 +35,10 @@ const schema = Joi.object<LoginSchema>({
   password: joiSchemas.password,
 });
 
-const LoginScreen = (): React.ReactNode => {
+const RetrieveAccountScreen = (): React.ReactNode => {
   const [selectedMode, setSelectedMode] = useState<LoginModeType>(
     LoginModeData.EmailAddress,
   );
-  const [isPasswordVisible, setPasswordVisibility] = useState(false);
   const location = useGetCurrentLocation();
   const postLoginAPI = useMutation({ mutationFn: postLogin });
   const queryClient = useQueryClient();
@@ -93,9 +92,9 @@ const LoginScreen = (): React.ReactNode => {
       style={{ flex: 1 }}
     >
       <AppScreen style={loginScreenStyles.container}>
-        <AppText style={loginScreenStyles.title}>Login to your account</AppText>
+        <AppText style={loginScreenStyles.title}>Welcome to SESA</AppText>
         <AppText style={loginScreenStyles.subTitle}>
-          Need help logging in? Get Help
+          To get started, enter your associated email address or phone number.
         </AppText>
 
         <LoginModeToggle
@@ -113,6 +112,17 @@ const LoginScreen = (): React.ReactNode => {
               name="email"
               keyboardType="email-address"
             />
+            <View style={styles.informationContainer}>
+              <RiInformationFill
+                height={Size.calcAverage(17)}
+                width={Size.calcAverage(17)}
+                color={colors.BLACK_100}
+              />
+              <AppText style={styles.informationText}>
+                If your account is found, your login credentials will be sent to
+                your email.
+              </AppText>
+            </View>
           </Activity>
           <Activity mode={!isEmailLogin ? 'visible' : 'hidden'}>
             <AppTextInput
@@ -125,73 +135,35 @@ const LoginScreen = (): React.ReactNode => {
               keyboardType="number-pad"
             />
           </Activity>
-          <AppTextInput
-            editable={!isLoading}
-            placeholder="Password"
-            label="Password"
-            control={control}
-            name="password"
-            secureTextEntry={!isPasswordVisible}
-            rightIcon={
-              <PasswordToggle
-                isVisible={!isPasswordVisible}
-                onClick={() => setPasswordVisibility(value => !value)}
-              />
-            }
-          />
-          <TouchableOpacity style={loginScreenStyles.forgotPasswordContainer}>
-            <AppText style={loginScreenStyles.forgotPasswordText}>
-              Forgot your password?
-            </AppText>
-          </TouchableOpacity>
         </View>
 
         <View style={loginScreenStyles.buttonContainer}>
           <SubmitButton title="Continue" isLoading={false} onPress={onSubmit} />
         </View>
       </AppScreen>
-      <AppLoadingModal isLoading={isLoading} title="Logging you in..." />
+      <AppLoadingModal
+        isLoading={isLoading}
+        title="Looking up your account..."
+      />
     </AppKeyboardAvoidingView>
   );
 };
 
-export const loginScreenStyles = StyleSheet.create({
-  buttonContainer: {
-    marginVertical: Size.calcHeight(15),
+const styles = StyleSheet.create({
+  informationContainer: {
+    backgroundColor: colors.WHITE_300,
+    padding: Size.calcAverage(10),
+    borderRadius: Size.calcAverage(8),
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: Size.calcHeight(-8),
   },
-
-  container: {
-    backgroundColor: colors.WHITE_200,
-    flex: 1,
-  },
-
-  content: {
-    paddingTop: Size.calcHeight(24),
-    flex: 1,
-    rowGap: Size.calcAverage(24),
-  },
-
-  forgotPasswordContainer: {
-    padding: Size.calcAverage(3),
-    marginHorizontal: 'auto',
-  },
-
-  forgotPasswordText: {
-    fontFamily: fonts.INTER_500,
-    color: colors.BLUE_200,
-  },
-
-  subTitle: {
-    fontFamily: fonts.INTER_500,
-    paddingBottom: Size.calcHeight(24),
-  },
-
-  title: {
-    fontSize: Size.calcAverage(24),
-    fontFamily: fonts.INTER_600,
-    paddingBottom: Size.calcHeight(12),
-    paddingTop: Size.calcHeight(54),
+  informationText: {
+    color: colors.GRAY_100,
+    fontSize: Size.calcAverage(12),
+    paddingLeft: Size.calcWidth(8),
+    maxWidth: Size.calcWidth(350),
   },
 });
 
-export default LoginScreen;
+export default RetrieveAccountScreen;

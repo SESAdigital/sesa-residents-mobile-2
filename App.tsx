@@ -6,11 +6,10 @@ import SplashScreen from 'react-native-splash-screen';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 import { Toaster } from 'sonner-native';
 
-// import AppModal from '@src/components/modals/AppModal';
 import OfflineNotice from '@src/components/OfflineNotice';
-// import {useRequestNotificationPermissionAndroid} from '@src/hooks/usePermissions';
 import { AppNavigator } from '@src/navigation/AppNavigator';
 import navigationTheme from '@src/navigation/navigationTheme';
+import AppModal from '@src/modals/AppModal';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,7 +51,7 @@ export default function App() {
           <OfflineNotice />
           <AppNavigator theme={{ ...navigationTheme, dark: true }} />
           <Toaster richColors theme="light" />
-          {/* <AppModal /> */}
+          <AppModal />
         </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

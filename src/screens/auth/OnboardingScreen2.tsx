@@ -1,19 +1,19 @@
 import { StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
+import SubmitButton from '@src/components/forms/SubmitButton';
 import {
   MaterialSymbolsDomainAdd,
   MaterialSymbolsMail,
   MaterialSymbolsPersonAdd,
 } from '@src/components/icons';
-import Size from '@src/utils/useResponsiveSize';
-import fonts from '@src/configs/fonts';
 import colors from '@src/configs/colors';
-import SubmitButton from '@src/components/forms/SubmitButton';
-import routes from '@src/navigation/routes';
+import fonts from '@src/configs/fonts';
 import { useGetCurrentLocation } from '@src/hooks/useCurrentLocation';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
+import Size from '@src/utils/useResponsiveSize';
 
 const iconProps = {
   color: colors.BLACK_100,
@@ -38,7 +38,7 @@ const data = [
 ];
 
 const OnboardingScreen2 = (): React.ReactNode => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigator();
   useGetCurrentLocation();
 
   return (
@@ -59,7 +59,7 @@ const OnboardingScreen2 = (): React.ReactNode => {
         <SubmitButton
           title="I don’t have my login credentials"
           isLoading={false}
-          onPress={() => navigation.navigate(routes.LOGIN_SCREEN)}
+          onPress={() => navigation.navigate(routes.RETRIEVE_ACCOUNT_SCREEN)}
         />
         <SubmitButton
           title="I have my login credentials"

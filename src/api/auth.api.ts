@@ -1,7 +1,7 @@
 import baseApi, { GenericApiResponse } from './index';
 import { LoginModeType, OnboardingStatusType } from './constants/default';
 
-// API STARTS HERE
+// AUTH API STARTS HERE
 
 export const postPreLogin = (data: PreLoginReq) =>
   baseApi.post<GenericApiResponse>('/Auth/PreLogin', data);
@@ -9,9 +9,29 @@ export const postPreLogin = (data: PreLoginReq) =>
 export const postLogin = (data: PostLoginReq) =>
   baseApi.post<PostLoginRes>('/Auth/Login', data);
 
-// API ENDS HERE
+export const postForgotPassword = (data: PostLoginReq) =>
+  baseApi.post<PostLoginRes>('/Auth/ForgotPassword', data);
 
-// TYPES STARTS HERE
+export const patchSetupPassword = (data: PatchSetupPasswordReq) =>
+  baseApi.patch<PostLoginRes>('/Auth/SetupPassword', data);
+
+// AUTH API ENDS HERE
+
+// ACCOUNT API STARTS HERE
+
+export const patchSetupPin = (data: PatchSetupPin) =>
+  baseApi.patch<GenericApiResponse>('/Account/SetupPin', data);
+
+export const postResendNewDeviceEmail = () =>
+  baseApi.post<GenericApiResponse>('/Account/ResendNewDeviceEmail');
+
+export const patchValidateNewDeviceCode = (
+  data: PatchValidateNewDeviceCodeReq,
+) => baseApi.patch<GenericApiResponse>('/Account/ValidateNewDevice', data);
+
+// ACCOUNT API ENDS HERE
+
+// AUTH TYPES STARTS HERE
 
 export interface PreLoginReq {
   loginMode: LoginModeType;
@@ -52,4 +72,27 @@ export interface PostLoginRes extends GenericApiResponse {
   };
 }
 
-// TYPES ENDS HERE
+export type PatchSetupPasswordReq = PostChangePasswordReq & PostLoginReq;
+
+// AUTH TYPES ENDS HERE
+
+// ACCOUNT TYPES STARTS HERE
+
+interface PatchSetupPin {
+  newPin: string;
+  confirmPin: string;
+}
+
+interface PatchValidateNewDeviceCodeReq {
+  code: string;
+  deviceId: string;
+  pushNotificationToken: string;
+}
+
+export interface PostChangePasswordReq {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+// ACCOUNT TYPES ENDS HERE

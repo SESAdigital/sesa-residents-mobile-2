@@ -4,19 +4,22 @@ import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 import { transformMMKVStore } from './index';
-import { LoginRes } from '@src/api/auth.api';
+import { PostLoginRes } from '@src/api/auth.api';
 
 export interface AuthStore {
-  loginResponse: LoginRes | null;
+  loginResponse: PostLoginRes | null;
+  isDoneOnboarding: boolean;
 
   logout: () => void;
-  setLoginResponse: (value: LoginRes) => void;
+  setLoginResponse: (value: PostLoginRes) => void;
+  setIsDoneOnboarding: (value: boolean) => void;
 }
 
-const authStoreName = 'useAuthStore';
+const authStoreName = 'useResidentsAuthStore';
 
 const defaultState = {
   loginResponse: null,
+  isDoneOnboarding: false,
 };
 
 export const authStore = createWithEqualityFn(
@@ -29,6 +32,9 @@ export const authStore = createWithEqualityFn(
       logout: () => set(() => defaultState),
 
       setLoginResponse: loginResponse => set(() => ({ loginResponse })),
+
+      setIsDoneOnboarding: isDoneOnboarding =>
+        set(() => ({ isDoneOnboarding })),
     }),
     {
       name: authStoreName,

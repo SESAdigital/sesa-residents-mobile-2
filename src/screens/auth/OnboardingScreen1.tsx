@@ -1,5 +1,4 @@
 import { StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 import OnboardingHeroImage from '@src/assets/images/onboarding-hero.png';
 import AppImage from '@src/components/AppImage';
@@ -7,11 +6,12 @@ import AppText from '@src/components/AppText';
 import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import Size from '@src/utils/useResponsiveSize';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
+import Size from '@src/utils/useResponsiveSize';
 
 const OnboardingScreen1 = (): React.ReactNode => {
-  const navigation = useNavigation();
+  const navigation = useAppNavigator();
 
   return (
     <View style={styles.container}>
@@ -31,7 +31,7 @@ const OnboardingScreen1 = (): React.ReactNode => {
         <SubmitButton
           title="Get Started"
           isLoading={false}
-          onPress={() => navigation.navigate(routes.ONBOARDING_SCREEN_2)}
+          onPress={() => navigation.navigate(routes.CHANGE_PASSOWRD_SCREEN)}
         />
       </View>
     </View>

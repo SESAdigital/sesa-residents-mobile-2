@@ -11,8 +11,8 @@
     // "module": "commonjs" /* Specify what module code is generated. */,
     // "module": "Node16" /* Specify what module code is generated. */,
     // "moduleResolution": "node16",
-    "moduleResolution": "nodenext",
-    "module": "nodenext" /* Specify what module code is generated. */,
+    "moduleResolution": "bundler",
+    "module": "preserve" /* Specify what module code is generated. */,
     "noImplicitOverride": true /* Ensure overriding members in derived classes are marked with an override modifier. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "noEmitOnError": true /* Disable emitting files if any type checking errors are reported. */,
@@ -31,6 +31,7 @@
     "resolveJsonModule": true,
     "noEmit": true,
     "strict": true,
+    "strictNullChecks": true,
     "target": "esnext",
     "baseUrl": ".",
     "paths": {

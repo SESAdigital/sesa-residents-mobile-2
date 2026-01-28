@@ -39,7 +39,7 @@ const HomeBottomTabsNavigator = createBottomTabNavigator({
     headerShown: false,
   },
   screens: {
-    [routes.HOME_BOTTOM_TABS_NAVIGATOR]: {
+    [routes.HOME_SCREEN]: {
       screen: HomeScreen,
       options: {
         title: 'Home',

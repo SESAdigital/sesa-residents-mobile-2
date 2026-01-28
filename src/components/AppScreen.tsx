@@ -15,15 +15,30 @@ interface ScreenProps extends ViewProps {
   containerStyle?: ViewStyle;
   contentContainerStyle?: ViewStyle;
   scrollable?: boolean;
+  showDownInset?: boolean;
 }
 // statusbarColor = colors.WHITE100,
 //   statusbarStyle = 'dark-content',
 const AppScreen = (props: ScreenProps): React.ReactNode => {
-  const { children, style, containerStyle, scrollable, contentContainerStyle } =
-    props;
+  const {
+    children,
+    style,
+    containerStyle,
+    scrollable,
+    contentContainerStyle,
+    showDownInset,
+  } = props;
 
   return (
-    <SafeAreaView style={[styles.screen, containerStyle]}>
+    <SafeAreaView
+      edges={{
+        bottom: showDownInset ? 'additive' : 'off',
+        right: 'additive',
+        top: 'additive',
+        left: 'additive',
+      }}
+      style={[styles.screen, containerStyle]}
+    >
       <StatusBar animated barStyle={'dark-content'} />
 
       {scrollable ? (
@@ -45,7 +60,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.WHITE_100,
-    // paddingTop: getStatusBarPadding(),
   },
   view: {
     flex: 1,

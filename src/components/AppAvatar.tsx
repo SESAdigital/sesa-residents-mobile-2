@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     gap: Size.calcAverage(4),
     borderRadius: Size.calcAverage(44 / 2),
     borderWidth: Size.calcAverage(2),
-    backgroundColor: colors.LIGHT_GRAY_200,
-    borderColor: colors.LIGHT_GRAY_200,
+    backgroundColor: '#ECF3FF',
+    borderColor: '#ECF3FF',
     overflow: 'hidden',
   },
 

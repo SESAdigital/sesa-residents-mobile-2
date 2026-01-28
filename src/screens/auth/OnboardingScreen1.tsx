@@ -31,7 +31,7 @@ const OnboardingScreen1 = (): React.ReactNode => {
         <SubmitButton
           title="Get Started"
           isLoading={false}
-          onPress={() => navigation.navigate(routes.CHANGE_PASSOWRD_SCREEN)}
+          onPress={() => navigation.navigate(routes.ONE_LAST_STEP_SCREEN)}
         />
       </View>
     </View>

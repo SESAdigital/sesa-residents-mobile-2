@@ -1,9 +1,9 @@
 import { View, StyleSheet, Text } from 'react-native';
 
-const DashboardScreen = (): React.ReactNode => {
+const SetupWalletPinScreen = (): React.ReactNode => {
   return (
     <View style={styles.container}>
-      <Text>DashboardScreen</Text>
+      <Text>SetupWalletPinScreen</Text>
     </View>
   );
 };
@@ -12,4 +12,4 @@ const styles = StyleSheet.create({
   container: {},
 });
 
-export default DashboardScreen;
+export default SetupWalletPinScreen;

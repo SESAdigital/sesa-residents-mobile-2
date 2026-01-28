@@ -14,6 +14,7 @@ import BookingsScreen from '@src/screens/dashboard/bookings/BookingsScreen';
 import MyhubScreen from '@src/screens/dashboard/my-hub/MyhubScreen';
 import Size from '@src/utils/useResponsiveSize';
 import routes from './routes';
+import { CustomScheduleLine } from '@src/components/icons/custom';
 
 const iconProps = {
   height: Size.calcAverage(23),
@@ -42,7 +43,6 @@ const HomeBottomTabsNavigator = createBottomTabNavigator({
       screen: HomeScreen,
       options: {
         title: 'Home',
-        // @ts-expect-error no type found
         tabBarIcon: ({ focused }) => (
           <MaterialSymbolsHome {...iconProps} color={getColor(focused)} />
         ),
@@ -53,9 +53,8 @@ const HomeBottomTabsNavigator = createBottomTabNavigator({
       screen: BookingsScreen,
       options: {
         title: 'Bookings',
-        // @ts-expect-error no type found
         tabBarIcon: ({ focused }) => (
-          <MaterialSymbolsHome {...iconProps} color={getColor(focused)} />
+          <CustomScheduleLine {...iconProps} color={getColor(focused)} />
         ),
       },
     },
@@ -64,7 +63,6 @@ const HomeBottomTabsNavigator = createBottomTabNavigator({
       screen: MyhubScreen,
       options: {
         title: 'My Hub',
-        // @ts-expect-error no type found
         tabBarIcon: ({ focused }) => (
           <MaterialSymbolsHome {...iconProps} color={getColor(focused)} />
         ),
@@ -74,7 +72,6 @@ const HomeBottomTabsNavigator = createBottomTabNavigator({
       screen: ActivityScreen,
       options: {
         title: 'Activity',
-        // @ts-expect-error no type found
         tabBarIcon: ({ focused }) => (
           <MaterialSymbolsHome {...iconProps} color={getColor(focused)} />
         ),
@@ -84,7 +81,6 @@ const HomeBottomTabsNavigator = createBottomTabNavigator({
       screen: AccountScreen,
       options: {
         title: 'Account',
-        // @ts-expect-error no type found
         tabBarIcon: ({ focused }) => (
           <MaterialSymbolsHome {...iconProps} color={getColor(focused)} />
         ),

@@ -1,26 +1,27 @@
 import {
   createStaticNavigation,
-  useNavigation,
   StaticParamList,
+  useNavigation,
 } from '@react-navigation/native';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 
+import CheckYourMailScreen from '@src/screens/auth/CheckYourMailScreen';
 import LoginScreen from '@src/screens/auth/LoginScreen';
 import OnboardingScreen1 from '@src/screens/auth/OnboardingScreen1';
 import OnboardingScreen2 from '@src/screens/auth/OnboardingScreen2';
-import routes from './routes';
-import DashboardScreen from '@src/screens/dashboard/DashboardScreen';
-import { useAuthStore } from '@src/stores/auth.store';
+import OneLastStepScreen from '@src/screens/auth/OneLastStepScreen';
 import RetrieveAccountScreen from '@src/screens/auth/RetrieveAccountScreen';
-import CheckYourMailScreen from '@src/screens/auth/CheckYourMailScreen';
-import ChangePasswordScreen from '@src/screens/auth/ChangePasswordScreen';
+import SetupPasswordScreen from '@src/screens/auth/SetupPasswordScreen';
+import { useAuthStore } from '@src/stores/auth.store';
+import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
+import routes from './routes';
 
 function useIsSignedIn() {
   const { loginResponse } = useAuthStore();
-  return !!loginResponse?.data?.token;
+  return !loginResponse?.data?.token;
 }
 
 function useIsSignedOut() {
@@ -32,7 +33,8 @@ export type AppNavigatorParams = {
   [routes.RETRIEVE_ACCOUNT_SCREEN]: undefined;
   [routes.CHECK_YOUR_MAIL_SCREEN]: undefined;
   [routes.LOGIN_SCREEN]: undefined;
-  [routes.CHANGE_PASSOWRD_SCREEN]: undefined;
+  [routes.SETUP_PASSWORD_SCREEN]: undefined;
+  [routes.ONE_LAST_STEP_SCREEN]: undefined;
 };
 
 export type AppParamsNavigator = NativeStackNavigationProp<AppNavigatorParams>;
@@ -57,7 +59,8 @@ const RootStack = createNativeStackNavigator({
         [routes.LOGIN_SCREEN]: LoginScreen,
         [routes.RETRIEVE_ACCOUNT_SCREEN]: RetrieveAccountScreen,
         [routes.CHECK_YOUR_MAIL_SCREEN]: CheckYourMailScreen,
-        [routes.CHANGE_PASSOWRD_SCREEN]: ChangePasswordScreen,
+        [routes.SETUP_PASSWORD_SCREEN]: SetupPasswordScreen,
+        [routes.ONE_LAST_STEP_SCREEN]: OneLastStepScreen,
       },
     },
 
@@ -65,7 +68,7 @@ const RootStack = createNativeStackNavigator({
       if: useIsSignedIn,
       screens: {
         // AUTH PAGES
-        [routes.HOME_BOTTOM_TABS_NAVIGATOR]: DashboardScreen,
+        [routes.HOME_BOTTOM_TABS_NAVIGATOR]: HomeBottomTabsNavigator,
       },
     },
   },

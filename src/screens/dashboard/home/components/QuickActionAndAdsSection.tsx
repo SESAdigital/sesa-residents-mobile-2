@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
 
   imageContainer: {
     paddingHorizontal: Size.calcWidth(21),
-    paddingVertical: Size.calcHeight(30),
+    paddingVertical: Size.calcHeight(10),
   },
 
   quickActionsText: {

@@ -25,8 +25,8 @@ const BillReminderBanner = (): React.ReactNode => {
         <AppText style={styles.text}>You have a bill due in 2 day(s)</AppText>
       </View>
       <MaterialSymbolsChevronRight
-        height={Size.calcAverage(24)}
-        width={Size.calcAverage(24)}
+        height={Size.calcAverage(20)}
+        width={Size.calcAverage(20)}
         color={colors.BLACK_100}
       />
     </Pressable>
@@ -35,7 +35,7 @@ const BillReminderBanner = (): React.ReactNode => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: Size.calcHeight(10),
+    paddingVertical: Size.calcHeight(8),
     paddingHorizontal: Size.calcWidth(21),
     flexDirection: 'row',
     backgroundColor: colors.BLUE_400,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 
   text: {
     color: colors.BLACK_100,
-    fontFamily: fonts.INTER_600,
+    fontFamily: fonts.INTER_500,
     fontSize: Size.calcAverage(14),
     paddingLeft: Size.calcWidth(4),
   },

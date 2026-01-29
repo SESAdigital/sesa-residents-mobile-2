@@ -23,6 +23,7 @@ import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
 import LoginModeToggle from './components/LoginModeToggle';
 import { loginScreenStyles } from './LoginScreen';
+import { handleToastApiError } from '@src/utils/handleErrors';
 
 export interface LoginSchema {
   email?: string;
@@ -78,7 +79,7 @@ const RetrieveAccountScreen = (): React.ReactNode => {
       reset();
       queryClient.invalidateQueries();
     } else {
-      appToast.Error(response?.data?.message ?? 'Login failed.');
+      handleToastApiError(response);
     }
 
     return;

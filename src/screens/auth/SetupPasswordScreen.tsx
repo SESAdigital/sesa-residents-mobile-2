@@ -24,6 +24,7 @@ import { appToast } from '@src/utils/appToast';
 import Size from '@src/utils/useResponsiveSize';
 import { loginScreenStyles } from './LoginScreen';
 import { joiSchemas } from '@src/utils/schema';
+import { handleToastApiError } from '@src/utils/handleErrors';
 
 const schema = Joi.object<PatchSetupPasswordReq>({
   newPassword: joiSchemas.strictPassword,
@@ -75,7 +76,7 @@ const SetupPasswordScreen = (): React.ReactNode => {
       queryClient.invalidateQueries();
       navigation.replace(routes.ONE_LAST_STEP_SCREEN);
     } else {
-      appToast.Error(response?.data?.message ?? 'Failed to update password.');
+      handleToastApiError(response);
     }
 
     return;

@@ -33,6 +33,7 @@ import Size from '@src/utils/useResponsiveSize';
 import LoginModeToggle from './components/LoginModeToggle';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
+import { handleToastApiError } from '@src/utils/handleErrors';
 
 export interface LoginSchema {
   email?: string;
@@ -98,6 +99,8 @@ const LoginScreen = (): React.ReactNode => {
     );
 
     if (response?.ok && !!result) {
+      queryClient.invalidateQueries();
+
       if (
         result?.data?.onboardingStatus === OnboardingStatusData.PasswordSetup
       ) {
@@ -133,13 +136,12 @@ const LoginScreen = (): React.ReactNode => {
         );
       } else {
         setLoginResponse(result);
-        queryClient.invalidateQueries();
         appToast.Success(response?.data?.message ?? 'Login successful');
         reset();
         setIsDoneOnboarding(true);
       }
     } else {
-      appToast.Error(response?.data?.message ?? 'Login failed.');
+      handleToastApiError(response);
     }
 
     return;

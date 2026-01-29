@@ -74,8 +74,8 @@ export interface PostLoginRes extends GenericApiResponse {
 
 export interface PatchSetupPasswordReq {
   loginMode: LoginModeType;
-  email: string;
-  phoneNumber: string;
+  email?: string;
+  phoneNumber?: string;
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;

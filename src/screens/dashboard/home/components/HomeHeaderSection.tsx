@@ -8,10 +8,16 @@ import {
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
+import { useAuthStore } from '@src/stores/auth.store';
 import Size from '@src/utils/useResponsiveSize';
 import BillReminderBanner from './BillReminderBanner';
 
 const HomeHeaderSection = (): React.ReactNode => {
+  const { logout } = useAuthStore();
+  const handleAddMoney = () => {
+    logout();
+  };
+
   return (
     <>
       <View style={styles.headerContainer}>
@@ -40,7 +46,10 @@ const HomeHeaderSection = (): React.ReactNode => {
           <AppText style={{ color: colors.LIGHT_GRAY_100 }}>My Wallet</AppText>
           <AppText style={styles.walletAmount}>₦ 34,124,239</AppText>
         </View>
-        <TouchableOpacity style={styles.addMoneyButton}>
+        <TouchableOpacity
+          onPress={handleAddMoney}
+          style={styles.addMoneyButton}
+        >
           <AppText style={styles.addMoneyText}>Add Money</AppText>
         </TouchableOpacity>
       </View>

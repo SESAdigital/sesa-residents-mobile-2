@@ -145,6 +145,14 @@ export function MaterialSymbolsChevronRight(props: SvgProps) {
   );
 }
 
+export function MaterialSymbolsChevronLeft(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path fill="currentColor" d="m14 18l-6-6l6-6l1.4 1.4l-4.6 4.6l4.6 4.6z" />
+    </Svg>
+  );
+}
+
 export function MaterialSymbolsSos(props: SvgProps) {
   return (
     <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
@@ -206,6 +214,17 @@ export function MdiLightArrowLeft(props: SvgProps) {
       <Path
         fill="currentColor"
         d="M19 13H6.75L12 18.25l-.66.75l-6.5-6.5l6.5-6.5l.66.75L6.75 12H19z"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsBackspace(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="m11.4 16l2.6-2.6l2.6 2.6l1.4-1.4l-2.6-2.6L18 9.4L16.6 8L14 10.6L11.4 8L10 9.4l2.6 2.6l-2.6 2.6zM9 20q-.475 0-.9-.213t-.7-.587L2 12l5.4-7.2q.275-.375.7-.587T9 4h11q.825 0 1.413.587T22 6v12q0 .825-.587 1.413T20 20z"
       />
     </Svg>
   );

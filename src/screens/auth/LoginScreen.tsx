@@ -6,8 +6,16 @@ import { useForm } from 'react-hook-form';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { getDeviceId } from 'react-native-device-info';
 
-import { postLogin } from '@src/api/auth.api';
-import { LoginModeData, LoginModeType } from '@src/api/constants/default';
+import {
+  PatchSetupPasswordReq,
+  postLogin,
+  PostLoginReq,
+} from '@src/api/auth.api';
+import {
+  LoginModeData,
+  LoginModeType,
+  OnboardingStatusData,
+} from '@src/api/constants/default';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppKeyboardAvoidingView from '@src/components/custom/AppKeyboardAvoidingView';
@@ -17,12 +25,14 @@ import PasswordToggle from '@src/components/icons/PasswordToggle';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useGetCurrentLocation } from '@src/hooks/useCurrentLocation';
+import AppLoadingModal from '@src/modals/AppLoadingModal';
 import { useAuthStore } from '@src/stores/auth.store';
 import { appToast } from '@src/utils/appToast';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
 import LoginModeToggle from './components/LoginModeToggle';
-import AppLoadingModal from '@src/modals/AppLoadingModal';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
 
 export interface LoginSchema {
   email?: string;
@@ -31,7 +41,8 @@ export interface LoginSchema {
 }
 
 const schema = Joi.object<LoginSchema>({
-  email: joiSchemas.email,
+  email: joiSchemas.email.optional().allow(''),
+  phoneNumber: joiSchemas.phone.optional().allow(''),
   password: joiSchemas.password,
 });
 
@@ -43,13 +54,15 @@ const LoginScreen = (): React.ReactNode => {
   const location = useGetCurrentLocation();
   const postLoginAPI = useMutation({ mutationFn: postLogin });
   const queryClient = useQueryClient();
-
+  const navigation = useAppNavigator();
   const { handleSubmit, reset, control } = useForm<LoginSchema>({
     resolver: joiResolver(schema),
   });
-  const { setLoginResponse } = useAuthStore();
+  const { setLoginResponse, setIsDoneOnboarding } = useAuthStore();
 
   const isEmailLogin = selectedMode === LoginModeData.EmailAddress;
+
+  const isLoading = postLoginAPI?.isPending;
 
   const onSubmit = handleSubmit(async data => {
     if (isLoading) return;
@@ -63,7 +76,7 @@ const LoginScreen = (): React.ReactNode => {
     if (!isEmailLogin && !phoneNumber)
       return appToast.Info('Please enter a phone number');
 
-    const response = await postLoginAPI.mutateAsync({
+    const loginData: PostLoginReq = {
       deviceId: getDeviceId(),
       latitude: location?.latitude?.toString() || '',
       longitude: location?.longitude?.toString() || '',
@@ -71,13 +84,60 @@ const LoginScreen = (): React.ReactNode => {
       password,
       pushNotificationToken: '',
       ...(isEmailLogin ? { email } : { phoneNumber }),
-    });
+    };
 
-    if (response?.ok && response?.data) {
-      appToast.Success(response?.data?.message ?? 'Login successfully.');
-      setLoginResponse(response?.data);
-      reset();
-      queryClient.invalidateQueries();
+    const response = await postLoginAPI.mutateAsync(loginData);
+
+    const result = response?.data;
+
+    console.log(result);
+    console.log(result?.data);
+    console.log(result?.data?.onboardingStatus);
+    console.log(
+      result?.data?.onboardingStatus === OnboardingStatusData.NewDevice,
+    );
+
+    if (response?.ok && !!result) {
+      if (
+        result?.data?.onboardingStatus === OnboardingStatusData.PasswordSetup
+      ) {
+        const setupData: PatchSetupPasswordReq = {
+          deviceId: loginData?.deviceId,
+          latitude: loginData?.latitude,
+          longitude: loginData?.longitude,
+          loginMode: loginData?.loginMode,
+          pushNotificationToken: loginData?.pushNotificationToken,
+          currentPassword: password,
+          newPassword: '',
+          ...(isEmailLogin ? { email } : { phoneNumber }),
+          confirmPassword: '',
+        };
+        navigation.navigate(routes.SETUP_PASSWORD_SCREEN, setupData);
+        appToast.Success(
+          response?.data?.message ?? 'Please set up your password',
+        );
+      } else if (
+        result?.data?.onboardingStatus === OnboardingStatusData.PinSetup
+      ) {
+        setLoginResponse(result);
+        navigation.navigate(routes.ONE_LAST_STEP_SCREEN);
+        appToast.Success(
+          response?.data?.message ?? 'Please set up your wallet pin',
+        );
+      } else if (
+        result?.data?.onboardingStatus === OnboardingStatusData.NewDevice
+      ) {
+        navigation.navigate(routes.NEW_DEVICE_SCREEN);
+        appToast.Success(
+          response?.data?.message ?? 'Please verify your new device',
+        );
+      } else {
+        setLoginResponse(result);
+        queryClient.invalidateQueries();
+        appToast.Success(response?.data?.message ?? 'Login successful');
+        reset();
+        setIsDoneOnboarding(true);
+      }
     } else {
       appToast.Error(response?.data?.message ?? 'Login failed.');
     }
@@ -85,14 +145,12 @@ const LoginScreen = (): React.ReactNode => {
     return;
   });
 
-  const isLoading = postLoginAPI?.isPending;
-
   return (
     <AppKeyboardAvoidingView
       keyboardVerticalOffset={-Size.calcHeight(50)}
       style={{ flex: 1 }}
     >
-      <AppScreen style={loginScreenStyles.container}>
+      <AppScreen showDownInset style={loginScreenStyles.container}>
         <AppText style={loginScreenStyles.title}>Login to your account</AppText>
         <AppText style={loginScreenStyles.subTitle}>
           Need help logging in? Get Help
@@ -147,7 +205,7 @@ const LoginScreen = (): React.ReactNode => {
         </View>
 
         <View style={loginScreenStyles.buttonContainer}>
-          <SubmitButton title="Continue" isLoading={false} onPress={onSubmit} />
+          <SubmitButton title="Continue" onPress={onSubmit} />
         </View>
       </AppScreen>
       <AppLoadingModal isLoading={isLoading} title="Logging you in..." />
@@ -157,7 +215,8 @@ const LoginScreen = (): React.ReactNode => {
 
 export const loginScreenStyles = StyleSheet.create({
   buttonContainer: {
-    marginVertical: Size.calcHeight(15),
+    paddingTop: Size.calcHeight(15),
+    paddingBottom: Size.calcHeight(40),
   },
 
   container: {

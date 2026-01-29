@@ -12,5 +12,6 @@ export const OnboardingStatusData = {
   PinSetup: 5,
   Completed: 6,
 } as const;
+
 export type OnboardingStatusType =
   (typeof OnboardingStatusData)[keyof typeof OnboardingStatusData];

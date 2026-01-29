@@ -14,7 +14,7 @@ import AppText from '../AppText';
 interface Props {
   title: string;
   onPress: () => void;
-  isLoading: boolean;
+  isLoading?: boolean;
   style?: StyleProp<ViewStyle>;
   variant?:
     | 'PRIMARY'

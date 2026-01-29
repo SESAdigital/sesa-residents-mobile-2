@@ -25,3 +25,9 @@ export const formatNumberInput = (
 
   return String(inputValue).replace(/[^0-9]/g, ''); // Remove non-numeric characters
 };
+
+// TODO DELETE
+
+export const printConsole = (data: any) => {
+  console.log(JSON.stringify(data, null, undefined));
+};

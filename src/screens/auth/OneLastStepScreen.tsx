@@ -41,7 +41,7 @@ const OneLastStepScreen = (): React.ReactNode => {
   useGetCurrentLocation();
 
   return (
-    <AppScreen style={{ backgroundColor: colors.WHITE_200 }}>
+    <AppScreen showDownInset style={{ backgroundColor: colors.WHITE_200 }}>
       <AppText style={styles.title}>One last step</AppText>
       <AppText style={styles.subTitle}>
         We require that you set up a 4-digit wallet PIN. This PIN will be used
@@ -61,7 +61,7 @@ const OneLastStepScreen = (): React.ReactNode => {
         <SubmitButton
           title="Set up wallet PIN"
           isLoading={false}
-          onPress={() => navigation.navigate(routes.SETUP_PASSWORD_SCREEN)}
+          onPress={() => navigation.navigate(routes.SET_UP_WALLET_PIN_SCREEN)}
         />
       </View>
     </AppScreen>

@@ -1,5 +1,6 @@
 import {
   createStaticNavigation,
+  RouteProp,
   StaticParamList,
   useNavigation,
 } from '@react-navigation/native';
@@ -18,10 +19,13 @@ import SetupPasswordScreen from '@src/screens/auth/SetupPasswordScreen';
 import { useAuthStore } from '@src/stores/auth.store';
 import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
+import SetupWalletPinScreen from '@src/screens/auth/SetupWalletPinScreen';
+import NewDeviceScreen from '@src/screens/auth/NewDeviceScreen';
+import { PatchSetupPasswordReq } from '@src/api/auth.api';
 
 function useIsSignedIn() {
-  const { loginResponse } = useAuthStore();
-  return !loginResponse?.data?.token;
+  const { loginResponse, isDoneOnboarding } = useAuthStore();
+  return !!loginResponse?.data?.token && !!isDoneOnboarding;
 }
 
 function useIsSignedOut() {
@@ -33,8 +37,10 @@ export type AppNavigatorParams = {
   [routes.RETRIEVE_ACCOUNT_SCREEN]: undefined;
   [routes.CHECK_YOUR_MAIL_SCREEN]: undefined;
   [routes.LOGIN_SCREEN]: undefined;
-  [routes.SETUP_PASSWORD_SCREEN]: undefined;
+  [routes.SETUP_PASSWORD_SCREEN]: PatchSetupPasswordReq;
   [routes.ONE_LAST_STEP_SCREEN]: undefined;
+  [routes.SET_UP_WALLET_PIN_SCREEN]: undefined;
+  [routes.NEW_DEVICE_SCREEN]: undefined;
 };
 
 export type AppParamsNavigator = NativeStackNavigationProp<AppNavigatorParams>;
@@ -60,6 +66,8 @@ const RootStack = createNativeStackNavigator({
         [routes.RETRIEVE_ACCOUNT_SCREEN]: RetrieveAccountScreen,
         [routes.CHECK_YOUR_MAIL_SCREEN]: CheckYourMailScreen,
         [routes.SETUP_PASSWORD_SCREEN]: SetupPasswordScreen,
+        [routes.SET_UP_WALLET_PIN_SCREEN]: SetupWalletPinScreen,
+        [routes.NEW_DEVICE_SCREEN]: NewDeviceScreen,
         [routes.ONE_LAST_STEP_SCREEN]: OneLastStepScreen,
       },
     },
@@ -88,3 +96,8 @@ declare global {
 //   AppNavigatorParams,
 //   'PATROL_REPORT_DETAILS_SCREEN'
 // >;
+
+export type SetupPasswordScreenProps = RouteProp<
+  AppNavigatorParams,
+  'SETUP_PASSWORD_SCREEN'
+>;

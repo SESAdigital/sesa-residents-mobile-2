@@ -10,7 +10,6 @@ import {
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useGetCurrentLocation } from '@src/hooks/useCurrentLocation';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import Size from '@src/utils/useResponsiveSize';
@@ -38,7 +37,6 @@ const data = [
 
 const OneLastStepScreen = (): React.ReactNode => {
   const navigation = useAppNavigator();
-  useGetCurrentLocation();
 
   return (
     <AppScreen showDownInset style={{ backgroundColor: colors.WHITE_200 }}>

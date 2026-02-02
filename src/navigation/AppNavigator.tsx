@@ -9,7 +9,7 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 
-import CheckYourMailScreen from '@src/screens/auth/CheckYourMailScreen';
+import PreLoginSuccessScreen from '@src/screens/auth/PreLoginSuccessScreen';
 import LoginScreen from '@src/screens/auth/LoginScreen';
 import OnboardingScreen1 from '@src/screens/auth/OnboardingScreen1';
 import OnboardingScreen2 from '@src/screens/auth/OnboardingScreen2';
@@ -22,6 +22,10 @@ import routes from './routes';
 import SetupWalletPinScreen from '@src/screens/auth/SetupWalletPinScreen';
 import NewDeviceScreen from '@src/screens/auth/NewDeviceScreen';
 import { PatchSetupPasswordReq } from '@src/api/auth.api';
+import ForgotPasswordScreen, {
+  ForgotPasswordScreenParam,
+} from '@src/screens/auth/ForgotPasswordScreen';
+import NewDeviceVerificationScreen from '@src/screens/auth/NewDeviceVerificationScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -35,12 +39,14 @@ export type AppNavigatorParams = {
   [routes.ONBOARDING_SCREEN_1]: undefined;
   [routes.ONBOARDING_SCREEN_2]: undefined;
   [routes.RETRIEVE_ACCOUNT_SCREEN]: undefined;
-  [routes.CHECK_YOUR_MAIL_SCREEN]: undefined;
+  [routes.PRE_LOGIN_SUCCESS_SCREEN]: undefined;
   [routes.LOGIN_SCREEN]: undefined;
   [routes.SETUP_PASSWORD_SCREEN]: PatchSetupPasswordReq;
   [routes.ONE_LAST_STEP_SCREEN]: undefined;
   [routes.SET_UP_WALLET_PIN_SCREEN]: undefined;
   [routes.NEW_DEVICE_SCREEN]: undefined;
+  [routes.NEW_DEVICE_VERIFICATION_SCREEN]: undefined;
+  [routes.FORGOT_PASSWORD_SCREEN]: ForgotPasswordScreenParam;
 };
 
 export type AppParamsNavigator = NativeStackNavigationProp<AppNavigatorParams>;
@@ -64,11 +70,13 @@ const RootStack = createNativeStackNavigator({
         [routes.ONBOARDING_SCREEN_2]: OnboardingScreen2,
         [routes.LOGIN_SCREEN]: LoginScreen,
         [routes.RETRIEVE_ACCOUNT_SCREEN]: RetrieveAccountScreen,
-        [routes.CHECK_YOUR_MAIL_SCREEN]: CheckYourMailScreen,
+        [routes.PRE_LOGIN_SUCCESS_SCREEN]: PreLoginSuccessScreen,
         [routes.SETUP_PASSWORD_SCREEN]: SetupPasswordScreen,
         [routes.SET_UP_WALLET_PIN_SCREEN]: SetupWalletPinScreen,
         [routes.NEW_DEVICE_SCREEN]: NewDeviceScreen,
+        [routes.NEW_DEVICE_VERIFICATION_SCREEN]: NewDeviceVerificationScreen,
         [routes.ONE_LAST_STEP_SCREEN]: OneLastStepScreen,
+        [routes.FORGOT_PASSWORD_SCREEN]: ForgotPasswordScreen,
       },
     },
 
@@ -100,4 +108,9 @@ declare global {
 export type SetupPasswordScreenProps = RouteProp<
   AppNavigatorParams,
   'SETUP_PASSWORD_SCREEN'
+>;
+
+export type ForgotPasswordScreenProps = RouteProp<
+  AppNavigatorParams,
+  'FORGOT_PASSWORD_SCREEN'
 >;

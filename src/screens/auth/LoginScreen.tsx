@@ -56,7 +56,7 @@ const LoginScreen = (): React.ReactNode => {
   const postLoginAPI = useMutation({ mutationFn: postLogin });
   const queryClient = useQueryClient();
   const navigation = useAppNavigator();
-  const { handleSubmit, reset, control } = useForm<LoginSchema>({
+  const { handleSubmit, reset, control, getValues } = useForm<LoginSchema>({
     resolver: joiResolver(schema),
   });
   const { setLoginResponse, setIsDoneOnboarding } = useAuthStore();
@@ -91,13 +91,6 @@ const LoginScreen = (): React.ReactNode => {
 
     const result = response?.data;
 
-    console.log(result);
-    console.log(result?.data);
-    console.log(result?.data?.onboardingStatus);
-    console.log(
-      result?.data?.onboardingStatus === OnboardingStatusData.NewDevice,
-    );
-
     if (response?.ok && !!result) {
       queryClient.invalidateQueries();
 
@@ -130,6 +123,7 @@ const LoginScreen = (): React.ReactNode => {
       } else if (
         result?.data?.onboardingStatus === OnboardingStatusData.NewDevice
       ) {
+        setLoginResponse(result);
         navigation.navigate(routes.NEW_DEVICE_SCREEN);
         appToast.Success(
           response?.data?.message ?? 'Please verify your new device',
@@ -146,6 +140,15 @@ const LoginScreen = (): React.ReactNode => {
 
     return;
   });
+
+  const handleForgotPassword = () => {
+    const { email, phoneNumber } = getValues();
+    console.log({ email, phoneNumber });
+    navigation.navigate(routes.FORGOT_PASSWORD_SCREEN, {
+      email: email?.trim()?.toLowerCase(),
+      phoneNumber: phoneNumber?.trim(),
+    });
+  };
 
   return (
     <AppKeyboardAvoidingView
@@ -199,7 +202,10 @@ const LoginScreen = (): React.ReactNode => {
               />
             }
           />
-          <TouchableOpacity style={loginScreenStyles.forgotPasswordContainer}>
+          <TouchableOpacity
+            onPress={handleForgotPassword}
+            style={loginScreenStyles.forgotPasswordContainer}
+          >
             <AppText style={loginScreenStyles.forgotPasswordText}>
               Forgot your password?
             </AppText>

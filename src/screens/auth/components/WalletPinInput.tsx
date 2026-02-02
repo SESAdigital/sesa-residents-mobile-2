@@ -1,21 +1,16 @@
-import { StyleSheet, TouchableOpacity, Vibration, View } from 'react-native';
+import {
+  StyleSheet,
+  TextStyle,
+  TouchableOpacity,
+  Vibration,
+  View,
+} from 'react-native';
 
 import AppText from '@src/components/AppText';
 import { MaterialSymbolsBackspace } from '@src/components/icons';
 import colors from '@src/configs/colors';
-import Size from '@src/utils/useResponsiveSize';
 import fonts from '@src/configs/fonts';
-import appConfig from '@src/utils/appConfig';
-
-interface Props {
-  pin: string;
-  onPinChange: (pin: string) => void;
-  title: string;
-  subtitle: string;
-  onDone: (val: string) => void;
-}
-
-const PIN_LENGTH = appConfig?.APP_PIN_LENGTH;
+import Size from '@src/utils/useResponsiveSize';
 
 type PadValue = number | 'DELETE' | null;
 interface PadDetail {
@@ -55,8 +50,30 @@ const padNumbers: PadDetail[][] = [
   ],
 ];
 
+interface Props {
+  pin: string;
+  onPinChange: (pin: string) => void;
+  title: string;
+  subtitle: string;
+  onDone: (val: string) => void;
+  pinLength: number;
+  titleStyles?: TextStyle;
+  showValues?: boolean;
+  subtitleStyles?: TextStyle;
+}
+
 const WalletPinInput = (props: Props): React.ReactNode => {
-  const { pin, onPinChange, title, onDone, subtitle } = props;
+  const {
+    pin,
+    onPinChange,
+    title,
+    onDone,
+    subtitle,
+    pinLength,
+    subtitleStyles,
+    titleStyles,
+    showValues,
+  } = props;
 
   const handleKeyPress = (val: PadValue) => {
     if (val == null) return;
@@ -68,23 +85,33 @@ const WalletPinInput = (props: Props): React.ReactNode => {
       return;
     }
 
-    if (pin?.length < PIN_LENGTH) {
+    if (pin?.length < pinLength) {
       const mutatedVal = pin + val;
       onPinChange(mutatedVal);
-      if (pin?.length > PIN_LENGTH - 2) onDone(mutatedVal);
+      if (pin?.length > pinLength - 2) onDone(mutatedVal);
     }
   };
 
   return (
     <>
-      <AppText style={styles.title}>{title}</AppText>
-      <AppText style={{ textAlign: 'center' }}>{subtitle}</AppText>
+      <AppText style={[styles.title, titleStyles]}>{title}</AppText>
+      <AppText style={[styles.subtitle, subtitleStyles]}>{subtitle}</AppText>
 
       <View style={styles.indicatorLayout}>
-        {[...Array(PIN_LENGTH)]?.map((_, idx) => (
-          <View key={idx} style={styles.indicatorContainer}>
+        {[...Array(pinLength)]?.map((_, idx) => (
+          <View
+            key={idx}
+            style={[
+              styles.indicatorContainer,
+              { width: `${getChildWidth(pinLength)}%` },
+            ]}
+          >
             {!!pin && pin?.length > idx ? (
-              <View style={styles.indicator} />
+              showValues ? (
+                <AppText style={styles.indicatorText}>{pin?.[idx]}</AppText>
+              ) : (
+                <View style={styles.indicator} />
+              )
             ) : null}
           </View>
         ))}
@@ -113,12 +140,12 @@ const styles = StyleSheet.create({
   indicator: {
     height: Size.calcAverage(13),
     aspectRatio: 1 / 1,
+    marginLeft: Size.calcWidth(-2),
     backgroundColor: colors.BLACK_100,
     borderRadius: Size.calcAverage(13),
   },
 
   indicatorContainer: {
-    width: '21%',
     aspectRatio: 1 / 1,
     borderBottomWidth: Size.calcHeight(1),
     borderBottomColor: colors.GRAY_200,
@@ -131,6 +158,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: Size.calcAverage(21),
+  },
+
+  indicatorText: {
+    fontFamily: fonts.INTER_600,
+    fontSize: Size.calcAverage(24),
   },
 
   keypad: {
@@ -160,13 +192,29 @@ const styles = StyleSheet.create({
     fontSize: Size.calcAverage(28),
   },
 
+  subtitle: {
+    paddingHorizontal: Size.calcWidth(21),
+    textAlign: 'center',
+  },
+
   title: {
     textAlign: 'center',
     fontFamily: fonts.INTER_600,
     fontSize: Size.calcAverage(24),
     paddingTop: Size.calcHeight(50),
     paddingBottom: Size.calcHeight(12),
+    paddingHorizontal: Size.calcWidth(21),
   },
 });
 
 export default WalletPinInput;
+
+const BASE_CHILDREN = 4;
+const BASE_WIDTH = 21;
+
+function getChildWidth(childrenCount: number): number {
+  if (childrenCount <= 0) return BASE_WIDTH;
+
+  const totalWidth = BASE_CHILDREN * BASE_WIDTH;
+  return totalWidth / childrenCount;
+}

@@ -1,12 +1,11 @@
 import { joiResolver } from '@hookform/resolvers/joi';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import Joi from 'joi';
 import { Activity, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
-import { getDeviceId } from 'react-native-device-info';
 
-import { postLogin } from '@src/api/auth.api';
+import { postPreLogin, PreLoginReq } from '@src/api/auth.api';
 import { LoginModeData, LoginModeType } from '@src/api/constants/default';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
@@ -15,39 +14,28 @@ import AppTextInput from '@src/components/forms/AppTextInput';
 import SubmitButton from '@src/components/forms/SubmitButton';
 import { RiInformationFill } from '@src/components/icons';
 import colors from '@src/configs/colors';
-import { useGetCurrentLocation } from '@src/hooks/useCurrentLocation';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
-import { useAuthStore } from '@src/stores/auth.store';
 import { appToast } from '@src/utils/appToast';
+import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
 import LoginModeToggle from './components/LoginModeToggle';
 import { loginScreenStyles } from './LoginScreen';
-import { handleToastApiError } from '@src/utils/handleErrors';
 
-export interface LoginSchema {
-  email?: string;
-  phoneNumber?: string;
-  password: string;
-}
-
-const schema = Joi.object<LoginSchema>({
-  email: joiSchemas.email,
-  password: joiSchemas.password,
+const schema = Joi.object<PreLoginReq>({
+  email: joiSchemas.email.optional().allow(''),
+  phoneNumber: joiSchemas.phone.optional().allow(''),
 });
 
 const RetrieveAccountScreen = (): React.ReactNode => {
   const [selectedMode, setSelectedMode] = useState<LoginModeType>(
     LoginModeData.EmailAddress,
   );
-  const location = useGetCurrentLocation();
-  const postLoginAPI = useMutation({ mutationFn: postLogin });
-  const queryClient = useQueryClient();
+  const postPreLoginAPI = useMutation({ mutationFn: postPreLogin });
 
-  const { handleSubmit, reset, control } = useForm<LoginSchema>({
+  const { handleSubmit, control } = useForm<PreLoginReq>({
     resolver: joiResolver(schema),
   });
-  const { setLoginResponse } = useAuthStore();
 
   const isEmailLogin = selectedMode === LoginModeData.EmailAddress;
 
@@ -56,28 +44,21 @@ const RetrieveAccountScreen = (): React.ReactNode => {
 
     const email = data?.email?.trim()?.toLowerCase();
     const phoneNumber = data?.phoneNumber?.trim()?.toLowerCase();
-    const password = data?.password?.trim();
 
     if (isEmailLogin && !email)
       return appToast.Info('Please enter an email address');
     if (!isEmailLogin && !phoneNumber)
       return appToast.Info('Please enter a phone number');
 
-    const response = await postLoginAPI.mutateAsync({
-      deviceId: getDeviceId(),
-      latitude: location?.latitude?.toString() || '',
-      longitude: location?.longitude?.toString() || '',
+    const response = await postPreLoginAPI.mutateAsync({
       loginMode: selectedMode,
-      password,
-      pushNotificationToken: '',
       ...(isEmailLogin ? { email } : { phoneNumber }),
     });
 
     if (response?.ok && response?.data) {
-      appToast.Success(response?.data?.message ?? 'Login successfully.');
-      setLoginResponse(response?.data);
-      reset();
-      queryClient.invalidateQueries();
+      appToast.Success(
+        response?.data?.message ?? 'Retrieve account successfully.',
+      );
     } else {
       handleToastApiError(response);
     }
@@ -85,14 +66,14 @@ const RetrieveAccountScreen = (): React.ReactNode => {
     return;
   });
 
-  const isLoading = postLoginAPI?.isPending;
+  const isLoading = postPreLoginAPI?.isPending;
 
   return (
     <AppKeyboardAvoidingView
       keyboardVerticalOffset={-Size.calcHeight(50)}
       style={{ flex: 1 }}
     >
-      <AppScreen style={loginScreenStyles.container}>
+      <AppScreen showDownInset style={loginScreenStyles.container}>
         <AppText style={loginScreenStyles.title}>Welcome to SESA</AppText>
         <AppText style={loginScreenStyles.subTitle}>
           To get started, enter your associated email address or phone number.

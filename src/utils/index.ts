@@ -31,3 +31,23 @@ export const formatNumberInput = (
 export const printConsole = (data: any) => {
   console.log(JSON.stringify(data, null, undefined));
 };
+
+export function maskEmail(email: string): string {
+  if (!email) return '';
+  const [username, domain] = email?.split('@');
+
+  if (!username || !domain) {
+    return email; // invalid email, return as-is
+  }
+
+  if (username.length <= 2) {
+    return `${username[0]}*@${domain}`;
+  }
+
+  const maskedUsername =
+    username[0] +
+    '*'.repeat(username.length - 2) +
+    username[username.length - 1];
+
+  return `${maskedUsername}@${domain}`;
+}

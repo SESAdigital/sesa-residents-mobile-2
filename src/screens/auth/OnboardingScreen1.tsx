@@ -31,8 +31,7 @@ const OnboardingScreen1 = (): React.ReactNode => {
         <SubmitButton
           title="Get Started"
           isLoading={false}
-          // onPress={() => navigation.navigate(routes.ONBOARDING_SCREEN_2)}
-          onPress={() => navigation.navigate(routes.SET_UP_WALLET_PIN_SCREEN)}
+          onPress={() => navigation.navigate(routes.ONBOARDING_SCREEN_2)}
         />
       </View>
     </View>

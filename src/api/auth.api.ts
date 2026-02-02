@@ -9,7 +9,7 @@ export const postPreLogin = (data: PreLoginReq) =>
 export const postLogin = (data: PostLoginReq) =>
   baseApi.post<PostLoginRes>('/Auth/Login', data);
 
-export const postForgotPassword = (data: PostLoginReq) =>
+export const postForgotPassword = (data: PreLoginReq) =>
   baseApi.post<PostLoginRes>('/Auth/ForgotPassword', data);
 
 export const patchSetupPassword = (data: PatchSetupPasswordReq) =>
@@ -23,11 +23,11 @@ export const patchSetupPin = (data: PatchSetupPin) =>
   baseApi.patch<GenericApiResponse>('/Account/SetupPin', data);
 
 export const postResendNewDeviceEmail = () =>
-  baseApi.post<GenericApiResponse>('/Account/ResendNewDeviceEmail');
+  baseApi.post<GenericApiResponse>('/Account/ResendNewDeviceEmail', {});
 
 export const patchValidateNewDeviceCode = (
   data: PatchValidateNewDeviceCodeReq,
-) => baseApi.patch<GenericApiResponse>('/Account/ValidateNewDevice', data);
+) => baseApi.patch<GenericApiResponse>('/Account/ValidateNewDeviceCode', data);
 
 // ACCOUNT API ENDS HERE
 

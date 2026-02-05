@@ -23,7 +23,7 @@ const QuickActionAndAdsSection = (): React.ReactNode => {
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          {quickActions.map(({ Icon, title, bgColor, color }, index) => (
+          {quickActions?.map(({ Icon, title, bgColor, color }, index) => (
             <View key={index} style={{ paddingHorizontal: Size.calcWidth(14) }}>
               <TouchableOpacity style={styles.actionButton}>
                 <View

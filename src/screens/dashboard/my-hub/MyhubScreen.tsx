@@ -1,21 +1,15 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { myHubData } from '@src/assets/data';
+import { useAllHubItems } from '@src/assets/data';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useAppNavigator } from '@src/navigation/AppNavigator';
 import Size from '@src/utils/useResponsiveSize';
 import HomeHeaderSection from '../home/components/HomeHeaderSection';
 
 const MyhubScreen = (): React.ReactNode => {
-  const navigation = useAppNavigator();
-
-  const handleAction = (route: string | null) => {
-    if (!route) return;
-    navigation.navigate(route as any);
-  };
+  const { myHubData } = useAllHubItems();
 
   return (
     <AppScreen scrollable style={myHubStyles.container}>
@@ -27,7 +21,7 @@ const MyhubScreen = (): React.ReactNode => {
             {section.sections.map((row, index) => (
               <View style={myHubStyles.row} key={index}>
                 {row?.map((item, key) => {
-                  const { Icon, bgColor, color, title, route } = item;
+                  const { Icon, bgColor, color, title, onPress } = item;
                   const { alignItems, textAlign } = getItemAlignment(
                     key,
                     row?.length,
@@ -37,7 +31,7 @@ const MyhubScreen = (): React.ReactNode => {
                     return <View style={myHubStyles.itemContainer} key={key} />;
                   return (
                     <TouchableOpacity
-                      onPress={() => handleAction(route)}
+                      onPress={onPress}
                       style={[myHubStyles.itemContainer, { alignItems }]}
                       key={key}
                     >

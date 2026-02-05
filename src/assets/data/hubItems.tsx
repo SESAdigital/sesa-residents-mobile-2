@@ -1,4 +1,5 @@
 import { JSX } from 'react';
+import { View } from 'react-native';
 import { SvgProps } from 'react-native-svg';
 
 import AppText from '@src/components/AppText';
@@ -18,19 +19,19 @@ import {
 import { EmptyIcon } from '@src/components/icons/custom';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import Size from '@src/utils/useResponsiveSize';
-import { View } from 'react-native';
 import routes from '@src/navigation/routes';
+import Size from '@src/utils/useResponsiveSize';
 
-interface HubItem {
+export interface HubItem {
   Icon: (props: SvgProps) => JSX.Element;
-  title: string | JSX.Element;
+  title: ComingSoonTypes | JSX.Element;
   color: string;
   bgColor: string;
   route: string | null;
+  onPress?: () => void;
 }
 
-enum HubItemEnum {
+export enum HubItemEnum {
   PANIC_ALERT = 0,
   BOOK_VISITOR,
   CREATE_EVENTS,
@@ -45,7 +46,21 @@ enum HubItemEnum {
   SESA_HOMES,
 }
 
-const allHubItems: HubItem[] = [
+export type ComingSoonTypes =
+  | 'Panic Alert'
+  | 'Book Visitor'
+  | 'Create Events'
+  | 'Group Access'
+  | 'Bills & Collections'
+  | 'Buy Power'
+  | 'Hire Artisan'
+  | 'Poll & Election'
+  | 'SESA Mall'
+  | 'Insurance'
+  | 'SESA Homes'
+  | null;
+
+export const allHubItems: HubItem[] = [
   {
     Icon: MaterialSymbolsSos,
     title: 'Panic Alert',
@@ -117,7 +132,7 @@ const allHubItems: HubItem[] = [
   },
   {
     Icon: EmptyIcon,
-    title: '',
+    title: null,
     bgColor: colors.BLUE_900,
     color: colors.BLACK_200,
     route: null,
@@ -145,48 +160,9 @@ const allHubItems: HubItem[] = [
   },
 ];
 
-export const quickActions: HubItem[] = allHubItems.slice(0, 4);
-
-interface HubData {
-  title: string;
-  sections: HubItem[][];
-}
-
-export const myHubData: HubData[] = [
-  {
-    title: 'General',
-    sections: [
-      [
-        allHubItems[HubItemEnum.BOOK_VISITOR],
-        allHubItems[HubItemEnum.CREATE_EVENTS],
-        allHubItems[HubItemEnum.GROUP_ACCESS],
-      ],
-      [
-        allHubItems[HubItemEnum.BILLS_AND_COLLECTIONS],
-        allHubItems[HubItemEnum.BUY_POWER],
-        allHubItems[HubItemEnum.EMPTY_ITEM],
-      ],
-    ],
-  },
-
-  {
-    title: 'Others',
-    sections: [
-      [
-        allHubItems[HubItemEnum.PANIC_ALERT],
-        allHubItems[HubItemEnum.HIRE_ARTISAN],
-        allHubItems[HubItemEnum.POLL_AND_ELECTION],
-      ],
-    ],
-  },
-  {
-    title: 'Coming Soon',
-    sections: [
-      [
-        allHubItems[HubItemEnum.SESA_MALL],
-        allHubItems[HubItemEnum.INSURANCE],
-        allHubItems[HubItemEnum.SESA_HOMES],
-      ],
-    ],
-  },
+export const quickActions: HubItem[] = [
+  allHubItems[HubItemEnum.BOOK_VISITOR],
+  allHubItems[HubItemEnum.CREATE_EVENTS],
+  allHubItems[HubItemEnum.GROUP_ACCESS],
+  allHubItems[HubItemEnum.BILLS_AND_COLLECTIONS],
 ];

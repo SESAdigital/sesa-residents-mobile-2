@@ -26,6 +26,13 @@ import ForgotPasswordScreen, {
   ForgotPasswordScreenParam,
 } from '@src/screens/auth/ForgotPasswordScreen';
 import NewDeviceVerificationScreen from '@src/screens/auth/NewDeviceVerificationScreen';
+import BookVisitorScreen from '@src/screens/dashboard/my-hub/book-visitor/BookVisitorScreen';
+import CreateEventsScreen from '@src/screens/dashboard/my-hub/create-events/CreateEventsScreen';
+import GroupAccessScreen from '@src/screens/dashboard/my-hub/group-access/GroupAccessScreen';
+import BillsAndCollectionsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/BillsAndCollectionsScreen';
+import BuyPowerScreen from '@src/screens/dashboard/my-hub/buy-power/BuyPowerScreen';
+import HireArtisanScreen from '@src/screens/dashboard/my-hub/hire-artisan/HireArtisanScreen';
+import PanicAlertScreen from '@src/screens/dashboard/my-hub/panic-alert/PanicAlertScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -50,6 +57,8 @@ export type AppNavigatorParams = {
 };
 
 export type AppParamsNavigator = NativeStackNavigationProp<AppNavigatorParams>;
+
+export type AppNavigatorRoutes = keyof AppNavigatorParams;
 
 export const useAppNavigator = () => {
   return useNavigation<AppParamsNavigator>();
@@ -85,6 +94,13 @@ const RootStack = createNativeStackNavigator({
       screens: {
         // AUTH PAGES
         [routes.HOME_BOTTOM_TABS_NAVIGATOR]: HomeBottomTabsNavigator,
+        [routes.BOOK_VISITOR_SCREEN]: BookVisitorScreen,
+        [routes.CREATE_EVENTS_SCREEN]: CreateEventsScreen,
+        [routes.GROUP_ACCESS_SCREEN]: GroupAccessScreen,
+        [routes.BILLS_AND_COLLECTIONS_SCREEN]: BillsAndCollectionsScreen,
+        [routes.BUY_POWER_SCREEN]: BuyPowerScreen,
+        [routes.PANIC_ALERT_SCREEN]: PanicAlertScreen,
+        [routes.HIRE_ARTISAN_SCREEN]: HireArtisanScreen,
       },
     },
   },

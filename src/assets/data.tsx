@@ -20,6 +20,7 @@ import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import { View } from 'react-native';
+import routes from '@src/navigation/routes';
 
 interface HubItem {
   Icon: (props: SvgProps) => JSX.Element;
@@ -50,28 +51,28 @@ const allHubItems: HubItem[] = [
     title: 'Panic Alert',
     color: colors.RED_100,
     bgColor: colors.RED_300,
-    route: null,
+    route: routes.PANIC_ALERT_SCREEN,
   },
   {
     Icon: MaterialSymbolsGroupAdd,
     title: 'Book Visitor',
     color: colors.GREEN_100,
     bgColor: colors.GREEN_110,
-    route: null,
+    route: routes.BOOK_VISITOR_SCREEN,
   },
   {
     Icon: MaterialSymbolsCalendarAddOn,
     title: 'Create Events',
     bgColor: colors.YELLOW_500,
     color: colors.YELLOW_100,
-    route: null,
+    route: routes.CREATE_EVENTS_SCREEN,
   },
   {
     Icon: MaterialSymbolsGroups,
     title: 'Group Access',
     bgColor: colors.BLUE_900,
     color: colors.BLUE_600,
-    route: null,
+    route: routes.GROUP_ACCESS_SCREEN,
   },
   {
     Icon: MaterialSymbolsPayments,
@@ -91,21 +92,21 @@ const allHubItems: HubItem[] = [
     ),
     bgColor: colors.BLUE_900,
     color: colors.BLUE_200,
-    route: null,
+    route: routes.BILLS_AND_COLLECTIONS_SCREEN,
   },
   {
     Icon: MaterialSymbolsEmojiObjects,
     title: 'Buy Power',
     bgColor: colors.YELLOW_600,
     color: colors.YELLOW_300,
-    route: null,
+    route: routes.BUY_POWER_SCREEN,
   },
   {
     Icon: MaterialSymbolsHandyman,
     title: 'Hire Artisan',
     bgColor: colors.LIGHT_GRAY_200,
     color: colors.BLUE_110,
-    route: null,
+    route: routes.HIRE_ARTISAN_SCREEN,
   },
   {
     Icon: MaterialSymbolsHowToVote,

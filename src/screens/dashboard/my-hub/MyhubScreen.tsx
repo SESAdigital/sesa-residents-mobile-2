@@ -1,14 +1,22 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import AppScreen from '@src/components/AppScreen';
-import HomeHeaderSection from '../home/components/HomeHeaderSection';
 import { myHubData } from '@src/assets/data';
+import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
-import Size from '@src/utils/useResponsiveSize';
-import fonts from '@src/configs/fonts';
 import colors from '@src/configs/colors';
+import fonts from '@src/configs/fonts';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import Size from '@src/utils/useResponsiveSize';
+import HomeHeaderSection from '../home/components/HomeHeaderSection';
 
 const MyhubScreen = (): React.ReactNode => {
+  const navigation = useAppNavigator();
+
+  const handleAction = (route: string | null) => {
+    if (!route) return;
+    navigation.navigate(route as any);
+  };
+
   return (
     <AppScreen scrollable style={myHubStyles.container}>
       <HomeHeaderSection />
@@ -19,24 +27,17 @@ const MyhubScreen = (): React.ReactNode => {
             {section.sections.map((row, index) => (
               <View style={myHubStyles.row} key={index}>
                 {row?.map((item, key) => {
-                  const { Icon, bgColor, color, title } = item;
-                  const isFirst = key === 0;
-                  const isLast = key === row?.length - 1;
-                  const alignItems = isFirst
-                    ? 'flex-start'
-                    : isLast
-                    ? 'flex-end'
-                    : 'center';
-                  const textAlign = isFirst
-                    ? 'left'
-                    : isLast
-                    ? 'right'
-                    : 'center';
+                  const { Icon, bgColor, color, title, route } = item;
+                  const { alignItems, textAlign } = getItemAlignment(
+                    key,
+                    row?.length,
+                  );
 
                   if (!title)
                     return <View style={myHubStyles.itemContainer} key={key} />;
                   return (
-                    <View
+                    <TouchableOpacity
+                      onPress={() => handleAction(route)}
                       style={[myHubStyles.itemContainer, { alignItems }]}
                       key={key}
                     >
@@ -55,7 +56,7 @@ const MyhubScreen = (): React.ReactNode => {
                       <AppText style={[myHubStyles.itemTitle, { textAlign }]}>
                         {title}
                       </AppText>
-                    </View>
+                    </TouchableOpacity>
                   );
                 })}
               </View>
@@ -114,3 +115,21 @@ const myHubStyles = StyleSheet.create({
 });
 
 export default MyhubScreen;
+
+function getItemAlignment(index: number, length: number) {
+  const isFirst = index === 0;
+  const isLast = index === length - 1;
+
+  const alignItems: 'flex-start' | 'flex-end' | 'center' = isFirst
+    ? 'flex-start'
+    : isLast
+    ? 'flex-end'
+    : 'center';
+  const textAlign: 'left' | 'right' | 'center' = isFirst
+    ? 'left'
+    : isLast
+    ? 'right'
+    : 'center';
+
+  return { alignItems, textAlign };
+}

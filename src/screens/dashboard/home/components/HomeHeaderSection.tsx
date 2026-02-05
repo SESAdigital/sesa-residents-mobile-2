@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import AppAvatar from '@src/components/AppAvatar';
@@ -11,22 +12,46 @@ import fonts from '@src/configs/fonts';
 import { useAuthStore } from '@src/stores/auth.store';
 import Size from '@src/utils/useResponsiveSize';
 import BillReminderBanner from './BillReminderBanner';
+import { useGetProperties, useGetUserDetails } from '@src/hooks/useGetRequests';
+import PropertyListModal from '@src/modals/PropertyListModal';
 
 const HomeHeaderSection = (): React.ReactNode => {
-  const { logout } = useAuthStore();
+  const { logout, selectedProperty, loginResponse } = useAuthStore();
+  const [isPropertiesVisible, setIsPropertiesVisible] = useState(false);
   const handleAddMoney = () => {
     logout();
   };
+
+  useEffect(() => {
+    console.log(selectedProperty);
+    console.log(loginResponse?.data?.token);
+  }, []);
+
+  const { data: a } = useGetProperties();
+  console.log({ a });
+
+  const { details } = useGetUserDetails();
 
   return (
     <>
       <View style={styles.headerContainer}>
         <View>
-          <AppText style={styles.greeting}>Hello, Akachi 👋</AppText>
+          <AppText style={styles.greeting}>
+            Hello, {details?.firstName} 👋
+          </AppText>
           <View style={styles.row}>
-            <AppText style={styles.address}>6:16, Wesley Close,Frie...</AppText>
+            <AppText style={styles.address}>
+              {selectedProperty?.propertyName}
+            </AppText>
             <View style={styles.divider} />
-            <TouchableOpacity style={styles.row}>
+            <PropertyListModal
+              onClose={() => setIsPropertiesVisible(false)}
+              visible={isPropertiesVisible}
+            />
+            <TouchableOpacity
+              onPress={() => setIsPropertiesVisible(true)}
+              style={styles.row}
+            >
               <AppText style={styles.switchPropertyText}>
                 Switch Property
               </AppText>
@@ -38,7 +63,11 @@ const HomeHeaderSection = (): React.ReactNode => {
             </TouchableOpacity>
           </View>
         </View>
-        <AppAvatar />
+        <AppAvatar
+          firstWord={details?.firstName}
+          imageURL={details?.photo}
+          lastWord={details?.lastName}
+        />
       </View>
       <BillReminderBanner />
       <View style={styles.walletContainer}>

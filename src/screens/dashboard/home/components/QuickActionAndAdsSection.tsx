@@ -1,44 +1,12 @@
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import SampleAdImage from '@src/assets/images/sample-ad.png';
 import AppImage from '@src/components/AppImage';
 import AppText from '@src/components/AppText';
-import SampleAdImage from '@src/assets/images/sample-ad.png';
-import Size from '@src/utils/useResponsiveSize';
-import fonts from '@src/configs/fonts';
 import colors from '@src/configs/colors';
-import {
-  MaterialSymbolsCalendarAddOn,
-  MaterialSymbolsGroupAdd,
-  MaterialSymbolsGroups,
-  MaterialSymbolsSos,
-} from '@src/components/icons';
-
-const actions = [
-  {
-    Icon: MaterialSymbolsSos,
-    title: 'Panic Alert',
-    color: colors.RED_100,
-    bgColor: colors.RED_300,
-  },
-  {
-    Icon: MaterialSymbolsGroupAdd,
-    title: 'Book Visitor',
-    color: colors.GREEN_100,
-    bgColor: colors.GREEN_110,
-  },
-  {
-    Icon: MaterialSymbolsCalendarAddOn,
-    title: 'Create Events',
-    bgColor: colors.YELLOW_500,
-    color: colors.YELLOW_100,
-  },
-  {
-    Icon: MaterialSymbolsGroups,
-    title: 'Group Access',
-    bgColor: colors.BLUE_900,
-    color: colors.BLUE_600,
-  },
-];
+import fonts from '@src/configs/fonts';
+import Size from '@src/utils/useResponsiveSize';
+import { quickActions } from '@src/assets/data';
 
 const QuickActionAndAdsSection = (): React.ReactNode => {
   return (
@@ -55,7 +23,7 @@ const QuickActionAndAdsSection = (): React.ReactNode => {
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          {actions.map(({ Icon, title, bgColor, color }, index) => (
+          {quickActions.map(({ Icon, title, bgColor, color }, index) => (
             <View key={index} style={{ paddingHorizontal: Size.calcWidth(14) }}>
               <TouchableOpacity style={styles.actionButton}>
                 <View

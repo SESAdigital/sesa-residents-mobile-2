@@ -60,20 +60,6 @@ export const Eye2Line = (props: SvgProps) => (
   </Svg>
 );
 
-export function MaterialSymbolsHome(props: SvgProps) {
-  return (
-    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
-      <Path fill="currentColor" d="M4 21V9l8-6l8 6v12h-6v-7h-4v7z" />
-    </Svg>
-  );
-}
-
-// export function MaterialSymbolsHomeOutline(props) {
-//  return (
-//     <Svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">{/* Icon from Material Symbols by Google - https://github.com/google/material-design-icons/blob/master/LICENSE */}<Path fill="currentColor" d="M6 19h3v-6h6v6h3v-9l-6-4.5L6 10zm-2 2V9l8-6l8 6v12h-7v-6h-2v6zm8-8.75" /></Svg>
-//  )
-// }
-
 export function MaterialSymbolsMail(props: SvgProps) {
   return (
     <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
@@ -118,12 +104,173 @@ export function MaterialSymbolsPayments(props: SvgProps) {
   );
 }
 
-export function MaterialSymbolsHomeOutline(props: SvgProps) {
+export function MaterialSymbolsEmojiObjects(props: SvgProps) {
   return (
     <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
       <Path
         fill="currentColor"
-        d="M6 19h3v-6h6v6h3v-9l-6-4.5L6 10zm-2 2V9l8-6l8 6v12h-7v-6h-2v6zm8-8.75"
+        d="M12 22q-.65 0-1.175-.312T10 20.85q-.825 0-1.412-.587T8 18.85V15.3q-1.475-.975-2.363-2.575T4.75 9.25q0-3.025 2.113-5.137T12 2t5.138 2.113T19.25 9.25q0 1.925-.888 3.5T16 15.3v3.55q0 .825-.587 1.413T14 20.85q-.3.525-.825.838T12 22m-2-3.15h4v-.9h-4zm0-1.9h4V16h-4zM12.75 14v-2.7l2.2-2.2l-1.05-1.05l-1.9 1.9l-1.9-1.9L9.05 9.1l2.2 2.2V14z"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsHandyman(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M18.85 21.975q-.2 0-.375-.062t-.325-.213l-5.1-5.1q-.15-.15-.213-.325t-.062-.375t.063-.375t.212-.325l2.125-2.125q.15-.15.325-.212t.375-.063t.375.063t.325.212l5.1 5.1q.15.15.213.325t.062.375t-.062.375t-.213.325L19.55 21.7q-.15.15-.325.213t-.375.062M5.125 22q-.2 0-.387-.075T4.4 21.7l-2.1-2.1q-.15-.15-.225-.338T2 18.876t.075-.375t.225-.325l5.3-5.3h2.125l.85-.85L6.45 7.9H5.025L2 4.875L4.825 2.05L7.85 5.075V6.5l4.125 4.125l2.9-2.9L13.8 6.65l1.4-1.4h-2.825l-.7-.7L15.225 1l.7.7v2.825l1.4-1.4l3.55 3.55q.425.425.65.963t.225 1.137t-.225 1.15t-.65.975L18.75 8.775l-1.4 1.4l-1.05-1.05l-5.175 5.175v2.1l-5.3 5.3q-.15.15-.325.225T5.125 22"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsHowToVote(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M5 22q-.825 0-1.412-.587T3 20v-4.55l2.75-3.125l1.425 1.425l-2 2.25h13.65l-1.95-2.2l1.425-1.425L21 15.45V20q0 .825-.587 1.413T19 22zm5.6-7.6l-3.475-3.525Q6.55 10.3 6.55 9.45t.575-1.425l4.9-4.9q.575-.575 1.425-.575t1.425.575L18.4 6.6q.575.575.588 1.412t-.563 1.413l-5 5q-.575.575-1.412.563T10.6 14.4M17 8l-3.55-3.5L8.5 9.45l3.55 3.5z"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsLocalMall(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M5 22q-.825 0-1.412-.587T3 20V8q0-.825.588-1.412T5 6h2q0-2.075 1.463-3.537T12 1t3.538 1.463T17 6h2q.825 0 1.413.588T21 8v12q0 .825-.587 1.413T19 22zm7-8q2.075 0 3.538-1.463T17 9h-2q0 1.25-.875 2.125T12 12t-2.125-.875T9 9H7q0 2.075 1.463 3.538T12 14M9 6h6q0-1.25-.875-2.125T12 3t-2.125.875T9 6"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsShieldWithHeart(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M12 16q2.55-2.3 3.275-3.238T16 10.9q0-.9-.65-1.55T13.8 8.7q-.525 0-1.013.212T12 9.5q-.3-.375-.775-.587T10.2 8.7q-.9 0-1.55.65T8 10.9q0 .475.125.875t.55.938t1.212 1.312T12 16m0 6q-3.475-.875-5.738-3.988T4 11.1V5l8-3l8 3v6.1q0 3.8-2.262 6.913T12 22"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsBed(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M2 19v-6q0-.675.275-1.225T3 10.8V8q0-1.25.875-2.125T6 5h4q.575 0 1.075.213T12 5.8q.425-.375.925-.587T14 5h4q1.25 0 2.125.875T21 8v2.8q.45.425.725.975T22 13v6h-2v-2H4v2zm11-9h6V8q0-.425-.288-.712T18 7h-4q-.425 0-.712.288T13 8zm-8 0h6V8q0-.425-.288-.712T10 7H6q-.425 0-.712.288T5 8z"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsHome(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path fill="currentColor" d="M4 21V9l8-6l8 6v12h-6v-7h-4v7z" />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsLightHomeOutline(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M6 19h3.692v-5.884h4.616V19H18v-9l-6-4.538L6 10zm-1 1V9.5l7-5.288L19 9.5V20h-5.692v-5.884h-2.616V20zm7-7.77"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsCalendarClock(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M5 22q-.825 0-1.412-.587T3 20V6q0-.825.588-1.412T5 4h1V2h2v2h8V2h2v2h1q.825 0 1.413.588T21 6v4.675q0 .425-.288.713t-.712.287t-.712-.288t-.288-.712V10H5v10h5.8q.425 0 .713.288T11.8 21t-.288.713T10.8 22zm13 1q-2.075 0-3.537-1.463T13 18t1.463-3.537T18 13t3.538 1.463T23 18t-1.463 3.538T18 23m1.675-2.625l.7-.7L18.5 17.8V15h-1v3.2z"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsLightCalendarClockOutline(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M5 9.615h14v-3q0-.23-.192-.423T18.384 6H5.616q-.231 0-.424.192T5 6.616zm0 0V6zM5.616 21q-.691 0-1.153-.462T4 19.385V6.615q0-.69.463-1.152T5.616 5h1.769V2.77h1.077V5h7.154V2.77h1V5h1.769q.69 0 1.153.463T20 6.616v5.251q-.244-.09-.494-.134T19 11.652v-1.036H5v8.769q0 .23.192.423t.423.192h6.704q.079.28.201.521q.122.24.255.479zm12.769 1q-1.671 0-2.836-1.164Q14.385 19.67 14.385 18t1.164-2.835T18.384 14t2.836 1.165T22.385 18t-1.165 2.836T18.385 22m1.655-1.798l.546-.546l-1.817-1.818v-2.722H18v3.046z"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsGridView(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M3 11V3h8v8zm0 10v-8h8v8zm10-10V3h8v8zm0 10v-8h8v8z"
+      />
+    </Svg>
+  );
+}
+export function MaterialSymbolsLightGridViewOutline(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M4 11V4h7v7zm0 9v-7h7v7zm9-9V4h7v7zm0 9v-7h7v7zM5 10h5V5H5zm9 0h5V5h-5zm0 9h5v-5h-5zm-9 0h5v-5H5zm5-9"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsNotifications(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M4 19v-2h2v-7q0-2.075 1.25-3.687T10.5 4.2v-.7q0-.625.438-1.062T12 2t1.063.438T13.5 3.5v.7q2 .5 3.25 2.113T18 10v7h2v2zm8 3q-.825 0-1.412-.587T10 20h4q0 .825-.587 1.413T12 22"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsLightNotificationsOutline(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M5 18.77v-1h1.616V9.845q0-1.96 1.24-3.447T11 4.546V4q0-.417.291-.708q.291-.292.707-.292t.709.292T13 4v.546q1.904.365 3.144 1.853t1.24 3.447v7.923H19v1zm6.997 2.615q-.668 0-1.14-.475t-.472-1.14h3.23q0 .67-.475 1.142q-.476.472-1.143.472M7.616 17.77h8.769V9.846q0-1.823-1.281-3.104T12 5.462t-3.104 1.28t-1.28 3.104z"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsAccountCircle(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M5.85 17.1q1.275-.975 2.85-1.537T12 15t3.3.563t2.85 1.537q.875-1.025 1.363-2.325T20 12q0-3.325-2.337-5.663T12 4T6.337 6.338T4 12q0 1.475.488 2.775T5.85 17.1M12 13q-1.475 0-2.488-1.012T8.5 9.5t1.013-2.488T12 6t2.488 1.013T15.5 9.5t-1.012 2.488T12 13m0 9q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsLightAccountCircleOutline(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M6.196 17.485q1.275-.918 2.706-1.451Q10.332 15.5 12 15.5t3.098.534t2.706 1.45q.99-1.025 1.593-2.42Q20 13.667 20 12q0-3.325-2.337-5.663T12 4T6.337 6.338T4 12q0 1.667.603 3.064q.603 1.396 1.593 2.42m5.805-4.984q-1.264 0-2.133-.868T9 9.501t.868-2.133T12 6.5t2.132.868T15 9.5t-.868 2.132t-2.131.868M12 21q-1.883 0-3.525-.701t-2.858-1.916t-1.916-2.858T3 12t.701-3.525t1.916-2.858q1.216-1.215 2.858-1.916T12 3t3.525.701t2.858 1.916t1.916 2.858T21 12t-.701 3.525t-1.916 2.858q-1.216 1.215-2.858 1.916T12 21m0-1q1.383 0 2.721-.484q1.338-.483 2.313-1.324q-.974-.783-2.255-1.237T12 16.5t-2.789.445t-2.246 1.247q.975.84 2.314 1.324T12 20m0-8.5q.842 0 1.421-.579T14 9.5t-.579-1.421T12 7.5t-1.421.579T10 9.5t.579 1.421T12 11.5m0 6.75"
       />
     </Svg>
   );

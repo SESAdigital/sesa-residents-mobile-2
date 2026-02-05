@@ -1,0 +1,70 @@
+import { useQuery } from '@tanstack/react-query';
+
+import queryKeys from '@src/api/constants/queryKeys';
+import { handleToastApiError } from '@src/utils/handleErrors';
+import { getAccountProfile } from '@src/api/auth.api';
+import { useAuthStore } from '@src/stores/auth.store';
+import { getDashboardProperties } from '@src/api/dashboard.api';
+
+export const useGetUserDetails = () => {
+  const { data: profileData } = useGetProfile();
+  const { loginResponse } = useAuthStore();
+  const loginData = loginResponse?.data;
+
+  const details = {
+    firstName: profileData?.name?.split(' ')?.[0] || loginData?.firstName,
+    lastName: profileData?.name?.split(' ')?.[1] || loginData?.lastName,
+    email: profileData?.email || loginData?.email,
+    photo: profileData?.photo || loginData?.photo,
+  } as const;
+
+  return {
+    details,
+    loginResponse,
+    profileData,
+  };
+};
+
+const useGetProfile = () => {
+  return useQuery({
+    queryKey: [queryKeys.GET_PROFILE],
+    queryFn: async () => {
+      const response = await getAccountProfile();
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+  });
+};
+
+export const useGetProperties = () => {
+  const { setSelectedProperty, selectedProperty } = useAuthStore();
+
+  return useQuery({
+    queryKey: ['getassssda'],
+    queryFn: async () => {
+      console.log('start-1');
+      const response = await getDashboardProperties();
+      console.log('start-2', response);
+      console.log(response?.data?.data);
+      if (response.ok) {
+        console.log('start-3', response);
+        const properties = response?.data?.data;
+        const currentProperty = properties?.find(
+          item => item?.id === selectedProperty?.id,
+        );
+        console.log(properties);
+        if (!currentProperty) {
+          setSelectedProperty(properties?.[0] || null);
+        }
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+  });
+};

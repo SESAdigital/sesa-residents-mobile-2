@@ -4,7 +4,18 @@ import {
 } from '@react-navigation/bottom-tabs';
 import { StaticParamList } from '@react-navigation/native';
 
-import { MaterialSymbolsHome } from '@src/components/icons/index';
+import {
+  MaterialSymbolsAccountCircle,
+  MaterialSymbolsCalendarClock,
+  MaterialSymbolsGridView,
+  MaterialSymbolsHome,
+  MaterialSymbolsLightAccountCircleOutline,
+  MaterialSymbolsLightCalendarClockOutline,
+  MaterialSymbolsLightGridViewOutline,
+  MaterialSymbolsLightHomeOutline,
+  MaterialSymbolsLightNotificationsOutline,
+  MaterialSymbolsNotifications,
+} from '@src/components/icons/index';
 import colors from '@src/configs/colors';
 import HomeScreen from '@src/screens/dashboard/home/HomeScreen';
 
@@ -14,7 +25,6 @@ import BookingsScreen from '@src/screens/dashboard/bookings/BookingsScreen';
 import MyhubScreen from '@src/screens/dashboard/my-hub/MyhubScreen';
 import Size from '@src/utils/useResponsiveSize';
 import routes from './routes';
-import { CustomScheduleLine } from '@src/components/icons/custom';
 
 const iconProps = {
   height: Size.calcAverage(23),
@@ -43,9 +53,15 @@ const HomeBottomTabsNavigator = createBottomTabNavigator({
       screen: HomeScreen,
       options: {
         title: 'Home',
-        tabBarIcon: ({ focused }) => (
-          <MaterialSymbolsHome {...iconProps} color={getColor(focused)} />
-        ),
+        tabBarIcon: ({ focused }) =>
+          focused ? (
+            <MaterialSymbolsHome {...iconProps} color={getColor(focused)} />
+          ) : (
+            <MaterialSymbolsLightHomeOutline
+              {...iconProps}
+              color={getColor(focused)}
+            />
+          ),
       },
     },
 
@@ -53,9 +69,18 @@ const HomeBottomTabsNavigator = createBottomTabNavigator({
       screen: BookingsScreen,
       options: {
         title: 'Bookings',
-        tabBarIcon: ({ focused }) => (
-          <CustomScheduleLine {...iconProps} color={getColor(focused)} />
-        ),
+        tabBarIcon: ({ focused }) =>
+          focused ? (
+            <MaterialSymbolsCalendarClock
+              {...iconProps}
+              color={getColor(focused)}
+            />
+          ) : (
+            <MaterialSymbolsLightCalendarClockOutline
+              {...iconProps}
+              color={getColor(focused)}
+            />
+          ),
       },
     },
 
@@ -63,27 +88,51 @@ const HomeBottomTabsNavigator = createBottomTabNavigator({
       screen: MyhubScreen,
       options: {
         title: 'My Hub',
-        tabBarIcon: ({ focused }) => (
-          <MaterialSymbolsHome {...iconProps} color={getColor(focused)} />
-        ),
+        tabBarIcon: ({ focused }) =>
+          focused ? (
+            <MaterialSymbolsGridView {...iconProps} color={getColor(focused)} />
+          ) : (
+            <MaterialSymbolsLightGridViewOutline
+              {...iconProps}
+              color={getColor(focused)}
+            />
+          ),
       },
     },
     [routes.ACTIVITY_SCREEN]: {
       screen: ActivityScreen,
       options: {
         title: 'Activity',
-        tabBarIcon: ({ focused }) => (
-          <MaterialSymbolsHome {...iconProps} color={getColor(focused)} />
-        ),
+        tabBarIcon: ({ focused }) =>
+          focused ? (
+            <MaterialSymbolsNotifications
+              {...iconProps}
+              color={getColor(focused)}
+            />
+          ) : (
+            <MaterialSymbolsLightNotificationsOutline
+              {...iconProps}
+              color={getColor(focused)}
+            />
+          ),
       },
     },
     [routes.ACCCOUNT_SCREEN]: {
       screen: AccountScreen,
       options: {
         title: 'Account',
-        tabBarIcon: ({ focused }) => (
-          <MaterialSymbolsHome {...iconProps} color={getColor(focused)} />
-        ),
+        tabBarIcon: ({ focused }) =>
+          focused ? (
+            <MaterialSymbolsAccountCircle
+              {...iconProps}
+              color={getColor(focused)}
+            />
+          ) : (
+            <MaterialSymbolsLightAccountCircleOutline
+              {...iconProps}
+              color={getColor(focused)}
+            />
+          ),
       },
     },
   },

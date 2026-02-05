@@ -1,17 +1,22 @@
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
 
 function getResponsiveSize(size: number, otherParams?: string): number {
-  const {height, width} = Dimensions.get('window');
+  const { height, width } = Dimensions.get('window');
   const [shortDimension, longDimension] =
     width < height ? [width, height] : [height, width];
 
   // const guidelineBaseWidth = 428;
-  // const guidelineBaseHeight = 926;
+  // const guidelineBaseHeight = 1800;
 
-  const guidelineBaseWidth = 500;
-  const guidelineBaseHeight = 1000;
+  const guidelineBaseWidth = 428;
+  const guidelineBaseHeight = 926;
+
+  // const guidelineBaseWidth = 500;
+  // const guidelineBaseHeight = 1000;
 
   const averageDimension = (longDimension + shortDimension) / 2;
+  const averageGuidelineDimension =
+    (guidelineBaseHeight + guidelineBaseWidth) / 2;
 
   if (otherParams === 'getHeight') {
     return height;
@@ -28,7 +33,8 @@ function getResponsiveSize(size: number, otherParams?: string): number {
     return (shortDimension / guidelineBaseWidth) * size;
   }
 
-  return averageDimension / (averageDimension / size);
+  // return averageDimension / (averageDimension / size);
+  return (averageDimension / averageGuidelineDimension) * size;
 }
 
 const Size = {

@@ -4,6 +4,7 @@ export default Object.freeze({
   BLACK_300: '##11111A',
 
   BLUE_100: '#002E66',
+  BLUE_110: '#252538',
   BLUE_200: '#0556DB',
   BLUE_300: '#044CB7',
   BLUE_400: '#E5EFFF',
@@ -22,9 +23,14 @@ export default Object.freeze({
   GRAY_600: '#C3C3C3',
   GRAY_700: '#1C1B1F',
   GRAY_800: '#00000066',
+  GRAY_900: '#FDF3FF',
 
   GREEN_100: '#008962',
   GREEN_110: '#EBFFFB',
+  GREEN_120: '#EFFFD4',
+  GREEN_130: '#3D6D00',
+  GREEN_140: '#E2FFE7',
+  GREEN_150: '#30BA00',
   GREEN_200: '#C5F5EB',
   GREEN_300: '#004B31',
   GREEN_400: '#46E9C0',
@@ -40,6 +46,8 @@ export default Object.freeze({
   LIGHT_GRAY_400: '#E5E7EB',
   LIGHT_GRAY_500: '#F8F8F8',
   LIGHT_GRAY_600: '#DBDBDB',
+
+  PURPLE_100: '#DD34D7',
 
   RED_100: '#D32F2F',
   RED_200: '#F7B9B4',
@@ -60,4 +68,5 @@ export default Object.freeze({
   YELLOW_300: '#FFAB0B',
   YELLOW_400: '#FFF9E9',
   YELLOW_500: '#FFF7E9',
+  YELLOW_600: '#FFF4D5',
 });

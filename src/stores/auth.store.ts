@@ -5,13 +5,16 @@ import { createWithEqualityFn } from 'zustand/traditional';
 
 import { transformMMKVStore } from './index';
 import { PostLoginRes } from '@src/api/auth.api';
+import { GetDashboardPropertiesData } from '@src/api/dashboard.api';
 
 export interface AuthStore {
   loginResponse: PostLoginRes | null;
   isDoneOnboarding: boolean;
+  selectedProperty: GetDashboardPropertiesData | null;
 
   logout: () => void;
   setLoginResponse: (value: PostLoginRes) => void;
+  setSelectedProperty: (value: GetDashboardPropertiesData | null) => void;
   setIsDoneOnboarding: (value: boolean) => void;
 }
 
@@ -20,6 +23,7 @@ const authStoreName = 'useResidentsAuthStore';
 const defaultState = {
   loginResponse: null,
   isDoneOnboarding: false,
+  selectedProperty: null,
 };
 
 export const authStore = createWithEqualityFn(
@@ -32,6 +36,9 @@ export const authStore = createWithEqualityFn(
       logout: () => set(() => defaultState),
 
       setLoginResponse: loginResponse => set(() => ({ loginResponse })),
+
+      setSelectedProperty: selectedProperty =>
+        set(() => ({ selectedProperty })),
 
       setIsDoneOnboarding: isDoneOnboarding =>
         set(() => ({ isDoneOnboarding })),

@@ -1,5 +1,9 @@
+import {
+  LoginModeType,
+  OnboardingStatusType,
+  UserAccountStatusType,
+} from './constants/default';
 import baseApi, { GenericApiResponse } from './index';
-import { LoginModeType, OnboardingStatusType } from './constants/default';
 
 // AUTH API STARTS HERE
 
@@ -10,7 +14,7 @@ export const postLogin = (data: PostLoginReq) =>
   baseApi.post<PostLoginRes>('/Auth/Login', data);
 
 export const postForgotPassword = (data: PreLoginReq) =>
-  baseApi.post<PostLoginRes>('/Auth/ForgotPassword', data);
+  baseApi.post<GenericApiResponse>('/Auth/ForgotPassword', data);
 
 export const patchSetupPassword = (data: PatchSetupPasswordReq) =>
   baseApi.patch<PostLoginRes>('/Auth/SetupPassword', data);
@@ -28,6 +32,9 @@ export const postResendNewDeviceEmail = () =>
 export const patchValidateNewDeviceCode = (
   data: PatchValidateNewDeviceCodeReq,
 ) => baseApi.patch<GenericApiResponse>('/Account/ValidateNewDeviceCode', data);
+
+export const getAccountProfile = () =>
+  baseApi.get<GetAccountProfile>('/Account/Profile');
 
 // ACCOUNT API ENDS HERE
 
@@ -104,6 +111,21 @@ export interface PostChangePasswordReq {
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
+}
+
+interface GetAccountProfile extends GenericApiResponse {
+  data: {
+    id: number;
+    name: string;
+    code: string;
+    email: string;
+    photo: string;
+    phoneNumber: string;
+    status: UserAccountStatusType;
+    statusText: string;
+    isTransactionPinSet: true;
+    dateOnboarded: string;
+  };
 }
 
 // ACCOUNT TYPES ENDS HERE

@@ -1,4 +1,6 @@
-import Svg, { Path, Rect, SvgProps } from 'react-native-svg';
+import Svg, { Circle, Defs, G, Path, Rect, SvgProps } from 'react-native-svg';
+
+import colors from '@src/configs/colors';
 
 export const MailSuccessIcon = (props: SvgProps) => (
   <Svg width="1em" height="1em" fill="none" {...props}>
@@ -38,6 +40,84 @@ export const MailSuccessIcon = (props: SvgProps) => (
   </Svg>
 );
 
+export const ActiveCheckCircleIcon = (props: SvgProps) => (
+  <Svg fill="none" {...props}>
+    <Rect
+      width={20.8}
+      height={20.8}
+      x={0.6}
+      y={0.6}
+      stroke="#0660FE"
+      strokeWidth={0.8}
+      rx={10.4}
+    />
+    <G filter="url(#a)">
+      <Rect width={20} height={20} x={1} y={1} fill="#0660FE" rx={10} />
+    </G>
+    <Rect
+      width={19.2}
+      height={19.2}
+      x={1.4}
+      y={1.4}
+      stroke="#FEFEFE"
+      strokeWidth={0.8}
+      rx={9.6}
+    />
+    <G filter="url(#b)">
+      <Circle cx={11} cy={11} r={3} fill="#FEFEFE" />
+    </G>
+    <Defs></Defs>
+  </Svg>
+);
+
+export const InActiveCheckCircleIcon = (props: SvgProps) => (
+  <Svg fill="none" {...props}>
+    <Rect
+      width={20.8}
+      height={20.8}
+      x={0.6}
+      y={0.6}
+      stroke={colors.LIGHT_GRAY_100}
+      strokeWidth={1.9}
+      rx={10.4}
+    />
+    <G filter="url(#a)">
+      <Rect width={20} height={20} x={1} y={1} fill="#FEFEFE" rx={10} />
+    </G>
+    <Rect
+      width={19.2}
+      height={19.2}
+      x={1.4}
+      y={1.4}
+      stroke="#FEFEFE"
+      strokeWidth={0.8}
+      rx={9.6}
+    />
+    <Defs></Defs>
+  </Svg>
+);
+
 export function EmptyIcon() {
   return <></>;
 }
+
+export const EmptyTableIcon = (props: SvgProps) => (
+  <Svg fill="none" {...props}>
+    <Path
+      fill="#EDEEEF"
+      d="M8.97 35.744C.02 25.946.342 7.07.346 6.882L31.36 6.87c.008.202-.315 19.067 8.62 28.853l.02.02H8.97Z"
+      opacity={0.6}
+    />
+    <Path
+      fill="#CBCBCB"
+      d="M8.626 29.415C-.325 19.616-.002.742.002.553L31.017.541c.008.202-.315 19.066 8.62 28.853l.019.02H8.626Z"
+    />
+    <Path
+      stroke="#595959"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={4}
+      d="M12.286 11.102h10.592M14.611 18.854h6.933"
+    />
+  </Svg>
+);

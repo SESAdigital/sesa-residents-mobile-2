@@ -1,4 +1,4 @@
-import baseApi, { GenericApiResponse } from '.';
+import baseApi, { GenericApiResponse } from './index';
 import { PropertyCategoryType } from './constants/default';
 
 // API STARTS HERE

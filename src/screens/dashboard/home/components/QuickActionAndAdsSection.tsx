@@ -23,22 +23,29 @@ const QuickActionAndAdsSection = (): React.ReactNode => {
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          {quickActions?.map(({ Icon, title, bgColor, color }, index) => (
-            <View key={index} style={{ paddingHorizontal: Size.calcWidth(14) }}>
-              <TouchableOpacity style={styles.actionButton}>
-                <View
-                  style={[styles.iconContainer, { backgroundColor: bgColor }]}
-                >
-                  <Icon
-                    color={color}
-                    height={Size.calcAverage(26)}
-                    width={Size.calcAverage(26)}
-                  />
-                </View>
-                <AppText style={styles.actionText}>{title}</AppText>
-              </TouchableOpacity>
-            </View>
-          ))}
+          {quickActions?.map(
+            ({ Icon, altTitle, title, bgColor, color }, index) => (
+              <View
+                key={index}
+                style={{ paddingHorizontal: Size.calcWidth(14) }}
+              >
+                <TouchableOpacity style={styles.actionButton}>
+                  <View
+                    style={[styles.iconContainer, { backgroundColor: bgColor }]}
+                  >
+                    <Icon
+                      color={color}
+                      height={Size.calcAverage(26)}
+                      width={Size.calcAverage(26)}
+                    />
+                  </View>
+                  <AppText style={styles.actionText}>
+                    {altTitle ?? title}
+                  </AppText>
+                </TouchableOpacity>
+              </View>
+            ),
+          )}
         </ScrollView>
       </View>
       <View style={styles.imageContainer}>

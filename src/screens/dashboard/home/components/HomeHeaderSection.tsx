@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import AppAvatar from '@src/components/AppAvatar';
@@ -9,15 +9,16 @@ import {
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
+import { useGetProperties, useGetUserDetails } from '@src/hooks/useGetRequests';
+import SwitchPropertyModal from '@src/modals/SwitchPropertyModal';
+import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import Size from '@src/utils/useResponsiveSize';
 import BillReminderBanner from './BillReminderBanner';
-import { useGetProperties, useGetUserDetails } from '@src/hooks/useGetRequests';
-import PropertyListModal from '@src/modals/PropertyListModal';
 
 const HomeHeaderSection = (): React.ReactNode => {
   const { logout, selectedProperty, loginResponse } = useAuthStore();
-  const [isPropertiesVisible, setIsPropertiesVisible] = useState(false);
+  const { setActiveModal } = useAppStateStore();
   const handleAddMoney = () => {
     logout();
   };
@@ -32,6 +33,14 @@ const HomeHeaderSection = (): React.ReactNode => {
 
   const { details } = useGetUserDetails();
 
+  const handleSwitch = () => {
+    setActiveModal({
+      modalType: 'EMPTY_MODAL',
+      emptyModalComponent: <SwitchPropertyModal />,
+      shouldBackgroundClose: true,
+    });
+  };
+
   return (
     <>
       <View style={styles.headerContainer}>
@@ -41,17 +50,11 @@ const HomeHeaderSection = (): React.ReactNode => {
           </AppText>
           <View style={styles.row}>
             <AppText style={styles.address}>
-              {selectedProperty?.propertyName}
+              {selectedProperty?.propertyAddress}
             </AppText>
             <View style={styles.divider} />
-            <PropertyListModal
-              onClose={() => setIsPropertiesVisible(false)}
-              visible={isPropertiesVisible}
-            />
-            <TouchableOpacity
-              onPress={() => setIsPropertiesVisible(true)}
-              style={styles.row}
-            >
+
+            <TouchableOpacity onPress={handleSwitch} style={styles.row}>
               <AppText style={styles.switchPropertyText}>
                 Switch Property
               </AppText>

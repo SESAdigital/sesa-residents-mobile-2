@@ -1,3 +1,4 @@
 export default Object.freeze({
   GET_PROFILE: 'GET_PROFILE',
+  GET_DASHBOARD_PROPERTIES: 'GET_DASHBOARD_PROPERTIES',
 });

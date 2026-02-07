@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { getDeviceId } from 'react-native-device-info';
 
+
 import {
   PatchSetupPasswordReq,
   postLogin,
@@ -26,14 +27,14 @@ import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useGetCurrentLocation } from '@src/hooks/useCurrentLocation';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
 import { useAuthStore } from '@src/stores/auth.store';
 import { appToast } from '@src/utils/appToast';
+import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
 import LoginModeToggle from './components/LoginModeToggle';
-import { useAppNavigator } from '@src/navigation/AppNavigator';
-import routes from '@src/navigation/routes';
-import { handleToastApiError } from '@src/utils/handleErrors';
 
 export interface LoginSchema {
   email?: string;

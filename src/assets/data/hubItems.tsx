@@ -25,6 +25,7 @@ import Size from '@src/utils/useResponsiveSize';
 export interface HubItem {
   Icon: (props: SvgProps) => JSX.Element;
   title: ComingSoonTypes | JSX.Element;
+  altTitle?: string;
   color: string;
   bgColor: string;
   route: string | null;
@@ -91,6 +92,7 @@ export const allHubItems: HubItem[] = [
   },
   {
     Icon: MaterialSymbolsPayments,
+    altTitle: 'Bills & Collections',
     title: (
       <View style={{ width: '85%' }}>
         <AppText

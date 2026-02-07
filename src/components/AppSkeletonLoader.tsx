@@ -1,5 +1,5 @@
-import {JSX} from 'react';
-import {DimensionValue, StyleProp, View, ViewStyle} from 'react-native';
+import { JSX } from 'react';
+import { DimensionValue, StyleProp, View, ViewStyle } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 import Size from '@src/utils/useResponsiveSize';
@@ -14,7 +14,7 @@ interface Props {
 const AppSkeletonLoader = (props: Props): React.ReactNode => {
   const {
     children,
-    borderRadius = 4,
+    borderRadius = 10,
     height = Size.calcHeight(11),
     width = '100%',
     style,
@@ -24,8 +24,9 @@ const AppSkeletonLoader = (props: Props): React.ReactNode => {
     <View style={style}>
       <SkeletonPlaceholder
         borderRadius={borderRadius}
-        backgroundColor="#A9A9A980">
-        {!!children ? children : <View style={{height, width}} />}
+        backgroundColor="#A9A9A980"
+      >
+        {!!children ? children : <View style={{ height, width }} />}
       </SkeletonPlaceholder>
     </View>
   );

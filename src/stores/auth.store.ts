@@ -5,7 +5,7 @@ import { createWithEqualityFn } from 'zustand/traditional';
 
 import { transformMMKVStore } from './index';
 import { PostLoginRes } from '@src/api/auth.api';
-import { GetDashboardPropertiesData } from '@src/api/dashboard.api';
+import type { GetDashboardPropertiesData } from '@src/api/dashboard.api';
 
 export interface AuthStore {
   loginResponse: PostLoginRes | null;

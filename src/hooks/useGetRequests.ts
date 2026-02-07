@@ -44,19 +44,16 @@ export const useGetProperties = () => {
   const { setSelectedProperty, selectedProperty } = useAuthStore();
 
   return useQuery({
-    queryKey: ['getassssda'],
+    queryKey: [queryKeys.GET_DASHBOARD_PROPERTIES],
     queryFn: async () => {
-      console.log('start-1');
       const response = await getDashboardProperties();
-      console.log('start-2', response);
-      console.log(response?.data?.data);
+
       if (response.ok) {
-        console.log('start-3', response);
         const properties = response?.data?.data;
         const currentProperty = properties?.find(
           item => item?.id === selectedProperty?.id,
         );
-        console.log(properties);
+
         if (!currentProperty) {
           setSelectedProperty(properties?.[0] || null);
         }

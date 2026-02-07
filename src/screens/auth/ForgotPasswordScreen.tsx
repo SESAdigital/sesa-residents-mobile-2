@@ -16,10 +16,7 @@ import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
-import {
-  ForgotPasswordScreenProps,
-  useAppNavigator,
-} from '@src/navigation/AppNavigator';
+import { ForgotPasswordScreenProps } from '@src/navigation/AppNavigator';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
@@ -45,7 +42,6 @@ const ForgotPasswordScreen = (val: {
   );
 
   const postForgotPasswordAPI = useMutation({ mutationFn: postForgotPassword });
-  const navigation = useAppNavigator();
   const { handleSubmit, control } = useForm<PreLoginReq>({
     resolver: joiResolver(schema),
     defaultValues: {

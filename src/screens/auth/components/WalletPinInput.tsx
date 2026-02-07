@@ -80,8 +80,8 @@ const WalletPinInput = (props: Props): React.ReactNode => {
 
     Vibration.vibrate(5000);
 
-    if (val == 'DELETE') {
-      if (!!pin) onPinChange(pin?.slice(0, -1));
+    if (val === 'DELETE') {
+      if (pin) onPinChange(pin?.slice(0, -1));
       return;
     }
 

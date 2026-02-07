@@ -66,7 +66,7 @@ export const ActiveCheckCircleIcon = (props: SvgProps) => (
     <G filter="url(#b)">
       <Circle cx={11} cy={11} r={3} fill="#FEFEFE" />
     </G>
-    <Defs></Defs>
+    <Defs />
   </Svg>
 );
 
@@ -93,7 +93,7 @@ export const InActiveCheckCircleIcon = (props: SvgProps) => (
       strokeWidth={0.8}
       rx={9.6}
     />
-    <Defs></Defs>
+    <Defs />
   </Svg>
 );
 

@@ -115,7 +115,7 @@ const CheckYourMailComponent = (props: Props): React.ReactNode => {
           />
         )}
         <SubmitButton
-          style={{ width: !!showBackButton ? '49%' : '100%' }}
+          style={{ width: showBackButton ? '49%' : '100%' }}
           title={buttonTitle || 'Continue To Login'}
           isLoading={false}
           disabled={isLoading}

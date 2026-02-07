@@ -49,7 +49,7 @@ const SetupPasswordScreen = (): React.ReactNode => {
 
     const newPassword = data?.newPassword?.trim();
 
-    if (newPassword != data?.confirmPassword?.trim())
+    if (newPassword !== data?.confirmPassword?.trim())
       return appToast.Warning('Password does not match.');
 
     const initialData: PatchSetupPasswordReq = {

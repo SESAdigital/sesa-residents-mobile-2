@@ -41,7 +41,7 @@ const AppTextInputWithoutValidation = (
   } = props;
 
   const onChange = (e: string) => {
-    if (keyboardType == 'number-pad') {
+    if (keyboardType === 'number-pad') {
       onChangeText?.(formatNumberInput(e));
     } else {
       onChangeText?.(e);

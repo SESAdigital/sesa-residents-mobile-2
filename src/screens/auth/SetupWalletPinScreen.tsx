@@ -27,7 +27,7 @@ const SetupWalletPinScreen = (): React.ReactNode => {
   const onBackPress = () => {
     if (isLoading) return;
 
-    if (currentStep == 0) {
+    if (currentStep === 0) {
       navigation.goBack();
     } else {
       setCurrentStep(val => val - 1);
@@ -38,7 +38,7 @@ const SetupWalletPinScreen = (): React.ReactNode => {
 
   const handleDone = async (newPin: string) => {
     if (isLoading) return;
-    if (newPin != pin) return appToast.Warning('PINs do not match');
+    if (newPin !== pin) return appToast.Warning('PINs do not match');
 
     const response = await patchSetupPinAPI.mutateAsync({
       confirmPin: newPin,
@@ -80,7 +80,7 @@ const SetupWalletPinScreen = (): React.ReactNode => {
       <AppGoBackHeader onBackPress={onBackPress} />
 
       {steps?.map((step, index) =>
-        index == currentStep ? <Fragment key={index}>{step}</Fragment> : null,
+        index === currentStep ? <Fragment key={index}>{step}</Fragment> : null,
       )}
       <AppLoadingModal isLoading={isLoading} title="Preparing your account.." />
     </AppScreen>

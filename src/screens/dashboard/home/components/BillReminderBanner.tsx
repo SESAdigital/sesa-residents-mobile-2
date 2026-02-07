@@ -59,14 +59,14 @@ const styles = StyleSheet.create({
 export default BillReminderBanner;
 
 function getColors(status: Status) {
-  if (status == 'DANGER') {
+  if (status === 'DANGER') {
     return {
       color: colors.RED_100,
       backgroundColor: colors.RED_300,
     };
   }
 
-  if (status == 'SUCCESS') {
+  if (status === 'SUCCESS') {
     return {
       color: colors.GREEN_600,
       backgroundColor: colors.GREEN_200,

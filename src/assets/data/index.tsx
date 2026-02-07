@@ -18,7 +18,7 @@ export const useAllHubItems = () => {
   };
 
   const handleComingSoon = (type: ComingSoonTypes) => {
-    if (type == 'SESA Homes') {
+    if (type === 'SESA Homes') {
       return setActiveModal({
         modalType: 'EMPTY_MODAL',
         emptyModalComponent: (
@@ -42,7 +42,7 @@ export const useAllHubItems = () => {
       });
     }
 
-    if (type == 'SESA Mall') {
+    if (type === 'SESA Mall') {
       return setActiveModal({
         modalType: 'EMPTY_MODAL',
         emptyModalComponent: (
@@ -60,7 +60,7 @@ export const useAllHubItems = () => {
       });
     }
 
-    if (type == 'Insurance') {
+    if (type === 'Insurance') {
       return setActiveModal({
         modalType: 'EMPTY_MODAL',
         emptyModalComponent: (

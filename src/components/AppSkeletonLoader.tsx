@@ -26,7 +26,7 @@ const AppSkeletonLoader = (props: Props): React.ReactNode => {
         borderRadius={borderRadius}
         backgroundColor="#A9A9A980"
       >
-        {!!children ? children : <View style={{ height, width }} />}
+        {children ? children : <View style={{ height, width }} />}
       </SkeletonPlaceholder>
     </View>
   );

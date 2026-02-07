@@ -15,7 +15,7 @@ baseApi.addAsyncRequestTransform(async request => {
   const { loginResponse } = authStore.getState();
   const userToken = loginResponse?.data?.token;
   // console.log(userToken);
-  if (!!userToken) {
+  if (userToken) {
     if (request.headers)
       request.headers['authorization'] = `Bearer ${userToken}`;
   }

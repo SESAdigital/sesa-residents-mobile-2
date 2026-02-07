@@ -16,8 +16,8 @@ baseApi.addAsyncRequestTransform(async request => {
   const userToken = loginResponse?.data?.token;
   // console.log(userToken);
   if (userToken) {
-    if (request.headers)
-      request.headers['authorization'] = `Bearer ${userToken}`;
+    if (request?.headers?.Authorization)
+      request.headers.Authorization = `Bearer ${userToken}`;
   }
 });
 

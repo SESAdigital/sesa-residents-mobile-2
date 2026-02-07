@@ -20,10 +20,10 @@ const MyhubScreen = (): React.ReactNode => {
             <AppText style={myHubStyles.sectionTitle}>{section.title}</AppText>
             {section.sections.map((row, key) => (
               <View style={myHubStyles.row} key={key}>
-                {row?.map((item, key) => {
+                {row?.map((item, secondKey) => {
                   const { Icon, bgColor, color, title, onPress } = item;
                   const { alignItems, textAlign } = getItemAlignment(
-                    key,
+                    secondKey,
                     row?.length,
                   );
 

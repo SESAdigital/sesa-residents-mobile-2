@@ -35,3 +35,28 @@ export const PropertyCategoryData = {
 
 export type PropertyCategoryType =
   (typeof PropertyCategoryData)[keyof typeof PropertyCategoryData];
+
+export const TransactionEntryTypeData = {
+  Credit: 1,
+  Debit: 2,
+} as const;
+
+export type TransactionEntryType =
+  (typeof TransactionEntryTypeData)[keyof typeof TransactionEntryTypeData];
+
+export const TransactionPurposeData = {
+  Refund: 1,
+  WalletTopUp: 2,
+  WalletWithdrawal: 3,
+  PlatformSubscription: 4,
+  ConvenienceFee: 5,
+  TokenPurchase: 6,
+  KycFee: 7,
+  SMSFee: 8,
+  PhysicalAddressVerificationFee: 9,
+  MeterAddressVerificationFee: 10,
+  LicenseNumberVerificationFee: 11,
+} as const;
+
+export type TransactionPurposeType =
+  (typeof TransactionPurposeData)[keyof typeof TransactionPurposeData];

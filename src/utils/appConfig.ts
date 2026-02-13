@@ -19,6 +19,8 @@ export default Object.freeze({
 
   NAIRA_SYMBOL: '₦',
 
+  APP_SUPPORT_EMAIL: 'support@trysesa.com',
+
   APP_ICON:
     'https://res.cloudinary.com/dzgqixmj3/image/upload/v1752076853/sesa/ic_launcher_foreground_gcrsii.png',
 });

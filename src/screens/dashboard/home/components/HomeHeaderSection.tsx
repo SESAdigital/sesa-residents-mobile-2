@@ -14,10 +14,11 @@ import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import Size from '@src/utils/useResponsiveSize';
 import BillReminderBanner from './BillReminderBanner';
+import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 
 const HomeHeaderSection = (): React.ReactNode => {
   const navigation = useAppNavigator();
-  const { data } = useGetWalletBalance();
+  const { data, isLoading } = useGetWalletBalance();
   const { details } = useGetUserDetails();
 
   return (
@@ -39,7 +40,17 @@ const HomeHeaderSection = (): React.ReactNode => {
       <View style={styles.walletContainer}>
         <View>
           <AppText style={{ color: colors.LIGHT_GRAY_100 }}>My Wallet</AppText>
-          <AppText style={styles.walletAmount}>{data?.formattedAmount}</AppText>
+          {isLoading ? (
+            <AppSkeletonLoader
+              style={{ marginTop: Size.calcHeight(17) }}
+              height={Size.calcAverage(20)}
+              width={Size.calcAverage(100)}
+            />
+          ) : (
+            <AppText style={styles.walletAmount}>
+              {data?.formattedAmount || '₦0.00'}
+            </AppText>
+          )}
         </View>
         <TouchableOpacity
           onPress={() => navigation.navigate(routes.ADD_MONEY_SCREEN)}
@@ -49,7 +60,10 @@ const HomeHeaderSection = (): React.ReactNode => {
         </TouchableOpacity>
       </View>
 
-      <Pressable style={styles.viewTransactionsContainer}>
+      <Pressable
+        onPress={() => navigation.navigate(routes.TRANSACTION_LIST_SCREEN)}
+        style={styles.viewTransactionsContainer}
+      >
         <AppText style={{ color: colors.WHITE_300 }}>View Transactions</AppText>
         <MaterialSymbolsChevronRight
           height={Size.calcAverage(24)}

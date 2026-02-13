@@ -3,7 +3,7 @@ import {
   OnboardingStatusType,
   UserAccountStatusType,
 } from './constants/default';
-import baseApi, { GenericApiResponse } from './index';
+import baseApi, { GenericApiResponse } from './base.api';
 
 // AUTH API STARTS HERE
 

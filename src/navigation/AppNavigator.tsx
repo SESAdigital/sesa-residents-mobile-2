@@ -9,31 +9,34 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 
-import PreLoginSuccessScreen from '@src/screens/auth/PreLoginSuccessScreen';
-import LoginScreen from '@src/screens/auth/LoginScreen';
-import OnboardingScreen1 from '@src/screens/auth/OnboardingScreen1';
-import OnboardingScreen2 from '@src/screens/auth/OnboardingScreen2';
-import OneLastStepScreen from '@src/screens/auth/OneLastStepScreen';
-import RetrieveAccountScreen from '@src/screens/auth/RetrieveAccountScreen';
-import SetupPasswordScreen from '@src/screens/auth/SetupPasswordScreen';
-import { useAuthStore } from '@src/stores/auth.store';
-import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
-import routes from './routes';
-import SetupWalletPinScreen from '@src/screens/auth/SetupWalletPinScreen';
-import NewDeviceScreen from '@src/screens/auth/NewDeviceScreen';
 import { PatchSetupPasswordReq } from '@src/api/auth.api';
 import ForgotPasswordScreen, {
   ForgotPasswordScreenParam,
 } from '@src/screens/auth/ForgotPasswordScreen';
+import LoginScreen from '@src/screens/auth/LoginScreen';
+import NewDeviceScreen from '@src/screens/auth/NewDeviceScreen';
 import NewDeviceVerificationScreen from '@src/screens/auth/NewDeviceVerificationScreen';
+import OnboardingScreen1 from '@src/screens/auth/OnboardingScreen1';
+import OnboardingScreen2 from '@src/screens/auth/OnboardingScreen2';
+import OneLastStepScreen from '@src/screens/auth/OneLastStepScreen';
+import PreLoginSuccessScreen from '@src/screens/auth/PreLoginSuccessScreen';
+import RetrieveAccountScreen from '@src/screens/auth/RetrieveAccountScreen';
+import SetupPasswordScreen from '@src/screens/auth/SetupPasswordScreen';
+import SetupWalletPinScreen from '@src/screens/auth/SetupWalletPinScreen';
+import AddMoneyScreen from '@src/screens/dashboard/add-money/AddMoneyScreen';
+import AddMoneyViaCardScreen from '@src/screens/dashboard/add-money/AddMoneyViaCardScreen';
+import BillsAndCollectionsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/BillsAndCollectionsScreen';
 import BookVisitorScreen from '@src/screens/dashboard/my-hub/book-visitor/BookVisitorScreen';
+import BuyPowerScreen from '@src/screens/dashboard/my-hub/buy-power/BuyPowerScreen';
 import CreateEventsScreen from '@src/screens/dashboard/my-hub/create-events/CreateEventsScreen';
 import GroupAccessScreen from '@src/screens/dashboard/my-hub/group-access/GroupAccessScreen';
-import BillsAndCollectionsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/BillsAndCollectionsScreen';
-import BuyPowerScreen from '@src/screens/dashboard/my-hub/buy-power/BuyPowerScreen';
 import HireArtisanScreen from '@src/screens/dashboard/my-hub/hire-artisan/HireArtisanScreen';
 import PanicAlertScreen from '@src/screens/dashboard/my-hub/panic-alert/PanicAlertScreen';
-import AddMoneyScreen from '@src/screens/dashboard/add-money/AddMoneyScreen';
+import { useAuthStore } from '@src/stores/auth.store';
+import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
+import routes from './routes';
+import TransactionListScreen from '@src/screens/dashboard/transactions/TransactionListScreen';
+import TransactionDetailsScreen from '@src/screens/dashboard/transactions/TransactionDetailsScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -56,6 +59,9 @@ export type AppNavigatorParams = {
   [routes.NEW_DEVICE_VERIFICATION_SCREEN]: undefined;
   [routes.FORGOT_PASSWORD_SCREEN]: ForgotPasswordScreenParam;
   [routes.ADD_MONEY_SCREEN]: undefined;
+  [routes.ADD_MONEY_ATM_CARD_SCREEN]: undefined;
+  [routes.TRANSACTION_LIST_SCREEN]: undefined;
+  [routes.TRANSACTION_DETAILS_SCREEN]: undefined;
 };
 
 export type AppParamsNavigator = NativeStackNavigationProp<AppNavigatorParams>;
@@ -104,6 +110,9 @@ const RootStack = createNativeStackNavigator({
         [routes.PANIC_ALERT_SCREEN]: PanicAlertScreen,
         [routes.HIRE_ARTISAN_SCREEN]: HireArtisanScreen,
         [routes.ADD_MONEY_SCREEN]: AddMoneyScreen,
+        [routes.ADD_MONEY_ATM_CARD_SCREEN]: AddMoneyViaCardScreen,
+        [routes.TRANSACTION_LIST_SCREEN]: TransactionListScreen,
+        [routes.TRANSACTION_DETAILS_SCREEN]: TransactionDetailsScreen,
       },
     },
   },

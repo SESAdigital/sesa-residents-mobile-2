@@ -1,7 +1,10 @@
-import { StatusBar } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { Alert, Linking, StatusBar } from 'react-native';
 import { getSystemVersion, hasNotch } from 'react-native-device-info';
-import Size from './useResponsiveSize';
+
 import appConfig from './appConfig';
+import { appToast } from './appToast';
+import Size from './useResponsiveSize';
 
 export function getStatusBarPadding() {
   const height = StatusBar?.currentHeight || Size.calcHeight(30);
@@ -78,4 +81,31 @@ export function maskEmail(email: string): string {
     username[username.length - 1];
 
   return `${maskedUsername}@${domain}`;
+}
+
+export const openURL = async (url: string) => {
+  try {
+    await Linking.openURL(url);
+  } catch (error) {
+    Alert.alert(`Don't know how to open this URL: ${url} ${error}`);
+  }
+};
+
+interface CopyTextToClipboardProps {
+  text: string;
+  successText: string;
+  errorText?: string;
+}
+
+export function copyTextToClipboard(props: CopyTextToClipboardProps) {
+  const { successText, text, errorText } = props;
+
+  if (!text) return;
+
+  try {
+    Clipboard?.setString(text);
+    appToast.Success(successText);
+  } catch (error) {
+    appToast.Warning(`${errorText} ${error}`);
+  }
 }

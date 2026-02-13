@@ -14,10 +14,9 @@ const baseApi = create({
 baseApi.addAsyncRequestTransform(async request => {
   const { loginResponse } = authStore.getState();
   const userToken = loginResponse?.data?.token;
-  // console.log(userToken);
+
   if (userToken) {
-    if (request?.headers?.Authorization)
-      request.headers.Authorization = `Bearer ${userToken}`;
+    if (request?.headers) request.headers.Authorization = `Bearer ${userToken}`;
   }
 });
 

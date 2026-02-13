@@ -1,10 +1,12 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+
+import AppScreen from '@src/components/AppScreen';
 
 const CreateEventsScreen = (): React.ReactNode => {
   return (
-    <View style={styles.container}>
+    <AppScreen style={styles.container}>
       <Text>CreateEventsScreen</Text>
-    </View>
+    </AppScreen>
   );
 };
 

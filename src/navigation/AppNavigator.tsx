@@ -33,6 +33,7 @@ import BillsAndCollectionsScreen from '@src/screens/dashboard/my-hub/bills-and-c
 import BuyPowerScreen from '@src/screens/dashboard/my-hub/buy-power/BuyPowerScreen';
 import HireArtisanScreen from '@src/screens/dashboard/my-hub/hire-artisan/HireArtisanScreen';
 import PanicAlertScreen from '@src/screens/dashboard/my-hub/panic-alert/PanicAlertScreen';
+import AddMoneyScreen from '@src/screens/dashboard/add-money/AddMoneyScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -54,6 +55,7 @@ export type AppNavigatorParams = {
   [routes.NEW_DEVICE_SCREEN]: undefined;
   [routes.NEW_DEVICE_VERIFICATION_SCREEN]: undefined;
   [routes.FORGOT_PASSWORD_SCREEN]: ForgotPasswordScreenParam;
+  [routes.ADD_MONEY_SCREEN]: undefined;
 };
 
 export type AppParamsNavigator = NativeStackNavigationProp<AppNavigatorParams>;
@@ -101,6 +103,7 @@ const RootStack = createNativeStackNavigator({
         [routes.BUY_POWER_SCREEN]: BuyPowerScreen,
         [routes.PANIC_ALERT_SCREEN]: PanicAlertScreen,
         [routes.HIRE_ARTISAN_SCREEN]: HireArtisanScreen,
+        [routes.ADD_MONEY_SCREEN]: AddMoneyScreen,
       },
     },
   },

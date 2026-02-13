@@ -28,12 +28,14 @@ const MyhubScreen = (): React.ReactNode => {
                   );
 
                   if (!title)
-                    return <View style={myHubStyles.itemContainer} key={key} />;
+                    return (
+                      <View style={myHubStyles.itemContainer} key={secondKey} />
+                    );
                   return (
                     <TouchableOpacity
                       onPress={onPress}
                       style={[myHubStyles.itemContainer, { alignItems }]}
-                      key={key}
+                      key={secondKey}
                     >
                       <View
                         style={[

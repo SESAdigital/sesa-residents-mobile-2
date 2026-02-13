@@ -4,7 +4,11 @@ import queryKeys from '@src/api/constants/queryKeys';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { getAccountProfile } from '@src/api/auth.api';
 import { useAuthStore } from '@src/stores/auth.store';
-import { getDashboardProperties } from '@src/api/dashboard.api';
+import {
+  getDashboardProperties,
+  getWalletBalance,
+} from '@src/api/dashboard.api';
+import { formatMoneyToTwoDecimals } from '@src/utils';
 
 export const useGetUserDetails = () => {
   const { data: profileData } = useGetProfile();
@@ -32,6 +36,25 @@ const useGetProfile = () => {
       const response = await getAccountProfile();
       if (response.ok) {
         return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+  });
+};
+
+export const useGetWalletBalance = () => {
+  return useQuery({
+    queryKey: [queryKeys.GET_WALLET_BALANCE],
+    queryFn: async () => {
+      const response = await getWalletBalance();
+      if (response.ok && response?.data) {
+        const amount = response?.data?.data;
+        return {
+          amount,
+          formattedAmount: formatMoneyToTwoDecimals({ amount }),
+        };
       } else {
         handleToastApiError(response);
         return null;

@@ -1,45 +1,24 @@
-import { useEffect } from 'react';
 import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import AppAvatar from '@src/components/AppAvatar';
 import AppText from '@src/components/AppText';
-import {
-  MaterialSymbolsArrowDropDown,
-  MaterialSymbolsChevronRight,
-} from '@src/components/icons';
+import SwitchPropertyRow from '@src/components/common/SwitchPropertyRow';
+import { MaterialSymbolsChevronRight } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useGetProperties, useGetUserDetails } from '@src/hooks/useGetRequests';
-import SwitchPropertyModal from '@src/modals/SwitchPropertyModal';
-import { useAppStateStore } from '@src/stores/appState.store';
-import { useAuthStore } from '@src/stores/auth.store';
+import {
+  useGetUserDetails,
+  useGetWalletBalance,
+} from '@src/hooks/useGetRequests';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
 import Size from '@src/utils/useResponsiveSize';
 import BillReminderBanner from './BillReminderBanner';
 
 const HomeHeaderSection = (): React.ReactNode => {
-  const { logout, selectedProperty, loginResponse } = useAuthStore();
-  const { setActiveModal } = useAppStateStore();
-  const handleAddMoney = () => {
-    logout();
-  };
-
-  useEffect(() => {
-    console.log(selectedProperty);
-    console.log(loginResponse?.data?.token);
-  }, []);
-
-  const { data: a } = useGetProperties();
-  console.log({ a });
-
+  const navigation = useAppNavigator();
+  const { data } = useGetWalletBalance();
   const { details } = useGetUserDetails();
-
-  const handleSwitch = () => {
-    setActiveModal({
-      modalType: 'EMPTY_MODAL',
-      emptyModalComponent: <SwitchPropertyModal />,
-      shouldBackgroundClose: true,
-    });
-  };
 
   return (
     <>
@@ -48,23 +27,7 @@ const HomeHeaderSection = (): React.ReactNode => {
           <AppText style={styles.greeting}>
             Hello, {details?.firstName} 👋
           </AppText>
-          <View style={styles.row}>
-            <AppText style={styles.address}>
-              {selectedProperty?.propertyAddress}
-            </AppText>
-            <View style={styles.divider} />
-
-            <TouchableOpacity onPress={handleSwitch} style={styles.row}>
-              <AppText style={styles.switchPropertyText}>
-                Switch Property
-              </AppText>
-              <MaterialSymbolsArrowDropDown
-                height={Size.calcAverage(20)}
-                width={Size.calcAverage(20)}
-                color={colors.BLUE_200}
-              />
-            </TouchableOpacity>
-          </View>
+          <SwitchPropertyRow />
         </View>
         <AppAvatar
           firstWord={details?.firstName}
@@ -76,10 +39,10 @@ const HomeHeaderSection = (): React.ReactNode => {
       <View style={styles.walletContainer}>
         <View>
           <AppText style={{ color: colors.LIGHT_GRAY_100 }}>My Wallet</AppText>
-          <AppText style={styles.walletAmount}>₦ 34,124,239</AppText>
+          <AppText style={styles.walletAmount}>{data?.formattedAmount}</AppText>
         </View>
         <TouchableOpacity
-          onPress={handleAddMoney}
+          onPress={() => navigation.navigate(routes.ADD_MONEY_SCREEN)}
           style={styles.addMoneyButton}
         >
           <AppText style={styles.addMoneyText}>Add Money</AppText>
@@ -99,11 +62,6 @@ const HomeHeaderSection = (): React.ReactNode => {
 };
 
 const styles = StyleSheet.create({
-  address: {
-    color: colors.GRAY_100,
-    fontSize: Size.calcAverage(12),
-  },
-
   addMoneyButton: {
     paddingHorizontal: Size.calcWidth(16),
     paddingVertical: Size.calcHeight(11),
@@ -114,13 +72,6 @@ const styles = StyleSheet.create({
   addMoneyText: {
     fontFamily: fonts.INTER_500,
     color: colors.BLUE_200,
-  },
-
-  divider: {
-    height: Size.calcAverage(14),
-    backgroundColor: colors.GRAY_200,
-    width: Size.calcWidth(1),
-    marginHorizontal: Size.calcWidth(6),
   },
 
   greeting: {
@@ -136,17 +87,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  switchPropertyText: {
-    color: colors.BLUE_200,
-    fontSize: Size.calcAverage(12),
-    fontFamily: fonts.INTER_600,
   },
 
   viewTransactionsContainer: {

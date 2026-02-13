@@ -181,6 +181,28 @@ export function MaterialSymbolsCloseRounded(props: SvgProps) {
   );
 }
 
+export function MaterialSymbolsRefresh(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M12 20q-3.35 0-5.675-2.325T4 12t2.325-5.675T12 4q1.725 0 3.3.712T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12t1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsContentCopyOutline(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M9 18q-.825 0-1.412-.587T7 16V4q0-.825.588-1.412T9 2h9q.825 0 1.413.588T20 4v12q0 .825-.587 1.413T18 18zm0-2h9V4H9zm-4 6q-.825 0-1.412-.587T3 20V6h2v14h11v2zm4-6V4z"
+      />
+    </Svg>
+  );
+}
+
 export function MaterialSymbolsHome(props: SvgProps) {
   return (
     <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>

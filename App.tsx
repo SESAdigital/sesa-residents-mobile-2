@@ -50,7 +50,7 @@ export default function App() {
         <QueryClientProvider client={queryClient}>
           <OfflineNotice />
           <AppNavigator theme={{ ...navigationTheme, dark: true }} />
-          <Toaster richColors theme="light" />
+          <Toaster visibleToasts={1} richColors theme="light" />
           <AppModal />
         </QueryClientProvider>
       </SafeAreaProvider>

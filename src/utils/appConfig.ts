@@ -17,6 +17,8 @@ export default Object.freeze({
 
   APP_NAME: 'SESA',
 
+  NAIRA_SYMBOL: '₦',
+
   APP_ICON:
     'https://res.cloudinary.com/dzgqixmj3/image/upload/v1752076853/sesa/ic_launcher_foreground_gcrsii.png',
 });

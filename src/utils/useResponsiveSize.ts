@@ -8,6 +8,9 @@ function getResponsiveSize(size: number, otherParams?: string): number {
   // const guidelineBaseWidth = 428;
   // const guidelineBaseHeight = 1800;
 
+  const averageGuidelineBaseWidth = 375;
+  const averageGuidelineBaseHeight = 812;
+
   const guidelineBaseWidth = 428;
   const guidelineBaseHeight = 926;
 
@@ -16,7 +19,7 @@ function getResponsiveSize(size: number, otherParams?: string): number {
 
   const averageDimension = (longDimension + shortDimension) / 2;
   const averageGuidelineDimension =
-    (guidelineBaseHeight + guidelineBaseWidth) / 2;
+    (averageGuidelineBaseHeight + averageGuidelineBaseWidth) / 2;
 
   if (otherParams === 'getHeight') {
     return height;

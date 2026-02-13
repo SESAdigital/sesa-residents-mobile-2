@@ -1,6 +1,7 @@
 import { StatusBar } from 'react-native';
 import { getSystemVersion, hasNotch } from 'react-native-device-info';
 import Size from './useResponsiveSize';
+import appConfig from './appConfig';
 
 export function getStatusBarPadding() {
   const height = StatusBar?.currentHeight || Size.calcHeight(30);
@@ -25,6 +26,33 @@ export const formatNumberInput = (
 
   return String(inputValue).replace(/[^0-9]/g, ''); // Remove non-numeric characters
 };
+
+interface FormatMoneyToTwoDecimalsProps {
+  amount: number | null;
+  hideCurrency?: boolean;
+}
+
+export function formatMoneyToTwoDecimals(
+  props: FormatMoneyToTwoDecimalsProps,
+): string {
+  const { amount, hideCurrency } = props;
+  let formattedValue = '';
+
+  if (!amount) {
+    formattedValue = '0';
+  } else {
+    formattedValue = amount?.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  if (!hideCurrency) {
+    formattedValue = `${appConfig.NAIRA_SYMBOL} ${formattedValue}`;
+  }
+
+  return formattedValue;
+}
 
 // TODO DELETE
 

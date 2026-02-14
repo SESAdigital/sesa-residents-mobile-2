@@ -8,10 +8,12 @@ import fonts from '@src/configs/fonts';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import SwitchPropertyModal from '@src/modals/SwitchPropertyModal';
+import { useGetProperties } from '@src/hooks/useGetRequests';
 
 const SwitchPropertyRow = (): React.ReactNode => {
   const { setActiveModal } = useAppStateStore();
   const { selectedProperty } = useAuthStore();
+  useGetProperties();
 
   const handleSwitch = () => {
     setActiveModal({

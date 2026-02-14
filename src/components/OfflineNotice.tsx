@@ -6,7 +6,6 @@ import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from './AppText';
-import { getStatusBarPadding } from '@src/utils';
 
 const OfflineNotice = (): React.ReactNode => {
   const netInfo = useNetInfo();
@@ -30,8 +29,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     zIndex: 1,
-    paddingTop: getStatusBarPadding() + Size.calcHeight(10),
-    paddingBottom: Size.calcHeight(20),
+    paddingVertical: Size.calcHeight(20),
+    paddingBottom: Size.calcHeight(10),
   },
   text: {
     color: colors.WHITE_100,

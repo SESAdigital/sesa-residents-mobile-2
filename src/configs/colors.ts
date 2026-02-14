@@ -7,6 +7,8 @@ export default Object.freeze({
   BLUE_110: '#252538',
   BLUE_120: '#09121F',
   BLUE_130: '#18181F',
+  BLUE_140: '#EEF4FF',
+  BLUE_150: '#D9E7FF',
   BLUE_200: '#0556DB',
   BLUE_300: '#044CB7',
   BLUE_400: '#E5EFFF',

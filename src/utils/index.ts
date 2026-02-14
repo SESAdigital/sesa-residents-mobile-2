@@ -1,17 +1,8 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import { Alert, Linking, StatusBar } from 'react-native';
-import { getSystemVersion, hasNotch } from 'react-native-device-info';
+import { Alert, Linking } from 'react-native';
 
 import appConfig from './appConfig';
 import { appToast } from './appToast';
-import Size from './useResponsiveSize';
-
-export function getStatusBarPadding() {
-  const height = StatusBar?.currentHeight || Size.calcHeight(30);
-
-  if (!hasNotch() && Number(getSystemVersion()) >= 9) return height;
-  return 0;
-}
 
 export function truncateText(text: string, maxLength = 100) {
   if (!text) return '';

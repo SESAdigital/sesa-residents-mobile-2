@@ -21,7 +21,7 @@ const TransactionListRow = ({ val }: Props): React.ReactNode => {
 
           <View style={styles.contentContainer}>
             <View style={styles.descriptionContainer}>
-              <AppText>
+              <AppText style={{ width: '70%' }}>
                 {transaction?.description} Lorem ipsum dolor sit, amet
                 consectetur adipisicing elit. Eum enim molestiae pariatur?
                 Maxime earum exercitationem id nostrum, a perspiciatis nulla
@@ -58,12 +58,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: Size.calcHeight(1),
     borderBottomColor: colors.WHITE_300,
     flexDirection: 'row',
+    maxWidth: '80%',
     alignItems: 'center',
   },
 
   descriptionContainer: {
     paddingHorizontal: Size.calcWidth(12),
-    flex: 1,
+    width: '100%',
+    backgroundColor: 'yellow',
   },
 
   date: {

@@ -1,12 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
 import SwitchPropertyRow from '@src/components/common/SwitchPropertyRow';
-import Size from '@src/utils/useResponsiveSize';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
+import Size from '@src/utils/useResponsiveSize';
 
 const BookVisitorScreen = (): React.JSX.Element => {
   return (

@@ -17,7 +17,7 @@ const OfflineNotice = (): React.JSX.Element => {
       </SafeAreaView>
     );
 
-  return null;
+  return <></>;
 };
 
 const styles = StyleSheet.create({

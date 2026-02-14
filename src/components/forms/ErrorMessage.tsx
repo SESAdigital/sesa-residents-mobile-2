@@ -8,7 +8,7 @@ interface Props {
 
 const ErrorMessage = ({ message }: Props): React.JSX.Element => {
   if (!message) {
-    return;
+    return <></>;
   }
 
   const formattedMessage = message?.split('"')?.join('');

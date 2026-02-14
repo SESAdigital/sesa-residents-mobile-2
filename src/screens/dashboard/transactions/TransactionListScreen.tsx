@@ -7,16 +7,15 @@ import AppScreen from '@src/components/AppScreen';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
 import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import DuplicateLoader from '@src/components/DuplicateLoader';
-import EmptyTableComponent from '@src/components/EmptyTableComponent';
 import AppSearchInput from '@src/components/forms/AppSearchInput';
 import { MaterialSymbolsHistory } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
+import EmtpyTransactionComponent from './components/EmtpyTransactionComponent';
 import TransactionListRow, {
   TransactionListRowLoader,
 } from './components/TransactionListRow';
-import EmtpyTransactionComponent from './components/EmtpyTransactionComponent';
 
 const isLoading = false;
 const queryKey = [queryKeys.GET_WALLET_TRANSACTIONS, 'a'];

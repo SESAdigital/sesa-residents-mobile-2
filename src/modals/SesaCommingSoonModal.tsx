@@ -14,7 +14,10 @@ interface Props {
   hubItem: HubItem;
 }
 
-const SesaCommingSoonModal = ({ details, hubItem }: Props): React.ReactNode => {
+const SesaCommingSoonModal = ({
+  details,
+  hubItem,
+}: Props): React.JSX.Element => {
   const { closeActiveModal } = useAppStateStore();
   const { Icon, bgColor, title, color } = hubItem;
 

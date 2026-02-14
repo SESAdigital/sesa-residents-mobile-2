@@ -35,7 +35,7 @@ const data = [
   },
 ];
 
-const OneLastStepScreen = (): React.ReactNode => {
+const OneLastStepScreen = (): React.JSX.Element => {
   const navigation = useAppNavigator();
 
   return (

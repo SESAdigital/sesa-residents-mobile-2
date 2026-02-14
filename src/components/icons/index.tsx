@@ -375,18 +375,24 @@ export function MaterialSymbolsArrowDropDown(props: SvgProps) {
   );
 }
 
-export function MaterialSymbolsChevronRight(props: SvgProps) {
+export function MaterialSymbolsChevronRightRounded(props: SvgProps) {
   return (
     <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
-      <Path fill="currentColor" d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z" />
+      <Path
+        fill="currentColor"
+        d="M12.6 12L8.7 8.1q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l4.6 4.6q.15.15.213.325t.062.375t-.062.375t-.213.325l-4.6 4.6q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7z"
+      />
     </Svg>
   );
 }
 
-export function MaterialSymbolsChevronLeft(props: SvgProps) {
+export function MaterialSymbolsChevronLeftRounded(props: SvgProps) {
   return (
     <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
-      <Path fill="currentColor" d="m14 18l-6-6l6-6l1.4 1.4l-4.6 4.6l4.6 4.6z" />
+      <Path
+        fill="currentColor"
+        d="m10.8 12l3.9 3.9q.275.275.275.7t-.275.7t-.7.275t-.7-.275l-4.6-4.6q-.15-.15-.212-.325T8.425 12t.063-.375t.212-.325l4.6-4.6q.275-.275.7-.275t.7.275t.275.7t-.275.7z"
+      />
     </Svg>
   );
 }
@@ -496,6 +502,52 @@ export function MaterialSymbolsTouchApp(props: SvgProps) {
       <Path
         fill="currentColor"
         d="M10.475 22q-.7 0-1.312-.3t-1.038-.85l-5.45-6.925l.475-.5q.5-.525 1.2-.625t1.3.275L7.5 14.2V6q0-.425.288-.712T8.5 5t.725.288t.3.712v5H17q1.25 0 2.125.875T20 14v4q0 1.65-1.175 2.825T16 22zm-6.3-13.5q-.325-.55-.5-1.187T3.5 6q0-2.075 1.463-3.537T8.5 1t3.538 1.463T13.5 6q0 .675-.175 1.313t-.5 1.187l-1.725-1q.2-.35.3-.712T11.5 6q0-1.25-.875-2.125T8.5 3t-2.125.875T5.5 6q0 .425.1.788t.3.712z"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsCheckRounded(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="m9.55 15.15l8.475-8.475q.3-.3.7-.3t.7.3t.3.713t-.3.712l-9.175 9.2q-.3.3-.7.3t-.7-.3L4.55 13q-.3-.3-.288-.712t.313-.713t.713-.3t.712.3z"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsHorizontalRuleRounded(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M5 13q-.425 0-.712-.288T4 12t.288-.712T5 11h14q.425 0 .713.288T20 12t-.288.713T19 13z"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsLightCallOutline(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M18.93 20q-2.528 0-5.184-1.266t-4.935-3.555t-3.545-4.935T4 5.07q0-.458.3-.763T5.05 4h2.473q.408 0 .712.257t.411.659L9.142 7.3q.07.42-.025.733t-.333.513L6.59 10.592q.616 1.117 1.361 2.076t1.59 1.817q.87.87 1.874 1.62q1.004.749 2.204 1.414l2.139-2.177q.244-.263.549-.347q.304-.083.674-.033l2.103.43q.408.1.662.411t.254.712v2.435q0 .45-.306.75t-.763.3M6.12 9.654l1.92-1.765q.095-.077.124-.212q.03-.135-.01-.25l-.443-2.12q-.039-.153-.135-.23T7.327 5H5.275q-.115 0-.192.077t-.077.192q.029 1.025.321 2.14t.794 2.245m8.45 8.334q1.014.502 2.16.743q1.148.24 2 .257q.115 0 .192-.077T19 18.72v-2.008q0-.153-.077-.25q-.077-.096-.23-.134l-1.85-.379q-.116-.039-.203-.01q-.086.03-.182.125zm0 0"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsLightEmergencyHomeOutlineRounded(
+  props: SvgProps,
+) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M12 20.775q-.304 0-.598-.125q-.295-.125-.538-.354l-7.16-7.16q-.23-.243-.354-.538q-.125-.294-.125-.598t.121-.602t.358-.534l7.16-7.16q.243-.25.538-.364T12 3.225t.602.118t.535.36l7.16 7.16q.241.237.36.53t.118.607q0 .304-.114.598t-.365.538l-7.16 7.16q-.236.237-.53.358q-.293.121-.606.121m.442-1.192l7.14-7.14q.155-.154.155-.443t-.154-.442l-7.14-7.14q-.154-.155-.443-.155t-.442.154l-7.14 7.14q-.155.155-.155.443t.154.442l7.14 7.14q.155.155.443.155t.442-.154m-.441-6.41q.213 0 .356-.144t.143-.356v-4.23q0-.213-.144-.357t-.357-.144t-.356.144t-.143.356v4.231q0 .212.144.356t.357.144M12 15.403q.262 0 .439-.176q.176-.177.176-.439t-.176-.438t-.439-.177t-.438.177t-.177.439t.177.438t.438.177M12 12"
       />
     </Svg>
   );

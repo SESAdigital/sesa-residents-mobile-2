@@ -4,14 +4,14 @@ import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
-import { MaterialSymbolsChevronLeft } from '../icons';
+import { MaterialSymbolsChevronLeftRounded } from '../icons';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 
 interface Props {
   onBackPress?: () => void;
 }
 
-const AppGoBackHeader = ({ onBackPress }: Props): React.ReactNode => {
+const AppGoBackHeader = ({ onBackPress }: Props): React.JSX.Element => {
   const navigation = useAppNavigator();
 
   const onPress = () => {
@@ -24,7 +24,7 @@ const AppGoBackHeader = ({ onBackPress }: Props): React.ReactNode => {
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={onPress} style={styles.headerButton}>
-        <MaterialSymbolsChevronLeft
+        <MaterialSymbolsChevronLeftRounded
           height={Size.calcAverage(24)}
           width={Size.calcAverage(24)}
           color={colors.BLACK_100}

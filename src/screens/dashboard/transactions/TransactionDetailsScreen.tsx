@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text } from 'react-native';
 
-const TransactionDetailsScreen = (): React.ReactNode => {
+const TransactionDetailsScreen = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <Text>SingleTransactionScreen</Text>

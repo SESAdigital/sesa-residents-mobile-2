@@ -1,7 +1,7 @@
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import CheckYourMailComponent from './components/CheckYourMailComponent';
 
-const PreLoginSuccessScreen = (): React.ReactNode => {
+const PreLoginSuccessScreen = (): React.JSX.Element => {
   const navigation = useAppNavigator();
 
   const handleResend = () => {

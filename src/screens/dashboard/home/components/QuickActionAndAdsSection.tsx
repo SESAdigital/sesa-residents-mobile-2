@@ -8,7 +8,7 @@ import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import { quickActions } from '@src/assets/data';
 
-const QuickActionAndAdsSection = (): React.ReactNode => {
+const QuickActionAndAdsSection = (): React.JSX.Element => {
   return (
     <>
       <View style={styles.row}>

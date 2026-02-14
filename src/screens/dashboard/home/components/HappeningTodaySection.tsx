@@ -7,7 +7,7 @@ import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import VisitorListRow, { VisitorListRowLoader } from './VisitorListRow';
 
-const HappeningTodaySection = (): React.ReactNode => {
+const HappeningTodaySection = (): React.JSX.Element => {
   return (
     <>
       <View style={styles.container}>

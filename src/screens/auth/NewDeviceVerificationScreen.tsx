@@ -13,7 +13,7 @@ import { useAuthStore } from '@src/stores/auth.store';
 import { maskEmail } from '@src/utils';
 import { getDeviceId } from 'react-native-device-info';
 
-const NewDeviceVerificationScreen = (): React.ReactNode => {
+const NewDeviceVerificationScreen = (): React.JSX.Element => {
   const [pin, setPin] = useState<string>('');
   const patchValidateNewDeviceCodeAPI = useMutation({
     mutationFn: patchValidateNewDeviceCode,

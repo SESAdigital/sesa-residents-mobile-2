@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text } from 'react-native';
 
-const PanicAlertScreen = (): React.ReactNode => {
+const PanicAlertScreen = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <Text>PanicAlertScreen</Text>

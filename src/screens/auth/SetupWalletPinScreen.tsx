@@ -15,7 +15,7 @@ import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import WalletPinInput from './components/WalletPinInput';
 
-const SetupWalletPinScreen = (): React.ReactNode => {
+const SetupWalletPinScreen = (): React.JSX.Element => {
   const [pin, setPin] = useState<string>('');
   const [confirmPin, setConfirmPin] = useState<string>('');
   const [currentStep, setCurrentStep] = useState<number>(0);

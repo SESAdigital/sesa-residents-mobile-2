@@ -4,7 +4,7 @@ import { MaterialSymbolsNotifications } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import Size from '@src/utils/useResponsiveSize';
 
-const TransactionIconMapper = (): React.ReactNode => {
+const TransactionIconMapper = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <MaterialSymbolsNotifications

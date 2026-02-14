@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text } from 'react-native';
 
-const ActivityScreen = (): React.ReactNode => {
+const ActivityScreen = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <Text>ActivityScreen</Text>

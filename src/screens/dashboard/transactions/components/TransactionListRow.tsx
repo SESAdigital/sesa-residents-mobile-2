@@ -11,7 +11,7 @@ interface Props {
   val: GetWalletTransactionData;
 }
 
-const TransactionListRow = ({ val }: Props): React.ReactNode => {
+const TransactionListRow = ({ val }: Props): React.JSX.Element => {
   return (
     <View>
       <AppText style={styles.date}>{val?.date}</AppText>
@@ -39,7 +39,7 @@ const TransactionListRow = ({ val }: Props): React.ReactNode => {
   );
 };
 
-export const TransactionListRowLoader = (): React.ReactNode => {
+export const TransactionListRowLoader = (): React.JSX.Element => {
   return <></>;
 };
 

@@ -23,7 +23,7 @@ interface Props {
 
 const seconds = 60;
 
-const CheckYourMailComponent = (props: Props): React.ReactNode => {
+const CheckYourMailComponent = (props: Props): React.JSX.Element => {
   const navigation = useAppNavigator();
   const {
     subtitle,

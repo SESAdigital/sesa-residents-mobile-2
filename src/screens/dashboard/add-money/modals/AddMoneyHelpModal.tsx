@@ -10,7 +10,7 @@ import { openURL } from '@src/utils';
 import appConfig from '@src/utils/appConfig';
 import Size from '@src/utils/useResponsiveSize';
 
-const AddMoneyHelpModal = (): React.ReactNode => {
+const AddMoneyHelpModal = (): React.JSX.Element => {
   const { closeActiveModal } = useAppStateStore();
   return (
     <View style={styles.container}>

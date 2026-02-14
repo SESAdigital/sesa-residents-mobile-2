@@ -8,7 +8,7 @@ import Size from '@src/utils/useResponsiveSize';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 
-const BookVisitorScreen = (): React.ReactNode => {
+const BookVisitorScreen = (): React.JSX.Element => {
   return (
     <AppScreen style={styles.container}>
       <AppScreenHeader>

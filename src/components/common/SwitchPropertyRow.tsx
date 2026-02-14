@@ -10,7 +10,7 @@ import { useAuthStore } from '@src/stores/auth.store';
 import SwitchPropertyModal from '@src/modals/SwitchPropertyModal';
 import { useGetProperties } from '@src/hooks/useGetRequests';
 
-const SwitchPropertyRow = (): React.ReactNode => {
+const SwitchPropertyRow = (): React.JSX.Element => {
   const { setActiveModal } = useAppStateStore();
   const { selectedProperty } = useAuthStore();
   useGetProperties();

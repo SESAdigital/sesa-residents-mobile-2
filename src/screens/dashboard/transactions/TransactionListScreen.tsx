@@ -21,7 +21,7 @@ import EmtpyTransactionComponent from './components/EmtpyTransactionComponent';
 const isLoading = false;
 const queryKey = [queryKeys.GET_WALLET_TRANSACTIONS, 'a'];
 
-const TransactionListScreen = (): React.ReactNode => {
+const TransactionListScreen = (): React.JSX.Element => {
   const { data: walletTransactions } = useQuery({
     queryKey,
     queryFn: async () => {

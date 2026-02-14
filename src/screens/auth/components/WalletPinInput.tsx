@@ -62,7 +62,7 @@ interface Props {
   subtitleStyles?: TextStyle;
 }
 
-const WalletPinInput = (props: Props): React.ReactNode => {
+const WalletPinInput = (props: Props): React.JSX.Element => {
   const {
     pin,
     onPinChange,

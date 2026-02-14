@@ -35,7 +35,7 @@ export interface ForgotPasswordScreenParam {
 
 const ForgotPasswordScreen = (val: {
   route: ForgotPasswordScreenProps;
-}): React.ReactNode => {
+}): React.JSX.Element => {
   const param = val?.route?.params;
   const [selectedMode, setSelectedMode] = useState<LoginModeType>(
     param?.phoneNumber ? LoginModeData.PhoneNumber : LoginModeData.EmailAddress,

@@ -6,7 +6,7 @@ interface Props {
   message: string | null;
 }
 
-const ErrorMessage = ({ message }: Props): React.ReactNode => {
+const ErrorMessage = ({ message }: Props): React.JSX.Element => {
   if (!message) {
     return;
   }

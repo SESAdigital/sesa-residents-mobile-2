@@ -6,7 +6,7 @@ import {
 
 const AppKeyboardAvoidingView = (
   props: KeyboardAvoidingViewProps,
-): React.ReactNode => {
+): React.JSX.Element => {
   return (
     <KeyboardAvoidingView
       keyboardVerticalOffset={Platform.OS === 'ios' ? 70 : 0}

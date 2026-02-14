@@ -25,7 +25,7 @@ export interface AppTextInputWithoutValidationProps extends TextInputProps {
 
 const AppTextInputWithoutValidation = (
   props: AppTextInputWithoutValidationProps,
-): React.ReactNode => {
+): React.JSX.Element => {
   const {
     label,
     containerStyle,

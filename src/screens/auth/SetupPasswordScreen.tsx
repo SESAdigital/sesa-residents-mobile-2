@@ -31,7 +31,7 @@ const schema = Joi.object<PatchSetupPasswordReq>({
   confirmPassword: joiSchemas.strictPassword,
 });
 
-const SetupPasswordScreen = (): React.ReactNode => {
+const SetupPasswordScreen = (): React.JSX.Element => {
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
   const patchSetupPasswordAPI = useMutation({ mutationFn: patchSetupPassword });
   const queryClient = useQueryClient();

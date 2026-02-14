@@ -11,7 +11,7 @@ interface Props {
   style?: StyleProp<ViewStyle>;
 }
 
-const AppSkeletonLoader = (props: Props): React.ReactNode => {
+const AppSkeletonLoader = (props: Props): React.JSX.Element => {
   const {
     children,
     borderRadius = 10,

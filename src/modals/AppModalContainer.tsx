@@ -16,7 +16,7 @@ interface Props {
   style?: ViewStyle;
 }
 
-const AppModalContainer = (props: Props): React.ReactNode => {
+const AppModalContainer = (props: Props): React.JSX.Element => {
   const { visible, onClose, children, style } = props;
 
   return (

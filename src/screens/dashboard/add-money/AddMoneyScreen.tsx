@@ -25,7 +25,7 @@ import { copyTextToClipboard } from '@src/utils';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 
-const AddMoneyScreen = (): React.ReactNode => {
+const AddMoneyScreen = (): React.JSX.Element => {
   const { data, isFetching, refetch } = useGetWalletBalance();
   const { setActiveModal } = useAppStateStore();
   const navigation = useAppNavigator();

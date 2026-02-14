@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { getDeviceId } from 'react-native-device-info';
 
-
 import {
   PatchSetupPasswordReq,
   postLogin,
@@ -48,7 +47,7 @@ const schema = Joi.object<LoginSchema>({
   password: joiSchemas.password,
 });
 
-const LoginScreen = (): React.ReactNode => {
+const LoginScreen = (): React.JSX.Element => {
   const [selectedMode, setSelectedMode] = useState<LoginModeType>(
     LoginModeData.EmailAddress,
   );

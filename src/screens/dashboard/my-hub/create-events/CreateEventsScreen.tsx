@@ -2,7 +2,7 @@ import { StyleSheet, Text } from 'react-native';
 
 import AppScreen from '@src/components/AppScreen';
 
-const CreateEventsScreen = (): React.ReactNode => {
+const CreateEventsScreen = (): React.JSX.Element => {
   return (
     <AppScreen style={styles.container}>
       <Text>CreateEventsScreen</Text>

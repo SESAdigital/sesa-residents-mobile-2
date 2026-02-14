@@ -27,7 +27,7 @@ const schema = Joi.object<PreLoginReq>({
   phoneNumber: joiSchemas.phone.optional().allow(''),
 });
 
-const RetrieveAccountScreen = (): React.ReactNode => {
+const RetrieveAccountScreen = (): React.JSX.Element => {
   const [selectedMode, setSelectedMode] = useState<LoginModeType>(
     LoginModeData.EmailAddress,
   );

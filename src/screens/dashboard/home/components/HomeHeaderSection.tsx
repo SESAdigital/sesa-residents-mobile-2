@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 import AppAvatar from '@src/components/AppAvatar';
 import AppText from '@src/components/AppText';
 import SwitchPropertyRow from '@src/components/common/SwitchPropertyRow';
-import { MaterialSymbolsChevronRight } from '@src/components/icons';
+import { MaterialSymbolsChevronRightRounded } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import {
@@ -16,7 +16,7 @@ import Size from '@src/utils/useResponsiveSize';
 import BillReminderBanner from './BillReminderBanner';
 import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 
-const HomeHeaderSection = (): React.ReactNode => {
+const HomeHeaderSection = (): React.JSX.Element => {
   const navigation = useAppNavigator();
   const { data, isLoading } = useGetWalletBalance();
   const { details } = useGetUserDetails();
@@ -65,7 +65,7 @@ const HomeHeaderSection = (): React.ReactNode => {
         style={styles.viewTransactionsContainer}
       >
         <AppText style={{ color: colors.WHITE_300 }}>View Transactions</AppText>
-        <MaterialSymbolsChevronRight
+        <MaterialSymbolsChevronRightRounded
           height={Size.calcAverage(24)}
           width={Size.calcAverage(24)}
           color={colors.WHITE_300}

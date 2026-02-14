@@ -25,7 +25,7 @@ interface Props {
   onSelectMode: (mode: LoginModeType) => void;
 }
 
-const LoginModeToggle = (props: Props): React.ReactNode => {
+const LoginModeToggle = (props: Props): React.JSX.Element => {
   const { selectedMode, onSelectMode } = props;
 
   return (

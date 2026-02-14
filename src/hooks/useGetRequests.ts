@@ -20,7 +20,10 @@ export const useGetUserDetails = () => {
     lastName: profileData?.name?.split(' ')?.[1] || loginData?.lastName,
     email: profileData?.email || loginData?.email,
     photo: profileData?.photo || loginData?.photo,
+    status: profileData?.status || loginData?.accountStatus,
+    statusText: profileData?.statusText || loginData?.accountStatusText,
     phone: profileData?.phoneNumber,
+    dateOnboarded: profileData?.dateOnboarded,
   } as const;
 
   return {

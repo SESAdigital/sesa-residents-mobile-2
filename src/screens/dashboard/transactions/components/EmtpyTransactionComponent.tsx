@@ -6,7 +6,7 @@ import { MaterialSymbolsHistory } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 
-const EmtpyTransactionComponent = (): React.ReactNode => {
+const EmtpyTransactionComponent = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <MaterialSymbolsHistory

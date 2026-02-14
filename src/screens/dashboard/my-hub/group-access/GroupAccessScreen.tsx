@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text } from 'react-native';
 
-const GroupAccessScreen = (): React.ReactNode => {
+const GroupAccessScreen = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <Text>GroupAccessScreen</Text>

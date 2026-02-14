@@ -27,7 +27,7 @@ interface Props {
   disabled?: boolean;
 }
 
-const SubmitButton = (props: Props): React.ReactNode => {
+const SubmitButton = (props: Props): React.JSX.Element => {
   const { isLoading, onPress, title, style, variant, disabled } = props;
   return (
     <TouchableOpacity

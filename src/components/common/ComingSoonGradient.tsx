@@ -5,7 +5,7 @@ import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
 
-const ComingSoonGradient = (): React.ReactNode => {
+const ComingSoonGradient = (): React.JSX.Element => {
   return (
     // <View>
     <LinearGradient

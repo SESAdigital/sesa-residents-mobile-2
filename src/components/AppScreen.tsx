@@ -19,7 +19,7 @@ interface ScreenProps extends ViewProps {
 }
 // statusbarColor = colors.WHITE100,
 //   statusbarStyle = 'dark-content',
-const AppScreen = (props: ScreenProps): React.ReactNode => {
+const AppScreen = (props: ScreenProps): React.JSX.Element => {
   const {
     children,
     style,

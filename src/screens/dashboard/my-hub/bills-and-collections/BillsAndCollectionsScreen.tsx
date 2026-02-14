@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text } from 'react-native';
 
-const BillsAndCollectionsScreen = (): React.ReactNode => {
+const BillsAndCollectionsScreen = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <Text>BillsAndCollectionsScreen</Text>

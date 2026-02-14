@@ -10,7 +10,7 @@ interface Props {
   isLoading: boolean;
 }
 
-const AppLoadingModal = (props: Props): React.ReactNode => {
+const AppLoadingModal = (props: Props): React.JSX.Element => {
   const { title, isLoading } = props;
   return (
     <Modal

@@ -1,27 +1,29 @@
 import { StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import AppAvatar from '@src/components/AppAvatar';
 import AppText from '@src/components/AppText';
 import {
   MaterialSymbolsArrowDropDown,
-  MaterialSymbolsCall,
   MaterialSymbolsHelp,
   MaterialSymbolsHome,
-  MaterialSymbolsMail,
-  MaterialSymbolsQrCode,
   MaterialSymbolsQrCodeScanner,
   MaterialSymbolsSettings,
   MaterialSymbolsTouchApp,
+  RiInformationFill,
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useGetUserDetails } from '@src/hooks/useGetRequests';
+import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import Size from '@src/utils/useResponsiveSize';
+import AccessHistoryInfoModal from './modals/AccessHistoryInfoModal';
+import ProfileDetailsRow from './components/ProfileDetailsRow';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
 
-const AccountScreen = (): React.ReactNode => {
-  const { details } = useGetUserDetails();
+const AccountScreen = (): React.JSX.Element => {
+  const { setActiveModal } = useAppStateStore();
   const { selectedProperty } = useAuthStore();
+  const navigation = useAppNavigator();
 
   const actions = [
     {
@@ -41,13 +43,21 @@ const AccountScreen = (): React.ReactNode => {
   const actionButtons = [
     {
       title: 'Manage Profile',
-      onClick: () => {},
+      onClick: () => navigation.navigate(routes.MANAGE_PROFILE_SCREEN),
     },
     {
       title: 'Manage Household',
-      onClick: () => {},
+      onClick: () => navigation.navigate(routes.MANAGE_HOUSEHOLD_SCREEN),
     },
   ];
+
+  const viewAccessInfo = () => {
+    setActiveModal({
+      modalType: 'EMPTY_MODAL',
+      shouldBackgroundClose: true,
+      emptyModalComponent: <AccessHistoryInfoModal />,
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -66,45 +76,7 @@ const AccountScreen = (): React.ReactNode => {
       </View>
 
       <View style={styles.contentContainer}>
-        <View style={styles.row}>
-          <View style={styles.profileContainer}>
-            <AppAvatar
-              firstWord={details?.firstName}
-              imageURL={details?.photo}
-              lastWord={details?.lastName}
-              style={styles.profileImage}
-            />
-            <View style={styles.profileDetails}>
-              <AppText style={styles.profileName}>
-                {details?.firstName} {details?.lastName}
-              </AppText>
-              <View style={styles.row}>
-                <MaterialSymbolsMail
-                  height={Size.calcAverage(16)}
-                  width={Size.calcAverage(16)}
-                  color={colors.GRAY_100}
-                />
-                <AppText style={styles.profileText}>{details?.email}</AppText>
-              </View>
-              <View style={styles.row}>
-                <MaterialSymbolsCall
-                  height={Size.calcAverage(16)}
-                  width={Size.calcAverage(16)}
-                  color={colors.GRAY_100}
-                />
-                <AppText style={styles.profileText}>{details?.phone}</AppText>
-              </View>
-            </View>
-          </View>
-
-          <TouchableOpacity>
-            <MaterialSymbolsQrCode
-              color={colors.BLUE_600}
-              height={Size.calcAverage(24)}
-              width={Size.calcAverage(24)}
-            />
-          </TouchableOpacity>
-        </View>
+        <ProfileDetailsRow />
 
         <View style={styles.actionButtons}>
           {actionButtons?.map(({ title, onClick }, index) => (
@@ -166,9 +138,15 @@ const AccountScreen = (): React.ReactNode => {
       </View>
       <View style={{ backgroundColor: colors.WHITE_200 }}>
         <View style={styles.accessHistory}>
-          <View style={styles.row}>
+          <TouchableOpacity onPress={viewAccessInfo} style={styles.row}>
             <AppText style={styles.accessHistoryText}>Access History</AppText>
-          </View>
+            <RiInformationFill
+              height={Size.calcAverage(16)}
+              width={Size.calcAverage(16)}
+              color={colors.GRAY_200}
+              style={{ marginBottom: Size.calcHeight(-4) }}
+            />
+          </TouchableOpacity>
           <View style={styles.row}>
             <AppText style={styles.switchPropertyText}>For You</AppText>
             <MaterialSymbolsArrowDropDown
@@ -252,35 +230,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: Size.calcWidth(21),
     paddingVertical: Size.calcHeight(19),
-  },
-
-  profileContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-
-  profileDetails: {
-    rowGap: Size.calcHeight(6),
-    paddingHorizontal: Size.calcWidth(12),
-  },
-
-  profileImage: {
-    height: Size.calcAverage(56),
-    width: Size.calcAverage(56),
-    borderRadius: Size.calcAverage(56),
-  },
-
-  profileName: {
-    fontFamily: fonts.INTER_600,
-    fontSize: Size.calcAverage(16),
-    color: colors.BLACK_300,
-  },
-
-  profileText: {
-    fontSize: Size.calcAverage(12),
-    color: colors.GRAY_100,
-    paddingHorizontal: Size.calcWidth(4),
   },
 
   propertyCard: {

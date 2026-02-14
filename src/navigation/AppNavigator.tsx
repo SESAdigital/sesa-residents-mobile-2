@@ -37,6 +37,10 @@ import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
 import TransactionListScreen from '@src/screens/dashboard/transactions/TransactionListScreen';
 import TransactionDetailsScreen from '@src/screens/dashboard/transactions/TransactionDetailsScreen';
+import ManageProfileScreen from '@src/screens/dashboard/account/screens/manage-profile/ManageProfileScreen';
+import AccountSettingsScreen from '@src/screens/dashboard/account/screens/settings/AccountSettingsScreen';
+import HelpCenterScreen from '@src/screens/dashboard/account/screens/help-center/HelpCenterScreen';
+import ManageHouseholdScreen from '@src/screens/dashboard/account/screens/manage-household/ManageHouseholdScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -62,6 +66,12 @@ export type AppNavigatorParams = {
   [routes.ADD_MONEY_ATM_CARD_SCREEN]: undefined;
   [routes.TRANSACTION_LIST_SCREEN]: undefined;
   [routes.TRANSACTION_DETAILS_SCREEN]: undefined;
+
+  // ACCOUNTS SCREEN
+  [routes.MANAGE_PROFILE_SCREEN]: undefined;
+  [routes.MANAGE_HOUSEHOLD_SCREEN]: undefined;
+  [routes.ACCOUNT_SETTINGS_SCREEN]: undefined;
+  [routes.HELP_CENTER_SCREEN]: undefined;
 };
 
 export type AppParamsNavigator = NativeStackNavigationProp<AppNavigatorParams>;
@@ -113,6 +123,12 @@ const RootStack = createNativeStackNavigator({
         [routes.ADD_MONEY_ATM_CARD_SCREEN]: AddMoneyViaCardScreen,
         [routes.TRANSACTION_LIST_SCREEN]: TransactionListScreen,
         [routes.TRANSACTION_DETAILS_SCREEN]: TransactionDetailsScreen,
+
+        // ACCOUNTS SCREEN
+        [routes.MANAGE_PROFILE_SCREEN]: ManageProfileScreen,
+        [routes.MANAGE_HOUSEHOLD_SCREEN]: ManageHouseholdScreen,
+        [routes.ACCOUNT_SETTINGS_SCREEN]: AccountSettingsScreen,
+        [routes.HELP_CENTER_SCREEN]: HelpCenterScreen,
       },
     },
   },

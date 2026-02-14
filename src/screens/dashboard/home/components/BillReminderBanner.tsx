@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import AppText from '@src/components/AppText';
 import {
-  MaterialSymbolsChevronRight,
+  MaterialSymbolsChevronRightRounded,
   RiInformationFill,
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
@@ -11,7 +11,7 @@ import fonts from '@src/configs/fonts';
 
 type Status = 'SUCCESS' | 'INFO' | 'DANGER';
 
-const BillReminderBanner = (): React.ReactNode => {
+const BillReminderBanner = (): React.JSX.Element => {
   const status: Status = 'SUCCESS';
   const { color, backgroundColor } = getColors(status);
   return (
@@ -24,7 +24,7 @@ const BillReminderBanner = (): React.ReactNode => {
         />
         <AppText style={styles.text}>You have a bill due in 2 day(s)</AppText>
       </View>
-      <MaterialSymbolsChevronRight
+      <MaterialSymbolsChevronRightRounded
         height={Size.calcAverage(20)}
         width={Size.calcAverage(20)}
         color={colors.BLACK_100}

@@ -22,7 +22,7 @@ import { GetDashboardPropertiesData } from '@src/api/dashboard.api';
 import { useAuthStore } from '@src/stores/auth.store';
 import { useState } from 'react';
 
-const SwitchPropertyModal = (): React.ReactNode => {
+const SwitchPropertyModal = (): React.JSX.Element => {
   const { closeActiveModal } = useAppStateStore();
   const { data: properties, isLoading } = useGetProperties();
   const queryClient = useQueryClient();

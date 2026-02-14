@@ -8,7 +8,7 @@ import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import HomeHeaderSection from '../home/components/HomeHeaderSection';
 
-const MyhubScreen = (): React.ReactNode => {
+const MyhubScreen = (): React.JSX.Element => {
   const { myHubData } = useAllHubItems();
 
   return (

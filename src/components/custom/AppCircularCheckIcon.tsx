@@ -8,7 +8,7 @@ interface Props {
   isChecked: boolean;
 }
 
-const AppCircularCheckIcon = ({ isChecked }: Props): React.ReactNode => {
+const AppCircularCheckIcon = ({ isChecked }: Props): React.JSX.Element => {
   return (
     <>
       {isChecked ? (

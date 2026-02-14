@@ -27,7 +27,7 @@ export interface AppModalProps {
   containerStyle?: StyleProp<ViewStyle>;
 }
 
-const AppModal = (): React.ReactNode => {
+const AppModal = (): React.JSX.Element => {
   const { activeModal, closeActiveModal } = useAppStateStore();
   // const handleOutPress = () => {
   //   if (activeModal?.shouldBackgroundClose) closeActiveModal();

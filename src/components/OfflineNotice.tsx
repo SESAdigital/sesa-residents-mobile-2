@@ -7,7 +7,7 @@ import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from './AppText';
 
-const OfflineNotice = (): React.ReactNode => {
+const OfflineNotice = (): React.JSX.Element => {
   const netInfo = useNetInfo();
 
   if (netInfo?.type !== 'unknown' && netInfo?.isInternetReachable === false)

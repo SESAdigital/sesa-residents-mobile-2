@@ -10,7 +10,7 @@ import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import Size from '@src/utils/useResponsiveSize';
 
-const OnboardingScreen1 = (): React.ReactNode => {
+const OnboardingScreen1 = (): React.JSX.Element => {
   const navigation = useAppNavigator();
 
   return (

@@ -65,7 +65,7 @@ export interface PostLoginRes extends GenericApiResponse {
     expiresTime: string;
     userType: number;
     userTypeText: string;
-    accountStatus: number;
+    accountStatus: UserAccountStatusType;
     accountStatusText: string;
     privileges: string[];
     estateName: string;

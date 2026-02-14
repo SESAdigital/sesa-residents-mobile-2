@@ -1,10 +1,10 @@
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from './AppText';
-import {EmptyTableIcon} from './icons/custom';
+import { EmptyTableIcon } from './icons/custom';
 
 interface Props {
   title?: string;
@@ -14,12 +14,12 @@ interface Props {
   fullScreen?: boolean;
 }
 
-const EmptyTableComponent = (props: Props): React.ReactNode => {
+const EmptyTableComponent = (props: Props): React.JSX.Element => {
   // const {title, description, onRetry, retryButtonTitle, fullScreen} = props;
-  const {title, description, onRetry, fullScreen} = props;
+  const { title, description, onRetry, fullScreen } = props;
 
   return (
-    <View style={[styles.container, fullScreen && {minHeight: '80%'}]}>
+    <View style={[styles.container, fullScreen && { minHeight: '80%' }]}>
       <EmptyTableIcon
         width={Size.calcAverage(40)}
         height={Size.calcAverage(40)}
@@ -29,7 +29,7 @@ const EmptyTableComponent = (props: Props): React.ReactNode => {
         <AppText style={styles.description}>{description}</AppText>
       )}
       {!!onRetry && (
-        <View style={{width: '70%'}}>
+        <View style={{ width: '70%' }}>
           {/* <SubmitButton
             title={retryButtonTitle || 'Refetch'}
             isLoading={false}

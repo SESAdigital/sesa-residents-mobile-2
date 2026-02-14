@@ -12,7 +12,7 @@ import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
 import {
-  MaterialSymbolsChevronLeft,
+  MaterialSymbolsChevronLeftRounded,
   MaterialSymbolsCloseRounded,
 } from '../icons';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
@@ -24,7 +24,7 @@ interface Props extends PropsWithChildren {
   icon?: 'back' | 'close';
 }
 
-const AppScreenHeader = (props: Props): React.ReactNode => {
+const AppScreenHeader = (props: Props): React.JSX.Element => {
   const navigation = useAppNavigator();
   const { onBackPress, title, children, containerStyle, icon } = props;
 
@@ -45,7 +45,7 @@ const AppScreenHeader = (props: Props): React.ReactNode => {
             color={colors.BLACK_100}
           />
         ) : (
-          <MaterialSymbolsChevronLeft
+          <MaterialSymbolsChevronLeftRounded
             height={Size.calcAverage(32)}
             width={Size.calcAverage(32)}
             color={colors.BLACK_100}

@@ -9,7 +9,7 @@ import { appToast } from '@src/utils/appToast';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 
-const NewDeviceScreen = (): React.ReactNode => {
+const NewDeviceScreen = (): React.JSX.Element => {
   const { loginResponse } = useAuthStore();
   const navigation = useAppNavigator();
   const postResendNewDeviceEmailAPI = useMutation({

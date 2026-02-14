@@ -15,7 +15,7 @@ const iconProp = {
   color: colors.GRAY_200,
 };
 
-const PasswordToggle = ({ isVisible, onClick }: Props): React.ReactNode => {
+const PasswordToggle = ({ isVisible, onClick }: Props): React.JSX.Element => {
   return (
     <Pressable onPress={onClick}>
       {isVisible ? (

@@ -19,7 +19,7 @@ interface Props extends PropsWithChildren {
   containerStyle?: StyleProp<ViewStyle>;
 }
 
-const AppModalHeader = (props: Props): React.ReactNode => {
+const AppModalHeader = (props: Props): React.JSX.Element => {
   const { onBackPress, title, children, containerStyle } = props;
 
   return (

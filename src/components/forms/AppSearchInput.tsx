@@ -21,7 +21,7 @@ interface Props extends TextInputProps {
   containerStyle?: StyleProp<ViewStyle>;
 }
 
-const AppSearchInput = (props: Props): React.ReactNode => {
+const AppSearchInput = (props: Props): React.JSX.Element => {
   const { onSearchDone, containerStyle, ...otherProps } = props;
 
   const [value, setValue] = useState(props.defaultValue || '');

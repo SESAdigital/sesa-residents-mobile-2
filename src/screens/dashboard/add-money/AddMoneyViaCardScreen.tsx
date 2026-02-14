@@ -2,7 +2,7 @@ import { StyleSheet, Text } from 'react-native';
 
 import AppScreen from '@src/components/AppScreen';
 
-const AddMoneyViaCardScreen = (): React.ReactNode => {
+const AddMoneyViaCardScreen = (): React.JSX.Element => {
   return (
     <AppScreen style={styles.container}>
       <Text>AddMoneyViaCardScreen</Text>

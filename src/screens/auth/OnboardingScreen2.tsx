@@ -37,7 +37,7 @@ const data = [
   },
 ];
 
-const OnboardingScreen2 = (): React.ReactNode => {
+const OnboardingScreen2 = (): React.JSX.Element => {
   const navigation = useAppNavigator();
   useGetCurrentLocation();
 

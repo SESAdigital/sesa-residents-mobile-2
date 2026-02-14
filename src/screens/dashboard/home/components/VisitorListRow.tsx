@@ -8,7 +8,7 @@ import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 
-const VisitorListRow = (): React.ReactNode => {
+const VisitorListRow = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -42,7 +42,7 @@ const VisitorListRow = (): React.ReactNode => {
   );
 };
 
-export const VisitorListRowLoader = (): React.ReactNode => {
+export const VisitorListRowLoader = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>

@@ -52,11 +52,7 @@ const AppScreenHeader = (props: Props): React.JSX.Element => {
           />
         )}
       </TouchableOpacity>
-      {!!title ? (
-        <AppText style={styles.headerTitle}>{title}</AppText>
-      ) : (
-        children
-      )}
+      {title ? <AppText style={styles.headerTitle}>{title}</AppText> : children}
     </View>
   );
 };

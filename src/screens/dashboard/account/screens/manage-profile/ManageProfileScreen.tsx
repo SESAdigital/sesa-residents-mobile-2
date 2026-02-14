@@ -26,7 +26,7 @@ import ProfileDetailsRow from '../../components/ProfileDetailsRow';
 
 const ManageProfileScreen = (): React.JSX.Element => {
   const { details } = useGetUserDetails();
-  const { Icon, color } = getStatusDetails(details?.status);
+  const { StatusIcon, color } = getStatusDetails(details?.status);
 
   const actions = [
     {
@@ -58,7 +58,7 @@ const ManageProfileScreen = (): React.JSX.Element => {
         </AppText>
 
         <View style={styles.row}>
-          <Icon
+          <StatusIcon
             color={color}
             height={Size.calcAverage(14)}
             width={Size.calcAverage(14)}
@@ -150,20 +150,20 @@ export default ManageProfileScreen;
 
 interface GetStatusDetails {
   color: string;
-  Icon: (props: SvgProps) => React.JSX.Element;
+  StatusIcon: (props: SvgProps) => React.JSX.Element;
 }
 
 function getStatusDetails(
   val: UserAccountStatusType | undefined,
 ): GetStatusDetails {
-  if (val == UserAccountStatusData.Active)
-    return { color: colors.GREEN_100, Icon: MaterialSymbolsCheckRounded };
+  if (val === UserAccountStatusData.Active)
+    return { color: colors.GREEN_100, StatusIcon: MaterialSymbolsCheckRounded };
 
-  if (val == UserAccountStatusData.InActive)
-    return { color: colors.RED_100, Icon: MaterialSymbolsCloseRounded };
+  if (val === UserAccountStatusData.InActive)
+    return { color: colors.RED_100, StatusIcon: MaterialSymbolsCloseRounded };
 
   return {
     color: colors.GRAY_100,
-    Icon: MaterialSymbolsHorizontalRuleRounded,
+    StatusIcon: MaterialSymbolsHorizontalRuleRounded,
   };
 }

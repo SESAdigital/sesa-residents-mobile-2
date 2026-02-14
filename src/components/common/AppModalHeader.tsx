@@ -31,11 +31,7 @@ const AppModalHeader = (props: Props): React.JSX.Element => {
           color={colors.BLACK_100}
         />
       </TouchableOpacity>
-      {!!title ? (
-        <AppText style={styles.headerTitle}>{title}</AppText>
-      ) : (
-        children
-      )}
+      {title ? <AppText style={styles.headerTitle}>{title}</AppText> : children}
     </View>
   );
 };

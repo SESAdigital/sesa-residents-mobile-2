@@ -92,7 +92,8 @@ const LoginScreen = (): React.JSX.Element => {
     const result = response?.data;
 
     if (response?.ok && !!result) {
-      queryClient.invalidateQueries();
+      appToast.Dismiss();
+      queryClient.resetQueries();
 
       if (
         result?.data?.onboardingStatus === OnboardingStatusData.PasswordSetup

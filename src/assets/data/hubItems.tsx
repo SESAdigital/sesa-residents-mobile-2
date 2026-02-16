@@ -161,10 +161,3 @@ export const allHubItems: HubItem[] = [
     route: null,
   },
 ];
-
-export const quickActions: HubItem[] = [
-  allHubItems[HubItemEnum.BOOK_VISITOR],
-  allHubItems[HubItemEnum.CREATE_EVENTS],
-  allHubItems[HubItemEnum.GROUP_ACCESS],
-  allHubItems[HubItemEnum.BILLS_AND_COLLECTIONS],
-];

@@ -11,6 +11,7 @@ export interface GenericLocation {
   longitude: number;
   latitude: number;
 }
+
 let isErrorShown = false;
 
 export const useGetCurrentLocation = () => {
@@ -74,7 +75,10 @@ export const useGetCurrentLocation = () => {
     requestLocationPermission();
   }, []);
 
-  return location;
+  return {
+    longitude: location?.longitude || 0,
+    latitude: location?.latitude || 0,
+  };
 };
 
 export const useWatchCurrentLocation = (): GenericLocation | null => {

@@ -59,6 +59,7 @@ export default Object.freeze({
   RED_400: '#991B1B',
   RED_500: '#FECACA',
   RED_600: '#FEF2F2',
+  RED_700: '#F46D55',
 
   TRANSPARENT_BLUE_100: '#0556DB33',
 

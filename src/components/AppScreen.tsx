@@ -16,6 +16,7 @@ interface ScreenProps extends ViewProps {
   contentContainerStyle?: ViewStyle;
   scrollable?: boolean;
   showDownInset?: boolean;
+  hideTopInset?: boolean;
 }
 // statusbarColor = colors.WHITE100,
 //   statusbarStyle = 'dark-content',
@@ -27,6 +28,7 @@ const AppScreen = (props: ScreenProps): React.JSX.Element => {
     scrollable,
     contentContainerStyle,
     showDownInset,
+    hideTopInset,
   } = props;
 
   return (
@@ -34,7 +36,7 @@ const AppScreen = (props: ScreenProps): React.JSX.Element => {
       edges={{
         bottom: showDownInset ? 'additive' : 'off',
         right: 'additive',
-        top: 'additive',
+        top: hideTopInset ? 'off' : 'additive',
         left: 'additive',
       }}
       style={[styles.screen, containerStyle]}

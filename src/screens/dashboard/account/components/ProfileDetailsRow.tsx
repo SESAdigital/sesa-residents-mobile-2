@@ -17,6 +17,8 @@ import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useGetUserDetails } from '@src/hooks/useGetRequests';
 import Size from '@src/utils/useResponsiveSize';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
 
 interface Props {
   containerStyle?: StyleProp<ViewStyle>;
@@ -25,6 +27,7 @@ interface Props {
 const ProfileDetailsRow = (props: Props): React.JSX.Element => {
   const { containerStyle } = props;
   const { details } = useGetUserDetails();
+  const navigation = useAppNavigator();
 
   return (
     <View style={[styles.row, containerStyle]}>
@@ -58,7 +61,9 @@ const ProfileDetailsRow = (props: Props): React.JSX.Element => {
         </View>
       </View>
 
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate(routes.MY_QR_CODE_SCREEN)}
+      >
         <MaterialSymbolsQrCode
           color={colors.BLUE_600}
           height={Size.calcAverage(24)}

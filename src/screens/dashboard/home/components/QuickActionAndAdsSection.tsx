@@ -1,19 +1,26 @@
+import { useNavigation } from '@react-navigation/native';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import { useAllHubItems } from '@src/assets/data';
 import SampleAdImage from '@src/assets/images/sample-ad.png';
 import AppImage from '@src/components/AppImage';
 import AppText from '@src/components/AppText';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
+import routes from '@src/navigation/routes';
 import Size from '@src/utils/useResponsiveSize';
-import { quickActions } from '@src/assets/data';
 
 const QuickActionAndAdsSection = (): React.JSX.Element => {
+  const navigation = useNavigation();
+  const { quickActions } = useAllHubItems();
+
   return (
     <>
       <View style={styles.row}>
         <AppText style={styles.quickActionsText}>Quick Actions</AppText>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(routes.MY_HUB_SCREEN)}
+        >
           <AppText style={styles.goToHubText}>Go To Hub</AppText>
         </TouchableOpacity>
       </View>
@@ -24,12 +31,12 @@ const QuickActionAndAdsSection = (): React.JSX.Element => {
           showsHorizontalScrollIndicator={false}
         >
           {quickActions?.map(
-            ({ Icon, altTitle, title, bgColor, color }, index) => (
+            ({ Icon, altTitle, title, bgColor, color, onPress }, index) => (
               <View
                 key={index}
                 style={{ paddingHorizontal: Size.calcWidth(14) }}
               >
-                <TouchableOpacity style={styles.actionButton}>
+                <TouchableOpacity onPress={onPress} style={styles.actionButton}>
                   <View
                     style={[styles.iconContainer, { backgroundColor: bgColor }]}
                   >

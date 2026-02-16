@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   StyleProp,
   StyleSheet,
+  TextStyle,
   TouchableOpacity,
   ViewStyle,
 } from 'react-native';
@@ -16,6 +17,7 @@ interface Props {
   onPress: () => void;
   isLoading?: boolean;
   style?: StyleProp<ViewStyle>;
+  titleStyle?: StyleProp<TextStyle>;
   variant?:
     | 'PRIMARY'
     | 'SECONDARY'
@@ -28,7 +30,8 @@ interface Props {
 }
 
 const SubmitButton = (props: Props): React.JSX.Element => {
-  const { isLoading, onPress, title, style, variant, disabled } = props;
+  const { isLoading, onPress, title, style, variant, disabled, titleStyle } =
+    props;
   return (
     <TouchableOpacity
       disabled={isLoading || disabled}
@@ -52,6 +55,7 @@ const SubmitButton = (props: Props): React.JSX.Element => {
           variant === 'OUTLINE_BLUE' && { color: colors.BLUE_200 },
           variant === 'DANGER_LIGHT' && { color: colors.RED_100 },
           // variant === 'DANGER' && {color: colors.RED_100},
+          titleStyle,
         ]}
       >
         {title}

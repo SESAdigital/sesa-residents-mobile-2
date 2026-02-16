@@ -3,6 +3,8 @@ import SesaCommingSoonModal from '@src/modals/SesaCommingSoonModal';
 import { useAppStateStore } from '@src/stores/appState.store';
 
 import { allHubItems, ComingSoonTypes, HubItem, HubItemEnum } from './hubItems';
+import { useHandlePanicAlert } from '@src/hooks';
+import routes from '@src/navigation/routes';
 
 export { allHubItems, HubItemEnum, quickActions } from './hubItems';
 
@@ -11,6 +13,7 @@ export type { ComingSoonTypes, HubItem } from './hubItems';
 export const useAllHubItems = () => {
   const { setActiveModal } = useAppStateStore();
   const navigation = useAppNavigator();
+  const { handlePanicAlertClick } = useHandlePanicAlert();
 
   const handleAction = (route: string | null) => {
     if (!route) return;
@@ -85,6 +88,8 @@ export const useAllHubItems = () => {
         ...item,
         onPress: () => handleComingSoon(item.title as ComingSoonTypes),
       };
+    } else if (item.route === routes.PANIC_ALERT_SCREEN) {
+      return { ...item, onPress: handlePanicAlertClick };
     } else {
       return { ...item, onPress: () => handleAction(item.route) };
     }
@@ -129,7 +134,15 @@ export const useAllHubItems = () => {
     },
   ];
 
-  return { myHubData };
+  const quickActions: HubItem[] = [
+    newItems[HubItemEnum.PANIC_ALERT],
+    newItems[HubItemEnum.BOOK_VISITOR],
+    newItems[HubItemEnum.CREATE_EVENTS],
+    newItems[HubItemEnum.GROUP_ACCESS],
+    newItems[HubItemEnum.BILLS_AND_COLLECTIONS],
+  ];
+
+  return { myHubData, quickActions };
 };
 
 interface HubData {

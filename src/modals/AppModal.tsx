@@ -1,3 +1,4 @@
+import { JSX } from 'react';
 import {
   Modal,
   Pressable,
@@ -10,7 +11,7 @@ import {
 import colors from '@src/configs/colors';
 import { useAppStateStore } from '@src/stores/appState.store';
 import Size from '@src/utils/useResponsiveSize';
-import { JSX } from 'react';
+import AppPromptModal, { AppPromptModalProps } from './AppPromptModal';
 
 export interface AppModalProps {
   modalType:
@@ -20,7 +21,7 @@ export interface AppModalProps {
     | 'REASON_MODAL';
   shouldBackgroundClose?: boolean;
   emptyModalComponent?: JSX.Element;
-  // promptModal?: AppPromptModalProps;
+  promptModal?: AppPromptModalProps;
   // singlePromptModal?: SinglePromptModalProps;
   // reasonModal?: AppReasonModalProps;
   onRequestClose?: () => void;
@@ -53,7 +54,13 @@ const AppModal = (): React.JSX.Element => {
         {activeModal?.modalType === 'EMPTY_MODAL' &&
           !!activeModal?.emptyModalComponent &&
           activeModal?.emptyModalComponent}
+
+        {activeModal?.modalType === 'PROMT_MODAL' &&
+          !!activeModal?.promptModal && (
+            <AppPromptModal {...activeModal.promptModal} />
+          )}
       </View>
+
       {/* <View style={styles.container}>
          <Pressable onPress={() => {}} style={styles.inner}>
         <View style={styles.inner}>
@@ -61,10 +68,6 @@ const AppModal = (): React.JSX.Element => {
             !!activeModal?.emptyModalComponent &&
             activeModal?.emptyModalComponent}
 
-          {activeModal?.modalType === 'PROMT_MODAL' &&
-            !!activeModal?.promptModal && (
-              <AppPromptModal {...activeModal.promptModal} />
-            )}
 
           {activeModal?.modalType === 'SINGLE_PROMPT_MODAL' &&
             !!activeModal?.singlePromptModal && (

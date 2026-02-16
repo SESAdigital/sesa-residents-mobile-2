@@ -60,3 +60,12 @@ export const TransactionPurposeData = {
 
 export type TransactionPurposeType =
   (typeof TransactionPurposeData)[keyof typeof TransactionPurposeData];
+
+export const PanicAlertTypeData = {
+  SecurityEmergency: 1,
+  MedicalEmergency: 2,
+  FireEmergency: 3,
+} as const;
+
+export type PanicAlertType =
+  (typeof PanicAlertTypeData)[keyof typeof PanicAlertTypeData];

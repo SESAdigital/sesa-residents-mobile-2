@@ -23,6 +23,11 @@ import PreLoginSuccessScreen from '@src/screens/auth/PreLoginSuccessScreen';
 import RetrieveAccountScreen from '@src/screens/auth/RetrieveAccountScreen';
 import SetupPasswordScreen from '@src/screens/auth/SetupPasswordScreen';
 import SetupWalletPinScreen from '@src/screens/auth/SetupWalletPinScreen';
+import HelpCenterScreen from '@src/screens/dashboard/account/screens/help-center/HelpCenterScreen';
+import ManageHouseholdScreen from '@src/screens/dashboard/account/screens/manage-household/ManageHouseholdScreen';
+import ManageProfileScreen from '@src/screens/dashboard/account/screens/manage-profile/ManageProfileScreen';
+import MyQRCodeScreen from '@src/screens/dashboard/account/screens/my-qr-code/MyQRCodeScreen';
+import AccountSettingsScreen from '@src/screens/dashboard/account/screens/settings/AccountSettingsScreen';
 import AddMoneyScreen from '@src/screens/dashboard/add-money/AddMoneyScreen';
 import AddMoneyViaCardScreen from '@src/screens/dashboard/add-money/AddMoneyViaCardScreen';
 import BillsAndCollectionsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/BillsAndCollectionsScreen';
@@ -31,17 +36,14 @@ import BuyPowerScreen from '@src/screens/dashboard/my-hub/buy-power/BuyPowerScre
 import CreateEventsScreen from '@src/screens/dashboard/my-hub/create-events/CreateEventsScreen';
 import GroupAccessScreen from '@src/screens/dashboard/my-hub/group-access/GroupAccessScreen';
 import HireArtisanScreen from '@src/screens/dashboard/my-hub/hire-artisan/HireArtisanScreen';
-import PanicAlertScreen from '@src/screens/dashboard/my-hub/panic-alert/PanicAlertScreen';
+import PanicAlertScreen, {
+  PanicAlertScreenData,
+} from '@src/screens/dashboard/my-hub/panic-alert/PanicAlertScreen';
+import TransactionDetailsScreen from '@src/screens/dashboard/transactions/TransactionDetailsScreen';
+import TransactionListScreen from '@src/screens/dashboard/transactions/TransactionListScreen';
 import { useAuthStore } from '@src/stores/auth.store';
 import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
-import TransactionListScreen from '@src/screens/dashboard/transactions/TransactionListScreen';
-import TransactionDetailsScreen from '@src/screens/dashboard/transactions/TransactionDetailsScreen';
-import ManageProfileScreen from '@src/screens/dashboard/account/screens/manage-profile/ManageProfileScreen';
-import AccountSettingsScreen from '@src/screens/dashboard/account/screens/settings/AccountSettingsScreen';
-import HelpCenterScreen from '@src/screens/dashboard/account/screens/help-center/HelpCenterScreen';
-import ManageHouseholdScreen from '@src/screens/dashboard/account/screens/manage-household/ManageHouseholdScreen';
-import MyQRCodeScreen from '@src/screens/dashboard/account/screens/my-qr-code/MyQRCodeScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -68,7 +70,7 @@ export type AppNavigatorParams = {
   [routes.TRANSACTION_LIST_SCREEN]: undefined;
   [routes.TRANSACTION_DETAILS_SCREEN]: undefined;
 
-  [routes.PANIC_ALERT_SCREEN]: undefined;
+  [routes.PANIC_ALERT_SCREEN]: PanicAlertScreenData;
 
   // ACCOUNTS SCREEN
   [routes.MANAGE_PROFILE_SCREEN]: undefined;
@@ -157,6 +159,10 @@ declare global {
 export type SetupPasswordScreenProps = RouteProp<
   AppNavigatorParams,
   'SETUP_PASSWORD_SCREEN'
+>;
+export type PanicAlertScreenProps = RouteProp<
+  AppNavigatorParams,
+  'PANIC_ALERT_SCREEN'
 >;
 
 export type ForgotPasswordScreenProps = RouteProp<

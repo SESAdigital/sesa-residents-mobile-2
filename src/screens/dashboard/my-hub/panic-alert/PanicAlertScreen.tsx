@@ -1,12 +1,19 @@
 import { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useRoute } from '@react-navigation/native';
+import { PanicAlertType, PanicAlertTypeData } from '@src/api/constants/default';
+import queryKeys from '@src/api/constants/queryKeys';
+import {
+  PanicAlertMetricsData,
+  postPanicAlert,
+} from '@src/api/panicAlerts.api';
 import BulbIconImage from '@src/assets/images/icons/bulb-icon.png';
+import MailIcon from '@src/assets/images/icons/mail-icon.png';
+import AppImage from '@src/components/AppImage';
 import AppText from '@src/components/AppText';
 import SubmitButton from '@src/components/forms/SubmitButton';
-import colors from '@src/configs/colors';
-import Size from '@src/utils/useResponsiveSize';
 import {
   MaterialSymbolsCheckRounded,
   MaterialSymbolsShieldOutline,
@@ -14,10 +21,22 @@ import {
   RiHospitalLine,
   RiInformationFill,
 } from '@src/components/icons';
-import { PanicAlertType, PanicAlertTypeData } from '@src/api/constants/default';
+import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useHandlePanicAlert } from '@src/hooks';
-import { formatMoneyToTwoDecimals } from '@src/utils';
+import AppLoadingModal from '@src/modals/AppLoadingModal';
+import {
+  PanicAlertScreenProps,
+  useAppNavigator,
+} from '@src/navigation/AppNavigator';
+import { useAppStateStore } from '@src/stores/appState.store';
+import { useAuthStore } from '@src/stores/auth.store';
+import appConfig from '@src/utils/appConfig';
+import { appToast } from '@src/utils/appToast';
+import { handleToastApiError } from '@src/utils/handleErrors';
+import Size from '@src/utils/useResponsiveSize';
+import { useQueryClient } from '@tanstack/react-query';
+import CountdownCircle from './components/CountdownCircle';
+import PanicAlertGenericModal from './modals/PanicAlertGenericModal';
 
 const emergencyTypes = [
   {
@@ -37,14 +56,81 @@ const emergencyTypes = [
   },
 ];
 
+export interface PanicAlertScreenData {
+  data: PanicAlertMetricsData;
+  latitude: number;
+  longitude: number;
+}
+
 const PanicAlertScreen = (): React.JSX.Element => {
+  const params = useRoute<PanicAlertScreenProps>()?.params;
+  const { data, latitude, longitude } = params;
   const [panicType, setPanicType] = useState<PanicAlertType>(
     PanicAlertTypeData.SecurityEmergency,
   );
-  const { data } = useHandlePanicAlert();
+  const queryClient = useQueryClient();
+  const { selectedProperty } = useAuthStore();
+  const navigation = useAppNavigator();
+  const {
+    setIsAppModalLoading,
+    isAppModalLoading,
+    closeActiveModal,
+    setActiveModal,
+  } = useAppStateStore();
+
+  const handleSendPanicAlert = async () => {
+    if (isAppModalLoading) return;
+
+    if (!selectedProperty?.id)
+      return appToast.Error('Invalid property selected');
+
+    setIsAppModalLoading(true);
+    const response = await postPanicAlert({
+      type: panicType,
+      isWithinEstate: !!data?.isWithinEstate,
+      latitude: latitude?.toString?.(),
+      longitude: longitude?.toString?.(),
+      propertyId: selectedProperty?.id,
+    });
+    setIsAppModalLoading(false);
+
+    if (navigation.canGoBack()) {
+      navigation.goBack?.();
+    }
+
+    if (response.ok) {
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.GET_WALLET_BALANCE],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.GET_WALLET_TRANSACTIONS],
+      });
+      setActiveModal({
+        modalType: 'EMPTY_MODAL',
+        emptyModalComponent: (
+          <PanicAlertGenericModal
+            title="Panic alert sent"
+            description={
+              data?.isWithinEstate
+                ? 'We have notified your estate security and emergency contact(s). Stay calm.'
+                : 'We have notified your emergency contact(s). Stay calm.'
+            }
+            icon={MailIcon}
+            yesButtonTitle="Okay, got it"
+            onNoButtonClick={null}
+            onYesButtonClick={closeActiveModal}
+          />
+        ),
+      });
+    } else {
+      handleToastApiError(response);
+    }
+    return;
+  };
 
   return (
     <SafeAreaView style={styles.container}>
+      <AppLoadingModal isLoading={isAppModalLoading} title="Please wait" />
       <View style={styles.banner}>
         <RiInformationFill
           height={Size.calcAverage(24)}
@@ -59,14 +145,24 @@ const PanicAlertScreen = (): React.JSX.Element => {
       </View>
       <View style={styles.contentContainer}>
         <View>
-          <View style={styles.countDownContainer}>
-            <AppText style={styles.countDownText}>5</AppText>
-          </View>
+          <CountdownCircle
+            duration={7}
+            size={Size.calcAverage(200)}
+            strokeWidth={Size.calcAverage(10)}
+            color={colors.GREEN_150}
+            onComplete={handleSendPanicAlert}
+          />
 
-          <View>
-            <AppText>
-              {formatMoneyToTwoDecimals({ amount: data?.panicAlertFes || 0 })}{' '}
-              will be debited from your wallet
+          <View style={styles.debitContainer}>
+            <AppImage
+              style={styles.debitIcon}
+              resizeMode="contain"
+              source={BulbIconImage}
+            />
+            <AppText style={styles.debitText}>
+              {appConfig.NAIRA_SYMBOL}
+              {data?.panicAlertFes?.toLocaleString() || 0} will be debited from
+              your wallet
             </AppText>
           </View>
         </View>
@@ -105,7 +201,7 @@ const PanicAlertScreen = (): React.JSX.Element => {
         </View>
         <SubmitButton
           title="Terminate panic alert"
-          onPress={() => {}}
+          onPress={() => navigation.goBack?.()}
           style={{ backgroundColor: colors.WHITE_200 }}
           titleStyle={{ color: colors.RED_100 }}
         />
@@ -143,22 +239,6 @@ const styles = StyleSheet.create({
     paddingTop: Size.calcHeight(35),
   },
 
-  countDownContainer: {
-    height: Size.calcAverage(230),
-    width: Size.calcAverage(230),
-    backgroundColor: colors.WHITE_200,
-    borderRadius: Size.calcAverage(230),
-    marginHorizontal: 'auto',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  countDownText: {
-    fontSize: Size.calcAverage(90),
-    fontFamily: fonts.INTER_500,
-    color: colors.BLUE_110,
-  },
-
   defaultBadge: {
     backgroundColor: colors.WHITE_200,
     borderRadius: Size.calcAverage(100),
@@ -175,6 +255,32 @@ const styles = StyleSheet.create({
     fontSize: Size.calcAverage(12),
     fontFamily: fonts.INTER_500,
     color: colors.YELLOW_100,
+  },
+
+  debitIcon: {
+    height: Size.calcAverage(14),
+    width: Size.calcAverage(14),
+    resizeMode: 'contain',
+  },
+
+  debitContainer: {
+    flexDirection: 'row',
+    marginHorizontal: 'auto',
+    alignItems: 'center',
+    paddingHorizontal: Size.calcWidth(16),
+    paddingVertical: Size.calcHeight(6),
+    backgroundColor: colors.BLUE_300,
+    borderRadius: Size.calcAverage(100),
+    marginTop: Size.calcHeight(24),
+    borderWidth: Size.calcAverage(1),
+    borderColor: colors.BLUE_200,
+  },
+
+  debitText: {
+    fontFamily: fonts.INTER_500,
+    color: colors.WHITE_100,
+    paddingLeft: Size.calcWidth(4),
+    fontSize: Size.calcAverage(12),
   },
 
   emergencyType: {

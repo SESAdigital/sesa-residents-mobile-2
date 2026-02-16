@@ -18,13 +18,14 @@ interface GetPanicAlertMetricsReq {
   Longitude: number;
 }
 
+export interface PanicAlertMetricsData {
+  hasEmergencyContact: boolean;
+  isWalletLow: boolean;
+  isWithinEstate: boolean;
+  panicAlertFes: number;
+}
 interface GetPanicAlertMetricsRes extends GenericApiResponse {
-  data: {
-    hasEmergencyContact: boolean;
-    isWalletLow: boolean;
-    isWithinEstate: boolean;
-    panicAlertFes: number;
-  };
+  data: PanicAlertMetricsData;
 }
 
 export interface PostPanicAlertData {

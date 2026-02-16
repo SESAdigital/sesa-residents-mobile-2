@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TextInput } from 'react-native';
-import Svg, { Circle } from 'react-native-svg';
+import { StyleSheet, TextInput, View } from 'react-native';
 import Animated, {
+  Easing,
   useAnimatedProps,
+  useAnimatedReaction,
   useSharedValue,
   withTiming,
-  Easing,
-  runOnJS,
-  useAnimatedReaction,
 } from 'react-native-reanimated';
+import Svg, { Circle } from 'react-native-svg';
+import { runOnJS } from 'react-native-worklets';
+
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
@@ -17,20 +18,16 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 interface CountdownCircleProps {
-  duration?: number;
-  size?: number;
-  strokeWidth?: number;
-  color?: string;
-  onComplete?: () => void;
+  duration: number;
+  size: number;
+  strokeWidth: number;
+  color: string;
+  onComplete: () => void;
 }
 
-const CountdownCircle = ({
-  duration = 5,
-  size = Size.calcAverage(230),
-  strokeWidth = 10,
-  color = colors.GREEN_150,
-  onComplete,
-}: CountdownCircleProps) => {
+const CountdownCircle = (props: CountdownCircleProps) => {
+  const { duration, size, strokeWidth, color, onComplete } = props;
+
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const progress = useSharedValue(1);
@@ -67,7 +64,12 @@ const CountdownCircle = ({
   });
 
   return (
-    <View style={[styles.container, { width: size, height: size }]}>
+    <View
+      style={[
+        styles.container,
+        { width: size, height: size, borderRadius: size / 2 },
+      ]}
+    >
       <Svg width={size} height={size}>
         {/* Background Circle */}
         <Circle
@@ -108,14 +110,16 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: colors.WHITE_200,
+    marginHorizontal: 'auto',
   },
   textContainer: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     justifyContent: 'center',
     alignItems: 'center',
   },
   countDownText: {
-    fontSize: Size.calcAverage(90),
+    fontSize: Size.calcAverage(70),
     fontFamily: fonts.INTER_500,
     color: colors.BLUE_110,
     textAlign: 'center',

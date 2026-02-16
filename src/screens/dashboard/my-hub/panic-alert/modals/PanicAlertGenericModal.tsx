@@ -14,7 +14,7 @@ interface Props {
   description: string;
   noButtonTitle?: string;
   yesButtonTitle: string;
-  onNoButtonClick?: () => void;
+  onNoButtonClick?: (() => void) | null;
   onYesButtonClick: () => void;
   icon: Source;
 }
@@ -49,11 +49,13 @@ const PanicAlertGenericModal = (props: Props): React.JSX.Element => {
       <View style={styles.buttonContainer}>
         <SubmitButton title={yesButtonTitle} onPress={onYesButtonClick} />
 
-        <SubmitButton
-          onPress={onCloseClick}
-          title={noButtonTitle}
-          variant="SECONDARY"
-        />
+        {onNoButtonClick !== null && (
+          <SubmitButton
+            onPress={onCloseClick}
+            title={noButtonTitle}
+            variant="SECONDARY"
+          />
+        )}
       </View>
     </View>
   );

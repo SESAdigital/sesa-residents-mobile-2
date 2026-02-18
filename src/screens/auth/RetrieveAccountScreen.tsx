@@ -20,7 +20,7 @@ import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
 import LoginModeToggle from './components/LoginModeToggle';
-import { loginScreenStyles } from './LoginScreen';
+import fonts from '@src/configs/fonts';
 
 const schema = Joi.object<PreLoginReq>({
   email: joiSchemas.email.optional().allow(''),
@@ -73,9 +73,9 @@ const RetrieveAccountScreen = (): React.JSX.Element => {
       keyboardVerticalOffset={-Size.calcHeight(50)}
       style={{ flex: 1 }}
     >
-      <AppScreen showDownInset style={loginScreenStyles.container}>
-        <AppText style={loginScreenStyles.title}>Welcome to SESA</AppText>
-        <AppText style={loginScreenStyles.subTitle}>
+      <AppScreen showDownInset style={styles.container}>
+        <AppText style={styles.title}>Welcome to SESA</AppText>
+        <AppText style={styles.subTitle}>
           To get started, enter your associated email address or phone number.
         </AppText>
 
@@ -84,7 +84,7 @@ const RetrieveAccountScreen = (): React.JSX.Element => {
           onSelectMode={setSelectedMode}
         />
 
-        <View style={loginScreenStyles.content}>
+        <View style={styles.content}>
           <Activity mode={isEmailLogin ? 'visible' : 'hidden'}>
             <AppTextInput
               editable={!isLoading}
@@ -119,7 +119,7 @@ const RetrieveAccountScreen = (): React.JSX.Element => {
           </Activity>
         </View>
 
-        <View style={loginScreenStyles.buttonContainer}>
+        <View style={styles.buttonContainer}>
           <SubmitButton title="Continue" isLoading={false} onPress={onSubmit} />
         </View>
       </AppScreen>
@@ -132,6 +132,32 @@ const RetrieveAccountScreen = (): React.JSX.Element => {
 };
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    paddingTop: Size.calcHeight(15),
+    paddingBottom: Size.calcHeight(40),
+  },
+
+  container: {
+    backgroundColor: colors.WHITE_200,
+    flex: 1,
+  },
+
+  content: {
+    paddingTop: Size.calcHeight(24),
+    flex: 1,
+    rowGap: Size.calcAverage(24),
+  },
+
+  forgotPasswordContainer: {
+    padding: Size.calcAverage(3),
+    marginHorizontal: 'auto',
+  },
+
+  forgotPasswordText: {
+    fontFamily: fonts.INTER_500,
+    color: colors.BLUE_200,
+  },
+
   informationContainer: {
     backgroundColor: colors.WHITE_300,
     padding: Size.calcAverage(10),
@@ -140,11 +166,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: Size.calcHeight(-8),
   },
+
   informationText: {
     color: colors.GRAY_100,
     fontSize: Size.calcAverage(12),
     paddingLeft: Size.calcWidth(8),
     maxWidth: Size.calcWidth(350),
+  },
+
+  subTitle: {
+    fontFamily: fonts.INTER_500,
+    paddingBottom: Size.calcHeight(24),
+  },
+
+  title: {
+    fontSize: Size.calcAverage(24),
+    fontFamily: fonts.INTER_600,
+    paddingBottom: Size.calcHeight(12),
+    paddingTop: Size.calcHeight(54),
   },
 });
 

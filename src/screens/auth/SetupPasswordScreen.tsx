@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Joi from 'joi';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { useRoute } from '@react-navigation/native';
 import { patchSetupPassword, PatchSetupPasswordReq } from '@src/api/auth.api';
@@ -22,9 +22,10 @@ import routes from '@src/navigation/routes';
 import { useAuthStore } from '@src/stores/auth.store';
 import { appToast } from '@src/utils/appToast';
 import Size from '@src/utils/useResponsiveSize';
-import { loginScreenStyles } from './LoginScreen';
 import { joiSchemas } from '@src/utils/schema';
 import { handleToastApiError } from '@src/utils/handleErrors';
+import colors from '@src/configs/colors';
+import fonts from '@src/configs/fonts';
 
 const schema = Joi.object<PatchSetupPasswordReq>({
   newPassword: joiSchemas.strictPassword,
@@ -89,14 +90,14 @@ const SetupPasswordScreen = (): React.JSX.Element => {
       keyboardVerticalOffset={-Size.calcHeight(50)}
       style={{ flex: 1 }}
     >
-      <AppScreen showDownInset style={loginScreenStyles.container}>
-        <AppText style={loginScreenStyles.title}>Change your password</AppText>
-        <AppText style={loginScreenStyles.subTitle}>
+      <AppScreen showDownInset style={styles.container}>
+        <AppText style={styles.title}>Change your password</AppText>
+        <AppText style={styles.subTitle}>
           To secure your experience, create a new password for your SESA
           account.
         </AppText>
 
-        <View style={loginScreenStyles.content}>
+        <View style={styles.content}>
           <AppTextInput
             editable={!isLoading}
             placeholder="Password"
@@ -128,7 +129,7 @@ const SetupPasswordScreen = (): React.JSX.Element => {
           />
         </View>
 
-        <View style={loginScreenStyles.buttonContainer}>
+        <View style={styles.buttonContainer}>
           <SubmitButton
             title="Update Password"
             isLoading={false}
@@ -143,5 +144,45 @@ const SetupPasswordScreen = (): React.JSX.Element => {
     </AppKeyboardAvoidingView>
   );
 };
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    paddingTop: Size.calcHeight(15),
+    paddingBottom: Size.calcHeight(40),
+  },
+
+  container: {
+    backgroundColor: colors.WHITE_200,
+    flex: 1,
+  },
+
+  content: {
+    paddingTop: Size.calcHeight(24),
+    flex: 1,
+    rowGap: Size.calcAverage(24),
+  },
+
+  forgotPasswordContainer: {
+    padding: Size.calcAverage(3),
+    marginHorizontal: 'auto',
+  },
+
+  forgotPasswordText: {
+    fontFamily: fonts.INTER_500,
+    color: colors.BLUE_200,
+  },
+
+  subTitle: {
+    fontFamily: fonts.INTER_500,
+    paddingBottom: Size.calcHeight(24),
+  },
+
+  title: {
+    fontSize: Size.calcAverage(24),
+    fontFamily: fonts.INTER_600,
+    paddingBottom: Size.calcHeight(12),
+    paddingTop: Size.calcHeight(54),
+  },
+});
 
 export default SetupPasswordScreen;

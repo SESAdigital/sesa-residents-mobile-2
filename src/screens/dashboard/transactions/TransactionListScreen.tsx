@@ -1,15 +1,19 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
+import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
 import queryKeys from '@src/api/constants/queryKeys';
 import { getWalletTransactions } from '@src/api/wallets.api';
 import AppScreen from '@src/components/AppScreen';
+import AppListFooterLoader from '@src/components/common/AppListFooterLoader';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
 import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import DuplicateLoader from '@src/components/DuplicateLoader';
 import AppSearchInput from '@src/components/forms/AppSearchInput';
 import { MaterialSymbolsHistory } from '@src/components/icons';
 import colors from '@src/configs/colors';
+import { getTotalPages } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 import EmtpyTransactionComponent from './components/EmtpyTransactionComponent';
@@ -17,26 +21,46 @@ import TransactionListRow, {
   TransactionListRowLoader,
 } from './components/TransactionListRow';
 
-const isLoading = false;
-const queryKey = [queryKeys.GET_WALLET_TRANSACTIONS, 'a'];
+const pageSize = DEFAULT_API_DATA_SIZE;
 
 const TransactionListScreen = (): React.JSX.Element => {
-  const { data: walletTransactions } = useQuery({
-    queryKey,
-    queryFn: async () => {
-      const response = await getWalletTransactions();
-      if (response.ok) {
-        return response?.data?.data;
-      } else {
-        handleToastApiError(response);
-        return null;
-      }
-    },
-  });
+  const [searchText, setSearchText] = useState('');
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: [queryKeys.GET_WALLET_TRANSACTIONS, searchText],
+
+      queryFn: async ({ pageParam }) => {
+        const response = await getWalletTransactions({
+          PageNumber: pageParam,
+          SearchText: searchText,
+          PageSize: pageSize,
+        });
+        if (response.ok) {
+          return response?.data;
+        } else {
+          handleToastApiError(response);
+          return null;
+        }
+      },
+
+      initialPageParam: 1,
+
+      getNextPageParam: lastPage => {
+        if (!lastPage) return undefined;
+        const { currentPage, totalRecordCount: totalItems } = lastPage.data;
+        const totalPages = getTotalPages({ pageSize, totalItems });
+        return currentPage < totalPages ? currentPage + 1 : undefined;
+      },
+    });
+
+  const formattedData =
+    data?.pages?.flatMap(page => page?.data?.records)?.filter(val => !!val) ||
+    [];
 
   const queryClient = useQueryClient();
-
-  const refetch = () => queryClient.resetQueries({ queryKey });
+  const refetch = () =>
+    queryClient.resetQueries({ queryKey: [queryKeys.GET_WALLET_TRANSACTIONS] });
 
   return (
     <AppScreen showDownInset style={styles.container}>
@@ -44,6 +68,7 @@ const TransactionListScreen = (): React.JSX.Element => {
       <View style={styles.searchContainer}>
         <AppSearchInput
           disabled={isLoading}
+          onSearchDone={val => setSearchText(val)}
           placeholder="Search transaction, amount"
           containerStyle={{ width: '84%' }}
         />
@@ -57,7 +82,7 @@ const TransactionListScreen = (): React.JSX.Element => {
       </View>
 
       <FlatList
-        data={walletTransactions?.records || []}
+        data={formattedData}
         refreshControl={
           <AppRefreshControl refreshing={isLoading} onRefresh={refetch} />
         }
@@ -71,6 +96,16 @@ const TransactionListScreen = (): React.JSX.Element => {
         }
         renderItem={({ item }) => <TransactionListRow val={item} />}
         keyExtractor={(_, index) => index?.toString()}
+        contentContainerStyle={{ paddingBottom: Size.calcHeight(70) }}
+        onEndReached={() => {
+          if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }}
+        onEndReachedThreshold={2}
+        ListFooterComponent={
+          <AppListFooterLoader isloading={isFetchingNextPage} />
+        }
       />
     </AppScreen>
   );
@@ -98,7 +133,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: Size.calcHeight(12),
-    paddingHorizontal: Size.calcWidth(21),
+    paddingHorizontal: Size.calcWidth(20),
   },
 });
 

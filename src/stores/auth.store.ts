@@ -6,9 +6,14 @@ import { createWithEqualityFn } from 'zustand/traditional';
 import { transformMMKVStore } from './index';
 import { PostLoginRes } from '@src/api/auth.api';
 import type { GetDashboardPropertiesData } from '@src/api/dashboard.api';
+import { LoginSchema } from '@src/screens/auth/LoginScreen';
+import { LoginModeData, LoginModeType } from '@src/api/constants/default';
 
 export interface AuthStore {
   loginResponse: PostLoginRes | null;
+  loginReq: LoginSchema | null;
+  isPasswordRemembered: boolean;
+  loginMode: LoginModeType;
   isDoneOnboarding: boolean;
   selectedProperty: GetDashboardPropertiesData | null;
 
@@ -16,6 +21,9 @@ export interface AuthStore {
   setLoginResponse: (value: PostLoginRes) => void;
   setSelectedProperty: (value: GetDashboardPropertiesData | null) => void;
   setIsDoneOnboarding: (value: boolean) => void;
+  setLoginReq: (value: LoginSchema) => void;
+  setIsPasswordRemembered: (value: boolean) => void;
+  setLoginMode: (value: LoginModeType) => void;
 }
 
 const authStoreName = 'useResidentsAuthStore';
@@ -26,14 +34,21 @@ const defaultState = {
   selectedProperty: null,
 };
 
+const doNotDeleteState = {
+  loginReq: null,
+  isPasswordRemembered: false,
+  loginMode: LoginModeData.EmailAddress,
+};
+
 export const authStore = createWithEqualityFn(
   persist<AuthStore>(
     set => ({
       // DEFAULT STATE
       ...defaultState,
+      ...doNotDeleteState,
 
       //   ACTIONS OR MUTATORS
-      logout: () => set(() => defaultState),
+      logout: () => set(() => ({ ...defaultState })),
 
       setLoginResponse: loginResponse => set(() => ({ loginResponse })),
 
@@ -42,6 +57,12 @@ export const authStore = createWithEqualityFn(
 
       setIsDoneOnboarding: isDoneOnboarding =>
         set(() => ({ isDoneOnboarding })),
+
+      setLoginReq: loginReq => set(() => ({ loginReq })),
+
+      setIsPasswordRemembered: isPasswordRemembered =>
+        set(() => ({ isPasswordRemembered })),
+      setLoginMode: loginMode => set(() => ({ loginMode })),
     }),
     {
       name: authStoreName,

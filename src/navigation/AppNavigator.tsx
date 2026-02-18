@@ -44,6 +44,7 @@ import TransactionListScreen from '@src/screens/dashboard/transactions/Transacti
 import { useAuthStore } from '@src/stores/auth.store';
 import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
+import { WalletTransactionDetails } from '@src/api/wallets.api';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -68,7 +69,7 @@ export type AppNavigatorParams = {
   [routes.ADD_MONEY_SCREEN]: undefined;
   [routes.ADD_MONEY_ATM_CARD_SCREEN]: undefined;
   [routes.TRANSACTION_LIST_SCREEN]: undefined;
-  [routes.TRANSACTION_DETAILS_SCREEN]: undefined;
+  [routes.TRANSACTION_DETAILS_SCREEN]: WalletTransactionDetails;
 
   [routes.PANIC_ALERT_SCREEN]: PanicAlertScreenData;
 
@@ -160,9 +161,15 @@ export type SetupPasswordScreenProps = RouteProp<
   AppNavigatorParams,
   'SETUP_PASSWORD_SCREEN'
 >;
+
 export type PanicAlertScreenProps = RouteProp<
   AppNavigatorParams,
   'PANIC_ALERT_SCREEN'
+>;
+
+export type TransactionDetailsScreenProps = RouteProp<
+  AppNavigatorParams,
+  'TRANSACTION_DETAILS_SCREEN'
 >;
 
 export type ForgotPasswordScreenProps = RouteProp<

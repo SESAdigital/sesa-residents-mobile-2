@@ -1,7 +1,7 @@
 import { joiResolver } from '@hookform/resolvers/joi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Joi from 'joi';
-import { Activity, useState } from 'react';
+import { Activity, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { getDeviceId } from 'react-native-device-info';
@@ -13,11 +13,11 @@ import {
 } from '@src/api/auth.api';
 import {
   LoginModeData,
-  LoginModeType,
   OnboardingStatusData,
 } from '@src/api/constants/default';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
+import AppCheckIcon from '@src/components/custom/AppCheckIcon';
 import AppKeyboardAvoidingView from '@src/components/custom/AppKeyboardAvoidingView';
 import AppTextInput from '@src/components/forms/AppTextInput';
 import SubmitButton from '@src/components/forms/SubmitButton';
@@ -48,20 +48,42 @@ const schema = Joi.object<LoginSchema>({
 });
 
 const LoginScreen = (): React.JSX.Element => {
-  const [selectedMode, setSelectedMode] = useState<LoginModeType>(
-    LoginModeData.EmailAddress,
-  );
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
   const location = useGetCurrentLocation();
   const postLoginAPI = useMutation({ mutationFn: postLogin });
   const queryClient = useQueryClient();
   const navigation = useAppNavigator();
-  const { handleSubmit, reset, control, getValues } = useForm<LoginSchema>({
-    resolver: joiResolver(schema),
-  });
-  const { setLoginResponse, setIsDoneOnboarding } = useAuthStore();
+  const [shoudReveal, setShouldReveal] = useState(false);
+  const [wasPasswordRemembered, setWasPasswordRemembered] = useState(false);
 
-  const isEmailLogin = selectedMode === LoginModeData.EmailAddress;
+  const { handleSubmit, reset, control, watch, getValues, setValue } =
+    useForm<LoginSchema>({
+      resolver: joiResolver(schema),
+    });
+  const {
+    setLoginResponse,
+    setIsDoneOnboarding,
+    loginMode,
+    setLoginMode,
+    isPasswordRemembered,
+    setIsPasswordRemembered,
+    setLoginReq,
+    loginReq,
+  } = useAuthStore();
+
+  const password = watch('password');
+
+  const isAutoField = wasPasswordRemembered && !!loginReq;
+
+  console.log(loginReq);
+
+  useEffect(() => {
+    if (isAutoField && password?.length < 1) {
+      setShouldReveal(true);
+    }
+  }, [password]);
+
+  const isEmailLogin = loginMode === LoginModeData.EmailAddress;
 
   const isLoading = postLoginAPI?.isPending;
 
@@ -81,7 +103,7 @@ const LoginScreen = (): React.JSX.Element => {
       deviceId: getDeviceId(),
       latitude: location?.latitude?.toString() || '',
       longitude: location?.longitude?.toString() || '',
-      loginMode: selectedMode,
+      loginMode: loginMode,
       password,
       pushNotificationToken: '',
       ...(isEmailLogin ? { email } : { phoneNumber }),
@@ -151,23 +173,54 @@ const LoginScreen = (): React.JSX.Element => {
     });
   };
 
+  const handleReveal = () => {
+    if (!isPasswordVisible) {
+      if (wasPasswordRemembered && !shoudReveal && password?.length > 0) {
+        appToast.Error('Please clear the existing password to reveal.');
+      } else {
+        setPasswordVisibility(true);
+      }
+    } else {
+      setPasswordVisibility(false);
+    }
+  };
+
+  const handleRememberMe = () => {
+    const { email, password } = getValues();
+
+    if (isAutoField && !email && !password) {
+      setValue('email', loginReq?.email);
+      setValue('password', loginReq?.password);
+    } else {
+      if (!isAutoField) {
+        if (loginReq?.password)
+          setLoginReq({ password: '', email: '', phoneNumber: '' });
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleRememberMe();
+
+    if (isPasswordRemembered && !!loginReq?.password) {
+      setWasPasswordRemembered(true);
+    }
+  }, []);
+
   return (
     <AppKeyboardAvoidingView
       keyboardVerticalOffset={-Size.calcHeight(50)}
       style={{ flex: 1 }}
     >
-      <AppScreen showDownInset style={loginScreenStyles.container}>
-        <AppText style={loginScreenStyles.title}>Login to your account</AppText>
-        <AppText style={loginScreenStyles.subTitle}>
+      <AppScreen showDownInset style={styles.container}>
+        <AppText style={styles.title}>Login to your account</AppText>
+        <AppText style={styles.subTitle}>
           Need help logging in? Get Help
         </AppText>
 
-        <LoginModeToggle
-          selectedMode={selectedMode}
-          onSelectMode={setSelectedMode}
-        />
+        <LoginModeToggle selectedMode={loginMode} onSelectMode={setLoginMode} />
 
-        <View style={loginScreenStyles.content}>
+        <View style={styles.content}>
           <Activity mode={isEmailLogin ? 'visible' : 'hidden'}>
             <AppTextInput
               editable={!isLoading}
@@ -199,21 +252,28 @@ const LoginScreen = (): React.JSX.Element => {
             rightIcon={
               <PasswordToggle
                 isVisible={!isPasswordVisible}
-                onClick={() => setPasswordVisibility(value => !value)}
+                onClick={handleReveal}
               />
             }
           />
           <TouchableOpacity
-            onPress={handleForgotPassword}
-            style={loginScreenStyles.forgotPasswordContainer}
+            style={styles.rememberMeContainer}
+            onPress={() => setIsPasswordRemembered(!isPasswordRemembered)}
           >
-            <AppText style={loginScreenStyles.forgotPasswordText}>
+            <AppCheckIcon isChecked={isPasswordRemembered} />
+            <AppText style={styles.rememberMeText}>Remember Me</AppText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleForgotPassword}
+            style={styles.forgotPasswordContainer}
+          >
+            <AppText style={styles.forgotPasswordText}>
               Forgot your password?
             </AppText>
           </TouchableOpacity>
         </View>
 
-        <View style={loginScreenStyles.buttonContainer}>
+        <View style={styles.buttonContainer}>
           <SubmitButton title="Continue" onPress={onSubmit} />
         </View>
       </AppScreen>
@@ -222,7 +282,7 @@ const LoginScreen = (): React.JSX.Element => {
   );
 };
 
-export const loginScreenStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   buttonContainer: {
     paddingTop: Size.calcHeight(15),
     paddingBottom: Size.calcHeight(40),
@@ -247,6 +307,19 @@ export const loginScreenStyles = StyleSheet.create({
   forgotPasswordText: {
     fontFamily: fonts.INTER_500,
     color: colors.BLUE_200,
+  },
+
+  rememberMeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Size.calcAverage(2),
+    marginRight: 'auto',
+  },
+
+  rememberMeText: {
+    fontFamily: fonts.INTER_500,
+    color: colors.BLACK_200,
+    marginTop: Size.calcHeight(-1),
   },
 
   subTitle: {

@@ -1,4 +1,12 @@
-import Svg, { Circle, Defs, G, Path, Rect, SvgProps } from 'react-native-svg';
+import Svg, {
+  Circle,
+  ClipPath,
+  Defs,
+  G,
+  Path,
+  Rect,
+  SvgProps,
+} from 'react-native-svg';
 
 import colors from '@src/configs/colors';
 
@@ -94,6 +102,70 @@ export const InActiveCheckCircleIcon = (props: SvgProps) => (
       rx={9.6}
     />
     <Defs />
+  </Svg>
+);
+
+export const InActiveCheckIcon = (props: SvgProps) => (
+  <Svg fill="none" {...props}>
+    <Rect
+      width={20.8}
+      height={20.8}
+      x={0.6}
+      y={0.6}
+      stroke="#D9D9D9"
+      strokeWidth={0.8}
+      rx={4.4}
+    />
+    <G filter="url(#a)">
+      <Rect width={20} height={20} x={1} y={1} fill="#FEFEFE" rx={4} />
+    </G>
+    <Rect
+      width={19.2}
+      height={19.2}
+      x={1.4}
+      y={1.4}
+      stroke="#FEFEFE"
+      strokeWidth={0.8}
+      rx={3.6}
+    />
+    <Defs />
+  </Svg>
+);
+
+export const ActiveCheckIcon = (props: SvgProps) => (
+  <Svg fill="none" {...props}>
+    <Rect
+      width={20.8}
+      height={20.8}
+      x={0.6}
+      y={0.6}
+      stroke="#0660FE"
+      strokeWidth={0.8}
+      rx={4.4}
+    />
+    <G filter="url(#a)">
+      <Rect width={20} height={20} x={1} y={1} fill="#0660FE" rx={4} />
+    </G>
+    <Rect
+      width={19.2}
+      height={19.2}
+      x={1.4}
+      y={1.4}
+      stroke="#FEFEFE"
+      strokeWidth={0.8}
+      rx={3.6}
+    />
+    <G clipPath="url(#b)" filter="url(#c)">
+      <Path
+        fill="#FEFEFE"
+        d="m9.666 13.115 6.128-6.129.944.943L9.666 15l-4.242-4.242.942-.943 3.3 3.3Z"
+      />
+    </G>
+    <Defs>
+      <ClipPath id="b">
+        <Path fill="#fff" d="M3 3h16v16H3z" />
+      </ClipPath>
+    </Defs>
   </Svg>
 );
 

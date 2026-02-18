@@ -1,4 +1,9 @@
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(timezone);
+dayjs.extend(utc);
 
 export const dayJSFormatter = (
   value: Date | string,
@@ -12,5 +17,6 @@ export const dayJSFormatter = (
     | 'hh:mm A',
 ) => {
   if (!value) return '';
-  return dayjs(value).format(format);
+  return dayjs(value).tz('Africa/Lagos').format(format);
+  // return dayjs(value).format(format);
 };

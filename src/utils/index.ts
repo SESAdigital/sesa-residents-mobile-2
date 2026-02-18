@@ -3,6 +3,11 @@ import { Alert, Linking } from 'react-native';
 
 import appConfig from './appConfig';
 import { appToast } from './appToast';
+import colors from '@src/configs/colors';
+import {
+  TransactionEntryType,
+  TransactionEntryTypeData,
+} from '@src/api/constants/default';
 
 export function truncateText(text: string, maxLength = 100) {
   if (!text) return '';
@@ -100,3 +105,25 @@ export function copyTextToClipboard(props: CopyTextToClipboardProps) {
     appToast.Warning(`${errorText} ${error}`);
   }
 }
+
+export function getTransactionTypeColor(entryType: TransactionEntryType) {
+  if (entryType === TransactionEntryTypeData.Credit) {
+    return colors.GREEN_100;
+  }
+
+  if (entryType === TransactionEntryTypeData.Debit) {
+    return colors.RED_100;
+  }
+
+  return colors.GRAY_100;
+}
+
+export const getTotalPages = ({
+  pageSize,
+  totalItems,
+}: {
+  pageSize: number;
+  totalItems: number;
+}) => {
+  return Math.max(1, Math.ceil(totalItems / pageSize));
+};

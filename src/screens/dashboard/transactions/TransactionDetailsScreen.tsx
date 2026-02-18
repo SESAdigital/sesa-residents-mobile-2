@@ -1,15 +1,160 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+
+import AppScreen from '@src/components/AppScreen';
+import AppText from '@src/components/AppText';
+import AppScreenHeader from '@src/components/common/AppScreenHeader';
+import { TransactionDetailsScreenProps } from '@src/navigation/AppNavigator';
+import { dayJSFormatter } from '@src/utils/time';
+import Size from '@src/utils/useResponsiveSize';
+import AppImage from '@src/components/AppImage';
+import SuccessCheckIconImage from '@src/assets/images/icons/success-check-icon.png';
+import { formatMoneyToTwoDecimals, getTransactionTypeColor } from '@src/utils';
+import fonts from '@src/configs/fonts';
+import { TransactionEntryTypeData } from '@src/api/constants/default';
+import colors from '@src/configs/colors';
+import SubmitButton from '@src/components/forms/SubmitButton';
 
 const TransactionDetailsScreen = (): React.JSX.Element => {
+  const param = useRoute<TransactionDetailsScreenProps>()?.params;
+  const navigation = useNavigation();
+
+  const detailList = [
+    {
+      title: 'TRANSACTION REFERENCE',
+      value: param?.reference,
+    },
+    {
+      title: 'AMOUNT',
+      value: param?.amount,
+    },
+
+    {
+      title: 'PAYMENT METHOD',
+      value: param?.paymentMethod,
+    },
+
+    {
+      title: 'DESCRIPTION',
+      value: param?.description,
+    },
+
+    {
+      title: 'TRANSACTION DATE',
+      value: dayJSFormatter(param?.timeCreated, 'MMMM D, YYYY h:mm A'),
+    },
+  ];
+
   return (
-    <View style={styles.container}>
-      <Text>SingleTransactionScreen</Text>
-    </View>
+    <AppScreen style={styles.container}>
+      <AppScreenHeader title="Transaction Details" />
+      <ScrollView
+        showsVerticalScrollIndicator
+        contentContainerStyle={{ minHeight: '80%' }}
+        style={styles.scrollContainer}
+      >
+        <AppImage style={styles.image} source={SuccessCheckIconImage} />
+        <AppText
+          style={[
+            styles.amount,
+            { color: getTransactionTypeColor(param?.entryType) },
+          ]}
+        >
+          {param?.entryType === TransactionEntryTypeData.Debit ? '-' : ''}
+          {formatMoneyToTwoDecimals({ amount: param?.amount })}
+        </AppText>
+        <AppText style={styles.description}>
+          View your transaction receipt below. A copy of this receipt has also
+          been sent to your email.
+        </AppText>
+
+        <View style={styles.detailContainer}>
+          {detailList.map((item, index) => {
+            if (!item?.value) return null;
+            return (
+              <View style={styles.detailItem} key={index}>
+                <AppText style={styles.detailItemTitle}>{item?.title}</AppText>
+                <AppText style={styles.detailItemValue}>{item?.value}</AppText>
+              </View>
+            );
+          })}
+        </View>
+
+        <SubmitButton
+          variant="SECONDARY"
+          title="Go Back"
+          style={{ marginTop: 'auto' }}
+          onPress={() => navigation.goBack()}
+        />
+      </ScrollView>
+    </AppScreen>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  amount: {
+    textAlign: 'center',
+    paddingTop: Size.calcHeight(16),
+    paddingBottom: Size.calcHeight(4),
+    fontFamily: fonts.INTER_600,
+    fontSize: Size.calcAverage(16),
+  },
+
+  container: {
+    backgroundColor: colors.WHITE_200,
+    paddingHorizontal: 0,
+  },
+
+  description: {
+    maxWidth: Size.calcWidth(310),
+    marginHorizontal: 'auto',
+    textAlign: 'center',
+    color: colors.GRAY_100,
+    fontSize: Size.calcAverage(12),
+    paddingBottom: Size.calcHeight(20),
+  },
+
+  detailContainer: {
+    borderWidth: Size.calcAverage(1),
+    borderColor: colors.WHITE_300,
+    shadowColor: colors.GRAY_600,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
+    backgroundColor: colors.WHITE_200,
+    borderRadius: Size.calcAverage(12),
+  },
+
+  detailItem: {
+    paddingHorizontal: Size.calcWidth(20),
+    paddingVertical: Size.calcHeight(15),
+    borderBottomWidth: Size.calcHeight(1),
+    borderColor: colors.WHITE_300,
+  },
+
+  detailItemTitle: {
+    color: colors.GRAY_300,
+    fontSize: Size.calcAverage(12),
+  },
+
+  detailItemValue: {
+    fontFamily: fonts.INTER_500,
+  },
+
+  scrollContainer: {
+    paddingHorizontal: Size.calcWidth(21),
+    paddingTop: Size.calcHeight(21),
+  },
+
+  image: {
+    height: Size.calcAverage(80),
+    aspectRatio: 1,
+    marginHorizontal: 'auto',
+  },
 });
 
 export default TransactionDetailsScreen;

@@ -60,7 +60,11 @@ const TransactionDetailsScreen = (): React.JSX.Element => {
             { color: getTransactionTypeColor(param?.entryType) },
           ]}
         >
-          {param?.entryType === TransactionEntryTypeData.Debit ? '-' : ''}
+          {param?.entryType === TransactionEntryTypeData.Debit
+            ? '-'
+            : param?.entryType === TransactionEntryTypeData.Credit
+            ? '+'
+            : ''}
           {formatMoneyToTwoDecimals({ amount: param?.amount })}
         </AppText>
         <AppText style={styles.description}>

@@ -60,6 +60,7 @@ export const useHandlePanicAlert = () => {
             yesButtonTitle="Add emergency contact"
             onYesButtonClick={() => {
               closeActiveModal();
+              // @ts-expect-error nothing for now
               navigation.navigate(routes.EMERGENCY_CONTACTS_SCREEN);
             }}
             noButtonTitle="Skip for now"

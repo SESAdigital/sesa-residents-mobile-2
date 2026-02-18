@@ -1,10 +1,9 @@
 import { StyleSheet, View } from 'react-native';
 
-import AppScreen from '@src/components/AppScreen';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import colors from '@src/configs/colors';
 import Size from '@src/utils/useResponsiveSize';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const MyQRCodeScreen = (): React.JSX.Element => {
   return (

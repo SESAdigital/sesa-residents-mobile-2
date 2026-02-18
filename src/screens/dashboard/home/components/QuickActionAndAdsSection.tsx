@@ -19,6 +19,7 @@ const QuickActionAndAdsSection = (): React.JSX.Element => {
       <View style={styles.row}>
         <AppText style={styles.quickActionsText}>Quick Actions</AppText>
         <TouchableOpacity
+          // @ts-expect-error nothing for now
           onPress={() => navigation.navigate(routes.MY_HUB_SCREEN)}
         >
           <AppText style={styles.goToHubText}>Go To Hub</AppText>

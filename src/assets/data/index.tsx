@@ -6,7 +6,7 @@ import { allHubItems, ComingSoonTypes, HubItem, HubItemEnum } from './hubItems';
 import { useHandlePanicAlert } from '@src/hooks';
 import routes from '@src/navigation/routes';
 
-export { allHubItems, HubItemEnum, quickActions } from './hubItems';
+export { allHubItems, HubItemEnum } from './hubItems';
 
 export type { ComingSoonTypes, HubItem } from './hubItems';
 

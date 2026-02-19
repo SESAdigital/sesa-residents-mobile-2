@@ -69,3 +69,11 @@ export const PanicAlertTypeData = {
 
 export type PanicAlertType =
   (typeof PanicAlertTypeData)[keyof typeof PanicAlertTypeData];
+
+export const ElectricityMeterTypeData = {
+  PostPaid: 1,
+  PrePaid: 2,
+} as const;
+
+export type ElectricityMeterType =
+  (typeof ElectricityMeterTypeData)[keyof typeof ElectricityMeterTypeData];

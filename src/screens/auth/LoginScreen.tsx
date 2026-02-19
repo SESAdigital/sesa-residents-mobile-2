@@ -75,8 +75,6 @@ const LoginScreen = (): React.JSX.Element => {
 
   const isAutoField = wasPasswordRemembered && !!loginReq;
 
-  console.log(loginReq);
-
   useEffect(() => {
     if (isAutoField && password?.length < 1) {
       setShouldReveal(true);

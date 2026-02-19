@@ -45,6 +45,7 @@ import { useAuthStore } from '@src/stores/auth.store';
 import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
 import { WalletTransactionDetails } from '@src/api/wallets.api';
+import BuyPowerFormScreen from '@src/screens/dashboard/my-hub/buy-power/BuyPowerFormScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -72,6 +73,8 @@ export type AppNavigatorParams = {
   [routes.TRANSACTION_DETAILS_SCREEN]: WalletTransactionDetails;
 
   [routes.PANIC_ALERT_SCREEN]: PanicAlertScreenData;
+  [routes.BUY_POWER_SCREEN]: undefined;
+  [routes.BUY_POWER_FORM_SCREEN]: undefined;
 
   // ACCOUNTS SCREEN
   [routes.MANAGE_PROFILE_SCREEN]: undefined;
@@ -124,6 +127,7 @@ const RootStack = createNativeStackNavigator({
         [routes.GROUP_ACCESS_SCREEN]: GroupAccessScreen,
         [routes.BILLS_AND_COLLECTIONS_SCREEN]: BillsAndCollectionsScreen,
         [routes.BUY_POWER_SCREEN]: BuyPowerScreen,
+        [routes.BUY_POWER_FORM_SCREEN]: BuyPowerFormScreen,
         [routes.PANIC_ALERT_SCREEN]: PanicAlertScreen,
         [routes.HIRE_ARTISAN_SCREEN]: HireArtisanScreen,
         [routes.ADD_MONEY_SCREEN]: AddMoneyScreen,

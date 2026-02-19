@@ -50,10 +50,10 @@ const SwitchPropertyModal = (): React.JSX.Element => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={styles.modalContainer}>
+      <View style={styles.modalHeader}>
         <TouchableOpacity
-          style={styles.closeContainer}
+          style={styles.modalCloseContainer}
           onPress={closeActiveModal}
         >
           <MaterialSymbolsCloseRounded
@@ -62,7 +62,7 @@ const SwitchPropertyModal = (): React.JSX.Element => {
             color={colors.BLUE_120}
           />
         </TouchableOpacity>
-        <AppText style={styles.headerTitle}>Switch Property</AppText>
+        <AppText style={styles.modalHeaderTitle}>Switch Property</AppText>
       </View>
 
       <FlatList
@@ -89,7 +89,7 @@ const SwitchPropertyModal = (): React.JSX.Element => {
         keyExtractor={(_, index) => index?.toString()}
       />
 
-      <View style={styles.footer}>
+      <View style={styles.modalFooter}>
         <SubmitButton
           style={{ width: '48%' }}
           onPress={closeActiveModal}
@@ -158,7 +158,7 @@ function PropertyRowLoader() {
 }
 
 const styles = StyleSheet.create({
-  closeContainer: {
+  modalCloseContainer: {
     position: 'absolute',
     left: Size.calcWidth(21),
     padding: Size.calcAverage(5),
@@ -168,13 +168,13 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
 
-  container: {
+  modalContainer: {
     backgroundColor: colors.WHITE_100,
     borderRadius: Size.calcAverage(12),
     overflow: 'hidden',
   },
 
-  footer: {
+  modalFooter: {
     paddingHorizontal: Size.calcWidth(21),
     paddingVertical: Size.calcHeight(18),
     flexDirection: 'row',
@@ -183,12 +183,12 @@ const styles = StyleSheet.create({
     borderTopWidth: Size.calcHeight(2),
   },
 
-  header: {
+  modalHeader: {
     padding: Size.calcAverage(16),
     position: 'relative',
   },
 
-  headerTitle: {
+  modalHeaderTitle: {
     fontFamily: fonts.INTER_600,
     fontSize: Size.calcAverage(16),
     textAlign: 'center',

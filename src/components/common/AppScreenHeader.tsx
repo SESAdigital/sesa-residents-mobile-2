@@ -1,3 +1,4 @@
+import { PropsWithChildren } from 'react';
 import {
   StyleProp,
   StyleSheet,
@@ -5,28 +6,29 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import { PropsWithChildren } from 'react';
 
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
 import {
   MaterialSymbolsChevronLeftRounded,
   MaterialSymbolsCloseRounded,
 } from '../icons';
-import { useAppNavigator } from '@src/navigation/AppNavigator';
 
 interface Props extends PropsWithChildren {
   onBackPress?: () => void;
   title?: string;
   containerStyle?: StyleProp<ViewStyle>;
   icon?: 'back' | 'close';
+  rightIcon?: React.JSX.Element;
 }
 
 const AppScreenHeader = (props: Props): React.JSX.Element => {
   const navigation = useAppNavigator();
-  const { onBackPress, title, children, containerStyle, icon } = props;
+  const { onBackPress, title, children, containerStyle, icon, rightIcon } =
+    props;
 
   const onPress = () => {
     if (onBackPress) {
@@ -52,14 +54,25 @@ const AppScreenHeader = (props: Props): React.JSX.Element => {
           />
         )}
       </TouchableOpacity>
-      {title ? <AppText style={styles.headerTitle}>{title}</AppText> : children}
+      <View style={styles.contentContainer}>
+        {title ? (
+          <AppText style={styles.headerTitle}>{title}</AppText>
+        ) : (
+          children
+        )}
+      </View>
+      {!!rightIcon && <View style={styles.rightItem}>{rightIcon}</View>}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  contentContainer: {
+    paddingHorizontal: Size.calcWidth(40),
+  },
+
   header: {
-    padding: Size.calcAverage(10),
+    paddingVertical: Size.calcHeight(10),
     borderColor: colors.LIGHT_GRAY_200,
     borderBottomWidth: Size.calcHeight(1),
     position: 'relative',
@@ -70,13 +83,13 @@ const styles = StyleSheet.create({
 
   headerButton: {
     position: 'absolute',
-    left: 2,
+    left: 0,
     top: 0,
     bottom: 0,
-    paddingHorizontal: Size.calcWidth(5),
+    paddingRight: Size.calcWidth(5),
     justifyContent: 'center',
-    alignItems: 'center',
     zIndex: 2,
+    paddingLeft: Size.calcWidth(11),
   },
 
   headerTitle: {
@@ -84,6 +97,17 @@ const styles = StyleSheet.create({
     color: colors.BLACK_200,
     fontSize: Size.calcAverage(16),
     textAlign: 'center',
+  },
+
+  rightItem: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    paddingLeft: Size.calcWidth(5),
+    justifyContent: 'center',
+    zIndex: 2,
+    paddingRight: Size.calcWidth(20),
   },
 });
 

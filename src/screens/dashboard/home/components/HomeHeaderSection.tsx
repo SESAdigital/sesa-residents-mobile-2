@@ -1,8 +1,9 @@
 import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import AppAvatar from '@src/components/AppAvatar';
+import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 import AppText from '@src/components/AppText';
 import SwitchPropertyRow from '@src/components/common/SwitchPropertyRow';
+import AppProfilePicture from '@src/components/custom/AppProfilePicture';
 import { MaterialSymbolsChevronRightRounded } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
@@ -14,7 +15,6 @@ import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import Size from '@src/utils/useResponsiveSize';
 import BillReminderBanner from './BillReminderBanner';
-import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 
 const HomeHeaderSection = (): React.JSX.Element => {
   const navigation = useAppNavigator();
@@ -30,11 +30,7 @@ const HomeHeaderSection = (): React.JSX.Element => {
           </AppText>
           <SwitchPropertyRow />
         </View>
-        <AppAvatar
-          firstWord={details?.firstName}
-          imageURL={details?.photo}
-          lastWord={details?.lastName}
-        />
+        <AppProfilePicture />
       </View>
       <BillReminderBanner />
       <View style={styles.walletContainer}>

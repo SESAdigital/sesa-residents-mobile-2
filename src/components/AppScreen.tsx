@@ -61,11 +61,11 @@ const AppScreen = (props: ScreenProps): React.JSX.Element => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: colors.WHITE_100,
+    backgroundColor: colors.WHITE_200,
   },
   view: {
     flex: 1,
-    paddingHorizontal: Size.calcWidth(21),
+    // paddingHorizontal: Size.calcWidth(21),
   },
 });
 

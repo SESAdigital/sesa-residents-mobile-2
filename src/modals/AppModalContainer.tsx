@@ -1,52 +1,44 @@
-import React from 'react';
 import {
   Modal,
+  Pressable,
+  StyleProp,
   StyleSheet,
-  TouchableWithoutFeedback,
   View,
   ViewStyle,
 } from 'react-native';
 
 import colors from '@src/configs/colors';
+import Size from '@src/utils/useResponsiveSize';
 
-interface Props {
-  visible: boolean;
+interface Props extends React.PropsWithChildren {
+  isVisible: boolean;
   onClose: () => void;
-  children: React.ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 const AppModalContainer = (props: Props): React.JSX.Element => {
-  const { visible, onClose, children, style } = props;
-
+  const { isVisible, onClose, children, style: containerStyle } = props;
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={visible}
+      visible={isVisible}
       onRequestClose={onClose}
     >
-      <TouchableWithoutFeedback onPress={onClose}>
-        <View style={styles.overlay}>
-          <TouchableWithoutFeedback>
-            <View style={[styles.content, style]}>{children}</View>
-          </TouchableWithoutFeedback>
-        </View>
-      </TouchableWithoutFeedback>
+      <Pressable style={styles.backdrop} onPress={onClose} />
+      <View style={[styles.container, containerStyle]}>{children}</View>
     </Modal>
   );
 };
-
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: colors.GRAY_300,
-    justifyContent: 'center',
-    alignItems: 'center',
+  backdrop: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: colors.GRAY_800,
   },
-  content: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    padding: Size.calcAverage(20),
   },
 });
 

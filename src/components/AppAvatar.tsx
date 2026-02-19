@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: Size.calcAverage(4),
-    borderRadius: Size.calcAverage(44 / 2),
+    borderRadius: Size.calcAverage(38 / 2),
     borderWidth: Size.calcAverage(2),
     backgroundColor: '#ECF3FF',
     borderColor: '#ECF3FF',
@@ -71,8 +71,8 @@ const styles = StyleSheet.create({
   },
 
   dimension: {
-    height: Size.calcAverage(44),
-    width: Size.calcAverage(44),
+    height: Size.calcAverage(38),
+    width: Size.calcAverage(38),
   },
 
   text: {

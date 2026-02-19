@@ -1,16 +1,8 @@
 import { JSX } from 'react';
-import {
-  Modal,
-  Pressable,
-  StyleProp,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 
-import colors from '@src/configs/colors';
 import { useAppStateStore } from '@src/stores/appState.store';
-import Size from '@src/utils/useResponsiveSize';
+import AppModalContainer from './AppModalContainer';
 import AppPromptModal, { AppPromptModalProps } from './AppPromptModal';
 
 export interface AppModalProps {
@@ -30,9 +22,6 @@ export interface AppModalProps {
 
 const AppModal = (): React.JSX.Element => {
   const { activeModal, closeActiveModal } = useAppStateStore();
-  // const handleOutPress = () => {
-  //   if (activeModal?.shouldBackgroundClose) closeActiveModal();
-  // };
 
   const onClose = () => {
     if (activeModal?.shouldBackgroundClose) {
@@ -43,74 +32,17 @@ const AppModal = (): React.JSX.Element => {
   };
 
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={!!activeModal}
-      onRequestClose={onClose}
-    >
-      <Pressable style={styles.backdrop} onPress={onClose} />
-      <View style={[styles.container, activeModal?.containerStyle]}>
-        {activeModal?.modalType === 'EMPTY_MODAL' &&
-          !!activeModal?.emptyModalComponent &&
-          activeModal?.emptyModalComponent}
+    <AppModalContainer isVisible={!!activeModal} onClose={onClose}>
+      {activeModal?.modalType === 'EMPTY_MODAL' &&
+        !!activeModal?.emptyModalComponent &&
+        activeModal?.emptyModalComponent}
 
-        {activeModal?.modalType === 'PROMT_MODAL' &&
-          !!activeModal?.promptModal && (
-            <AppPromptModal {...activeModal.promptModal} />
-          )}
-      </View>
-
-      {/* <View style={styles.container}>
-         <Pressable onPress={() => {}} style={styles.inner}>
-        <View style={styles.inner}>
-          {activeModal?.modalType === 'EMPTY_MODAL' &&
-            !!activeModal?.emptyModalComponent &&
-            activeModal?.emptyModalComponent}
-
-
-          {activeModal?.modalType === 'SINGLE_PROMPT_MODAL' &&
-            !!activeModal?.singlePromptModal && (
-              <SinglePromptModal {...activeModal.singlePromptModal} />
-            )}
-          {activeModal?.modalType === 'REASON_MODAL' &&
-            !!activeModal?.reasonModal && (
-              <AppReasonModal {...activeModal.reasonModal} />
-            )} 
-        </View>
-      </View>   */}
-      {/* </Pressable> */}
-    </Modal>
+      {activeModal?.modalType === 'PROMT_MODAL' &&
+        !!activeModal?.promptModal && (
+          <AppPromptModal {...activeModal.promptModal} />
+        )}
+    </AppModalContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  backdrop: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: colors.GRAY_800,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    padding: Size.calcAverage(20),
-  },
-});
-
-// const styles = StyleSheet.create({
-//   container: {
-//     alignItems: 'center',
-//     backgroundColor: colors.GRAY_300,
-//     // backgroundColor: 'red',
-//     flex: 1,
-//     justifyContent: 'center',
-//   },
-//   inner: {
-//     // marginHorizontal: 'auto',
-//     padding: Size.calcAverage(20),
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     width: '100%',
-//   },
-// });
 
 export default AppModal;

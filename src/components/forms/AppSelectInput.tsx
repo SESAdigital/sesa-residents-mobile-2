@@ -29,6 +29,7 @@ interface AppSelectInputProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>;
   control: Control<TFieldValues>;
   data: SelectInputData[];
+  disabled?: boolean;
   shouldBackgroundClose?: boolean;
 }
 
@@ -42,6 +43,7 @@ function AppSelectInput<TFieldValues extends FieldValues>(
     name,
     placeholder,
     data,
+    disabled,
     shouldBackgroundClose = true,
   } = props;
 
@@ -68,10 +70,10 @@ function AppSelectInput<TFieldValues extends FieldValues>(
           <AppText style={styles.label}>{label}</AppText>
         )}
         <TouchableOpacity
+          disabled={disabled}
           onPress={() => setVisibility(true)}
           style={[
             styles.container,
-            // innerContainerStyle,
             !!error?.message && { borderColor: colors.RED_100 },
           ]}
         >
@@ -95,7 +97,7 @@ function AppSelectInput<TFieldValues extends FieldValues>(
       </View>
 
       <AppModalContainer
-        isVisible={isVisible}
+        isVisible={!disabled && isVisible}
         style={{ padding: 0 }}
         onClose={handleBgClose}
       >
@@ -241,7 +243,7 @@ const styles = StyleSheet.create({
 
   modalCloseContainer: {
     position: 'absolute',
-    left: Size.calcWidth(21),
+    right: Size.calcWidth(21),
     padding: Size.calcAverage(5),
     top: Size.calcHeight(3),
     bottom: Size.calcHeight(3),

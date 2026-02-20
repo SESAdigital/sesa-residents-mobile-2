@@ -26,7 +26,7 @@ const TransactionDetailsScreen = (): React.JSX.Element => {
     },
     {
       title: 'AMOUNT',
-      value: param?.amount,
+      value: param?.amount?.toLocaleString?.(),
     },
 
     {

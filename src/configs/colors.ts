@@ -50,6 +50,7 @@ export default Object.freeze({
   LIGHT_GRAY_400: '#E5E7EB',
   LIGHT_GRAY_500: '#F8F8F8',
   LIGHT_GRAY_600: '#DBDBDB',
+  LIGHT_GRAY_700: '#E9E9E933',
 
   PURPLE_100: '#DD34D7',
 

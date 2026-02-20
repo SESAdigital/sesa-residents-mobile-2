@@ -73,7 +73,7 @@ const AppPromptModal = (props: AppPromptModalProps): React.ReactNode => {
 
 const styles = StyleSheet.create({
   button: {
-    width: '45%',
+    width: '48%',
   },
 
   buttonContainer: {

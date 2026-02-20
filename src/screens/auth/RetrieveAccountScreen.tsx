@@ -73,7 +73,10 @@ const RetrieveAccountScreen = (): React.JSX.Element => {
       keyboardVerticalOffset={-Size.calcHeight(50)}
       style={{ flex: 1 }}
     >
-      <AppScreen showDownInset style={styles.container}>
+      <AppScreen
+        showDownInset
+        style={{ paddingHorizontal: Size.calcWidth(21) }}
+      >
         <AppText style={styles.title}>Welcome to SESA</AppText>
         <AppText style={styles.subTitle}>
           To get started, enter your associated email address or phone number.
@@ -135,11 +138,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     paddingTop: Size.calcHeight(15),
     paddingBottom: Size.calcHeight(40),
-  },
-
-  container: {
-    backgroundColor: colors.WHITE_200,
-    flex: 1,
   },
 
   content: {

@@ -10,6 +10,8 @@ import OfflineNotice from '@src/components/OfflineNotice';
 import { AppNavigator } from '@src/navigation/AppNavigator';
 import navigationTheme from '@src/navigation/navigationTheme';
 import AppModal from '@src/modals/AppModal';
+import { PaystackProvider } from 'react-native-paystack-webview';
+import appConfig from '@src/utils/appConfig';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,9 +51,11 @@ export default function App() {
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
           <OfflineNotice />
-          <AppNavigator theme={{ ...navigationTheme, dark: true }} />
+          <PaystackProvider publicKey={appConfig.APP_PAYSTACK_KEY}>
+            <AppNavigator theme={{ ...navigationTheme, dark: true }} />
+            <AppModal />
+          </PaystackProvider>
           <Toaster visibleToasts={1} richColors theme="light" />
-          <AppModal />
         </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

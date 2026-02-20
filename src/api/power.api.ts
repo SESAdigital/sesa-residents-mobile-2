@@ -63,7 +63,7 @@ export interface VerifyPowerDiscoReq {
 }
 
 export interface VerifyPowerEstateReq {
-  Amount: number;
+  Amount: number | string;
   PropertyId: number;
   MeterNumber: string;
   MeterType: ElectricityMeterType;

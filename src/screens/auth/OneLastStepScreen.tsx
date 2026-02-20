@@ -39,7 +39,7 @@ const OneLastStepScreen = (): React.JSX.Element => {
   const navigation = useAppNavigator();
 
   return (
-    <AppScreen showDownInset style={{ backgroundColor: colors.WHITE_200 }}>
+    <AppScreen showDownInset style={{ paddingHorizontal: Size.calcWidth(21) }}>
       <AppText style={styles.title}>One last step</AppText>
       <AppText style={styles.subTitle}>
         We require that you set up a 4-digit wallet PIN. This PIN will be used

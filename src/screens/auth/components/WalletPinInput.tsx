@@ -11,6 +11,7 @@ import { MaterialSymbolsBackspace } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
+import appConfig from '@src/utils/appConfig';
 
 type PadValue = number | 'DELETE' | null;
 interface PadDetail {
@@ -56,7 +57,7 @@ interface Props {
   title: string;
   subtitle: string;
   onDone: (val: string) => void;
-  pinLength: number;
+  pinLength?: number;
   titleStyles?: TextStyle;
   showValues?: boolean;
   subtitleStyles?: TextStyle;
@@ -69,7 +70,7 @@ const WalletPinInput = (props: Props): React.JSX.Element => {
     title,
     onDone,
     subtitle,
-    pinLength,
+    pinLength = appConfig.APP_PIN_LENGTH,
     subtitleStyles,
     titleStyles,
     showValues,

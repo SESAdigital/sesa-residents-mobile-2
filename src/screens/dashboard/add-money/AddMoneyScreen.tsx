@@ -1,34 +1,47 @@
-import {
-  ActivityIndicator,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import BankImageIcon from '@src/assets/images/icons/bank-image-icon.png';
+import { getWalletsBankAccount } from '@src/api/wallets.api';
 import ATMCardImageIcon from '@src/assets/images/icons/atm-card-icon.png';
+import BankImageIcon from '@src/assets/images/icons/bank-image-icon.png';
 import AppImage from '@src/components/AppImage';
 import AppScreen from '@src/components/AppScreen';
+import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 import AppText from '@src/components/AppText';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
-import {
-  MaterialSymbolsContentCopyOutline,
-  MaterialSymbolsRefresh,
-} from '@src/components/icons';
+import AppRefreshControl from '@src/components/custom/AppRefreshControl';
+import { MaterialSymbolsContentCopyOutline } from '@src/components/icons';
 import colors from '@src/configs/colors';
-import { useGetWalletBalance } from '@src/hooks/useGetRequests';
-import Size from '@src/utils/useResponsiveSize';
 import fonts from '@src/configs/fonts';
-import { useAppStateStore } from '@src/stores/appState.store';
-import AddMoneyHelpModal from './modals/AddMoneyHelpModal';
-import { copyTextToClipboard } from '@src/utils';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
+import { useAppStateStore } from '@src/stores/appState.store';
+import { copyTextToClipboard } from '@src/utils';
+import { handleToastApiError } from '@src/utils/handleErrors';
+import Size from '@src/utils/useResponsiveSize';
+import AddMoneyHelpModal from './modals/AddMoneyHelpModal';
+import AddMoneyBanner from './components/AddMoneyBanner';
+
+const queryKey = ['getWalletsBankAccount'];
 
 const AddMoneyScreen = (): React.JSX.Element => {
-  const { data, isFetching, refetch } = useGetWalletBalance();
   const { setActiveModal } = useAppStateStore();
   const navigation = useAppNavigator();
+  const queryClient = useQueryClient();
+
+  const { data: bankData, isLoading: isBankLoading } = useQuery({
+    queryKey,
+    queryFn: async () => {
+      const response = await getWalletsBankAccount();
+
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+  });
 
   const handleHelp = () => {
     setActiveModal({
@@ -41,17 +54,21 @@ const AddMoneyScreen = (): React.JSX.Element => {
   const bankDetails = [
     {
       title: 'Account Name',
-      value: 'SESA Bank',
+      value: bankData?.accountName,
     },
     {
       title: 'Bank Name',
-      value: 'SESA Bank',
+      value: bankData?.bankName,
     },
     {
       title: 'Account Number',
-      value: '1234567890',
+      value: bankData?.accountNumber,
     },
   ];
+
+  const handleRefetch = () => queryClient.resetQueries({ queryKey });
+
+  const accountNumber = bankDetails?.[2]?.value;
 
   return (
     <AppScreen style={styles.container}>
@@ -60,104 +77,97 @@ const AddMoneyScreen = (): React.JSX.Element => {
         containerStyle={styles.header}
         title="Add Money"
       />
-      <View style={styles.info}>
-        <AppText style={styles.infoText}>Select a funding method</AppText>
-        <View style={styles.row}>
-          <TouchableOpacity
-            disabled={isFetching}
-            onPress={() => refetch()}
-            style={styles.balanceContainer}
-          >
-            {isFetching ? (
-              <ActivityIndicator color={colors.BLUE_200} />
-            ) : (
-              <MaterialSymbolsRefresh
-                height={Size.calcAverage(20)}
-                width={Size.calcAverage(20)}
-                color={colors.BLUE_200}
-              />
-            )}
-            <AppText style={styles.infoText}>
-              Balance: {data?.formattedAmount}
-            </AppText>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <AddMoneyBanner title="Select a funding method" />
 
-      <View style={styles.layoutContainer}>
-        <View style={styles.imageContainer}>
-          <AppImage source={BankImageIcon} style={styles.image} />
-        </View>
-
-        <View style={{ flex: 1 }}>
-          <View>
-            <AppText style={styles.title}>Fund Via Bank Transfer</AppText>
-          </View>
-          <AppText style={styles.subtitle}>
-            Send money to the bank details below
-          </AppText>
-          <View style={styles.bankDetailsContainer}>
-            {bankDetails?.map((item, index) => (
-              <View key={index}>
-                <AppText style={styles.bankDetailTitle}>{item.title}</AppText>
-                <AppText style={styles.bankDetailValue}>{item.value}</AppText>
-              </View>
-            ))}
-
-            <TouchableOpacity
-              onPress={() =>
-                copyTextToClipboard({
-                  text: bankDetails?.[2].value,
-                  successText: `${bankDetails?.[2]?.title} Copied Successfully`,
-                  errorText: 'Failed to copy to clipboard',
-                })
-              }
-              style={styles.copyButton}
-            >
-              <MaterialSymbolsContentCopyOutline
-                height={Size.calcAverage(14)}
-                width={Size.calcAverage(14)}
-                color={colors.BLUE_200}
-              />
-              <AppText style={styles.copyText}>Copy</AppText>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate(routes.ADD_MONEY_ATM_CARD_SCREEN)}
-        style={[styles.layoutContainer, { alignItems: 'center' }]}
+      <ScrollView
+        refreshControl={
+          <AppRefreshControl
+            refreshing={isBankLoading}
+            onRefresh={handleRefetch}
+          />
+        }
       >
-        <View style={styles.imageContainer}>
-          <AppImage source={ATMCardImageIcon} style={styles.image} />
+        <View style={styles.layoutContainer}>
+          <View style={styles.imageContainer}>
+            <AppImage source={BankImageIcon} style={styles.image} />
+          </View>
+
+          <View style={{ flex: 1 }}>
+            <View>
+              <AppText style={styles.title}>Fund Via Bank Transfer</AppText>
+            </View>
+            <AppText style={styles.subtitle}>
+              Send money to the bank details below
+            </AppText>
+            <View style={styles.bankDetailsContainer}>
+              {bankDetails?.map((item, index) => (
+                <View key={index}>
+                  <AppText style={styles.bankDetailTitle}>{item.title}</AppText>
+                  {isBankLoading ? (
+                    <AppSkeletonLoader
+                      style={{ paddingTop: Size.calcHeight(6.5) }}
+                      width="70%"
+                    />
+                  ) : (
+                    <AppText style={styles.bankDetailValue}>
+                      {item?.value || 'Not available'}
+                    </AppText>
+                  )}
+                </View>
+              ))}
+
+              {!!accountNumber && (
+                <TouchableOpacity
+                  onPress={() =>
+                    copyTextToClipboard({
+                      text: accountNumber,
+                      successText: `${bankDetails?.[2]?.title} Copied Successfully`,
+                      errorText: 'Failed to copy to clipboard',
+                    })
+                  }
+                  style={styles.copyButton}
+                >
+                  <MaterialSymbolsContentCopyOutline
+                    height={Size.calcAverage(14)}
+                    width={Size.calcAverage(14)}
+                    color={colors.BLUE_200}
+                  />
+                  <AppText style={styles.copyText}>Copy</AppText>
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
         </View>
 
-        <View style={{ flex: 1 }}>
-          <View>
-            <AppText style={styles.title}>Fund Via ATM Card</AppText>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(routes.ADD_MONEY_ATM_CARD_SCREEN)}
+          style={[styles.layoutContainer, { alignItems: 'center' }]}
+        >
+          <View style={styles.imageContainer}>
+            <AppImage source={ATMCardImageIcon} style={styles.image} />
           </View>
-          <AppText style={styles.subtitle}>
-            Add money to your SESA wallet with your debit card.
+
+          <View style={{ flex: 1 }}>
+            <View>
+              <AppText style={styles.title}>Fund Via ATM Card</AppText>
+            </View>
+            <AppText style={styles.subtitle}>
+              Add money to your SESA wallet with your debit card.
+            </AppText>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleHelp} style={styles.issuesContainer}>
+          <AppText style={styles.issuesText}>Have any issues? </AppText>
+          <AppText style={[styles.issuesText, { color: colors.BLUE_200 }]}>
+            Get Help
           </AppText>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleHelp} style={styles.issuesContainer}>
-        <AppText style={styles.issuesText}>Have any issues? </AppText>
-        <AppText style={[styles.issuesText, { color: colors.BLUE_200 }]}>
-          Get Help
-        </AppText>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </ScrollView>
     </AppScreen>
   );
 };
 
 const styles = StyleSheet.create({
-  balanceContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: Size.calcWidth(5),
-  },
   bankDetailsContainer: {
     rowGap: Size.calcHeight(12),
     backgroundColor: colors.WHITE_300,
@@ -230,23 +240,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.INTER_500,
   },
 
-  info: {
-    paddingHorizontal: Size.calcWidth(21),
-    paddingVertical: Size.calcHeight(6),
-    backgroundColor: colors.WHITE_300,
-    borderTopWidth: Size.calcHeight(1),
-    borderBottomWidth: Size.calcHeight(1),
-    borderColor: colors.WHITE_300,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-
-  infoText: {
-    color: colors.GRAY_100,
-    fontSize: Size.calcAverage(12),
-  },
-
   layoutContainer: {
     paddingLeft: Size.calcWidth(21),
     paddingRight: Size.calcWidth(14),
@@ -255,11 +248,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: Size.calcHeight(1),
     borderColor: colors.WHITE_300,
     columnGap: Size.calcWidth(15),
-  },
-
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
 
   subtitle: {

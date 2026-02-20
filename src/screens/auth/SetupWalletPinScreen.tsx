@@ -59,7 +59,6 @@ const SetupWalletPinScreen = (): React.JSX.Element => {
   const steps = [
     <WalletPinInput
       pin={pin}
-      pinLength={appConfig.APP_PIN_LENGTH}
       onDone={() => setCurrentStep(val => val + 1)}
       onPinChange={val => setPin(val)}
       title="Set up your wallet PIN"
@@ -67,7 +66,6 @@ const SetupWalletPinScreen = (): React.JSX.Element => {
     />,
     <WalletPinInput
       pin={confirmPin}
-      pinLength={appConfig.APP_PIN_LENGTH}
       onDone={handleDone}
       onPinChange={val => setConfirmPin(val)}
       title="Repeat your wallet PIN"

@@ -9,7 +9,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import colors from '@src/configs/colors';
-import Size from '@src/utils/useResponsiveSize';
 
 interface ScreenProps extends ViewProps {
   containerStyle?: ViewStyle;

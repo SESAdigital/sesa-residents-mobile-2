@@ -81,6 +81,7 @@ const BuyPowerScreen = (): React.JSX.Element => {
           Wallet balance:{data?.formattedAmount}
         </AppText>
       </AppScreenHeader>
+
       <ScrollView
         refreshControl={
           <AppRefreshControl

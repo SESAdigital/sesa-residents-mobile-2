@@ -127,3 +127,27 @@ export const getTotalPages = ({
 }) => {
   return Math.max(1, Math.ceil(totalItems / pageSize));
 };
+
+export const formatMoneyValue = (inputValue: string) => {
+  const cleanedValue = inputValue?.toString().replace(/[^0-9.]/g, '');
+
+  const [integerPart, decimalPart] = cleanedValue?.split('.');
+
+  const formattedIntegerPart = integerPart.replace(
+    /\B(?=(\d{3})+(?!\d))/g,
+    ',',
+  );
+
+  const formattedDecimalPart = decimalPart ? decimalPart.substring(0, 2) : '';
+
+  const result = inputValue.includes('.')
+    ? `${formattedIntegerPart}.${formattedDecimalPart}`
+    : formattedIntegerPart;
+
+  return result;
+};
+
+export const formatMoneyValueIntoNumber = (value: string) => {
+  if (!value) return 0;
+  return Number(value?.replace(/,/g, ''));
+};

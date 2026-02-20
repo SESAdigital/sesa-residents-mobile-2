@@ -42,7 +42,7 @@ const OnboardingScreen2 = (): React.JSX.Element => {
   useGetCurrentLocation();
 
   return (
-    <AppScreen showDownInset style={{ backgroundColor: colors.WHITE_200 }}>
+    <AppScreen showDownInset style={{ paddingHorizontal: Size.calcWidth(21) }}>
       <AppText style={styles.title}>Before you get started</AppText>
       <AppText style={styles.subTitle}>Be sure of the following</AppText>
 

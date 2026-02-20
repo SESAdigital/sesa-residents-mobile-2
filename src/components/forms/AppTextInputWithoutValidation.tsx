@@ -8,10 +8,11 @@ import {
 
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { formatNumberInput } from '@src/utils';
+import { formatMoneyValue, formatNumberInput } from '@src/utils';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
 import ErrorMessage from './ErrorMessage';
+import appConfig from '@src/utils/appConfig';
 
 export interface AppTextInputWithoutValidationProps extends TextInputProps {
   placeholder: string;
@@ -19,8 +20,10 @@ export interface AppTextInputWithoutValidationProps extends TextInputProps {
   containerStyle?: ViewStyle;
   innerContainerStyle?: ViewStyle;
   description?: string;
-  rightIcon?: React.ReactNode;
+  rightIcon?: React.JSX.Element;
+  leftIcon?: React.JSX.Element;
   errorMessage?: string;
+  isMoneyValue?: boolean;
 }
 
 const AppTextInputWithoutValidation = (
@@ -35,13 +38,17 @@ const AppTextInputWithoutValidation = (
     value,
     keyboardType,
     rightIcon,
+    leftIcon,
     onChangeText,
     style,
+    isMoneyValue,
     ...otherProps
   } = props;
 
   const onChange = (e: string) => {
-    if (keyboardType === 'number-pad') {
+    if (isMoneyValue) {
+      onChangeText?.(formatMoneyValue(e));
+    } else if (keyboardType === 'number-pad') {
       onChangeText?.(formatNumberInput(e));
     } else {
       onChangeText?.(e);
@@ -58,6 +65,11 @@ const AppTextInputWithoutValidation = (
           !!errorMessage && { borderColor: colors.RED_100 },
         ]}
       >
+        {isMoneyValue ? (
+          <AppText>{appConfig.NAIRA_SYMBOL}</AppText>
+        ) : leftIcon ? (
+          leftIcon
+        ) : null}
         <TextInput
           cursorColor={colors.BLUE_200}
           style={[styles.text, style]}

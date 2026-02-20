@@ -90,7 +90,6 @@ const LoginScreen = (): React.JSX.Element => {
 
     const email = data?.email?.trim()?.toLowerCase();
     const phoneNumber = data?.phoneNumber?.trim()?.toLowerCase();
-    const password = data?.password?.trim();
 
     if (isEmailLogin && !email)
       return appToast.Info('Please enter an email address');
@@ -102,7 +101,7 @@ const LoginScreen = (): React.JSX.Element => {
       latitude: location?.latitude?.toString() || '',
       longitude: location?.longitude?.toString() || '',
       loginMode: loginMode,
-      password,
+      password: password?.trim(),
       pushNotificationToken: '',
       ...(isEmailLogin ? { email } : { phoneNumber }),
     };
@@ -184,7 +183,7 @@ const LoginScreen = (): React.JSX.Element => {
   };
 
   const handleRememberMe = () => {
-    const { email, password } = getValues();
+    const { email } = getValues();
 
     if (isAutoField && !email && !password) {
       setValue('email', loginReq?.email);

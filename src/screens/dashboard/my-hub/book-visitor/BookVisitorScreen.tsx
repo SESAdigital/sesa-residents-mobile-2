@@ -17,8 +17,6 @@ const BookVisitorScreen = (): React.JSX.Element => {
           <SwitchPropertyRow />
         </View>
       </AppScreenHeader>
-
-      <View></View>
     </AppScreen>
   );
 };

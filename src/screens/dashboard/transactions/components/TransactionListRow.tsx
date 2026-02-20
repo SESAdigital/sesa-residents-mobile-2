@@ -24,8 +24,8 @@ interface Props {
 const TransactionListRow = ({ val }: Props): React.JSX.Element => {
   const navigation = useAppNavigator();
 
-  const handleView = (val: WalletTransactionDetails) =>
-    navigation.navigate(routes.TRANSACTION_DETAILS_SCREEN, val);
+  const handleView = (value: WalletTransactionDetails) =>
+    navigation.navigate(routes.TRANSACTION_DETAILS_SCREEN, value);
 
   return (
     <View>

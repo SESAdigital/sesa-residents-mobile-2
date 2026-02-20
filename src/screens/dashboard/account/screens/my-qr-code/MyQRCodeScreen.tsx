@@ -13,7 +13,7 @@ const MyQRCodeScreen = (): React.JSX.Element => {
         containerStyle={{ borderBottomWidth: 0 }}
         title="My QR Code"
       />
-      <View style={{ paddingHorizontal: Size.calcWidth(24) }}></View>
+      <View style={{ paddingHorizontal: Size.calcWidth(24) }} />
     </SafeAreaView>
   );
 };

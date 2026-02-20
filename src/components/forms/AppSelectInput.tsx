@@ -61,7 +61,7 @@ function AppSelectInput<TFieldValues extends FieldValues>(
     }
   };
 
-  const selectedItem = data?.find(({ value }) => value == field?.value);
+  const selectedItem = data?.find(({ value }) => value === field?.value);
 
   return (
     <>
@@ -121,12 +121,12 @@ function AppSelectInput<TFieldValues extends FieldValues>(
             style={{ maxHeight: Size.getHeight() / 2 }}
             showsVerticalScrollIndicator
             renderItem={({ item, index }) => {
-              const isSelected = item?.value == selectedItem?.value;
+              const isSelected = item?.value === selectedItem?.value;
               return (
                 <AppSelectInputRow
                   title={item?.title}
                   onBlur={field.onBlur}
-                  isLast={index == data?.length - 1}
+                  isLast={index === data?.length - 1}
                   isSelected={isSelected}
                   onPress={() => {
                     field.onChange(isSelected ? '' : item?.value);

@@ -6,10 +6,9 @@ import {
   RiInformationFill,
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
-import Size from '@src/utils/useResponsiveSize';
 import fonts from '@src/configs/fonts';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
-import routes from '@src/navigation/routes';
+import Size from '@src/utils/useResponsiveSize';
 
 type Status = 'SUCCESS' | 'INFO' | 'DANGER';
 
@@ -20,11 +19,6 @@ const BillReminderBanner = (): React.JSX.Element => {
 
   const handlePress = () => {
     console.log(navigation);
-    navigation.navigate(routes.TRANSACTION_SUCCESS_SCREEN, {
-      title: 'Bill Reminder',
-      subTite: 'You have a bill due in 2 day(s)',
-      details: [],
-    });
   };
 
   return (

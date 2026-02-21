@@ -1,17 +1,20 @@
+import { Contact } from 'react-native-contacts';
 import { useStore } from 'zustand';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 
-import { appToast } from '@src/utils/appToast';
 import { AppModalProps } from '@src/modals/AppModal';
+import { appToast } from '@src/utils/appToast';
 
 interface AppStateStore {
   activeModal: AppModalProps | null;
   isAppModalLoading: boolean;
+  allPhoneContacts: Contact[];
 
   closeActiveModal: () => void;
   setActiveModal: (value: AppModalProps) => void;
   setIsAppModalLoading: (val: boolean) => void;
+  setAllPhoneContacts: (val: Contact[]) => void;
   reset: () => void;
 }
 
@@ -20,6 +23,7 @@ const defaultState = {
   isAppModalLoading: false,
   shiftDetailsScreenId: null,
   qrCodeDetail: null,
+  allPhoneContacts: [],
 };
 
 const appStateStore = createWithEqualityFn<AppStateStore>(
@@ -35,6 +39,7 @@ const appStateStore = createWithEqualityFn<AppStateStore>(
       appToast.Dismiss();
       return set(() => ({ activeModal }));
     },
+    setAllPhoneContacts: allPhoneContacts => set(() => ({ allPhoneContacts })),
   }),
   shallow,
 );

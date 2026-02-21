@@ -22,7 +22,7 @@ interface Props extends TextInputProps {
 }
 
 const AppSearchInput = (props: Props): React.JSX.Element => {
-  const { onSearchDone, containerStyle, ...otherProps } = props;
+  const { onSearchDone, containerStyle, disabled, ...otherProps } = props;
 
   const [value, setValue] = useState(props.defaultValue || '');
 
@@ -50,6 +50,7 @@ const AppSearchInput = (props: Props): React.JSX.Element => {
         placeholderTextColor={colors.GRAY_200}
         onChangeText={e => setValue(e)}
         value={value}
+        editable={!disabled}
         selectionColor={colors.BLUE_200}
         cursorColor={colors.BLUE_100}
       />

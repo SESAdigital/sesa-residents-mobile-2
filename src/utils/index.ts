@@ -151,3 +151,11 @@ export const formatMoneyValueIntoNumber = (value: string) => {
   if (!value) return 0;
   return Number(value?.replace(/,/g, ''));
 };
+
+export const normalizePhoneNumber = (phoneNumber: string) => {
+  if (!phoneNumber) return '';
+  return phoneNumber
+    ?.replace(/\s+/g, '')
+    ?.replace(/^\+234/, '0')
+    ?.toLowerCase();
+};

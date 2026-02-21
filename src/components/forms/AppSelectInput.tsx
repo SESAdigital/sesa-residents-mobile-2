@@ -159,7 +159,7 @@ interface AppSelectInputRowProps {
   onPress: () => void;
   onBlur?: (e: NativeSyntheticEvent<TargetedEvent>) => void;
   isSelected: boolean;
-  isLast: boolean;
+  isLast?: boolean;
   title: string;
 }
 

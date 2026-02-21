@@ -23,13 +23,18 @@ import AppText from '@src/components/AppText';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { PaystackIcon } from '@src/components/icons/custom';
-import { formatMoneyValueIntoNumber } from '@src/utils';
+import {
+  formatMoneyToTwoDecimals,
+  formatMoneyValueIntoNumber,
+} from '@src/utils';
 import { appToast } from '@src/utils/appToast';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { useGetUserDetails } from '@src/hooks/useGetRequests';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
 import queryKeys from '@src/api/constants/queryKeys';
+import routes from '@src/navigation/routes';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
 
 const schema = Joi.object<PostWalletInitiateCardTopUpReq>({
   amount: Joi.string().required().max(100),
@@ -48,9 +53,11 @@ const AddMoneyViaCardScreen = (): React.JSX.Element => {
     useAppStateStore();
   const { details } = useGetUserDetails();
   const { popup } = usePaystack();
+  const navigation = useAppNavigator();
 
   const handleDepositConfirmation = async (
     res: PaystackTransactionResponse,
+    amount: number,
   ) => {
     setIsVerifying(true);
     const response = await postWalletCompleteCardTopUp({
@@ -64,7 +71,29 @@ const AddMoneyViaCardScreen = (): React.JSX.Element => {
       queryClient.invalidateQueries({
         queryKey: [queryKeys.GET_WALLET_TRANSACTIONS],
       });
-      appToast.Success(response?.data?.message || 'Payment successful');
+      // appToast.Success(response?.data?.message || 'Payment successful');
+      navigation.navigate(routes.TRANSACTION_SUCCESS_SCREEN, {
+        title: 'Wallet Funded',
+
+        details: [
+          {
+            title: 'TRANSACTION REFERENCE',
+            value: res?.reference,
+          },
+          {
+            title: 'PURPOSE',
+            value: 'Wallet Funding',
+          },
+          {
+            title: 'AMOUNT',
+            value: formatMoneyToTwoDecimals({ amount }),
+          },
+          {
+            title: 'PAYMENT METHOD',
+            value: 'Online - Paystack',
+          },
+        ],
+      });
     } else {
       handleToastApiError(response);
     }
@@ -75,7 +104,7 @@ const AddMoneyViaCardScreen = (): React.JSX.Element => {
       email: details?.email || '',
       amount,
       reference,
-      onSuccess: handleDepositConfirmation,
+      onSuccess: val => handleDepositConfirmation(val, amount),
       onCancel: () => appToast.Info('Payment cancelled by user'),
       // FUTURE ERORR LOGGING
       onError: err =>

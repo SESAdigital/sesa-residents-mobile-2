@@ -8,14 +8,30 @@ import {
 import colors from '@src/configs/colors';
 import Size from '@src/utils/useResponsiveSize';
 import fonts from '@src/configs/fonts';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
 
 type Status = 'SUCCESS' | 'INFO' | 'DANGER';
 
 const BillReminderBanner = (): React.JSX.Element => {
   const status: Status = 'SUCCESS';
   const { color, backgroundColor } = getColors(status);
+  const navigation = useAppNavigator();
+
+  const handlePress = () => {
+    console.log(navigation);
+    navigation.navigate(routes.TRANSACTION_SUCCESS_SCREEN, {
+      title: 'Bill Reminder',
+      subTite: 'You have a bill due in 2 day(s)',
+      details: [],
+    });
+  };
+
   return (
-    <Pressable style={[styles.container, { backgroundColor }]}>
+    <Pressable
+      onPress={handlePress}
+      style={[styles.container, { backgroundColor }]}
+    >
       <View style={styles.row}>
         <RiInformationFill
           height={Size.calcAverage(20)}

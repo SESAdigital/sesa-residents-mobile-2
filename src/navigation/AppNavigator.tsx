@@ -46,6 +46,9 @@ import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
 import { WalletTransactionDetails } from '@src/api/wallets.api';
 import BuyPowerFormScreen from '@src/screens/dashboard/my-hub/buy-power/BuyPowerFormScreen';
+import TransactionSuccessScreen, {
+  TransactionSuccessScreenData,
+} from '@src/screens/dashboard/reusable-screens/TransactionSuccessScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -71,6 +74,9 @@ export type AppNavigatorParams = {
   [routes.ADD_MONEY_ATM_CARD_SCREEN]: undefined;
   [routes.TRANSACTION_LIST_SCREEN]: undefined;
   [routes.TRANSACTION_DETAILS_SCREEN]: WalletTransactionDetails;
+  [routes.TRANSACTION_SUCCESS_SCREEN]: TransactionSuccessScreenData;
+
+  [routes.HOME_BOTTOM_TABS_NAVIGATOR]: undefined;
 
   [routes.PANIC_ALERT_SCREEN]: PanicAlertScreenData;
   [routes.BUY_POWER_SCREEN]: undefined;
@@ -134,6 +140,7 @@ const RootStack = createNativeStackNavigator({
         [routes.ADD_MONEY_ATM_CARD_SCREEN]: AddMoneyViaCardScreen,
         [routes.TRANSACTION_LIST_SCREEN]: TransactionListScreen,
         [routes.TRANSACTION_DETAILS_SCREEN]: TransactionDetailsScreen,
+        [routes.TRANSACTION_SUCCESS_SCREEN]: TransactionSuccessScreen,
 
         // ACCOUNTS SCREEN
         [routes.MANAGE_PROFILE_SCREEN]: ManageProfileScreen,
@@ -174,6 +181,11 @@ export type PanicAlertScreenProps = RouteProp<
 export type TransactionDetailsScreenProps = RouteProp<
   AppNavigatorParams,
   'TRANSACTION_DETAILS_SCREEN'
+>;
+
+export type TransactionSuccessScreenProps = RouteProp<
+  AppNavigatorParams,
+  'TRANSACTION_SUCCESS_SCREEN'
 >;
 
 export type ForgotPasswordScreenProps = RouteProp<

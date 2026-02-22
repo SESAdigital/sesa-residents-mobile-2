@@ -56,8 +56,8 @@ function AppPhoneInput<TFieldValues extends FieldValues>(
         const permission = await checkPermission();
         isSuccess = permission === 'authorized';
       }
-    } catch (error) {
-      console.error('Error checking permission:', error);
+    } catch (ERR) {
+      console.error('Error checking permission:', ERR);
     }
 
     return isSuccess;
@@ -99,8 +99,8 @@ function AppPhoneInput<TFieldValues extends FieldValues>(
           );
         }
       }
-    } catch (error) {
-      Alert.alert('Error', `Failed to request permission. ${error}`);
+    } catch (ERR) {
+      Alert.alert('Error', `Failed to request permission. ${ERR}`);
     }
   };
 
@@ -138,9 +138,13 @@ function AppPhoneInput<TFieldValues extends FieldValues>(
         onChangeText={field.onChange}
         value={field.value}
         maxLength={11}
+        editable={!isDisabled}
         keyboardType="number-pad"
         rightIcon={
-          <TouchableOpacity onPress={requestPermissionFunc}>
+          <TouchableOpacity
+            disabled={isDisabled}
+            onPress={requestPermissionFunc}
+          >
             <MaterialSymbolsCall
               height={Size.calcAverage(20)}
               width={Size.calcAverage(20)}
@@ -163,7 +167,7 @@ function AppPhoneInput<TFieldValues extends FieldValues>(
       </View>
 
       <AppPhoneInputModal
-        isVisible={isActive}
+        isVisible={isActive && !isDisabled}
         onSelect={val => {
           field.onChange(val);
           setIsActive(false);

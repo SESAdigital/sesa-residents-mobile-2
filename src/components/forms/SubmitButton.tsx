@@ -48,7 +48,7 @@ const SubmitButton = (props: Props): React.JSX.Element => {
         (isLoading || disabled) && styles.background,
       ]}
     >
-      {typeof title == 'string' ? (
+      {typeof title === 'string' ? (
         <AppText
           style={[
             styles.text,

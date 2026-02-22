@@ -71,7 +71,9 @@ const BookVisitorSuccessScreen = (): React.JSX.Element => {
       if (viewShotRef?.current && viewShotRef?.current?.capture) {
         image = await viewShotRef.current.capture();
       }
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
     return image;
   };
 
@@ -91,7 +93,7 @@ QR code: ${appConfig.APP_WEBSITE_URL}/access/${param?.code}
 
     const image = await captureReceipt();
     await Share.open({
-      ...(!!image ? { url: image } : {}),
+      ...(image ? { url: image } : {}),
       message,
     });
   };
@@ -115,22 +117,22 @@ QR code: ${appConfig.APP_WEBSITE_URL}/access/${param?.code}
             <View style={styles.detailContainer}>
               {detailList.map((item, firstIndex) => (
                 <View style={styles.detailItemRow} key={firstIndex}>
-                  {item?.map((item, secondIndex) => (
+                  {item?.map((value, secondIndex) => (
                     <View style={styles.detailItem} key={secondIndex}>
                       <View>
                         <AppText style={styles.detailItemTitle}>
-                          {item?.title}
+                          {value?.title}
                         </AppText>
                         <AppText style={styles.detailItemValue}>
-                          {item?.value || '--'}
+                          {value?.value || '--'}
                         </AppText>
                       </View>
-                      {item?.isCopy && (
+                      {value?.isCopy && (
                         <TouchableOpacity
                           onPress={() =>
                             copyTextToClipboard({
-                              text: item?.value,
-                              successText: `${item?.title} Copied Successfully`,
+                              text: value?.value,
+                              successText: `${value?.title} Copied Successfully`,
                               errorText: 'Failed to copy to clipboard',
                             })
                           }

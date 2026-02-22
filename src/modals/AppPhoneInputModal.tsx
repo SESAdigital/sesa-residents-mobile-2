@@ -75,7 +75,7 @@ const AppPhoneInputModal = (props: Props): React.JSX.Element => {
   }, []);
 
   useEffect(() => {
-    if (!!searchValue?.trim()) {
+    if (searchValue?.trim()) {
       searchContacts(searchValue);
     }
   }, [searchValue]);
@@ -87,7 +87,7 @@ const AppPhoneInputModal = (props: Props): React.JSX.Element => {
   };
 
   const refetch = () => {
-    if (!!searchValue?.trim()) {
+    if (searchValue?.trim()) {
       searchContacts(searchValue);
     } else {
       getAllContacts();

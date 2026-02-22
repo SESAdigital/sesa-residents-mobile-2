@@ -13,7 +13,7 @@ import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
 
 interface Props {
-  title: string;
+  title: string | React.JSX.Element;
   onPress: () => void;
   isLoading?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -48,18 +48,22 @@ const SubmitButton = (props: Props): React.JSX.Element => {
         (isLoading || disabled) && styles.background,
       ]}
     >
-      <AppText
-        style={[
-          styles.text,
-          variant === 'SECONDARY' && styles.secondaryText,
-          variant === 'OUTLINE_BLUE' && { color: colors.BLUE_200 },
-          variant === 'DANGER_LIGHT' && { color: colors.RED_100 },
-          // variant === 'DANGER' && {color: colors.RED_100},
-          titleStyle,
-        ]}
-      >
-        {title}
-      </AppText>
+      {typeof title == 'string' ? (
+        <AppText
+          style={[
+            styles.text,
+            variant === 'SECONDARY' && styles.secondaryText,
+            variant === 'OUTLINE_BLUE' && { color: colors.BLUE_200 },
+            variant === 'DANGER_LIGHT' && { color: colors.RED_100 },
+            // variant === 'DANGER' && {color: colors.RED_100},
+            titleStyle,
+          ]}
+        >
+          {title}
+        </AppText>
+      ) : (
+        title
+      )}
       {isLoading && (
         <ActivityIndicator size={Size.calcHeight(23)} color={'#0556DB80'} />
       )}

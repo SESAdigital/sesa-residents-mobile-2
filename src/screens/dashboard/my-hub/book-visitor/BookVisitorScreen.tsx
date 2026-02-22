@@ -3,28 +3,40 @@ import Joi from 'joi';
 import { useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 
-import { PostBookVisitorReq } from '@src/api/visitors.api';
+import { postBookVisitor, PostBookVisitorReq } from '@src/api/visitors.api';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
+import InformationRow from '@src/components/common/InformationRow';
 import SwitchPropertyRow from '@src/components/common/SwitchPropertyRow';
+import AppDateInput from '@src/components/forms/AppDateInput';
 import AppPhoneInput from '@src/components/forms/AppPhoneInput';
 import AppTextInput from '@src/components/forms/AppTextInput';
+import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
+import { useAppStateStore } from '@src/stores/appState.store';
+import { useAuthStore } from '@src/stores/auth.store';
+import { appToast } from '@src/utils/appToast';
+import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
-import AppDateInput from '@src/components/forms/AppDateInput';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
 
 const schema = Joi.object<PostBookVisitorReq>({
-  propertyUnitId: Joi.number().required(),
-  fullName: Joi.string().required(),
-  phoneNumber: joiSchemas.phone,
-  dateOfVisitation: Joi.string().required(),
+  fullName: joiSchemas.name.label('Full name'),
+  phoneNumber: joiSchemas.phone.label('Phone number'),
+  dateOfVisitation: Joi.string().required().label('Date of visitation'),
 });
 
 const BookVisitorScreen = (): React.JSX.Element => {
+  const { setActiveModal, closeActiveModal, setIsAppModalLoading } =
+    useAppStateStore();
+  const { selectedProperty } = useAuthStore();
+  const navigation = useAppNavigator();
   const {
+    handleSubmit,
     control,
     watch,
     formState: { errors },
@@ -39,10 +51,49 @@ const BookVisitorScreen = (): React.JSX.Element => {
 
   const dateOfVisitation = watch('dateOfVisitation');
 
-  console.log(dateOfVisitation);
+  const handleBook = async (data: PostBookVisitorReq) => {
+    const formattedData: PostBookVisitorReq = {
+      dateOfVisitation: data?.dateOfVisitation,
+      fullName: data?.fullName?.trim(),
+      phoneNumber: data?.phoneNumber?.trim(),
+      propertyUnitId: selectedProperty?.id!,
+    };
+
+    setIsAppModalLoading(true);
+    const response = await postBookVisitor(formattedData);
+    setIsAppModalLoading(false);
+
+    if (response.ok && response?.data) {
+      closeActiveModal();
+      navigation.replace(
+        routes.BOOK_VISITOR_SUCCESS_SCREEN,
+        response?.data?.data,
+      );
+    } else {
+      handleToastApiError(response);
+    }
+  };
+
+  const onSubmit = handleSubmit(data => {
+    if (!selectedProperty?.id)
+      return appToast.Warning('Invalid property selected.');
+
+    setActiveModal({
+      modalType: 'PROMT_MODAL',
+      promptModal: {
+        title: 'Are you sure?',
+        description:
+          'You are about to book a new visitor. Are you sure you want to continue?',
+        noButtonTitle: 'Cancel',
+        yesButtonTitle: "Yes, I'm Sure",
+        onYesButtonClick: () => handleBook(data),
+      },
+    });
+    return;
+  });
 
   return (
-    <AppScreen style={styles.container}>
+    <AppScreen showDownInset style={styles.container}>
       <AppScreenHeader>
         <View>
           <AppText style={styles.headerTitle}>Book Visitor</AppText>
@@ -70,6 +121,7 @@ const BookVisitorScreen = (): React.JSX.Element => {
             errorMessage={errors?.dateOfVisitation?.message || ''}
             label="Date of Visitation"
             mode="date"
+            description="Access code expires at midnight of this date"
             minimumDate={new Date()}
             value={dateOfVisitation}
             setValue={value => {
@@ -80,6 +132,11 @@ const BookVisitorScreen = (): React.JSX.Element => {
             }}
             placeholder="Start Date"
           />
+        </View>
+
+        <View style={{ rowGap: Size.calcHeight(24) }}>
+          <InformationRow title="We will generate an access code for you to share with this visitor." />
+          <SubmitButton title="Continue" onPress={onSubmit} />
         </View>
       </View>
     </AppScreen>
@@ -94,11 +151,13 @@ const styles = StyleSheet.create({
   formContainer: {
     paddingHorizontal: Size.calcWidth(21),
     justifyContent: 'space-between',
+    flex: 1,
+    paddingBottom: Size.calcHeight(30),
   },
 
   formContent: {
-    rowGap: Size.calcHeight(26),
-    paddingTop: Size.calcHeight(37),
+    rowGap: Size.calcHeight(30),
+    paddingTop: Size.calcHeight(30),
   },
 
   headerTitle: {

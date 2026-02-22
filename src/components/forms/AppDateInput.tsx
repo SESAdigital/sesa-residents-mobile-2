@@ -23,6 +23,7 @@ interface Props {
   setValue: (value: string) => void;
   mode: 'date' | 'time' | 'datetime' | 'countdown';
   minimumDate?: Date;
+  description?: string;
 }
 
 const AppDateInput = (props: Props): React.ReactNode => {
@@ -34,19 +35,19 @@ const AppDateInput = (props: Props): React.ReactNode => {
     setValue,
     minimumDate,
     mode,
+    description,
   } = props;
   const [show, setShow] = useState(false);
 
   const onChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
-    console.log('selectedDate:', selectedDate?.toISOString());
     if (selectedDate) {
-      setValue(selectedDate.toISOString());
+      setValue(checkInvalidDate(selectedDate?.toISOString?.()));
     }
     setShow(Platform.OS === 'ios');
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       {value && !!label && <AppText style={styles.label}>{label}</AppText>}
       <TouchableOpacity onPress={() => setShow(true)}>
         <View
@@ -86,6 +87,10 @@ const AppDateInput = (props: Props): React.ReactNode => {
           </>
         </View>
       </TouchableOpacity>
+
+      {!!description && (
+        <AppText style={styles.description}>{description}</AppText>
+      )}
       <ErrorMessage message={errorMessage} />
 
       {show && (
@@ -124,6 +129,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: Size.calcAverage(5),
     alignItems: 'center',
+  },
+
+  description: {
+    paddingTop: Size.calcHeight(8),
+    fontSize: Size.calcAverage(12),
+    color: colors.GRAY_100,
   },
 
   label: {

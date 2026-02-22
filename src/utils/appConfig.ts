@@ -22,6 +22,8 @@ const { baseURL, paystackKEy } = variants?.DEV;
 export default Object.freeze({
   APP_PIN_LENGTH: 4,
 
+  APP_WEBSITE_URL: 'https://trysesa.com',
+
   // APP_BACKEND_BASE_URL: baseURL.prod,
 
   APP_BACKEND_BASE_URL: baseURL,

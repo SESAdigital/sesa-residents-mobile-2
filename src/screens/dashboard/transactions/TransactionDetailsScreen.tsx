@@ -46,7 +46,7 @@ const TransactionDetailsScreen = (): React.JSX.Element => {
   ];
 
   return (
-    <AppScreen style={styles.container}>
+    <AppScreen>
       <AppScreenHeader title="Transaction Details" />
       <ScrollView
         showsVerticalScrollIndicator
@@ -102,11 +102,6 @@ const styles = StyleSheet.create({
     paddingBottom: Size.calcHeight(4),
     fontFamily: fonts.INTER_600,
     fontSize: Size.calcAverage(16),
-  },
-
-  container: {
-    backgroundColor: colors.WHITE_200,
-    paddingHorizontal: 0,
   },
 
   description: {

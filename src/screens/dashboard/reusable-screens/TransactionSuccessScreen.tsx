@@ -19,6 +19,7 @@ import SubmitButton from '@src/components/forms/SubmitButton';
 import { appToast } from '@src/utils/appToast';
 import routes from '@src/navigation/routes';
 import useBackHandler from '@src/hooks/useBackHandler';
+import ShareIconButtonComponent from '@src/components/common/ShareIconButtonComponent';
 
 export interface TransactionSuccessScreenData {
   title: string;
@@ -90,7 +91,7 @@ const TransactionSuccessScreen = (): React.JSX.Element => {
           variant="SECONDARY"
         />
         <SubmitButton
-          title="Share Receipt"
+          title={<ShareIconButtonComponent title="Share Receipt" />}
           onPress={captureReceipt}
           style={{ backgroundColor: colors.BLUE_300 }}
         />

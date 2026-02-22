@@ -49,6 +49,8 @@ import BuyPowerFormScreen from '@src/screens/dashboard/my-hub/buy-power/BuyPower
 import TransactionSuccessScreen, {
   TransactionSuccessScreenData,
 } from '@src/screens/dashboard/reusable-screens/TransactionSuccessScreen';
+import BookVisitorSuccessScreen from '@src/screens/dashboard/my-hub/book-visitor/BookVistorSuccessScreen';
+import { PostBookVisitorResData } from '@src/api/visitors.api';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -81,6 +83,8 @@ export type AppNavigatorParams = {
   [routes.PANIC_ALERT_SCREEN]: PanicAlertScreenData;
   [routes.BUY_POWER_SCREEN]: undefined;
   [routes.BUY_POWER_FORM_SCREEN]: undefined;
+  [routes.BOOK_VISITOR_SCREEN]: undefined;
+  [routes.BOOK_VISITOR_SUCCESS_SCREEN]: PostBookVisitorResData;
 
   // ACCOUNTS SCREEN
   [routes.MANAGE_PROFILE_SCREEN]: undefined;
@@ -129,6 +133,7 @@ const RootStack = createNativeStackNavigator({
         // AUTH PAGES
         [routes.HOME_BOTTOM_TABS_NAVIGATOR]: HomeBottomTabsNavigator,
         [routes.BOOK_VISITOR_SCREEN]: BookVisitorScreen,
+        [routes.BOOK_VISITOR_SUCCESS_SCREEN]: BookVisitorSuccessScreen,
         [routes.CREATE_EVENTS_SCREEN]: CreateEventsScreen,
         [routes.GROUP_ACCESS_SCREEN]: GroupAccessScreen,
         [routes.BILLS_AND_COLLECTIONS_SCREEN]: BillsAndCollectionsScreen,
@@ -186,6 +191,10 @@ export type TransactionDetailsScreenProps = RouteProp<
 export type TransactionSuccessScreenProps = RouteProp<
   AppNavigatorParams,
   'TRANSACTION_SUCCESS_SCREEN'
+>;
+export type BookVisitorSuccessScreenProps = RouteProp<
+  AppNavigatorParams,
+  'BOOK_VISITOR_SUCCESS_SCREEN'
 >;
 
 export type ForgotPasswordScreenProps = RouteProp<

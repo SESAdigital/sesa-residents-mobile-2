@@ -12,6 +12,7 @@ const AppText = ({ children, style, ...otherProps }: TextProps) => {
           fontSize: Size.calcAverage(14),
           fontFamily: fonts.INTER_400,
           color: colors.BLACK_100,
+          flexShrink: 1,
         },
         style,
       ]}

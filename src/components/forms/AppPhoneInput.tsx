@@ -137,6 +137,8 @@ function AppPhoneInput<TFieldValues extends FieldValues>(
         onBlur={field.onBlur}
         onChangeText={field.onChange}
         value={field.value}
+        maxLength={11}
+        keyboardType="number-pad"
         rightIcon={
           <TouchableOpacity onPress={requestPermissionFunc}>
             <MaterialSymbolsCall

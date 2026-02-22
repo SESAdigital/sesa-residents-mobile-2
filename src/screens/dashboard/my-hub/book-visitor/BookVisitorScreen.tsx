@@ -14,6 +14,7 @@ import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
+import AppDateInput from '@src/components/forms/AppDateInput';
 
 const schema = Joi.object<PostBookVisitorReq>({
   propertyUnitId: Joi.number().required(),
@@ -23,10 +24,22 @@ const schema = Joi.object<PostBookVisitorReq>({
 });
 
 const BookVisitorScreen = (): React.JSX.Element => {
-  const { handleSubmit, reset, control, watch, getValues, setValue } =
-    useForm<PostBookVisitorReq>({
-      resolver: joiResolver(schema),
-    });
+  const {
+    control,
+    watch,
+    formState: { errors },
+    setError,
+    setValue,
+  } = useForm<PostBookVisitorReq>({
+    resolver: joiResolver(schema),
+    defaultValues: {
+      dateOfVisitation: new Date().toISOString(),
+    },
+  });
+
+  const dateOfVisitation = watch('dateOfVisitation');
+
+  console.log(dateOfVisitation);
 
   return (
     <AppScreen style={styles.container}>
@@ -38,7 +51,7 @@ const BookVisitorScreen = (): React.JSX.Element => {
       </AppScreenHeader>
 
       <View style={styles.formContainer}>
-        <View style={{ rowGap: Size.calcHeight(26) }}>
+        <View style={styles.formContent}>
           <AppTextInput
             placeholder="Full Name"
             label="Full Name"
@@ -51,6 +64,21 @@ const BookVisitorScreen = (): React.JSX.Element => {
             label="Phone Number"
             control={control}
             name="phoneNumber"
+          />
+
+          <AppDateInput
+            errorMessage={errors?.dateOfVisitation?.message || ''}
+            label="Date of Visitation"
+            mode="date"
+            minimumDate={new Date()}
+            value={dateOfVisitation}
+            setValue={value => {
+              console.log({ value });
+              if (errors?.dateOfVisitation?.message)
+                setError('dateOfVisitation', { message: undefined });
+              setValue('dateOfVisitation', value);
+            }}
+            placeholder="Start Date"
           />
         </View>
       </View>
@@ -66,6 +94,11 @@ const styles = StyleSheet.create({
   formContainer: {
     paddingHorizontal: Size.calcWidth(21),
     justifyContent: 'space-between',
+  },
+
+  formContent: {
+    rowGap: Size.calcHeight(26),
+    paddingTop: Size.calcHeight(37),
   },
 
   headerTitle: {

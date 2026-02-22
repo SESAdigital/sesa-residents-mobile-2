@@ -20,3 +20,8 @@ export const dayJSFormatter = (
   return dayjs(value).tz('Africa/Lagos').format(format);
   // return dayjs(value).format(format);
 };
+
+export const checkInvalidDate = (value: string) => {
+  if (value === 'Invalid Date') return '';
+  return value;
+};

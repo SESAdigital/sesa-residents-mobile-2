@@ -1,6 +1,18 @@
-import { StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  FlatList,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
+import { getAccessHistory } from '@src/api/auth.api';
+import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
 import AppText from '@src/components/AppText';
+import DuplicateLoader from '@src/components/DuplicateLoader';
+import AppListFooterLoader from '@src/components/common/AppListFooterLoader';
+import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import {
   MaterialSymbolsArrowDropDown,
   MaterialSymbolsHelp,
@@ -12,13 +24,21 @@ import {
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useAppStateStore } from '@src/stores/appState.store';
-import { useAuthStore } from '@src/stores/auth.store';
-import Size from '@src/utils/useResponsiveSize';
-import AccessHistoryInfoModal from './modals/AccessHistoryInfoModal';
-import ProfileDetailsRow from './components/ProfileDetailsRow';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
+import { useAppStateStore } from '@src/stores/appState.store';
+import { useAuthStore } from '@src/stores/auth.store';
+import { getTotalPages } from '@src/utils';
+import { handleToastApiError } from '@src/utils/handleErrors';
+import Size from '@src/utils/useResponsiveSize';
+import EmtpyTransactionComponent from '../transactions/components/EmtpyTransactionComponent';
+import AccessHistoryRow, {
+  AccessHistoryRowLoader,
+} from './components/AccessHistoryRow';
+import ProfileDetailsRow from './components/ProfileDetailsRow';
+
+const pageSize = DEFAULT_API_DATA_SIZE;
+const queryKey = ['getAccessHistory'];
 
 const AccountScreen = (): React.JSX.Element => {
   const { setActiveModal } = useAppStateStore();
@@ -53,90 +73,140 @@ const AccountScreen = (): React.JSX.Element => {
 
   const viewAccessInfo = () => {
     setActiveModal({
-      modalType: 'EMPTY_MODAL',
+      modalType: 'INFORMATION_MODAL',
       shouldBackgroundClose: true,
-      emptyModalComponent: <AccessHistoryInfoModal />,
+      informationModal: {
+        title: 'Access History',
+        description:
+          'This is your access history when you check-in or out using your resident code or QR code',
+      },
     });
   };
 
+  const {
+    data: accessHistoryData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading: isAccessHistoryLoading,
+  } = useInfiniteQuery({
+    queryKey,
+
+    queryFn: async ({ pageParam }) => {
+      const response = await getAccessHistory({
+        PageNumber: pageParam,
+        PageSize: pageSize,
+      });
+      if (response.ok) {
+        return response?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+
+    initialPageParam: 1,
+
+    getNextPageParam: lastPage => {
+      if (!lastPage) return undefined;
+      const { currentPage, totalRecordCount: totalItems } = lastPage.data;
+      const totalPages = getTotalPages({ pageSize, totalItems });
+      return currentPage < totalPages ? currentPage + 1 : undefined;
+    },
+  });
+
+  const formattedData =
+    accessHistoryData?.pages
+      ?.flatMap(page => page?.data?.records)
+      ?.filter(val => !!val) || [];
+
+  const queryClient = useQueryClient();
+  const refetch = () => queryClient.resetQueries({ queryKey });
+
   return (
-    <View style={styles.container}>
-      <View style={styles.accountHeader}>
-        <AppText style={styles.accountTitle}>Account</AppText>
-        <View style={styles.actions}>
-          {actions?.map(({ Icon, onClick }, index) => (
-            <TouchableOpacity key={index} onPress={onClick}>
-              <Icon
-                height={Size.calcAverage(24)}
-                width={Size.calcAverage(24)}
-              />
-            </TouchableOpacity>
-          ))}
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      <View style={styles.topContainer}>
+        <View style={styles.accountHeader}>
+          <AppText style={styles.accountTitle}>Account</AppText>
+          <View style={styles.actions}>
+            {actions?.map(({ Icon, onClick }, index) => (
+              <TouchableOpacity key={index} onPress={onClick}>
+                <Icon
+                  height={Size.calcAverage(24)}
+                  width={Size.calcAverage(24)}
+                />
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
-      </View>
 
-      <View style={styles.contentContainer}>
-        <ProfileDetailsRow />
+        <View style={styles.contentContainer}>
+          <ProfileDetailsRow />
 
-        <View style={styles.actionButtons}>
-          {actionButtons?.map(({ title, onClick }, index) => (
-            <TouchableOpacity
-              style={styles.actionButton}
-              key={index}
-              onPress={onClick}
+          <View style={styles.actionButtons}>
+            {actionButtons?.map(({ title, onClick }, index) => (
+              <TouchableOpacity
+                style={styles.actionButton}
+                key={index}
+                onPress={onClick}
+              >
+                <AppText style={styles.actionButtonText}>{title}</AppText>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          <View style={styles.switchPropertyContainer}>
+            <AppText
+              style={[styles.switchPropertyText, { color: colors.BLACK_200 }]}
             >
-              <AppText style={styles.actionButtonText}>{title}</AppText>
-            </TouchableOpacity>
-          ))}
-        </View>
-
-        <View style={styles.switchPropertyContainer}>
-          <AppText
-            style={[styles.switchPropertyText, { color: colors.BLACK_200 }]}
-          >
-            Current Property
-          </AppText>
-          <View style={styles.row}>
-            <AppText style={styles.switchPropertyText}>
-              Switch Property (3)
-            </AppText>
-            <MaterialSymbolsArrowDropDown
-              height={Size.calcAverage(16)}
-              width={Size.calcAverage(16)}
-              color={colors.BLUE_200}
-            />
-          </View>
-        </View>
-
-        <TouchableOpacity style={styles.propertyCard}>
-          <View style={styles.propertyIconContainer}>
-            <MaterialSymbolsHome
-              height={Size.calcAverage(24)}
-              width={Size.calcAverage(24)}
-              color={colors.WHITE_200}
-            />
-          </View>
-          <View style={{ rowGap: Size.calcHeight(5), flexShrink: 1 }}>
-            <AppText style={styles.propertyName} numberOfLines={1}>
-              {selectedProperty?.name}
-            </AppText>
-            <AppText style={styles.propertyAddress} numberOfLines={1}>
-              {selectedProperty?.propertyAddress}
+              Current Property
             </AppText>
             <View style={styles.row}>
-              <MaterialSymbolsTouchApp
-                height={Size.calcAverage(14)}
-                width={Size.calcAverage(14)}
+              <AppText style={styles.switchPropertyText}>
+                Switch Property (3)
+              </AppText>
+              <MaterialSymbolsArrowDropDown
+                height={Size.calcAverage(16)}
+                width={Size.calcAverage(16)}
                 color={colors.BLUE_200}
               />
-              <AppText style={styles.propertyInstruction}>
-                Tap to view or configure access settings.
-              </AppText>
             </View>
           </View>
-        </TouchableOpacity>
+
+          <TouchableOpacity style={styles.propertyCard}>
+            <View style={styles.propertyIconContainer}>
+              <MaterialSymbolsHome
+                height={Size.calcAverage(24)}
+                width={Size.calcAverage(24)}
+                color={colors.WHITE_200}
+              />
+            </View>
+            <View style={{ rowGap: Size.calcHeight(5), flexShrink: 1 }}>
+              <AppText style={styles.propertyName} numberOfLines={1}>
+                {selectedProperty?.name}
+              </AppText>
+              <AppText style={styles.propertyAddress} numberOfLines={1}>
+                {selectedProperty?.propertyAddress}
+              </AppText>
+              <View style={styles.row}>
+                <MaterialSymbolsTouchApp
+                  height={Size.calcAverage(14)}
+                  width={Size.calcAverage(14)}
+                  color={colors.BLUE_200}
+                />
+                <AppText style={styles.propertyInstruction}>
+                  Tap to view or configure access settings.
+                </AppText>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={{ backgroundColor: colors.WHITE_200 }}>
+      <View style={styles.accessHistoryContainer}>
         <View style={styles.accessHistory}>
           <TouchableOpacity onPress={viewAccessInfo} style={styles.row}>
             <AppText style={styles.accessHistoryText}>Access History</AppText>
@@ -157,6 +227,36 @@ const AccountScreen = (): React.JSX.Element => {
           </View>
         </View>
       </View>
+
+      <FlatList
+        data={formattedData}
+        refreshControl={
+          <AppRefreshControl
+            refreshing={isAccessHistoryLoading}
+            onRefresh={refetch}
+          />
+        }
+        showsVerticalScrollIndicator
+        ListEmptyComponent={
+          isAccessHistoryLoading ? (
+            <DuplicateLoader loader={<AccessHistoryRowLoader />} />
+          ) : (
+            <EmtpyTransactionComponent />
+          )
+        }
+        renderItem={({ item }) => <AccessHistoryRow val={item} />}
+        keyExtractor={(_, index) => index?.toString()}
+        contentContainerStyle={{ paddingBottom: Size.calcHeight(70) }}
+        onEndReached={() => {
+          if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }}
+        onEndReachedThreshold={2}
+        ListFooterComponent={
+          <AppListFooterLoader isloading={isFetchingNextPage} />
+        }
+      />
     </View>
   );
 };
@@ -168,6 +268,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: Size.calcWidth(21),
     paddingVertical: Size.calcHeight(10),
+  },
+
+  accessHistoryContainer: {
+    borderBottomWidth: Size.calcHeight(1),
+    borderBottomColor: colors.WHITE_300,
   },
 
   accessHistoryText: {
@@ -220,11 +325,6 @@ const styles = StyleSheet.create({
   actions: {
     flexDirection: 'row',
     gap: Size.calcWidth(20),
-  },
-
-  container: {
-    backgroundColor: colors.BLUE_140,
-    paddingTop: StatusBar.currentHeight,
   },
 
   contentContainer: {
@@ -290,6 +390,11 @@ const styles = StyleSheet.create({
     fontSize: Size.calcAverage(12),
     fontFamily: fonts.INTER_600,
     color: colors.BLUE_200,
+  },
+
+  topContainer: {
+    backgroundColor: colors.BLUE_140,
+    paddingTop: StatusBar.currentHeight,
   },
 });
 

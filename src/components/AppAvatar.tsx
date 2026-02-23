@@ -14,12 +14,13 @@ export interface AppAvatarProps {
   lastWord?: string;
   alt?: string;
   style?: ViewStyle;
+  size?: number;
   isLoading?: boolean;
   // isClickable?: boolean;
 }
 
 const AppAvatar = (props: AppAvatarProps): JSX.Element => {
-  const { firstWord, imageURL, lastWord, style, isLoading } = props;
+  const { firstWord, imageURL, lastWord, style, isLoading, size } = props;
 
   const firstLetter = firstWord?.[0];
   const lastLetter = lastWord?.[0];
@@ -33,7 +34,14 @@ const AppAvatar = (props: AppAvatarProps): JSX.Element => {
   }
 
   return (
-    <View style={[styles.container, styles.dimension, style]}>
+    <View
+      style={[
+        styles.container,
+        styles.dimension,
+        size ? { height: size } : {},
+        style,
+      ]}
+    >
       {imageURL ? (
         <AppImage
           // isClickable={isClickable}
@@ -72,7 +80,7 @@ const styles = StyleSheet.create({
 
   dimension: {
     height: Size.calcAverage(38),
-    width: Size.calcAverage(38),
+    aspectRatio: 1,
   },
 
   text: {

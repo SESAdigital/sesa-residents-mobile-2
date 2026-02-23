@@ -4,18 +4,20 @@ import { StyleProp, ViewStyle } from 'react-native';
 import { useAppStateStore } from '@src/stores/appState.store';
 import AppModalContainer from './AppModalContainer';
 import AppPromptModal, { AppPromptModalProps } from './AppPromptModal';
+import AppInformationModal, {
+  AppInformationModalProps,
+} from './AppInformationModal';
 
 export interface AppModalProps {
   modalType:
     | 'EMPTY_MODAL'
     | 'PROMT_MODAL'
-    | 'SINGLE_PROMPT_MODAL'
+    | 'INFORMATION_MODAL'
     | 'REASON_MODAL';
   shouldBackgroundClose?: boolean;
   emptyModalComponent?: JSX.Element;
   promptModal?: AppPromptModalProps;
-  // singlePromptModal?: SinglePromptModalProps;
-  // reasonModal?: AppReasonModalProps;
+  informationModal?: AppInformationModalProps;
   onRequestClose?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -40,6 +42,11 @@ const AppModal = (): React.JSX.Element => {
       {activeModal?.modalType === 'PROMT_MODAL' &&
         !!activeModal?.promptModal && (
           <AppPromptModal {...activeModal.promptModal} />
+        )}
+
+      {activeModal?.modalType === 'INFORMATION_MODAL' &&
+        !!activeModal?.informationModal && (
+          <AppInformationModal {...activeModal.informationModal} />
         )}
     </AppModalContainer>
   );

@@ -7,17 +7,26 @@ import fonts from '@src/configs/fonts';
 import { useAppStateStore } from '@src/stores/appState.store';
 import Size from '@src/utils/useResponsiveSize';
 
-const AccessHistoryInfoModal = (): React.JSX.Element => {
+export interface AppInformationModalProps {
+  title: string;
+  description: string | React.JSX.Element;
+  buttonTitle?: string;
+}
+
+const AppInformationModal = (
+  props: AppInformationModalProps,
+): React.JSX.Element => {
   const { closeActiveModal } = useAppStateStore();
 
+  const { title, description, buttonTitle } = props;
   return (
     <View style={styles.container}>
-      <AppText style={styles.title}>Access History</AppText>
-      <AppText style={styles.text}>
-        This is your access history when you check-in or out using your resident
-        code or QR code
-      </AppText>
-      <SubmitButton title="Okay, got it" onPress={closeActiveModal} />
+      <AppText style={styles.title}>{title}</AppText>
+      <AppText style={styles.text}>{description}</AppText>
+      <SubmitButton
+        title={buttonTitle || 'Okay, got it'}
+        onPress={closeActiveModal}
+      />
     </View>
   );
 };
@@ -46,4 +55,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AccessHistoryInfoModal;
+export default AppInformationModal;

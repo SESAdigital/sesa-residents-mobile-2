@@ -1,9 +1,14 @@
 import {
+  AccessEntryType,
   LoginModeType,
   OnboardingStatusType,
   UserAccountStatusType,
 } from './constants/default';
-import baseApi, { GenericApiResponse } from './base.api';
+import baseApi, {
+  GenericApiResponse,
+  GenericPaginatedResponse,
+  GenericPaginationRequest,
+} from './base.api';
 
 // AUTH API STARTS HERE
 
@@ -35,6 +40,9 @@ export const patchValidateNewDeviceCode = (
 
 export const getAccountProfile = () =>
   baseApi.get<GetAccountProfile>('/Account/Profile');
+
+export const getAccessHistory = (val: GenericPaginationRequest) =>
+  baseApi.get<GetAccessHistory>('/Account/AccessHistory', val);
 
 // ACCOUNT API ENDS HERE
 
@@ -126,6 +134,21 @@ interface GetAccountProfile extends GenericApiResponse {
     isTransactionPinSet: true;
     dateOnboarded: string;
   };
+}
+
+export interface GetAccessHistoryData {
+  timeCreated: string;
+  accessEntryDatas: {
+    guardName: string;
+    residentName: string;
+    entryType: AccessEntryType;
+    entryTypeDescription: string;
+    entryTime: string;
+  }[];
+}
+
+export interface GetAccessHistory extends GenericApiResponse {
+  data: GenericPaginatedResponse<GetAccessHistoryData>;
 }
 
 // ACCOUNT TYPES ENDS HERE

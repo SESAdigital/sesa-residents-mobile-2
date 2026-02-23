@@ -91,3 +91,12 @@ export const EventDetailsTypeData = {
 
 export type EventDetailsType =
   (typeof EventDetailsTypeData)[keyof typeof EventDetailsTypeData];
+
+export const AccessEntryTypeData = {
+  CheckIn: 1,
+  CheckOut: 2,
+  Both: 3,
+} as const;
+
+export type AccessEntryType =
+  (typeof AccessEntryTypeData)[keyof typeof AccessEntryTypeData];

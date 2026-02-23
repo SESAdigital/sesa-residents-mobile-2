@@ -23,6 +23,7 @@ export const useGetUserDetails = () => {
     status: profileData?.status || loginData?.accountStatus,
     statusText: profileData?.statusText || loginData?.accountStatusText,
     phone: profileData?.phoneNumber,
+    code: profileData?.code,
     dateOnboarded: profileData?.dateOnboarded,
   } as const;
 

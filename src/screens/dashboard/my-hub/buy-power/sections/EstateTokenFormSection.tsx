@@ -75,8 +75,11 @@ const EstateTokenFormSection = ({ onDone }: Props): React.JSX.Element => {
       PropertyId: selectedProperty?.id,
     });
 
-    if (response?.ok && response?.data) {
-      onDone(response?.data?.data);
+    if (response?.ok && response?.data?.data) {
+      onDone({
+        ...response?.data?.data,
+        meterType: Number(data?.MeterType) as ElectricityMeterType,
+      });
     } else {
       handleToastApiError(response);
     }

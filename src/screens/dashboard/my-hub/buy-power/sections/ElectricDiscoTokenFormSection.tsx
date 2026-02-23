@@ -4,7 +4,6 @@ import Joi from 'joi';
 import { useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 
-import { ALL_METER_TYPES } from '@src/api/constants/data';
 import {
   getPowerDicsoBillers,
   verifyPowerDisco,
@@ -93,8 +92,11 @@ const ElectricDiscoTokenFormSection = (props: Props): React.JSX.Element => {
       PropertyId: selectedProperty?.id,
     });
 
-    if (response?.ok && response?.data) {
-      onDone(response?.data?.data);
+    if (response?.ok && response?.data?.data) {
+      onDone({
+        ...response?.data?.data,
+        itemId: Number(data?.ItemId),
+      });
     } else {
       handleToastApiError(response);
     }
@@ -105,6 +107,22 @@ const ElectricDiscoTokenFormSection = (props: Props): React.JSX.Element => {
     <AppKeyboardAvoidingView>
       <View style={styles.container}>
         <View style={{ rowGap: Size.calcHeight(24) }}>
+          <AppSelectInput
+            control={control}
+            refetch={refetch}
+            disabled={isLoading}
+            isLoading={isLoadingPowerDicsoBillers}
+            data={
+              powerDicsoBillers?.map(({ name, id }) => ({
+                title: name,
+                value: id?.toString?.(),
+              })) || []
+            }
+            label="Select Electric DISCO"
+            placeholder="Electric DISCO"
+            name="ItemId"
+          />
+
           <AppTextInput
             editable={!isLoading}
             placeholder="Meter Number"
@@ -114,21 +132,6 @@ const ElectricDiscoTokenFormSection = (props: Props): React.JSX.Element => {
             keyboardType="number-pad"
           />
 
-          <AppSelectInput
-            control={control}
-            refetch={refetch}
-            disabled={isLoading}
-            isLoading={isLoadingPowerDicsoBillers}
-            data={
-              powerDicsoBillers?.map(({ name, id, serviceType }) => ({
-                title: name,
-                value: id?.toString?.(),
-              })) || []
-            }
-            label="Select Electric DISCO"
-            placeholder="Electric DISCO"
-            name="ItemId"
-          />
           <AppTextInput
             editable={!isLoading}
             placeholder="Token Amount"

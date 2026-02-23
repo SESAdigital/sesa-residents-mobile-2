@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
 import {
   FlatList,
@@ -15,6 +15,7 @@ import AppModalContainer from '@src/modals/AppModalContainer';
 import { SelectInputData } from '@src/types/default';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
+import AppActivityIndicator from '../custom/AppActivityIndicator';
 import AppCheckIcon from '../custom/AppCheckIcon';
 import {
   MaterialSymbolsCloseRounded,
@@ -22,7 +23,6 @@ import {
 } from '../icons';
 import ErrorMessage from './ErrorMessage';
 import SubmitButton from './SubmitButton';
-import AppActivityIndicator from '../custom/AppActivityIndicator';
 
 interface AppSelectInputProps<TFieldValues extends FieldValues> {
   placeholder: string;
@@ -76,7 +76,19 @@ function AppSelectInput<TFieldValues extends FieldValues>(
     setVisibility(true);
   };
 
+  const flatListRef = useRef<FlatList>(null);
+
   const selectedItem = data?.find(({ value }) => value === field?.value);
+  const selectedIndex = data?.findIndex(({ value }) => value === field?.value);
+
+  useLayoutEffect(() => {
+    if (isVisible && selectedIndex !== undefined && selectedIndex !== -1) {
+      flatListRef.current?.scrollToIndex({
+        index: selectedIndex,
+        // animated: true,
+      });
+    }
+  }, [isVisible, selectedIndex]);
 
   return (
     <>
@@ -136,9 +148,19 @@ function AppSelectInput<TFieldValues extends FieldValues>(
           </View>
 
           <FlatList
+            ref={flatListRef}
             data={data}
             style={{ maxHeight: Size.getHeight() / 2 }}
             showsVerticalScrollIndicator
+            onScrollToIndexFailed={info => {
+              const wait = setTimeout(() => {
+                flatListRef.current?.scrollToIndex({
+                  index: info.index,
+                  animated: false,
+                });
+              }, 500);
+              return () => clearTimeout(wait);
+            }}
             renderItem={({ item, index }) => {
               const isSelected = item?.value === selectedItem?.value;
               return (

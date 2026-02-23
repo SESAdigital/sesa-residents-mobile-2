@@ -1,23 +1,37 @@
 import { Activity, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import {
+  postPurchaseDiscoPower,
+  postPurchaseEstatePower,
+  PostPurchaseRes,
+  VerifyPowerDiscoResData,
+} from '@src/api/power.api';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
 import colors from '@src/configs/colors';
-import { useGetWalletBalance } from '@src/hooks/useGetRequests';
-import WalletPinInput from '@src/screens/auth/components/WalletPinInput';
-import Size from '@src/utils/useResponsiveSize';
-import ConfirmPurchaseSection from './sections/ConfirmPurchaseSection';
-import EstateTokenFormSection from './sections/EstateTokenFormSection';
 import useBackHandler from '@src/hooks/useBackHandler';
+import { useGetWalletBalance } from '@src/hooks/useGetRequests';
+import AppLoadingModal from '@src/modals/AppLoadingModal';
 import {
   BuyPowerFormScreenProps,
   useAppNavigator,
 } from '@src/navigation/AppNavigator';
-import { VerifyPowerDiscoResData } from '@src/api/power.api';
-import { formatMoneyToTwoDecimals } from '@src/utils';
+import routes from '@src/navigation/routes';
+import WalletPinInput from '@src/screens/auth/components/WalletPinInput';
+import { copyTextToClipboard, formatMoneyToTwoDecimals } from '@src/utils';
+import { appToast } from '@src/utils/appToast';
+import { handleToastApiError } from '@src/utils/handleErrors';
+import Size from '@src/utils/useResponsiveSize';
+import { useMutation } from '@tanstack/react-query';
+import { ApiResponse } from 'apisauce';
+import ConfirmPurchaseSection from './sections/ConfirmPurchaseSection';
 import ElectricDiscoTokenFormSection from './sections/ElectricDiscoTokenFormSection';
+import EstateTokenFormSection from './sections/EstateTokenFormSection';
+import { dayJSFormatter } from '@src/utils/time';
+import fonts from '@src/configs/fonts';
+import { MaterialSymbolsContentCopyOutline } from '@src/components/icons';
 
 const BuyPowerFormScreen = (
   props: BuyPowerFormScreenProps,
@@ -29,10 +43,18 @@ const BuyPowerFormScreen = (
     useState<VerifyPowerDiscoResData | null>(null);
   const [pin, setPin] = useState('');
   const navigation = useAppNavigator();
+  const postPurchaseDiscoPowerAPI = useMutation({
+    mutationFn: postPurchaseDiscoPower,
+  });
+  const postPurchaseEstatePowerAPI = useMutation({
+    mutationFn: postPurchaseEstatePower,
+  });
 
   const isEstate = screenType === 'Estate token';
 
-  const isLoading = false;
+  const isLoading =
+    postPurchaseDiscoPowerAPI?.isPending ||
+    postPurchaseEstatePowerAPI?.isPending;
 
   const onBackPress = () => {
     if (isLoading) return;
@@ -46,7 +68,89 @@ const BuyPowerFormScreen = (
 
   useBackHandler(onBackPress, currentStep);
 
-  const handleSubmit = () => {};
+  const handleSubmit = async () => {
+    if (!verifiedData) return appToast.Warning('Invalid verified data.');
+
+    let response: ApiResponse<PostPurchaseRes, PostPurchaseRes> | null = null;
+
+    const genericData = {
+      amount: verifiedData?.amount,
+      meterNumber: verifiedData?.meterNumber,
+      transactionPin: pin,
+    };
+
+    if (isEstate) {
+      response = await postPurchaseEstatePowerAPI?.mutateAsync({
+        ...genericData,
+        meterType: verifiedData?.meterType,
+      });
+    } else {
+      response = await postPurchaseDiscoPowerAPI?.mutateAsync({
+        ...genericData,
+        itemId: verifiedData?.itemId,
+      });
+    }
+
+    if (response?.ok) {
+      const resData = response?.data?.data;
+      const token = resData?.token;
+      appToast.Success(response?.data?.message || 'Purchase successful');
+      navigation.replace(routes.TRANSACTION_SUCCESS_SCREEN, {
+        title: 'Token Purchased',
+        details: [
+          {
+            title: 'TRANSACTION REFERENCE',
+            value: resData?.transacationRefrence || '',
+          },
+          {
+            title: 'PURPOSE',
+            value: resData?.purpose || '',
+          },
+          {
+            title: 'Amount',
+            value: formatMoneyToTwoDecimals({ amount: resData?.amount || 0 }),
+          },
+          {
+            title: 'TOKEN',
+            value: (
+              <View style={styles.tokenContainer}>
+                <AppText style={styles.tokenText}>{token}</AppText>
+                {!!token && (
+                  <TouchableOpacity
+                    onPress={() =>
+                      copyTextToClipboard({
+                        text: token,
+                        successText: 'Token Copied Successfully',
+                        errorText: 'Failed to copy token to clipboard',
+                      })
+                    }
+                    style={styles.copyButton}
+                  >
+                    <MaterialSymbolsContentCopyOutline
+                      height={Size.calcAverage(14)}
+                      width={Size.calcAverage(14)}
+                      color={colors.BLUE_200}
+                    />
+                    <AppText style={styles.copyText}>Copy</AppText>
+                  </TouchableOpacity>
+                )}
+              </View>
+            ),
+          },
+          {
+            title: 'TRANSACTION DATE',
+            value: dayJSFormatter(
+              resData?.transactionDate || '',
+              'MMMM D, YYYY h:mm A',
+            ),
+          },
+        ],
+      });
+    } else {
+      handleToastApiError(response);
+    }
+    return;
+  };
 
   const handleFirstStepDone = (val: VerifyPowerDiscoResData) => {
     setVerifiedData(val);
@@ -57,7 +161,9 @@ const BuyPowerFormScreen = (
     {
       title: screenType,
       subtitle: 'Enter details below',
-      component: isEstate ? (
+      component: !screenType ? (
+        <></>
+      ) : isEstate ? (
         <EstateTokenFormSection onDone={handleFirstStepDone} />
       ) : (
         <ElectricDiscoTokenFormSection onDone={handleFirstStepDone} />
@@ -96,6 +202,7 @@ const BuyPowerFormScreen = (
 
   return (
     <AppScreen>
+      <AppLoadingModal isLoading={isLoading} title="Please wait..." />
       <AppScreenHeader
         onBackPress={onBackPress}
         title={currentStepDetail?.title}
@@ -139,13 +246,32 @@ const styles = StyleSheet.create({
     fontSize: Size.calcAverage(12),
   },
 
-  container: {
-    paddingHorizontal: 0,
+  copyButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: Size.calcWidth(4),
+  },
+
+  copyText: {
+    fontFamily: fonts.INTER_500,
+    fontSize: Size.calcWidth(13),
+    color: colors.BLUE_200,
   },
 
   pinContainer: {
     flex: 1,
     paddingBottom: Size.calcHeight(40),
+  },
+
+  tokenContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  tokenText: {
+    fontFamily: fonts.INTER_500,
+    paddingRight: Size.calcWidth(10),
   },
 });
 

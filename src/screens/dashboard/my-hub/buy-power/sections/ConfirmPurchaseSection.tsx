@@ -25,6 +25,10 @@ const ConfirmPurchaseSection = (props: Props): React.JSX.Element => {
       value: data?.meterNumber,
     },
     {
+      title: 'Customer Name',
+      value: data?.customerName,
+    },
+    {
       title: 'Property Address',
       value: data?.propertyAddress,
     },
@@ -32,8 +36,8 @@ const ConfirmPurchaseSection = (props: Props): React.JSX.Element => {
 
   const secondDetails = [
     {
-      title: 'Total Amount',
-      value: formatMoneyToTwoDecimals({ amount: data?.totalAmountToPay || 0 }),
+      title: 'You are paying',
+      value: formatMoneyToTwoDecimals({ amount: data?.amount || 0 }),
     },
     {
       title: 'Convenience Fee',
@@ -41,19 +45,18 @@ const ConfirmPurchaseSection = (props: Props): React.JSX.Element => {
     },
     {
       title: 'You will get',
-      value: `${data?.quantity || ''} KW`,
+      value: `${
+        Number(data?.quantity?.toFixed(2) || '0')?.toLocaleString() || ''
+      } KW`,
     },
     {
-      title: 'You are paying',
-      value: formatMoneyToTwoDecimals({ amount: data?.amount || 0 }),
+      title: 'Total Amount',
+      value: formatMoneyToTwoDecimals({ amount: data?.totalAmountToPay || 0 }),
     },
   ];
 
   return (
-    <ScrollView
-      contentContainerStyle={{ minHeight: '90%' }}
-      style={styles.container}
-    >
+    <View style={styles.container}>
       <AppText style={styles.buying}>You are buying:</AppText>
       <View style={styles.row}>
         <View style={styles.imageContainer}>
@@ -72,30 +75,34 @@ const ConfirmPurchaseSection = (props: Props): React.JSX.Element => {
         </View>
       </View>
 
-      <View style={styles.card}>
-        {firstDetails?.map((item, index) => (
-          <View style={{ rowGap: Size.calcHeight(4) }} key={index}>
-            <AppText style={{ color: colors.GRAY_100 }}>{item?.title}</AppText>
-            <AppText style={{ fontFamily: fonts.INTER_500 }}>
-              {item?.value}
-            </AppText>
-          </View>
-        ))}
-      </View>
-      <View style={[styles.card, { marginTop: Size.calcHeight(8) }]}>
-        {secondDetails?.map((item, index) => (
-          <View style={styles.cardRow} key={index}>
-            <AppText style={styles.cardTitle}>{item?.title}</AppText>
-            <AppText style={styles.cardSubtitle}>{item?.value}</AppText>
-          </View>
-        ))}
-      </View>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.card}>
+          {firstDetails?.map((item, index) => (
+            <View style={{ rowGap: Size.calcHeight(4) }} key={index}>
+              <AppText style={{ color: colors.GRAY_100 }}>
+                {item?.title}
+              </AppText>
+              <AppText style={{ fontFamily: fonts.INTER_500 }}>
+                {item?.value}
+              </AppText>
+            </View>
+          ))}
+        </View>
+        <View style={[styles.card, { marginTop: Size.calcHeight(8) }]}>
+          {secondDetails?.map((item, index) => (
+            <View style={styles.cardRow} key={index}>
+              <AppText style={styles.cardTitle}>{item?.title}</AppText>
+              <AppText style={styles.cardSubtitle}>{item?.value}</AppText>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
 
       <View style={styles.footer}>
         <InformationRow title="Funds will be deducted from your SESA Wallet." />
         <SubmitButton title="Pay Now" onPress={onConfirm} />
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -145,6 +152,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: Size.calcHeight(24),
     paddingHorizontal: Size.calcWidth(21),
+    flex: 1,
   },
 
   estateToken: {
@@ -166,7 +174,7 @@ const styles = StyleSheet.create({
   footer: {
     marginTop: 'auto',
     rowGap: Size.calcHeight(16),
-    paddingBottom: Size.calcHeight(100),
+    paddingBottom: Size.calcHeight(90),
   },
 
   image: {
@@ -188,6 +196,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: Size.calcHeight(1),
     borderBottomColor: colors.WHITE_300,
     marginBottom: Size.calcHeight(18),
+  },
+
+  scrollView: {
+    marginBottom: Size.calcHeight(20),
+    borderRadius: Size.calcAverage(8),
+    maxHeight: Size.getHeight() / 2.1,
   },
 });
 

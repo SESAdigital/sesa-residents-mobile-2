@@ -16,14 +16,18 @@ import {
   useAppNavigator,
 } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
-import { SelectInputData } from '@src/types/default';
 import { appToast } from '@src/utils/appToast';
 import Size from '@src/utils/useResponsiveSize';
+
+interface Details {
+  title: string;
+  value?: string | React.JSX.Element;
+}
 
 export interface TransactionSuccessScreenData {
   title: string;
   subTite?: string;
-  details: SelectInputData[];
+  details: Details[];
 }
 
 const TransactionSuccessScreen = (
@@ -78,7 +82,13 @@ const TransactionSuccessScreen = (
             {param?.details?.map((item, index) => (
               <View style={styles.item} key={index}>
                 <AppText style={styles.itemTitle}>{item?.title}</AppText>
-                <AppText style={styles.itemValue}>{item?.value}</AppText>
+                {typeof item?.value === 'string' ? (
+                  <AppText style={{ fontFamily: fonts.INTER_500 }}>
+                    {item?.value}
+                  </AppText>
+                ) : (
+                  item?.value
+                )}
               </View>
             ))}
           </ScrollView>
@@ -151,10 +161,6 @@ const styles = StyleSheet.create({
   itemTitle: {
     color: colors.GRAY_300,
     fontSize: Size.calcAverage(12),
-  },
-
-  itemValue: {
-    fontFamily: fonts.INTER_500,
   },
 
   successIcon: {

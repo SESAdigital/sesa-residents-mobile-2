@@ -16,10 +16,10 @@ export const verifyPowerEstate = (val: VerifyPowerEstateReq) =>
   baseApi.get<VerifyPowerDiscoRes>('/Power/Estate/Verify', val);
 
 export const postPurchaseDiscoPower = (val: PostPurchaseDiscoPowerReq) =>
-  baseApi.post<GenericApiResponse>('/Power/Disco/Purchase', val);
+  baseApi.post<PostPurchaseRes>('/Power/Disco/Purchase', val);
 
 export const postPurchaseEstatePower = (val: PostPurchaseEstatePowerReq) =>
-  baseApi.post<GenericApiResponse>('/Power/Estate/Purchase', val);
+  baseApi.post<PostPurchaseRes>('/Power/Estate/Purchase', val);
 
 // POWER API ENDS HERE
 
@@ -51,6 +51,8 @@ export interface VerifyPowerDiscoResData {
   quantity: number;
   amount: number;
   totalAmountToPay: number;
+  itemId: number;
+  meterType: ElectricityMeterType;
 }
 
 interface VerifyPowerDiscoRes extends GenericApiResponse {
@@ -83,6 +85,20 @@ interface PostPurchaseEstatePowerReq {
   meterNumber: string;
   amount: number;
   meterType: ElectricityMeterType;
+}
+
+interface PostPurchaseResData {
+  meterNumber: string;
+  transacationRefrence: string;
+  purpose: string;
+  token: string;
+  quantity: number;
+  amount: number;
+  transactionDate: string;
+}
+
+export interface PostPurchaseRes extends GenericApiResponse {
+  data: PostPurchaseResData;
 }
 
 //  TYPES ENDS HERE

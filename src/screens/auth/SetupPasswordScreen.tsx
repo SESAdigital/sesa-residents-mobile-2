@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 
-import { useRoute } from '@react-navigation/native';
 import { patchSetupPassword, PatchSetupPasswordReq } from '@src/api/auth.api';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
@@ -13,6 +12,8 @@ import AppKeyboardAvoidingView from '@src/components/custom/AppKeyboardAvoidingV
 import AppTextInput from '@src/components/forms/AppTextInput';
 import SubmitButton from '@src/components/forms/SubmitButton';
 import PasswordToggle from '@src/components/icons/PasswordToggle';
+import colors from '@src/configs/colors';
+import fonts from '@src/configs/fonts';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
 import {
   SetupPasswordScreenProps,
@@ -21,11 +22,9 @@ import {
 import routes from '@src/navigation/routes';
 import { useAuthStore } from '@src/stores/auth.store';
 import { appToast } from '@src/utils/appToast';
-import Size from '@src/utils/useResponsiveSize';
-import { joiSchemas } from '@src/utils/schema';
 import { handleToastApiError } from '@src/utils/handleErrors';
-import colors from '@src/configs/colors';
-import fonts from '@src/configs/fonts';
+import { joiSchemas } from '@src/utils/schema';
+import Size from '@src/utils/useResponsiveSize';
 
 const schema = Joi.object<PatchSetupPasswordReq>({
   newPassword: joiSchemas.strictPassword,

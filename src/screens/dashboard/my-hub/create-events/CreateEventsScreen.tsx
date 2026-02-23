@@ -9,12 +9,11 @@ import Size from '@src/utils/useResponsiveSize';
 import EventTypeStep from './steps/EventTypeStep';
 
 const CreateEventsScreen = (): React.JSX.Element => {
-  const [currentStep, setCurrentStep] = useState(
-    CreateEventSteps.EVENT_TYPE_STEP,
-  );
+  const [currentStep, _] = useState(CreateEventSteps.EVENT_TYPE_STEP);
 
   const steps = [
     {
+      // @ts-expect-error nothing for now
       component: <EventTypeStep />,
     },
   ];

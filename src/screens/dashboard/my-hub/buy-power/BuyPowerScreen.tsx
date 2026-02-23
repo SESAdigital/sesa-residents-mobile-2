@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Source } from 'react-native-fast-image';
 
 import queryKeys from '@src/api/constants/queryKeys';
 import { getPowerMetrics } from '@src/api/power.api';
@@ -15,13 +16,20 @@ import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useGetWalletBalance } from '@src/hooks/useGetRequests';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
+import { BuyPowerFormScreenType } from '@src/types/default';
 import { formatMoneyToTwoDecimals } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import { useAppNavigator } from '@src/navigation/AppNavigator';
-import routes from '@src/navigation/routes';
 
 const queryKey = [queryKeys.ELECTRICITY, 'METRICS'];
+
+interface Option {
+  title: BuyPowerFormScreenType;
+  description: string;
+  image: Source;
+}
 
 const BuyPowerScreen = (): React.JSX.Element => {
   const { data } = useGetWalletBalance();
@@ -54,7 +62,7 @@ const BuyPowerScreen = (): React.JSX.Element => {
     },
   ];
 
-  const options = [
+  const options: Option[] = [
     {
       title: 'Electric DISCO token',
       description:
@@ -136,7 +144,11 @@ const BuyPowerScreen = (): React.JSX.Element => {
 
         {options?.map(({ title, description, image }, key) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate(routes.BUY_POWER_FORM_SCREEN)}
+            onPress={() =>
+              navigation.navigate(routes.BUY_POWER_FORM_SCREEN, {
+                screenType: title,
+              })
+            }
             key={key}
             style={styles.optionContainer}
           >

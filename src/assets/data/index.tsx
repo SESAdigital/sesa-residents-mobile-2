@@ -80,6 +80,23 @@ export const useAllHubItems = () => {
         shouldBackgroundClose: true,
       });
     }
+    if (type === 'Poll & Election') {
+      return setActiveModal({
+        modalType: 'EMPTY_MODAL',
+        emptyModalComponent: (
+          <SesaCommingSoonModal
+            details={[
+              {
+                description:
+                  'Vote in your estate elections and participate in polls.',
+              },
+            ]}
+            hubItem={allHubItems[HubItemEnum.POLL_AND_ELECTION]}
+          />
+        ),
+        shouldBackgroundClose: true,
+      });
+    }
   };
 
   const newItems: HubItem[] = allHubItems.map(item => {

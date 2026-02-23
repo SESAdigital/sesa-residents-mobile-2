@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useRoute } from '@react-navigation/native';
 import { PanicAlertType, PanicAlertTypeData } from '@src/api/constants/default';
 import queryKeys from '@src/api/constants/queryKeys';
 import {
@@ -62,8 +61,8 @@ export interface PanicAlertScreenData {
   longitude: number;
 }
 
-const PanicAlertScreen = (): React.JSX.Element => {
-  const params = useRoute<PanicAlertScreenProps>()?.params;
+const PanicAlertScreen = (props: PanicAlertScreenProps): React.JSX.Element => {
+  const params = props?.route?.params;
   const { data, latitude, longitude } = params;
   const [panicType, setPanicType] = useState<PanicAlertType>(
     PanicAlertTypeData.SecurityEmergency,

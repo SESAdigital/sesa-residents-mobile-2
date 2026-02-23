@@ -1,25 +1,24 @@
 import { useRef } from 'react';
-import { useRoute } from '@react-navigation/native';
-import ViewShot from 'react-native-view-shot';
-import { ScrollView, StyleSheet, View, StatusBar } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import Share from 'react-native-share';
+import ViewShot from 'react-native-view-shot';
 
 import SuccessCheckIconImage from '@src/assets/images/icons/success-check-icon.png';
 import AppImage from '@src/components/AppImage';
 import AppText from '@src/components/AppText';
+import ShareIconButtonComponent from '@src/components/common/ShareIconButtonComponent';
+import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
+import fonts from '@src/configs/fonts';
+import useBackHandler from '@src/hooks/useBackHandler';
 import {
   TransactionSuccessScreenProps,
   useAppNavigator,
 } from '@src/navigation/AppNavigator';
-import { SelectInputData } from '@src/types';
-import Size from '@src/utils/useResponsiveSize';
-import fonts from '@src/configs/fonts';
-import SubmitButton from '@src/components/forms/SubmitButton';
-import { appToast } from '@src/utils/appToast';
 import routes from '@src/navigation/routes';
-import useBackHandler from '@src/hooks/useBackHandler';
-import ShareIconButtonComponent from '@src/components/common/ShareIconButtonComponent';
+import { SelectInputData } from '@src/types/default';
+import { appToast } from '@src/utils/appToast';
+import Size from '@src/utils/useResponsiveSize';
 
 export interface TransactionSuccessScreenData {
   title: string;
@@ -27,8 +26,10 @@ export interface TransactionSuccessScreenData {
   details: SelectInputData[];
 }
 
-const TransactionSuccessScreen = (): React.JSX.Element => {
-  const param = useRoute<TransactionSuccessScreenProps>()?.params;
+const TransactionSuccessScreen = (
+  props: TransactionSuccessScreenProps,
+): React.JSX.Element => {
+  const param = props?.route?.params;
   const navigation = useAppNavigator();
 
   const handleClose = () => {

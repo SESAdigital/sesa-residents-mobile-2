@@ -51,6 +51,7 @@ import TransactionSuccessScreen, {
 } from '@src/screens/dashboard/reusable-screens/TransactionSuccessScreen';
 import BookVisitorSuccessScreen from '@src/screens/dashboard/my-hub/book-visitor/BookVistorSuccessScreen';
 import { PostBookVisitorResData } from '@src/api/visitors.api';
+import { BuyPowerFormScreenData } from '@src/types/default';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -82,7 +83,7 @@ export type AppNavigatorParams = {
 
   [routes.PANIC_ALERT_SCREEN]: PanicAlertScreenData;
   [routes.BUY_POWER_SCREEN]: undefined;
-  [routes.BUY_POWER_FORM_SCREEN]: undefined;
+  [routes.BUY_POWER_FORM_SCREEN]: BuyPowerFormScreenData;
   [routes.BOOK_VISITOR_SCREEN]: undefined;
   [routes.BOOK_VISITOR_SUCCESS_SCREEN]: PostBookVisitorResData;
 
@@ -173,31 +174,34 @@ declare global {
 //   'PATROL_REPORT_DETAILS_SCREEN'
 // >;
 
-export type SetupPasswordScreenProps = RouteProp<
-  AppNavigatorParams,
-  'SETUP_PASSWORD_SCREEN'
+interface PageProps<T> {
+  route: T;
+}
+
+export type SetupPasswordScreenProps = PageProps<
+  RouteProp<AppNavigatorParams, 'SETUP_PASSWORD_SCREEN'>
 >;
 
-export type PanicAlertScreenProps = RouteProp<
-  AppNavigatorParams,
-  'PANIC_ALERT_SCREEN'
+export type PanicAlertScreenProps = PageProps<
+  RouteProp<AppNavigatorParams, 'PANIC_ALERT_SCREEN'>
 >;
 
-export type TransactionDetailsScreenProps = RouteProp<
-  AppNavigatorParams,
-  'TRANSACTION_DETAILS_SCREEN'
+export type TransactionDetailsScreenProps = PageProps<
+  RouteProp<AppNavigatorParams, 'TRANSACTION_DETAILS_SCREEN'>
 >;
 
-export type TransactionSuccessScreenProps = RouteProp<
-  AppNavigatorParams,
-  'TRANSACTION_SUCCESS_SCREEN'
->;
-export type BookVisitorSuccessScreenProps = RouteProp<
-  AppNavigatorParams,
-  'BOOK_VISITOR_SUCCESS_SCREEN'
+export type TransactionSuccessScreenProps = PageProps<
+  RouteProp<AppNavigatorParams, 'TRANSACTION_SUCCESS_SCREEN'>
 >;
 
-export type ForgotPasswordScreenProps = RouteProp<
-  AppNavigatorParams,
-  'FORGOT_PASSWORD_SCREEN'
+export type BookVisitorSuccessScreenProps = PageProps<
+  RouteProp<AppNavigatorParams, 'BOOK_VISITOR_SUCCESS_SCREEN'>
+>;
+
+export type BuyPowerFormScreenProps = PageProps<
+  RouteProp<AppNavigatorParams, 'BUY_POWER_FORM_SCREEN'>
+>;
+
+export type ForgotPasswordScreenProps = PageProps<
+  RouteProp<AppNavigatorParams, 'FORGOT_PASSWORD_SCREEN'>
 >;

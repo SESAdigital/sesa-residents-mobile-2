@@ -11,13 +11,26 @@ import Size from '@src/utils/useResponsiveSize';
 import ConfirmPurchaseSection from './sections/ConfirmPurchaseSection';
 import EstateTokenFormSection from './sections/EstateTokenFormSection';
 import useBackHandler from '@src/hooks/useBackHandler';
-import { useAppNavigator } from '@src/navigation/AppNavigator';
+import {
+  BuyPowerFormScreenProps,
+  useAppNavigator,
+} from '@src/navigation/AppNavigator';
+import { VerifyPowerDiscoResData } from '@src/api/power.api';
+import { formatMoneyToTwoDecimals } from '@src/utils';
+import ElectricDiscoTokenFormSection from './sections/ElectricDiscoTokenFormSection';
 
-const BuyPowerFormScreen = (): React.JSX.Element => {
-  const [currentStep, setCurrentStep] = useState(BuyTokenSteps.INPUT_PIN_STEP);
+const BuyPowerFormScreen = (
+  props: BuyPowerFormScreenProps,
+): React.JSX.Element => {
+  const screenType = props?.route?.params?.screenType;
+  const [currentStep, setCurrentStep] = useState(BuyTokenSteps.TOKEN_FORM_STEP);
   const { data } = useGetWalletBalance();
+  const [verifiedData, setVerifiedData] =
+    useState<VerifyPowerDiscoResData | null>(null);
   const [pin, setPin] = useState('');
   const navigation = useAppNavigator();
+
+  const isEstate = screenType === 'Estate token';
 
   const isLoading = false;
 
@@ -35,20 +48,30 @@ const BuyPowerFormScreen = (): React.JSX.Element => {
 
   const handleSubmit = () => {};
 
+  const handleFirstStepDone = (val: VerifyPowerDiscoResData) => {
+    setVerifiedData(val);
+    setCurrentStep(BuyTokenSteps.CONFIRMATION_STEP);
+  };
+
   const steps = [
     {
-      title: 'Estate token',
+      title: screenType,
       subtitle: 'Enter details below',
-      component: (
-        <EstateTokenFormSection
-          onDone={() => setCurrentStep(BuyTokenSteps.CONFIRMATION_STEP)}
-        />
+      component: isEstate ? (
+        <EstateTokenFormSection onDone={handleFirstStepDone} />
+      ) : (
+        <ElectricDiscoTokenFormSection onDone={handleFirstStepDone} />
       ),
     },
     {
       title: 'Confirm Purchase',
       subtitle: 'Confirm details below',
-      component: <ConfirmPurchaseSection />,
+      component: (
+        <ConfirmPurchaseSection
+          data={verifiedData}
+          onConfirm={() => setCurrentStep(BuyTokenSteps.INPUT_PIN_STEP)}
+        />
+      ),
     },
     {
       title: '',
@@ -60,7 +83,9 @@ const BuyPowerFormScreen = (): React.JSX.Element => {
             onDone={handleSubmit}
             onPinChange={val => setPin(val)}
             title="Enter wallet PIN"
-            subtitle="Amount Due: ₦150,000.00"
+            subtitle={`Amount Due: ${formatMoneyToTwoDecimals({
+              amount: verifiedData?.totalAmountToPay || 0,
+            })}`}
           />
         </View>
       ),
@@ -71,7 +96,10 @@ const BuyPowerFormScreen = (): React.JSX.Element => {
 
   return (
     <AppScreen>
-      <AppScreenHeader title={currentStepDetail?.title}>
+      <AppScreenHeader
+        onBackPress={onBackPress}
+        title={currentStepDetail?.title}
+      >
         <View style={{ height: Size.calcHeight(23) }} />
       </AppScreenHeader>
       {currentStep !== BuyTokenSteps.INPUT_PIN_STEP && (

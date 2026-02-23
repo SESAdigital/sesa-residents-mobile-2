@@ -12,7 +12,7 @@ import {
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import AppModalContainer from '@src/modals/AppModalContainer';
-import { SelectInputData } from '@src/types/index';
+import { SelectInputData } from '@src/types/default';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
 import AppCheckIcon from '../custom/AppCheckIcon';
@@ -22,6 +22,7 @@ import {
 } from '../icons';
 import ErrorMessage from './ErrorMessage';
 import SubmitButton from './SubmitButton';
+import AppActivityIndicator from '../custom/AppActivityIndicator';
 
 interface AppSelectInputProps<TFieldValues extends FieldValues> {
   placeholder: string;
@@ -30,6 +31,8 @@ interface AppSelectInputProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>;
   data: SelectInputData[];
   disabled?: boolean;
+  isLoading?: boolean;
+  refetch?: () => void;
   shouldBackgroundClose?: boolean;
 }
 
@@ -44,8 +47,12 @@ function AppSelectInput<TFieldValues extends FieldValues>(
     placeholder,
     data,
     disabled,
+    isLoading,
+    refetch,
     shouldBackgroundClose = true,
   } = props;
+
+  const isDisabled = !!disabled;
 
   const {
     field,
@@ -61,6 +68,14 @@ function AppSelectInput<TFieldValues extends FieldValues>(
     }
   };
 
+  const handleTrigger = () => {
+    if (!data || data?.length === 0) {
+      refetch?.();
+    }
+
+    setVisibility(true);
+  };
+
   const selectedItem = data?.find(({ value }) => value === field?.value);
 
   return (
@@ -70,8 +85,8 @@ function AppSelectInput<TFieldValues extends FieldValues>(
           <AppText style={styles.label}>{label}</AppText>
         )}
         <TouchableOpacity
-          disabled={disabled}
-          onPress={() => setVisibility(true)}
+          disabled={isDisabled}
+          onPress={handleTrigger}
           style={[
             styles.container,
             !!error?.message && { borderColor: colors.RED_100 },
@@ -86,18 +101,22 @@ function AppSelectInput<TFieldValues extends FieldValues>(
             {selectedItem?.title || placeholder}
           </AppText>
 
-          <MaterialSymbolsExpandMore
-            height={Size.calcAverage(20)}
-            width={Size.calcAverage(20)}
-            color={colors.GRAY_700}
-            style={[isVisible && { transform: [{ rotate: '180deg' }] }]}
-          />
+          {isLoading ? (
+            <AppActivityIndicator size="small" />
+          ) : (
+            <MaterialSymbolsExpandMore
+              height={Size.calcAverage(20)}
+              width={Size.calcAverage(20)}
+              color={colors.GRAY_700}
+              style={[isVisible && { transform: [{ rotate: '180deg' }] }]}
+            />
+          )}
         </TouchableOpacity>
         <ErrorMessage message={error?.message ?? null} />
       </View>
 
       <AppModalContainer
-        isVisible={!disabled && isVisible}
+        isVisible={!isDisabled && isVisible}
         style={{ padding: 0 }}
         onClose={handleBgClose}
       >

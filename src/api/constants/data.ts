@@ -1,4 +1,4 @@
-import { SelectInputData } from '@src/types';
+import { SelectInputData } from '@src/types/default';
 import { ElectricityMeterTypeData } from './default';
 
 export const ALL_METER_TYPES: SelectInputData[] = [

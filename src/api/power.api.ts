@@ -43,20 +43,22 @@ interface GetPowerDicsoBillersRes extends GenericApiResponse {
   }[];
 }
 
+export interface VerifyPowerDiscoResData {
+  customerName: string;
+  meterNumber: string;
+  propertyAddress: string;
+  convenienceFee: number;
+  quantity: number;
+  amount: number;
+  totalAmountToPay: number;
+}
+
 interface VerifyPowerDiscoRes extends GenericApiResponse {
-  data: {
-    customerName: string;
-    meterNumber: string;
-    propertyAddress: string;
-    convenienceFee: number;
-    quantity: number;
-    amount: number;
-    totalAmountToPay: number;
-  };
+  data: VerifyPowerDiscoResData;
 }
 
 export interface VerifyPowerDiscoReq {
-  Amount: number;
+  Amount: number | string;
   PropertyId: number;
   MeterNumber: string;
   ItemId: number;

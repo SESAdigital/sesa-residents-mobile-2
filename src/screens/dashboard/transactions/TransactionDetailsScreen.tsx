@@ -1,22 +1,24 @@
+import { useNavigation } from '@react-navigation/native';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
 
+import { TransactionEntryTypeData } from '@src/api/constants/default';
+import SuccessCheckIconImage from '@src/assets/images/icons/success-check-icon.png';
+import AppImage from '@src/components/AppImage';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
+import SubmitButton from '@src/components/forms/SubmitButton';
+import colors from '@src/configs/colors';
+import fonts from '@src/configs/fonts';
 import { TransactionDetailsScreenProps } from '@src/navigation/AppNavigator';
+import { formatMoneyToTwoDecimals, getTransactionTypeColor } from '@src/utils';
 import { dayJSFormatter } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
-import AppImage from '@src/components/AppImage';
-import SuccessCheckIconImage from '@src/assets/images/icons/success-check-icon.png';
-import { formatMoneyToTwoDecimals, getTransactionTypeColor } from '@src/utils';
-import fonts from '@src/configs/fonts';
-import { TransactionEntryTypeData } from '@src/api/constants/default';
-import colors from '@src/configs/colors';
-import SubmitButton from '@src/components/forms/SubmitButton';
 
-const TransactionDetailsScreen = (): React.JSX.Element => {
-  const param = useRoute<TransactionDetailsScreenProps>()?.params;
+const TransactionDetailsScreen = (
+  props: TransactionDetailsScreenProps,
+): React.JSX.Element => {
+  const param = props?.route?.params;
   const navigation = useNavigation();
 
   const detailList = [

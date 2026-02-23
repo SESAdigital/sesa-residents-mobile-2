@@ -33,10 +33,10 @@ export interface ForgotPasswordScreenParam {
   phoneNumber?: string;
 }
 
-const ForgotPasswordScreen = (val: {
-  route: ForgotPasswordScreenProps;
-}): React.JSX.Element => {
-  const param = val?.route?.params;
+const ForgotPasswordScreen = (
+  props: ForgotPasswordScreenProps,
+): React.JSX.Element => {
+  const param = props?.route?.params;
   const [selectedMode, setSelectedMode] = useState<LoginModeType>(
     param?.phoneNumber ? LoginModeData.PhoneNumber : LoginModeData.EmailAddress,
   );

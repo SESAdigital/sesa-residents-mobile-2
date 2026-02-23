@@ -77,3 +77,17 @@ export const ElectricityMeterTypeData = {
 
 export type ElectricityMeterType =
   (typeof ElectricityMeterTypeData)[keyof typeof ElectricityMeterTypeData];
+
+export const EventDetailsTypeData = {
+  Celebratory: 1,
+  CulturalandEntertainment: 2,
+  EducationalandProfessional: 3,
+  CommunityandSocialEvents: 4,
+  ReligiousandSpiritualEvents: 5,
+  BusinessandProductEvents: 6,
+  ShortletBookingNormalStay: 7,
+  ShortletBookingPartyBooking: 8,
+} as const;
+
+export type EventDetailsType =
+  (typeof EventDetailsTypeData)[keyof typeof EventDetailsTypeData];

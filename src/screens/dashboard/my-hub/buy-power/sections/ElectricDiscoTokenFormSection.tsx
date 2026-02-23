@@ -1,15 +1,15 @@
 import { joiResolver } from '@hookform/resolvers/joi';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import Joi from 'joi';
 import { useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 
 import { ALL_METER_TYPES } from '@src/api/constants/data';
-import { ElectricityMeterType } from '@src/api/constants/default';
 import {
+  getPowerDicsoBillers,
+  verifyPowerDisco,
+  VerifyPowerDiscoReq,
   VerifyPowerDiscoResData,
-  verifyPowerEstate,
-  VerifyPowerEstateReq,
 } from '@src/api/power.api';
 import QuickAmounts from '@src/components/common/QuickAmounts';
 import AppKeyboardAvoidingView from '@src/components/custom/AppKeyboardAvoidingView';
@@ -25,26 +25,44 @@ import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 
-const schema = Joi.object<VerifyPowerEstateReq>({
+const schema = Joi.object<VerifyPowerDiscoReq>({
   Amount: Joi.string().required().max(100).label('Token amount'),
   MeterNumber: Joi.string().required().min(5).max(100).label('Meter number'),
-  MeterType: Joi.string().required().label('Meter type'),
+  ItemId: Joi.string().required().label('Electric disco'),
 });
 
 interface Props {
   onDone: (val: VerifyPowerDiscoResData) => void;
 }
 
-const EstateTokenFormSection = ({ onDone }: Props): React.JSX.Element => {
-  const { handleSubmit, control, setValue } = useForm<VerifyPowerEstateReq>({
+const ElectricDiscoTokenFormSection = (props: Props): React.JSX.Element => {
+  const { onDone } = props;
+  const { handleSubmit, control, setValue } = useForm<VerifyPowerDiscoReq>({
     resolver: joiResolver(schema),
   });
   const { data: walletBalance } = useGetWalletBalance();
-  const verifyPowerEstateAPI = useMutation({ mutationFn: verifyPowerEstate });
+  const verifyPowerDiscoAPI = useMutation({ mutationFn: verifyPowerDisco });
+
+  const {
+    data: powerDicsoBillers,
+    isFetching: isLoadingPowerDicsoBillers,
+    refetch,
+  } = useQuery({
+    queryKey: ['getPowerDicsoBillers'],
+    queryFn: async () => {
+      const response = await getPowerDicsoBillers();
+      if (response.ok && response?.data) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+  });
 
   const { selectedProperty } = useAuthStore();
 
-  const isLoading = verifyPowerEstateAPI?.isPending;
+  const isLoading = verifyPowerDiscoAPI?.isPending;
 
   const onSubmit = handleSubmit(async data => {
     if (isLoading) return;
@@ -68,10 +86,10 @@ const EstateTokenFormSection = ({ onDone }: Props): React.JSX.Element => {
       );
     }
 
-    const response = await verifyPowerEstateAPI?.mutateAsync({
+    const response = await verifyPowerDiscoAPI?.mutateAsync({
       Amount,
       MeterNumber: data?.MeterNumber?.trim(),
-      MeterType: Number(data?.MeterType) as ElectricityMeterType,
+      ItemId: Number(data?.ItemId),
       PropertyId: selectedProperty?.id,
     });
 
@@ -98,11 +116,18 @@ const EstateTokenFormSection = ({ onDone }: Props): React.JSX.Element => {
 
           <AppSelectInput
             control={control}
+            refetch={refetch}
             disabled={isLoading}
-            data={ALL_METER_TYPES}
-            label="Meter Type"
-            placeholder="Select meter type"
-            name="MeterType"
+            isLoading={isLoadingPowerDicsoBillers}
+            data={
+              powerDicsoBillers?.map(({ name, id, serviceType }) => ({
+                title: name,
+                value: id?.toString?.(),
+              })) || []
+            }
+            label="Select Electric DISCO"
+            placeholder="Electric DISCO"
+            name="ItemId"
           />
           <AppTextInput
             editable={!isLoading}
@@ -136,4 +161,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EstateTokenFormSection;
+export default ElectricDiscoTokenFormSection;

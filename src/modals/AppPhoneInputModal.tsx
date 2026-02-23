@@ -59,7 +59,10 @@ const AppPhoneInputModal = (props: Props): React.JSX.Element => {
       const searchResults = await Contacts?.getContactsMatchingString(
         searchText,
       );
-      setMutatedContacts(searchResults);
+      const sortedContacts = searchResults.sort((a, b) =>
+        (a?.displayName || '').localeCompare(b?.displayName || ''),
+      );
+      setMutatedContacts(sortedContacts);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);

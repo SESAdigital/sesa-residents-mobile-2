@@ -1,5 +1,6 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SvgProps } from 'react-native-svg';
+import DeviceInfo from 'react-native-device-info';
 
 import {
   UserAccountStatusData,
@@ -23,31 +24,35 @@ import { useGetUserDetails } from '@src/hooks/useGetRequests';
 import { dayJSFormatter } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
 import ProfileDetailsRow from '../../components/ProfileDetailsRow';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
 
 const ManageProfileScreen = (): React.JSX.Element => {
   const { details } = useGetUserDetails();
   const { StatusIcon, color } = getStatusDetails(details?.status);
+  const navigation = useAppNavigator();
 
   const actions = [
     {
       title: 'Update phone number',
-      onPress: () => {},
+      onPress: () => navigation.navigate(routes.UPDATE_PHONE_NUMBER_SCREEN),
       Icon: MaterialSymbolsLightCallOutline,
     },
     {
       title: 'My emergency contacts',
-      onPress: () => {},
+      onPress: () => navigation.navigate(routes.EMERGENCY_CONTACTS_SCREEN),
       Icon: MaterialSymbolsLightEmergencyHomeOutlineRounded,
     },
     {
       title: 'Notification preferences',
-      onPress: () => {},
+      onPress: () =>
+        navigation.navigate(routes.NOTIFICATION_PREFERENCES_SCREEN),
       Icon: MaterialSymbolsLightNotificationsOutline,
     },
   ];
 
   return (
-    <AppScreen style={styles.container}>
+    <AppScreen showDownInset style={styles.container}>
       <AppScreenHeader title="Manage Profile" />
       <ProfileDetailsRow containerStyle={styles.profileContainer} />
 
@@ -89,6 +94,9 @@ const ManageProfileScreen = (): React.JSX.Element => {
           </TouchableOpacity>
         ))}
       </View>
+      <AppText style={styles.footer}>
+        Version: {DeviceInfo?.getVersion?.()}
+      </AppText>
     </AppScreen>
   );
 };
@@ -115,6 +123,14 @@ const styles = StyleSheet.create({
 
   container: {
     paddingHorizontal: 0,
+  },
+
+  footer: {
+    marginTop: 'auto',
+    padding: Size.calcAverage(21),
+    textAlign: 'center',
+    fontSize: Size.calcAverage(12),
+    color: colors.GRAY_200,
   },
 
   profileContainer: {

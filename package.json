@@ -35,7 +35,6 @@
     "react": "19.2.0",
     "react-hook-form": "^7.69.0",
     "react-native": "0.83.1",
-    "react-native-camera-kit": "^17.0.1",
     "react-native-contacts": "^8.0.10",
     "react-native-device-info": "^15.0.1",
     "react-native-fast-image": "^8.6.3",

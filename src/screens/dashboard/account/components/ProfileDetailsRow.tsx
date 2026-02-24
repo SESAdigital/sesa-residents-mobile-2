@@ -9,6 +9,7 @@ import {
 import AppAvatar from '@src/components/AppAvatar';
 import AppText from '@src/components/AppText';
 import {
+  MaterialSymbolsAccountCircle,
   MaterialSymbolsCall,
   MaterialSymbolsMail,
   MaterialSymbolsQrCode,
@@ -42,21 +43,32 @@ const ProfileDetailsRow = (props: Props): React.JSX.Element => {
           <AppText style={styles.profileName}>
             {details?.firstName} {details?.lastName}
           </AppText>
+
           <View style={styles.row}>
+            <View style={styles.row2}>
+              <MaterialSymbolsAccountCircle
+                height={Size.calcAverage(14)}
+                width={Size.calcAverage(14)}
+                color={colors.GRAY_100}
+              />
+              <AppText style={styles.profileText}>{details?.code}</AppText>
+            </View>
+            <View style={styles.row2}>
+              <MaterialSymbolsCall
+                height={Size.calcAverage(12)}
+                width={Size.calcAverage(12)}
+                color={colors.GRAY_100}
+              />
+              <AppText style={styles.profileText}>{details?.phone}</AppText>
+            </View>
+          </View>
+          <View style={styles.row2}>
             <MaterialSymbolsMail
-              height={Size.calcAverage(16)}
-              width={Size.calcAverage(16)}
+              height={Size.calcAverage(14)}
+              width={Size.calcAverage(14)}
               color={colors.GRAY_100}
             />
             <AppText style={styles.profileText}>{details?.email}</AppText>
-          </View>
-          <View style={styles.row}>
-            <MaterialSymbolsCall
-              height={Size.calcAverage(16)}
-              width={Size.calcAverage(16)}
-              color={colors.GRAY_100}
-            />
-            <AppText style={styles.profileText}>{details?.phone}</AppText>
           </View>
         </View>
       </View>
@@ -101,12 +113,19 @@ const styles = StyleSheet.create({
   profileText: {
     fontSize: Size.calcAverage(12),
     color: colors.GRAY_100,
-    paddingHorizontal: Size.calcWidth(4),
   },
 
   row: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
+    columnGap: Size.calcWidth(12),
+  },
+
+  row2: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    columnGap: Size.calcWidth(4),
   },
 });
 

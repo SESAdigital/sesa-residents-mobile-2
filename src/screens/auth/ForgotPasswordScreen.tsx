@@ -16,7 +16,7 @@ import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
-import { ForgotPasswordScreenProps } from '@src/navigation/AppNavigator';
+import { AppScreenProps } from '@src/navigation/AppNavigator';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
@@ -33,10 +33,11 @@ export interface ForgotPasswordScreenParam {
   phoneNumber?: string;
 }
 
-const ForgotPasswordScreen = (
-  props: ForgotPasswordScreenProps,
-): React.JSX.Element => {
-  const param = props?.route?.params;
+type Props = AppScreenProps<'FORGOT_PASSWORD_SCREEN'>;
+
+const ForgotPasswordScreen = (props: Props): React.JSX.Element => {
+  const { route } = props;
+  const param = route?.params;
   const [selectedMode, setSelectedMode] = useState<LoginModeType>(
     param?.phoneNumber ? LoginModeData.PhoneNumber : LoginModeData.EmailAddress,
   );

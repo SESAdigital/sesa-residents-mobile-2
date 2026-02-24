@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -23,17 +24,13 @@ import {
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
-import {
-  PanicAlertScreenProps,
-  useAppNavigator,
-} from '@src/navigation/AppNavigator';
+import { AppScreenProps } from '@src/navigation/AppNavigator';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import appConfig from '@src/utils/appConfig';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import { useQueryClient } from '@tanstack/react-query';
 import CountdownCircle from './components/CountdownCircle';
 import PanicAlertGenericModal from './modals/PanicAlertGenericModal';
 
@@ -61,15 +58,17 @@ export interface PanicAlertScreenData {
   longitude: number;
 }
 
-const PanicAlertScreen = (props: PanicAlertScreenProps): React.JSX.Element => {
-  const params = props?.route?.params;
+type Props = AppScreenProps<'PANIC_ALERT_SCREEN'>;
+
+const PanicAlertScreen = (props: Props): React.JSX.Element => {
+  const { navigation, route } = props;
+  const params = route?.params;
   const { data, latitude, longitude } = params;
   const [panicType, setPanicType] = useState<PanicAlertType>(
     PanicAlertTypeData.SecurityEmergency,
   );
   const queryClient = useQueryClient();
   const { selectedProperty } = useAuthStore();
-  const navigation = useAppNavigator();
   const {
     setIsAppModalLoading,
     isAppModalLoading,

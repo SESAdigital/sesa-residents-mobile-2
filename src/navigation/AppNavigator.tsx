@@ -1,15 +1,17 @@
 import {
   createStaticNavigation,
-  RouteProp,
   StaticParamList,
   useNavigation,
 } from '@react-navigation/native';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
+  NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 
 import { PatchSetupPasswordReq } from '@src/api/auth.api';
+import { PostBookVisitorResData } from '@src/api/visitors.api';
+import { WalletTransactionDetails } from '@src/api/wallets.api';
 import ForgotPasswordScreen, {
   ForgotPasswordScreenParam,
 } from '@src/screens/auth/ForgotPasswordScreen';
@@ -25,13 +27,18 @@ import SetupPasswordScreen from '@src/screens/auth/SetupPasswordScreen';
 import SetupWalletPinScreen from '@src/screens/auth/SetupWalletPinScreen';
 import HelpCenterScreen from '@src/screens/dashboard/account/screens/help-center/HelpCenterScreen';
 import ManageHouseholdScreen from '@src/screens/dashboard/account/screens/manage-household/ManageHouseholdScreen';
+import EmergencyContactsScreen from '@src/screens/dashboard/account/screens/manage-profile/emergency-contacts/EmergencyContactsScreen';
 import ManageProfileScreen from '@src/screens/dashboard/account/screens/manage-profile/ManageProfileScreen';
+import NotificationPreferencesScreen from '@src/screens/dashboard/account/screens/manage-profile/notification-preferences/NotificationPreferencesScreen';
+import UpdatePhoneNumberScreen from '@src/screens/dashboard/account/screens/manage-profile/update-phone-number/UpdatePhoneNumberScreen';
 import MyQRCodeScreen from '@src/screens/dashboard/account/screens/my-qr-code/MyQRCodeScreen';
 import AccountSettingsScreen from '@src/screens/dashboard/account/screens/settings/AccountSettingsScreen';
 import AddMoneyScreen from '@src/screens/dashboard/add-money/AddMoneyScreen';
 import AddMoneyViaCardScreen from '@src/screens/dashboard/add-money/AddMoneyViaCardScreen';
 import BillsAndCollectionsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/BillsAndCollectionsScreen';
 import BookVisitorScreen from '@src/screens/dashboard/my-hub/book-visitor/BookVisitorScreen';
+import BookVisitorSuccessScreen from '@src/screens/dashboard/my-hub/book-visitor/BookVistorSuccessScreen';
+import BuyPowerFormScreen from '@src/screens/dashboard/my-hub/buy-power/BuyPowerFormScreen';
 import BuyPowerScreen from '@src/screens/dashboard/my-hub/buy-power/BuyPowerScreen';
 import CreateEventsScreen from '@src/screens/dashboard/my-hub/create-events/CreateEventsScreen';
 import GroupAccessScreen from '@src/screens/dashboard/my-hub/group-access/GroupAccessScreen';
@@ -39,19 +46,15 @@ import HireArtisanScreen from '@src/screens/dashboard/my-hub/hire-artisan/HireAr
 import PanicAlertScreen, {
   PanicAlertScreenData,
 } from '@src/screens/dashboard/my-hub/panic-alert/PanicAlertScreen';
-import TransactionDetailsScreen from '@src/screens/dashboard/transactions/TransactionDetailsScreen';
-import TransactionListScreen from '@src/screens/dashboard/transactions/TransactionListScreen';
-import { useAuthStore } from '@src/stores/auth.store';
-import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
-import routes from './routes';
-import { WalletTransactionDetails } from '@src/api/wallets.api';
-import BuyPowerFormScreen from '@src/screens/dashboard/my-hub/buy-power/BuyPowerFormScreen';
 import TransactionSuccessScreen, {
   TransactionSuccessScreenData,
 } from '@src/screens/dashboard/reusable-screens/TransactionSuccessScreen';
-import BookVisitorSuccessScreen from '@src/screens/dashboard/my-hub/book-visitor/BookVistorSuccessScreen';
-import { PostBookVisitorResData } from '@src/api/visitors.api';
+import TransactionDetailsScreen from '@src/screens/dashboard/transactions/TransactionDetailsScreen';
+import TransactionListScreen from '@src/screens/dashboard/transactions/TransactionListScreen';
+import { useAuthStore } from '@src/stores/auth.store';
 import { BuyPowerFormScreenData } from '@src/types/default';
+import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
+import routes from './routes';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -89,6 +92,10 @@ export type AppNavigatorParams = {
 
   // ACCOUNTS SCREEN
   [routes.MANAGE_PROFILE_SCREEN]: undefined;
+  [routes.UPDATE_PHONE_NUMBER_SCREEN]: undefined;
+  [routes.EMERGENCY_CONTACTS_SCREEN]: undefined;
+  [routes.NOTIFICATION_PREFERENCES_SCREEN]: undefined;
+
   [routes.MANAGE_HOUSEHOLD_SCREEN]: undefined;
   [routes.MY_QR_CODE_SCREEN]: undefined;
   [routes.ACCOUNT_SETTINGS_SCREEN]: undefined;
@@ -98,6 +105,9 @@ export type AppNavigatorParams = {
 export type AppParamsNavigator = NativeStackNavigationProp<AppNavigatorParams>;
 
 export type AppNavigatorRoutes = keyof AppNavigatorParams;
+
+export type AppScreenProps<RouteName extends keyof AppNavigatorParams> =
+  NativeStackScreenProps<AppNavigatorParams, RouteName>;
 
 export const useAppNavigator = () => {
   return useNavigation<AppParamsNavigator>();
@@ -150,6 +160,10 @@ const RootStack = createNativeStackNavigator({
 
         // ACCOUNTS SCREEN
         [routes.MANAGE_PROFILE_SCREEN]: ManageProfileScreen,
+        [routes.UPDATE_PHONE_NUMBER_SCREEN]: UpdatePhoneNumberScreen,
+        [routes.EMERGENCY_CONTACTS_SCREEN]: EmergencyContactsScreen,
+        [routes.NOTIFICATION_PREFERENCES_SCREEN]: NotificationPreferencesScreen,
+
         [routes.MANAGE_HOUSEHOLD_SCREEN]: ManageHouseholdScreen,
         [routes.MY_QR_CODE_SCREEN]: MyQRCodeScreen,
         [routes.ACCOUNT_SETTINGS_SCREEN]: AccountSettingsScreen,
@@ -168,40 +182,3 @@ declare global {
     interface RootParamList extends RootStackParamList {}
   }
 }
-
-// export type ScreenWithIdProps = RouteProp<
-//   AppNavigatorParams,
-//   'PATROL_REPORT_DETAILS_SCREEN'
-// >;
-
-interface PageProps<T> {
-  route: T;
-}
-
-export type SetupPasswordScreenProps = PageProps<
-  RouteProp<AppNavigatorParams, 'SETUP_PASSWORD_SCREEN'>
->;
-
-export type PanicAlertScreenProps = PageProps<
-  RouteProp<AppNavigatorParams, 'PANIC_ALERT_SCREEN'>
->;
-
-export type TransactionDetailsScreenProps = PageProps<
-  RouteProp<AppNavigatorParams, 'TRANSACTION_DETAILS_SCREEN'>
->;
-
-export type TransactionSuccessScreenProps = PageProps<
-  RouteProp<AppNavigatorParams, 'TRANSACTION_SUCCESS_SCREEN'>
->;
-
-export type BookVisitorSuccessScreenProps = PageProps<
-  RouteProp<AppNavigatorParams, 'BOOK_VISITOR_SUCCESS_SCREEN'>
->;
-
-export type BuyPowerFormScreenProps = PageProps<
-  RouteProp<AppNavigatorParams, 'BUY_POWER_FORM_SCREEN'>
->;
-
-export type ForgotPasswordScreenProps = PageProps<
-  RouteProp<AppNavigatorParams, 'FORGOT_PASSWORD_SCREEN'>
->;

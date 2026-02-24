@@ -10,39 +10,36 @@ import {
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
+import { MaterialSymbolsContentCopyOutline } from '@src/components/icons';
 import colors from '@src/configs/colors';
+import fonts from '@src/configs/fonts';
 import useBackHandler from '@src/hooks/useBackHandler';
 import { useGetWalletBalance } from '@src/hooks/useGetRequests';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
-import {
-  BuyPowerFormScreenProps,
-  useAppNavigator,
-} from '@src/navigation/AppNavigator';
+import { AppScreenProps } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import WalletPinInput from '@src/screens/auth/components/WalletPinInput';
 import { copyTextToClipboard, formatMoneyToTwoDecimals } from '@src/utils';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
+import { dayJSFormatter } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
 import { useMutation } from '@tanstack/react-query';
 import { ApiResponse } from 'apisauce';
 import ConfirmPurchaseSection from './sections/ConfirmPurchaseSection';
 import ElectricDiscoTokenFormSection from './sections/ElectricDiscoTokenFormSection';
 import EstateTokenFormSection from './sections/EstateTokenFormSection';
-import { dayJSFormatter } from '@src/utils/time';
-import fonts from '@src/configs/fonts';
-import { MaterialSymbolsContentCopyOutline } from '@src/components/icons';
 
-const BuyPowerFormScreen = (
-  props: BuyPowerFormScreenProps,
-): React.JSX.Element => {
-  const screenType = props?.route?.params?.screenType;
+type Props = AppScreenProps<'BUY_POWER_FORM_SCREEN'>;
+
+const BuyPowerFormScreen = (props: Props): React.JSX.Element => {
+  const { navigation, route } = props;
+  const screenType = route?.params?.screenType;
   const [currentStep, setCurrentStep] = useState(BuyTokenSteps.TOKEN_FORM_STEP);
   const { data } = useGetWalletBalance();
   const [verifiedData, setVerifiedData] =
     useState<VerifyPowerDiscoResData | null>(null);
   const [pin, setPin] = useState('');
-  const navigation = useAppNavigator();
   const postPurchaseDiscoPowerAPI = useMutation({
     mutationFn: postPurchaseDiscoPower,
   });

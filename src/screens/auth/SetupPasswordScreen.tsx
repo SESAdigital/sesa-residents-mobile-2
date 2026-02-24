@@ -15,10 +15,7 @@ import PasswordToggle from '@src/components/icons/PasswordToggle';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
-import {
-  SetupPasswordScreenProps,
-  useAppNavigator,
-} from '@src/navigation/AppNavigator';
+import { AppScreenProps } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import { useAuthStore } from '@src/stores/auth.store';
 import { appToast } from '@src/utils/appToast';
@@ -31,15 +28,15 @@ const schema = Joi.object<PatchSetupPasswordReq>({
   confirmPassword: joiSchemas.strictPassword,
 });
 
-const SetupPasswordScreen = (
-  props: SetupPasswordScreenProps,
-): React.JSX.Element => {
+type Props = AppScreenProps<'SETUP_PASSWORD_SCREEN'>;
+
+const SetupPasswordScreen = (props: Props): React.JSX.Element => {
+  const { navigation, route } = props;
   const [isPasswordVisible, setPasswordVisibility] = useState(false);
   const patchSetupPasswordAPI = useMutation({ mutationFn: patchSetupPassword });
   const queryClient = useQueryClient();
-  const navigation = useAppNavigator();
 
-  const params = props?.route?.params;
+  const params = route?.params;
 
   const { handleSubmit, reset, control } = useForm<PatchSetupPasswordReq>({
     resolver: joiResolver(schema),

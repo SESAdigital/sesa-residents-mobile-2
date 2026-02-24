@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import { useRef } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
@@ -13,7 +12,7 @@ import SubmitButton from '@src/components/forms/SubmitButton';
 import { MaterialSymbolsContentCopyOutline } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { BookVisitorSuccessScreenProps } from '@src/navigation/AppNavigator';
+import { AppScreenProps } from '@src/navigation/AppNavigator';
 import { copyTextToClipboard } from '@src/utils';
 import appConfig from '@src/utils/appConfig';
 import Size from '@src/utils/useResponsiveSize';
@@ -24,11 +23,11 @@ interface DetailItem {
   isCopy?: boolean;
 }
 
-const BookVisitorSuccessScreen = (
-  props: BookVisitorSuccessScreenProps,
-): React.JSX.Element => {
-  const param = props?.route?.params;
-  const navigation = useNavigation();
+type Props = AppScreenProps<'BOOK_VISITOR_SUCCESS_SCREEN'>;
+
+const BookVisitorSuccessScreen = (props: Props): React.JSX.Element => {
+  const { navigation, route } = props;
+  const param = route?.params;
   const viewShotRef = useRef<ViewShot>(null);
 
   const detailList: DetailItem[][] = [

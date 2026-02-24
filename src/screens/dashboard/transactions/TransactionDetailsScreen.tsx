@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { TransactionEntryTypeData } from '@src/api/constants/default';
@@ -10,16 +9,16 @@ import AppScreenHeader from '@src/components/common/AppScreenHeader';
 import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { TransactionDetailsScreenProps } from '@src/navigation/AppNavigator';
+import { AppScreenProps } from '@src/navigation/AppNavigator';
 import { formatMoneyToTwoDecimals, getTransactionTypeColor } from '@src/utils';
 import { dayJSFormatter } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
 
-const TransactionDetailsScreen = (
-  props: TransactionDetailsScreenProps,
-): React.JSX.Element => {
-  const param = props?.route?.params;
-  const navigation = useNavigation();
+type Props = AppScreenProps<'TRANSACTION_DETAILS_SCREEN'>;
+
+const TransactionDetailsScreen = (props: Props): React.JSX.Element => {
+  const { navigation, route } = props;
+  const param = route?.params;
 
   const detailList = [
     {

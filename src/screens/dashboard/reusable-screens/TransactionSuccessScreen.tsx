@@ -11,10 +11,7 @@ import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import useBackHandler from '@src/hooks/useBackHandler';
-import {
-  TransactionSuccessScreenProps,
-  useAppNavigator,
-} from '@src/navigation/AppNavigator';
+import { AppScreenProps } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import { appToast } from '@src/utils/appToast';
 import Size from '@src/utils/useResponsiveSize';
@@ -30,11 +27,11 @@ export interface TransactionSuccessScreenData {
   details: Details[];
 }
 
-const TransactionSuccessScreen = (
-  props: TransactionSuccessScreenProps,
-): React.JSX.Element => {
-  const param = props?.route?.params;
-  const navigation = useAppNavigator();
+type Props = AppScreenProps<'TRANSACTION_SUCCESS_SCREEN'>;
+
+const TransactionSuccessScreen = (props: Props): React.JSX.Element => {
+  const { navigation, route } = props;
+  const param = route?.params;
 
   const handleClose = () => {
     navigation.reset({

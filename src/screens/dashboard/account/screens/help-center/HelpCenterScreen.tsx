@@ -47,7 +47,7 @@ const HelpCenterScreen = (): React.JSX.Element => {
         },
         {
           title: 'Emergency services',
-          onPress: () => {},
+          onPress: () => navigation.navigate(routes.EMERGENCY_SERVICES_SCREEN),
           Icon: MaterialSymbolsLightEmergencyHomeOutlineRounded,
         },
       ],

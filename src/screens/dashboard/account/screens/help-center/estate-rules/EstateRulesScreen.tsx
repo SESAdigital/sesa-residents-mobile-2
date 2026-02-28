@@ -5,21 +5,21 @@ import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
 import { getEstateRules } from '@src/api/helpCenter.api';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
-import AppSearchInput from '@src/components/forms/AppSearchInput';
-import colors from '@src/configs/colors';
-import Size from '@src/utils/useResponsiveSize';
-import { handleToastApiError } from '@src/utils/handleErrors';
-import { getTotalPages } from '@src/utils';
-import DuplicateLoader from '@src/components/DuplicateLoader';
-import { FlatList } from 'react-native';
-import AppRefreshControl from '@src/components/custom/AppRefreshControl';
-import EmtpyTransactionComponent from '@src/screens/dashboard/transactions/components/EmtpyTransactionComponent';
-import EstateRuleRow, { EstateRuleRowLoader } from './EstateRuleRow';
 import AppListFooterLoader from '@src/components/common/AppListFooterLoader';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
+import AppRefreshControl from '@src/components/custom/AppRefreshControl';
+import DuplicateLoader from '@src/components/DuplicateLoader';
+import AppSearchInput from '@src/components/forms/AppSearchInput';
+import colors from '@src/configs/colors';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
+import { getTotalPages } from '@src/utils';
+import { handleToastApiError } from '@src/utils/handleErrors';
 import { dayJSFormatter } from '@src/utils/time';
+import Size from '@src/utils/useResponsiveSize';
+import { FlatList } from 'react-native';
+import EstateRuleRow, { EstateRuleRowLoader } from './EstateRuleRow';
+import EmptyTableComponent from '@src/components/EmptyTableComponent';
 
 const pageSize = DEFAULT_API_DATA_SIZE;
 
@@ -100,7 +100,7 @@ const EstateRulesScreen = (): React.JSX.Element => {
           isLoading ? (
             <DuplicateLoader loader={<EstateRuleRowLoader />} />
           ) : (
-            <EmtpyTransactionComponent />
+            <EmptyTableComponent />
           )
         }
         renderItem={({ item }) => (

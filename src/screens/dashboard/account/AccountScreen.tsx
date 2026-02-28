@@ -11,6 +11,7 @@ import { getAccessHistory } from '@src/api/auth.api';
 import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
 import AppText from '@src/components/AppText';
 import DuplicateLoader from '@src/components/DuplicateLoader';
+import EmptyTableComponent from '@src/components/EmptyTableComponent';
 import AppListFooterLoader from '@src/components/common/AppListFooterLoader';
 import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import {
@@ -31,7 +32,6 @@ import { useAuthStore } from '@src/stores/auth.store';
 import { getTotalPages } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import EmtpyTransactionComponent from '../transactions/components/EmtpyTransactionComponent';
 import AccessHistoryRow, {
   AccessHistoryRowLoader,
 } from './components/AccessHistoryRow';
@@ -241,7 +241,7 @@ const AccountScreen = (): React.JSX.Element => {
           isAccessHistoryLoading ? (
             <DuplicateLoader loader={<AccessHistoryRowLoader />} />
           ) : (
-            <EmtpyTransactionComponent />
+            <EmptyTableComponent />
           )
         }
         renderItem={({ item }) => <AccessHistoryRow val={item} />}

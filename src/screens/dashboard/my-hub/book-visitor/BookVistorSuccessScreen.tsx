@@ -128,7 +128,7 @@ QR code: ${appConfig.APP_WEBSITE_URL}/access/${param?.code}
                           {value?.value || '--'}
                         </AppText>
                       </View>
-                      {value?.isCopy && (
+                      {!!value?.isCopy && (
                         <TouchableOpacity
                           onPress={() =>
                             copyTextToClipboard({

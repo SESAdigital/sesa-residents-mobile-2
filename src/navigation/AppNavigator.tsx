@@ -57,6 +57,14 @@ import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
 import ManageEmergencyContactScreen from '@src/screens/dashboard/account/screens/manage-profile/emergency-contacts/ManageEmergencyContactScreen';
 import EmergencyContactListScreen from '@src/screens/dashboard/account/screens/manage-profile/emergency-contacts/EmergencyContactListScreen';
+import {
+  GetEmergencyServicesResData,
+  GetEstateRulesResData,
+} from '@src/api/helpCenter.api';
+import EmergencyServiceDetailsScreen from '@src/screens/dashboard/account/screens/help-center/emergency-services/EmergencyServiceDetailsScreen';
+import EmergencyServicesScreen from '@src/screens/dashboard/account/screens/help-center/emergency-services/EmergencyServicesScreen';
+import EstateRuleDetailsScreen from '@src/screens/dashboard/account/screens/help-center/estate-rules/EstateRuleDetailsScreen';
+import EstateRulesScreen from '@src/screens/dashboard/account/screens/help-center/estate-rules/EstateRulesScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -104,6 +112,10 @@ export type AppNavigatorParams = {
   [routes.MY_QR_CODE_SCREEN]: undefined;
   [routes.ACCOUNT_SETTINGS_SCREEN]: undefined;
   [routes.HELP_CENTER_SCREEN]: undefined;
+  [routes.EMERGENCY_SERVICES_SCREEN]: undefined;
+  [routes.EMERGENCY_SERVICE_DETAILS_SCREEN]: GetEmergencyServicesResData;
+  [routes.ESTATE_RULES_SCREEN]: undefined;
+  [routes.ESTATE_RULE_DETAILS_SCREEN]: GetEstateRulesResData;
 };
 
 export type AppParamsNavigator = NativeStackNavigationProp<AppNavigatorParams>;
@@ -174,6 +186,11 @@ const RootStack = createNativeStackNavigator({
         [routes.MY_QR_CODE_SCREEN]: MyQRCodeScreen,
         [routes.ACCOUNT_SETTINGS_SCREEN]: AccountSettingsScreen,
         [routes.HELP_CENTER_SCREEN]: HelpCenterScreen,
+        [routes.EMERGENCY_SERVICES_SCREEN]: EmergencyServicesScreen,
+        [routes.EMERGENCY_SERVICE_DETAILS_SCREEN]:
+          EmergencyServiceDetailsScreen,
+        [routes.ESTATE_RULES_SCREEN]: EstateRulesScreen,
+        [routes.ESTATE_RULE_DETAILS_SCREEN]: EstateRuleDetailsScreen,
       },
     },
   },

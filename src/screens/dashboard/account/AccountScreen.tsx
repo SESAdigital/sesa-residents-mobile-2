@@ -52,7 +52,7 @@ const AccountScreen = (): React.JSX.Element => {
     },
     {
       Icon: MaterialSymbolsHelp,
-      onClick: () => {},
+      onClick: () => navigation.navigate(routes.HELP_CENTER_SCREEN),
     },
     {
       Icon: MaterialSymbolsSettings,

@@ -1,6 +1,6 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { SvgProps } from 'react-native-svg';
+import { StyleSheet, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import { SvgProps } from 'react-native-svg';
 
 import {
   UserAccountStatusData,
@@ -10,13 +10,12 @@ import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
 import {
+  MaterialSymbolsCheckRounded,
   MaterialSymbolsCloseRounded,
   MaterialSymbolsHorizontalRuleRounded,
-  MaterialSymbolsCheckRounded,
-  MaterialSymbolsLightNotificationsOutline,
   MaterialSymbolsLightCallOutline,
   MaterialSymbolsLightEmergencyHomeOutlineRounded,
-  MaterialSymbolsChevronRightRounded,
+  MaterialSymbolsLightNotificationsOutline,
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
@@ -24,11 +23,12 @@ import {
   useGetNotificationPreference,
   useGetUserDetails,
 } from '@src/hooks/useGetRequests';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
 import { dayJSFormatter } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
 import ProfileDetailsRow from '../../components/ProfileDetailsRow';
-import { useAppNavigator } from '@src/navigation/AppNavigator';
-import routes from '@src/navigation/routes';
+import ActionItem from './components/ActionItem';
 
 const ManageProfileScreen = (): React.JSX.Element => {
   const { details } = useGetUserDetails();
@@ -77,27 +77,8 @@ const ManageProfileScreen = (): React.JSX.Element => {
           </AppText>
         </View>
       </View>
-      <View style={styles.actionsContainer}>
-        {actions.map(({ Icon, title, onPress }, index) => (
-          <TouchableOpacity
-            style={styles.actionRow}
-            onPress={onPress}
-            key={index}
-          >
-            <Icon
-              color={colors.BLACK_100}
-              height={Size.calcAverage(24)}
-              width={Size.calcAverage(24)}
-            />
-            <AppText style={styles.actionText}>{title}</AppText>
-            <MaterialSymbolsChevronRightRounded
-              color={colors.BLACK_100}
-              height={Size.calcAverage(24)}
-              width={Size.calcAverage(24)}
-            />
-          </TouchableOpacity>
-        ))}
-      </View>
+      <ActionItem data={actions} />
+
       <AppText style={styles.footer}>
         Version: {DeviceInfo?.getVersion?.()}
       </AppText>
@@ -106,25 +87,6 @@ const ManageProfileScreen = (): React.JSX.Element => {
 };
 
 const styles = StyleSheet.create({
-  actionRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: Size.calcHeight(11),
-    borderColor: colors.LIGHT_GRAY_200,
-  },
-
-  actionText: {
-    flex: 1,
-    paddingHorizontal: Size.calcWidth(20),
-    fontFamily: fonts.INTER_500,
-  },
-
-  actionsContainer: {
-    rowGap: Size.calcHeight(6),
-    paddingHorizontal: Size.calcWidth(21),
-    paddingVertical: Size.calcHeight(24),
-  },
-
   container: {
     paddingHorizontal: 0,
   },

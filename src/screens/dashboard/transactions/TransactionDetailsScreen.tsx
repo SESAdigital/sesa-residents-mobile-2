@@ -9,17 +9,16 @@ import AppScreenHeader from '@src/components/common/AppScreenHeader';
 import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { AppScreenProps } from '@src/navigation/AppNavigator';
+import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
 import { formatMoneyToTwoDecimals, getTransactionTypeColor } from '@src/utils';
 import { dayJSFormatter } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
 
 type Props = AppScreenProps<'TRANSACTION_DETAILS_SCREEN'>;
 
-const TransactionDetailsScreen = (props: Props): React.JSX.Element => {
-  const { navigation, route } = props;
+const TransactionDetailsScreen = ({ route }: Props): React.JSX.Element => {
   const param = route?.params;
-
+  const navigation = useAppNavigator();
   const detailList = [
     {
       title: 'TRANSACTION REFERENCE',

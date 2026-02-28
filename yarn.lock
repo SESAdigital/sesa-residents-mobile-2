@@ -1892,6 +1892,11 @@
   dependencies:
     nanoid "^3.3.11"
 
+"@sbaiahmed1/react-native-biometrics@^0.12.2":
+  version "0.12.2"
+  resolved "https://registry.yarnpkg.com/@sbaiahmed1/react-native-biometrics/-/react-native-biometrics-0.12.2.tgz#c07e2411ad304ce7d44a0c5b07ef6b675de65e66"
+  integrity sha512-dynDt3FpJAFsBkS8FPpNq6DxRV/ednwMK2w/03/vu38O77FUHcUANsPPKHe3skLKT6Q/CqiY7f+F1lJaFlI8Kg==
+
 "@sideway/address@^4.1.5":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.5.tgz#4bc149a0076623ced99ca8208ba780d65a99b9d5"
@@ -6045,11 +6050,6 @@ react-is@^19.1.0, react-is@^19.2.0:
   version "19.2.3"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-19.2.3.tgz#eec2feb69c7fb31f77d0b5c08c10ae1c88886b29"
   integrity sha512-qJNJfu81ByyabuG7hPFEbXqNcWSU3+eVus+KJs+0ncpGfMyYdvSmxiJxbWR65lYi1I+/0HBcliO029gc4F+PnA==
-
-react-native-camera-kit@^17.0.1:
-  version "17.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-camera-kit/-/react-native-camera-kit-17.0.1.tgz#97ac40c7395e3768be5d8a2ba8d77772e798b9be"
-  integrity sha512-DcXfyiNl1yXytDgCxbpny1BbhXnUUpQdzI144v9KhkgSLJo/m7ELC6uuMimQAH6h1ccRW29fQ5KY8BGboHEmww==
 
 react-native-contacts@^8.0.10:
   version "8.0.10"

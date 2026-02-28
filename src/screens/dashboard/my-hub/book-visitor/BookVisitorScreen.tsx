@@ -15,14 +15,14 @@ import AppTextInput from '@src/components/forms/AppTextInput';
 import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
-import { useAppNavigator } from '@src/navigation/AppNavigator';
-import routes from '@src/navigation/routes';
 
 const schema = Joi.object<PostBookVisitorReq>({
   fullName: joiSchemas.name.label('Full name'),
@@ -34,7 +34,6 @@ const BookVisitorScreen = (): React.JSX.Element => {
   const { setActiveModal, closeActiveModal, setIsAppModalLoading } =
     useAppStateStore();
   const { selectedProperty } = useAuthStore();
-  const navigation = useAppNavigator();
   const {
     handleSubmit,
     control,
@@ -48,7 +47,7 @@ const BookVisitorScreen = (): React.JSX.Element => {
       dateOfVisitation: new Date().toISOString(),
     },
   });
-
+  const navigation = useAppNavigator();
   const dateOfVisitation = watch('dateOfVisitation');
 
   const handleBook = async (data: PostBookVisitorReq) => {

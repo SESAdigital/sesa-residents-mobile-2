@@ -114,6 +114,11 @@ const LoginScreen = (): React.JSX.Element => {
       appToast.Dismiss();
       queryClient.resetQueries();
 
+      setLoginReq({
+        password: loginData?.password,
+        ...(isEmailLogin ? { email } : { phoneNumber }),
+      });
+
       if (
         result?.data?.onboardingStatus === OnboardingStatusData.PasswordSetup
       ) {
@@ -248,7 +253,7 @@ const LoginScreen = (): React.JSX.Element => {
             label="Password"
             control={control}
             name="password"
-            secureTextEntry={!isPasswordVisible}
+            // secureTextEntry={!isPasswordVisible}
             rightIcon={
               <PasswordToggle
                 isVisible={!isPasswordVisible}

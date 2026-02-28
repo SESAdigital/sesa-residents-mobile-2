@@ -16,7 +16,7 @@ import fonts from '@src/configs/fonts';
 import useBackHandler from '@src/hooks/useBackHandler';
 import { useGetWalletBalance } from '@src/hooks/useGetRequests';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
-import { AppScreenProps } from '@src/navigation/AppNavigator';
+import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import WalletPinInput from '@src/screens/auth/components/WalletPinInput';
 import { copyTextToClipboard, formatMoneyToTwoDecimals } from '@src/utils';
@@ -32,8 +32,8 @@ import EstateTokenFormSection from './sections/EstateTokenFormSection';
 
 type Props = AppScreenProps<'BUY_POWER_FORM_SCREEN'>;
 
-const BuyPowerFormScreen = (props: Props): React.JSX.Element => {
-  const { navigation, route } = props;
+const BuyPowerFormScreen = ({ route }: Props): React.JSX.Element => {
+  const navigation = useAppNavigator();
   const screenType = route?.params?.screenType;
   const [currentStep, setCurrentStep] = useState(BuyTokenSteps.TOKEN_FORM_STEP);
   const { data } = useGetWalletBalance();

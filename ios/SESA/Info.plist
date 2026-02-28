@@ -61,5 +61,7 @@
 		<string>Inter-SemiBold.ttf</string>
 		<string>Inter-Thin.ttf</string>
 	</array>
+	<key>NSFaceIDUsageDescription</key>
+	<string>SESA uses Face ID to securely authenticate you.</string>
 </dict>
 </plist>

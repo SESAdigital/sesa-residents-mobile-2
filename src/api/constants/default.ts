@@ -100,3 +100,22 @@ export const AccessEntryTypeData = {
 
 export type AccessEntryType =
   (typeof AccessEntryTypeData)[keyof typeof AccessEntryTypeData];
+
+export const RelationshipTypeData = {
+  Father: 1,
+  Mother: 2,
+  Brother: 3,
+  Sister: 4,
+  Son: 5,
+  Daughter: 6,
+} as const;
+
+export type RelationshipType =
+  (typeof RelationshipTypeData)[keyof typeof RelationshipTypeData];
+
+export const GenderTypeData = {
+  Male: 1,
+  Female: 2,
+} as const;
+
+export type GenderType = (typeof GenderTypeData)[keyof typeof GenderTypeData];

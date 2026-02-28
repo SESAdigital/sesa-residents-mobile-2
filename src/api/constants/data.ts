@@ -1,5 +1,5 @@
 import { SelectInputData } from '@src/types/default';
-import { ElectricityMeterTypeData } from './default';
+import { ElectricityMeterTypeData, RelationshipTypeData } from './default';
 
 export const ALL_METER_TYPES: SelectInputData[] = [
   {
@@ -9,5 +9,32 @@ export const ALL_METER_TYPES: SelectInputData[] = [
   {
     title: 'Prepaid Meter',
     value: ElectricityMeterTypeData?.PrePaid?.toString(),
+  },
+];
+
+export const ALL_RELATIONSHIP_TYPES: SelectInputData[] = [
+  {
+    title: 'Father',
+    value: RelationshipTypeData?.Father?.toString(),
+  },
+  {
+    title: 'Mother',
+    value: RelationshipTypeData?.Mother?.toString(),
+  },
+  {
+    title: 'Brother',
+    value: RelationshipTypeData?.Brother?.toString(),
+  },
+  {
+    title: 'Sister',
+    value: RelationshipTypeData?.Sister?.toString(),
+  },
+  {
+    title: 'Son',
+    value: RelationshipTypeData?.Son?.toString(),
+  },
+  {
+    title: 'Daughter',
+    value: RelationshipTypeData?.Daughter?.toString(),
   },
 ];

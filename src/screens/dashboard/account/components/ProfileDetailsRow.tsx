@@ -20,6 +20,7 @@ import { useGetUserDetails } from '@src/hooks/useGetRequests';
 import Size from '@src/utils/useResponsiveSize';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
+import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 
 interface Props {
   containerStyle?: StyleProp<ViewStyle>;
@@ -27,7 +28,7 @@ interface Props {
 
 const ProfileDetailsRow = (props: Props): React.JSX.Element => {
   const { containerStyle } = props;
-  const { details } = useGetUserDetails();
+  const { details, isProfileLoading } = useGetUserDetails();
   const navigation = useAppNavigator();
 
   return (
@@ -51,7 +52,14 @@ const ProfileDetailsRow = (props: Props): React.JSX.Element => {
                 width={Size.calcAverage(14)}
                 color={colors.GRAY_100}
               />
-              <AppText style={styles.profileText}>{details?.code}</AppText>
+              {isProfileLoading ? (
+                <AppSkeletonLoader
+                  style={{ marginVertical: Size.calcHeight(2) }}
+                  width={Size.calcWidth(70)}
+                />
+              ) : (
+                <AppText style={styles.profileText}>{details?.code}</AppText>
+              )}
             </View>
             <View style={styles.row2}>
               <MaterialSymbolsCall
@@ -59,7 +67,14 @@ const ProfileDetailsRow = (props: Props): React.JSX.Element => {
                 width={Size.calcAverage(12)}
                 color={colors.GRAY_100}
               />
-              <AppText style={styles.profileText}>{details?.phone}</AppText>
+              {isProfileLoading ? (
+                <AppSkeletonLoader
+                  style={{ marginVertical: Size.calcHeight(2) }}
+                  width={Size.calcWidth(70)}
+                />
+              ) : (
+                <AppText style={styles.profileText}>{details?.phone}</AppText>
+              )}
             </View>
           </View>
           <View style={styles.row2}>

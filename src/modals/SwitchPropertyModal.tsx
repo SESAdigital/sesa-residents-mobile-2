@@ -1,25 +1,23 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import colors from '@src/configs/colors';
-import Size from '@src/utils/useResponsiveSize';
-import AppText from '@src/components/AppText';
-import AppCircularCheckIcon from '@src/components/custom/AppCircularCheckIcon';
-import {
-  MaterialSymbolsCloseRounded,
-  MaterialSymbolsHome,
-} from '@src/components/icons';
-import SubmitButton from '@src/components/forms/SubmitButton';
-import { useAppStateStore } from '@src/stores/appState.store';
-import fonts from '@src/configs/fonts';
-import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
-import { useGetProperties } from '@src/hooks/useGetRequests';
 import queryKeys from '@src/api/constants/queryKeys';
+import { GetDashboardPropertiesData } from '@src/api/dashboard.api';
+import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
+import AppText from '@src/components/AppText';
+import AppModalHeader from '@src/components/common/AppModalHeader';
+import AppCircularCheckIcon from '@src/components/custom/AppCircularCheckIcon';
 import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import DuplicateLoader from '@src/components/DuplicateLoader';
 import EmptyTableComponent from '@src/components/EmptyTableComponent';
-import { GetDashboardPropertiesData } from '@src/api/dashboard.api';
+import SubmitButton from '@src/components/forms/SubmitButton';
+import { MaterialSymbolsHome } from '@src/components/icons';
+import colors from '@src/configs/colors';
+import fonts from '@src/configs/fonts';
+import { useGetProperties } from '@src/hooks/useGetRequests';
+import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
+import Size from '@src/utils/useResponsiveSize';
 import { useState } from 'react';
 
 const SwitchPropertyModal = (): React.JSX.Element => {
@@ -51,19 +49,7 @@ const SwitchPropertyModal = (): React.JSX.Element => {
 
   return (
     <View style={styles.modalContainer}>
-      <View style={styles.modalHeader}>
-        <TouchableOpacity
-          style={styles.modalCloseContainer}
-          onPress={closeActiveModal}
-        >
-          <MaterialSymbolsCloseRounded
-            height={Size.calcAverage(28)}
-            width={Size.calcAverage(28)}
-            color={colors.BLUE_120}
-          />
-        </TouchableOpacity>
-        <AppText style={styles.modalHeaderTitle}>Switch Property</AppText>
-      </View>
+      <AppModalHeader onBackPress={closeActiveModal} title="Switch Property" />
 
       <FlatList
         data={properties || []}
@@ -158,16 +144,6 @@ function PropertyRowLoader() {
 }
 
 const styles = StyleSheet.create({
-  modalCloseContainer: {
-    position: 'absolute',
-    left: Size.calcWidth(21),
-    padding: Size.calcAverage(5),
-    top: Size.calcHeight(3),
-    bottom: Size.calcHeight(3),
-    justifyContent: 'center',
-    zIndex: 2,
-  },
-
   modalContainer: {
     backgroundColor: colors.WHITE_100,
     borderRadius: Size.calcAverage(12),
@@ -181,17 +157,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderTopColor: colors.WHITE_300,
     borderTopWidth: Size.calcHeight(2),
-  },
-
-  modalHeader: {
-    padding: Size.calcAverage(16),
-    position: 'relative',
-  },
-
-  modalHeaderTitle: {
-    fontFamily: fonts.INTER_600,
-    fontSize: Size.calcAverage(16),
-    textAlign: 'center',
   },
 
   propertyAddress: {

@@ -20,7 +20,10 @@ import {
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useGetUserDetails } from '@src/hooks/useGetRequests';
+import {
+  useGetNotificationPreference,
+  useGetUserDetails,
+} from '@src/hooks/useGetRequests';
 import { dayJSFormatter } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
 import ProfileDetailsRow from '../../components/ProfileDetailsRow';
@@ -31,6 +34,7 @@ const ManageProfileScreen = (): React.JSX.Element => {
   const { details } = useGetUserDetails();
   const { StatusIcon, color } = getStatusDetails(details?.status);
   const navigation = useAppNavigator();
+  useGetNotificationPreference();
 
   const actions = [
     {
@@ -40,7 +44,7 @@ const ManageProfileScreen = (): React.JSX.Element => {
     },
     {
       title: 'My emergency contacts',
-      onPress: () => navigation.navigate(routes.EMERGENCY_CONTACTS_SCREEN),
+      onPress: () => navigation.navigate(routes.EMERGENCY_CONTACTS_LIST_SCREEN),
       Icon: MaterialSymbolsLightEmergencyHomeOutlineRounded,
     },
     {

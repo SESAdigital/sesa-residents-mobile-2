@@ -10,15 +10,17 @@ import Animated, {
 
 import colors from '@src/configs/colors';
 import Size from '@src/utils/useResponsiveSize';
+import AppActivityIndicator from '../custom/AppActivityIndicator';
 
 interface Props {
   isEnabled: boolean;
   onValueChange: (value: boolean) => void;
   size?: number;
+  isLoading?: boolean;
 }
 
 const AppSwitch = (props: Props): React.JSX.Element => {
-  const { isEnabled, onValueChange, size = 25 } = props;
+  const { isEnabled, onValueChange, size = 23, isLoading } = props;
 
   const translateX = useSharedValue(isEnabled ? 1 : 0);
   const scale = useSharedValue(1);
@@ -101,64 +103,76 @@ const AppSwitch = (props: Props): React.JSX.Element => {
   //   };
 
   return (
-    <Pressable
-      onPress={() => onValueChange(!isEnabled)}
-      //   onPressIn={handlePressIn}
-      //   onPressOut={handlePressOut}
-      style={styles.pressable}
-      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-      accessibilityRole="switch"
-      accessibilityState={{ checked: isEnabled }}
-    >
-      <Animated.View
-        style={[
-          styles.outerContainer,
-          {
-            padding: scaling.outerPadding,
-            borderRadius: scaling.outerBorderRadius,
-            borderWidth: scaling.borderWidth,
-          },
-          animatedOuterStyle,
-        ]}
+    <View style={[styles.container, { opacity: isLoading ? 0.5 : 1 }]}>
+      {isLoading && (
+        <AppActivityIndicator size="small" color={colors.YELLOW_100} />
+      )}
+      <Pressable
+        disabled={isLoading}
+        onPress={() => onValueChange(!isEnabled)}
+        //   onPressIn={handlePressIn}
+        //   onPressOut={handlePressOut}
+        style={styles.pressable}
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        accessibilityRole="switch"
+        accessibilityState={{ checked: isEnabled }}
       >
-        <View
+        <Animated.View
           style={[
-            styles.innerContainer,
+            styles.outerContainer,
             {
-              width: scaling.innerWidth,
-              height: scaling.innerHeight,
-              borderRadius: scaling.innerBorderRadius,
-              paddingHorizontal: scaling.innerPadding,
+              padding: scaling.outerPadding,
+              borderRadius: scaling.outerBorderRadius,
+              borderWidth: scaling.borderWidth,
             },
+            animatedOuterStyle,
           ]}
         >
-          <LinearGradient
-            colors={[color3, color2]}
-            start={{ x: 0, y: 1 }}
-            end={{ x: 1, y: 0 }}
-            style={StyleSheet.absoluteFill}
-          />
-          <Animated.View
-            style={[styles.backgroundOverlay, animatedBackgroundStyle]}
-          />
-          <Animated.View
+          <View
             style={[
-              styles.knob,
+              styles.innerContainer,
               {
-                width: scaling.knobSize,
-                height: scaling.knobSize,
-                borderRadius: scaling.knobSize / 2,
+                width: scaling.innerWidth,
+                height: scaling.innerHeight,
+                borderRadius: scaling.innerBorderRadius,
+                paddingHorizontal: scaling.innerPadding,
               },
-              animatedKnobStyle,
             ]}
-          />
-        </View>
-      </Animated.View>
-    </Pressable>
+          >
+            <LinearGradient
+              colors={[color3, color2]}
+              start={{ x: 0, y: 1 }}
+              end={{ x: 1, y: 0 }}
+              style={StyleSheet.absoluteFill}
+            />
+            <Animated.View
+              style={[styles.backgroundOverlay, animatedBackgroundStyle]}
+            />
+            <Animated.View
+              style={[
+                styles.knob,
+                {
+                  width: scaling.knobSize,
+                  height: scaling.knobSize,
+                  borderRadius: scaling.knobSize / 2,
+                },
+                animatedKnobStyle,
+              ]}
+            />
+          </View>
+        </Animated.View>
+      </Pressable>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Size.calcAverage(4),
+  },
+
   pressable: {
     alignSelf: 'flex-start',
   },

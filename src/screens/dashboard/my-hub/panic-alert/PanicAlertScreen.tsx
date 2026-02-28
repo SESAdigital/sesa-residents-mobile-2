@@ -24,7 +24,7 @@ import {
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
-import { AppScreenProps } from '@src/navigation/AppNavigator';
+import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import appConfig from '@src/utils/appConfig';
@@ -60,9 +60,9 @@ export interface PanicAlertScreenData {
 
 type Props = AppScreenProps<'PANIC_ALERT_SCREEN'>;
 
-const PanicAlertScreen = (props: Props): React.JSX.Element => {
-  const { navigation, route } = props;
+const PanicAlertScreen = ({ route }: Props): React.JSX.Element => {
   const params = route?.params;
+  const navigation = useAppNavigator();
   const { data, latitude, longitude } = params;
   const [panicType, setPanicType] = useState<PanicAlertType>(
     PanicAlertTypeData.SecurityEmergency,

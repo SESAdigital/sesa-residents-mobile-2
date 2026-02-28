@@ -44,6 +44,19 @@ export const getAccountProfile = () =>
 export const getAccessHistory = (val: GenericPaginationRequest) =>
   baseApi.get<GetAccessHistory>('/Account/AccessHistory', val);
 
+export const postChangePassword = (data: PostChangePasswordReq) =>
+  baseApi.post<GenericApiResponse>('/Account/ChangePassword', data);
+
+export const patchChangeWalletPin = (data: PatchChangeWalletPinReq) =>
+  baseApi.patch<GenericApiResponse>('/Account/ChangeWalletPin', data);
+
+export const getNotificationPreference = () =>
+  baseApi.get<GetNotificationPreference>('/Account/NotificationPreference');
+
+export const patchNotificationPreference = (
+  data: PatchNotificationPreferenceReq,
+) => baseApi.patch<GenericApiResponse>('/Account/NotificationPreference', data);
+
 // ACCOUNT API ENDS HERE
 
 // AUTH TYPES STARTS HERE
@@ -115,12 +128,6 @@ interface PatchValidateNewDeviceCodeReq {
   pushNotificationToken: string;
 }
 
-export interface PostChangePasswordReq {
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
-}
-
 interface GetAccountProfile extends GenericApiResponse {
   data: {
     id: number;
@@ -149,6 +156,42 @@ export interface GetAccessHistoryData {
 
 export interface GetAccessHistory extends GenericApiResponse {
   data: GenericPaginatedResponse<GetAccessHistoryData>;
+}
+
+export interface PostChangePasswordReq {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface PatchChangeWalletPinReq {
+  currentPIN: string;
+  newPIN: string;
+  confirmPIN: string;
+}
+
+export interface GetNotificationPreference extends GenericApiResponse {
+  data: {
+    id: number;
+    timeCreated: string;
+    timeUpdated: string;
+    residentId: number;
+    allowVisitorAccessActivity: boolean;
+    allowSiteWorkerAccessActivity: boolean;
+    allowOccupantAccessActivity: boolean;
+    allowRFIDUsageActivity: boolean;
+    allowAccessCardUsageActivity: boolean;
+    allowAnnouncementActivity: boolean;
+  };
+}
+
+export interface PatchNotificationPreferenceReq {
+  allowVisitorAccessActivity: boolean;
+  allowSiteWorkerAccessActivity: boolean;
+  allowOccupantAccessActivity: boolean;
+  allowRFIDUsageActivity: boolean;
+  allowAccessCardUsageActivity: boolean;
+  allowAnnouncementActivity: boolean;
 }
 
 // ACCOUNT TYPES ENDS HERE

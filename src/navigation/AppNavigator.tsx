@@ -55,6 +55,8 @@ import { useAuthStore } from '@src/stores/auth.store';
 import { BuyPowerFormScreenData } from '@src/types/default';
 import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
+import ManageEmergencyContactScreen from '@src/screens/dashboard/account/screens/manage-profile/emergency-contacts/ManageEmergencyContactScreen';
+import EmergencyContactListScreen from '@src/screens/dashboard/account/screens/manage-profile/emergency-contacts/EmergencyContactListScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -94,6 +96,8 @@ export type AppNavigatorParams = {
   [routes.MANAGE_PROFILE_SCREEN]: undefined;
   [routes.UPDATE_PHONE_NUMBER_SCREEN]: undefined;
   [routes.EMERGENCY_CONTACTS_SCREEN]: undefined;
+  [routes.MANAGE_EMERGENCY_CONTACT_SCREEN]: ScreenWithId;
+  [routes.EMERGENCY_CONTACTS_LIST_SCREEN]: undefined;
   [routes.NOTIFICATION_PREFERENCES_SCREEN]: undefined;
 
   [routes.MANAGE_HOUSEHOLD_SCREEN]: undefined;
@@ -162,6 +166,8 @@ const RootStack = createNativeStackNavigator({
         [routes.MANAGE_PROFILE_SCREEN]: ManageProfileScreen,
         [routes.UPDATE_PHONE_NUMBER_SCREEN]: UpdatePhoneNumberScreen,
         [routes.EMERGENCY_CONTACTS_SCREEN]: EmergencyContactsScreen,
+        [routes.EMERGENCY_CONTACTS_LIST_SCREEN]: EmergencyContactListScreen,
+        [routes.MANAGE_EMERGENCY_CONTACT_SCREEN]: ManageEmergencyContactScreen,
         [routes.NOTIFICATION_PREFERENCES_SCREEN]: NotificationPreferencesScreen,
 
         [routes.MANAGE_HOUSEHOLD_SCREEN]: ManageHouseholdScreen,
@@ -181,4 +187,8 @@ declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}
   }
+}
+
+interface ScreenWithId {
+  id: number;
 }

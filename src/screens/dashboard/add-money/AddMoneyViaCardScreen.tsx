@@ -1,40 +1,40 @@
+import { joiResolver } from '@hookform/resolvers/joi';
 import { useQueryClient } from '@tanstack/react-query';
-import { PaystackTransactionResponse } from 'react-native-paystack-webview/production/lib/types';
+import Joi from 'joi';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { joiResolver } from '@hookform/resolvers/joi';
-import Joi from 'joi';
 import { StyleSheet, View } from 'react-native';
 import { usePaystack } from 'react-native-paystack-webview';
+import { PaystackTransactionResponse } from 'react-native-paystack-webview/production/lib/types';
 
-import AppScreen from '@src/components/AppScreen';
-import AppScreenHeader from '@src/components/common/AppScreenHeader';
-import AddMoneyBanner from './components/AddMoneyBanner';
-import QuickAmounts from '@src/components/common/QuickAmounts';
-import Size from '@src/utils/useResponsiveSize';
-import AppTextInput from '@src/components/forms/AppTextInput';
+import queryKeys from '@src/api/constants/queryKeys';
 import {
   postWalletCompleteCardTopUp,
   postWalletInitiateCardTopUp,
   PostWalletInitiateCardTopUpReq,
 } from '@src/api/wallets.api';
-import SubmitButton from '@src/components/forms/SubmitButton';
+import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
+import AppScreenHeader from '@src/components/common/AppScreenHeader';
+import QuickAmounts from '@src/components/common/QuickAmounts';
+import AppTextInput from '@src/components/forms/AppTextInput';
+import SubmitButton from '@src/components/forms/SubmitButton';
+import { PaystackIcon } from '@src/components/icons/custom';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { PaystackIcon } from '@src/components/icons/custom';
+import { useGetUserDetails } from '@src/hooks/useGetRequests';
+import AppLoadingModal from '@src/modals/AppLoadingModal';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
+import { useAppStateStore } from '@src/stores/appState.store';
 import {
   formatMoneyToTwoDecimals,
   formatMoneyValueIntoNumber,
 } from '@src/utils';
 import { appToast } from '@src/utils/appToast';
-import { useAppStateStore } from '@src/stores/appState.store';
 import { handleToastApiError } from '@src/utils/handleErrors';
-import { useGetUserDetails } from '@src/hooks/useGetRequests';
-import AppLoadingModal from '@src/modals/AppLoadingModal';
-import queryKeys from '@src/api/constants/queryKeys';
-import routes from '@src/navigation/routes';
-import { useAppNavigator } from '@src/navigation/AppNavigator';
+import Size from '@src/utils/useResponsiveSize';
+import AddMoneyBanner from './components/AddMoneyBanner';
 
 const schema = Joi.object<PostWalletInitiateCardTopUpReq>({
   amount: Joi.string().required().max(100),
@@ -54,7 +54,6 @@ const AddMoneyViaCardScreen = (): React.JSX.Element => {
   const { details } = useGetUserDetails();
   const { popup } = usePaystack();
   const navigation = useAppNavigator();
-
   const handleDepositConfirmation = async (
     res: PaystackTransactionResponse,
     amount: number,

@@ -2,16 +2,20 @@ import { useQuery } from '@tanstack/react-query';
 
 import queryKeys from '@src/api/constants/queryKeys';
 import { handleToastApiError } from '@src/utils/handleErrors';
-import { getAccountProfile } from '@src/api/auth.api';
+import {
+  getAccountProfile,
+  getNotificationPreference,
+} from '@src/api/auth.api';
 import { useAuthStore } from '@src/stores/auth.store';
 import {
   getDashboardProperties,
   getWalletBalance,
 } from '@src/api/dashboard.api';
 import { formatMoneyToTwoDecimals } from '@src/utils';
+import { getSingleEmergencyContact } from '@src/api/profile.api';
 
 export const useGetUserDetails = () => {
-  const { data: profileData } = useGetProfile();
+  const { data: profileData, isLoading: isProfileLoading } = useGetProfile();
   const { loginResponse } = useAuthStore();
   const loginData = loginResponse?.data;
 
@@ -31,6 +35,7 @@ export const useGetUserDetails = () => {
     details,
     loginResponse,
     profileData,
+    isProfileLoading,
   };
 };
 
@@ -91,5 +96,36 @@ export const useGetProperties = () => {
         return null;
       }
     },
+  });
+};
+
+export const useGetNotificationPreference = () => {
+  return useQuery({
+    queryKey: [queryKeys.GET_NOTIFICATION_PREFERENCES],
+    queryFn: async () => {
+      const response = await getNotificationPreference();
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+  });
+};
+
+export const useGetSingleEmergencyContact = (id: number) => {
+  return useQuery({
+    queryKey: [queryKeys.GET_EMERGENCY_CONTACTS, 'single', id],
+    queryFn: async () => {
+      const response = await getSingleEmergencyContact(id);
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+    enabled: !!id && !isNaN(Number(id)),
   });
 };

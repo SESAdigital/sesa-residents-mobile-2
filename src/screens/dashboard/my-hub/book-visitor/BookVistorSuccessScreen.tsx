@@ -12,7 +12,7 @@ import SubmitButton from '@src/components/forms/SubmitButton';
 import { MaterialSymbolsContentCopyOutline } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { AppScreenProps } from '@src/navigation/AppNavigator';
+import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
 import { copyTextToClipboard } from '@src/utils';
 import appConfig from '@src/utils/appConfig';
 import Size from '@src/utils/useResponsiveSize';
@@ -25,9 +25,9 @@ interface DetailItem {
 
 type Props = AppScreenProps<'BOOK_VISITOR_SUCCESS_SCREEN'>;
 
-const BookVisitorSuccessScreen = (props: Props): React.JSX.Element => {
-  const { navigation, route } = props;
+const BookVisitorSuccessScreen = ({ route }: Props): React.JSX.Element => {
   const param = route?.params;
+  const navigation = useAppNavigator();
   const viewShotRef = useRef<ViewShot>(null);
 
   const detailList: DetailItem[][] = [

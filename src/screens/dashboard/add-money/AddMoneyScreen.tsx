@@ -19,16 +19,15 @@ import { useAppStateStore } from '@src/stores/appState.store';
 import { copyTextToClipboard } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import AddMoneyHelpModal from './modals/AddMoneyHelpModal';
 import AddMoneyBanner from './components/AddMoneyBanner';
+import AddMoneyHelpModal from './modals/AddMoneyHelpModal';
 
 const queryKey = ['getWalletsBankAccount'];
 
 const AddMoneyScreen = (): React.JSX.Element => {
   const { setActiveModal } = useAppStateStore();
-  const navigation = useAppNavigator();
   const queryClient = useQueryClient();
-
+  const navigation = useAppNavigator();
   const { data: bankData, isLoading: isBankLoading } = useQuery({
     queryKey,
     queryFn: async () => {

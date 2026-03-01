@@ -67,7 +67,7 @@ const UpdatePhoneNumberScreen = (): React.JSX.Element => {
 
   return (
     <AppScreen showDownInset>
-      <AppLoadingModal isLoading={isLoading} title="Please wait..." />
+      <AppLoadingModal isLoading={isLoading} />
       <AppScreenHeader title="Update phone number" />
       <AppText style={styles.screenTitle}>Enter new phone number</AppText>
       <AppKeyboardAvoidingView>

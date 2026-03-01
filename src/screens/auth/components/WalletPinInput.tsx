@@ -55,7 +55,7 @@ interface Props {
   pin: string;
   onPinChange: (pin: string) => void;
   title: string;
-  subtitle: string;
+  subtitle: string | React.JSX.Element;
   onDone: (val: string) => void;
   pinLength?: number;
   titleStyles?: TextStyle;
@@ -96,7 +96,11 @@ const WalletPinInput = (props: Props): React.JSX.Element => {
   return (
     <>
       <AppText style={[styles.title, titleStyles]}>{title}</AppText>
-      <AppText style={[styles.subtitle, subtitleStyles]}>{subtitle}</AppText>
+      {typeof subtitle === 'string' ? (
+        <AppText style={[styles.subtitle, subtitleStyles]}>{subtitle}</AppText>
+      ) : (
+        subtitle
+      )}
 
       <View style={styles.indicatorLayout}>
         {[...Array(pinLength)]?.map((_, idx) => (

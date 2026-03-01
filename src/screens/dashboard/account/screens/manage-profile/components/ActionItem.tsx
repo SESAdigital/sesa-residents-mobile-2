@@ -16,6 +16,7 @@ import fonts from '@src/configs/fonts';
 export interface ActionItemData {
   Icon: (props: SvgProps) => React.JSX.Element;
   title: string;
+  description?: string;
   onPress: () => void;
   rightIcon?: React.JSX.Element;
 }
@@ -28,7 +29,7 @@ interface Props {
 const ActionItem = ({ data, containerStyle }: Props): React.JSX.Element => {
   return (
     <View style={[styles.actionsContainer, containerStyle]}>
-      {data.map(({ Icon, title, onPress, rightIcon }, index) => (
+      {data.map(({ Icon, title, onPress, rightIcon, description }, index) => (
         <TouchableOpacity
           style={styles.actionRow}
           onPress={onPress}
@@ -39,7 +40,12 @@ const ActionItem = ({ data, containerStyle }: Props): React.JSX.Element => {
             height={Size.calcAverage(24)}
             width={Size.calcAverage(24)}
           />
-          <AppText style={styles.actionText}>{title}</AppText>
+          <View style={styles.actionContainer}>
+            <AppText style={{ fontFamily: fonts.INTER_500 }}>{title}</AppText>
+            {description && (
+              <AppText style={styles.actionDescription}>{description}</AppText>
+            )}
+          </View>
           {rightIcon ? (
             rightIcon
           ) : (
@@ -63,16 +69,21 @@ const styles = StyleSheet.create({
     borderColor: colors.LIGHT_GRAY_200,
   },
 
-  actionText: {
+  actionContainer: {
     flex: 1,
     paddingHorizontal: Size.calcWidth(20),
-    fontFamily: fonts.INTER_500,
   },
 
   actionsContainer: {
     rowGap: Size.calcHeight(6),
     paddingHorizontal: Size.calcWidth(21),
     paddingVertical: Size.calcHeight(24),
+  },
+
+  actionDescription: {
+    fontSize: Size.calcAverage(12),
+    fontFamily: fonts.INTER_400,
+    color: colors.GRAY_100,
   },
 });
 

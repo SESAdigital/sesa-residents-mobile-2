@@ -56,7 +56,7 @@ const AccountScreen = (): React.JSX.Element => {
     },
     {
       Icon: MaterialSymbolsSettings,
-      onClick: () => {},
+      onClick: () => navigation.navigate(routes.ACCOUNT_SETTINGS_SCREEN),
     },
   ];
 

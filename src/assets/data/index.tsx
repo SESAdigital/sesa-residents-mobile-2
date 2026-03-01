@@ -80,6 +80,7 @@ export const useAllHubItems = () => {
         shouldBackgroundClose: true,
       });
     }
+
     if (type === 'Poll & Election') {
       return setActiveModal({
         modalType: 'EMPTY_MODAL',
@@ -92,6 +93,23 @@ export const useAllHubItems = () => {
               },
             ]}
             hubItem={allHubItems[HubItemEnum.POLL_AND_ELECTION]}
+          />
+        ),
+        shouldBackgroundClose: true,
+      });
+    }
+    if (type === 'Hire Artisan') {
+      return setActiveModal({
+        modalType: 'EMPTY_MODAL',
+        emptyModalComponent: (
+          <SesaCommingSoonModal
+            details={[
+              {
+                description:
+                  'Find verified artisans for your home maintenance needs.',
+              },
+            ]}
+            hubItem={allHubItems[HubItemEnum.HIRE_ARTISAN]}
           />
         ),
         shouldBackgroundClose: true,

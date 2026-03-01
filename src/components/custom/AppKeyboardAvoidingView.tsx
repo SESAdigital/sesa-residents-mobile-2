@@ -9,8 +9,9 @@ const AppKeyboardAvoidingView = (
 ): React.JSX.Element => {
   return (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 70 : 0}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 70 : 20}
+      behavior={'padding'}
       {...props}
     />
   );

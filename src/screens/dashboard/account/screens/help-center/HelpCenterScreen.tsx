@@ -22,6 +22,7 @@ import ActionItem, {
   ActionItemData,
 } from '../manage-profile/components/ActionItem';
 import routes from '@src/navigation/routes';
+import AppVersionText from '@src/components/custom/AppVersionText';
 
 interface Section {
   title: string;
@@ -124,6 +125,7 @@ const HelpCenterScreen = (): React.JSX.Element => {
           ))}
         </View>
       </ScrollView>
+      <AppVersionText />
     </AppScreen>
   );
 };

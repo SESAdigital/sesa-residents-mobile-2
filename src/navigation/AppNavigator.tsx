@@ -65,6 +65,9 @@ import EmergencyServiceDetailsScreen from '@src/screens/dashboard/account/screen
 import EmergencyServicesScreen from '@src/screens/dashboard/account/screens/help-center/emergency-services/EmergencyServicesScreen';
 import EstateRuleDetailsScreen from '@src/screens/dashboard/account/screens/help-center/estate-rules/EstateRuleDetailsScreen';
 import EstateRulesScreen from '@src/screens/dashboard/account/screens/help-center/estate-rules/EstateRulesScreen';
+import ChangePasswordScreen from '@src/screens/dashboard/account/screens/settings/screens/ChangePasswordScreen';
+import ChangeWalletPinScreen from '@src/screens/dashboard/account/screens/settings/screens/ChangeWalletPinScreen';
+import ResetWalletPinScreen from '@src/screens/dashboard/account/screens/settings/screens/ResetWalletPinScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -111,6 +114,9 @@ export type AppNavigatorParams = {
   [routes.MANAGE_HOUSEHOLD_SCREEN]: undefined;
   [routes.MY_QR_CODE_SCREEN]: undefined;
   [routes.ACCOUNT_SETTINGS_SCREEN]: undefined;
+  [routes.CHANGE_PASSWORD_SCREEN]: undefined;
+  [routes.CHANGE_WALLET_PIN_SCREEN]: undefined;
+  [routes.RESET_WALLET_PIN_SCREEN]: undefined;
   [routes.HELP_CENTER_SCREEN]: undefined;
   [routes.EMERGENCY_SERVICES_SCREEN]: undefined;
   [routes.EMERGENCY_SERVICE_DETAILS_SCREEN]: GetEmergencyServicesResData;
@@ -185,6 +191,9 @@ const RootStack = createNativeStackNavigator({
         [routes.MANAGE_HOUSEHOLD_SCREEN]: ManageHouseholdScreen,
         [routes.MY_QR_CODE_SCREEN]: MyQRCodeScreen,
         [routes.ACCOUNT_SETTINGS_SCREEN]: AccountSettingsScreen,
+        [routes.CHANGE_PASSWORD_SCREEN]: ChangePasswordScreen,
+        [routes.CHANGE_WALLET_PIN_SCREEN]: ChangeWalletPinScreen,
+        [routes.RESET_WALLET_PIN_SCREEN]: ResetWalletPinScreen,
         [routes.HELP_CENTER_SCREEN]: HelpCenterScreen,
         [routes.EMERGENCY_SERVICES_SCREEN]: EmergencyServicesScreen,
         [routes.EMERGENCY_SERVICE_DETAILS_SCREEN]:

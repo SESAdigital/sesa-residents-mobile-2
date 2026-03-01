@@ -6,12 +6,12 @@ import Size from '@src/utils/useResponsiveSize';
 import fonts from '@src/configs/fonts';
 
 interface Props {
-  title: string;
+  title?: string;
   isLoading: boolean;
 }
 
 const AppLoadingModal = (props: Props): React.JSX.Element => {
-  const { title, isLoading } = props;
+  const { title = 'Please wait...', isLoading } = props;
   return (
     <Modal
       animationType="slide"

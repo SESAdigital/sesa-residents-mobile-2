@@ -253,7 +253,7 @@ const LoginScreen = (): React.JSX.Element => {
             label="Password"
             control={control}
             name="password"
-            // secureTextEntry={!isPasswordVisible}
+            secureTextEntry={!isPasswordVisible}
             rightIcon={
               <PasswordToggle
                 isVisible={!isPasswordVisible}

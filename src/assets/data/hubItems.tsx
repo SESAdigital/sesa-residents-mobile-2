@@ -123,7 +123,8 @@ export const allHubItems: HubItem[] = [
     title: 'Hire Artisan',
     bgColor: colors.LIGHT_GRAY_200,
     color: colors.BLUE_110,
-    route: routes.HIRE_ARTISAN_SCREEN,
+    // route: routes.HIRE_ARTISAN_SCREEN,
+    route: null,
   },
   {
     Icon: MaterialSymbolsHowToVote,

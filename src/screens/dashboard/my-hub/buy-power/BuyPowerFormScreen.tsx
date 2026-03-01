@@ -199,7 +199,7 @@ const BuyPowerFormScreen = ({ route }: Props): React.JSX.Element => {
 
   return (
     <AppScreen>
-      <AppLoadingModal isLoading={isLoading} title="Please wait..." />
+      <AppLoadingModal isLoading={isLoading} />
       <AppScreenHeader
         onBackPress={onBackPress}
         title={currentStepDetail?.title}

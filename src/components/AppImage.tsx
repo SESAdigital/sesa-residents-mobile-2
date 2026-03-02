@@ -1,7 +1,11 @@
 import { JSX } from 'react';
 import FastImage, { FastImageProps } from 'react-native-fast-image';
 
-const AppImage = (props: FastImageProps): JSX.Element => {
+interface Props extends FastImageProps {
+  isView?: boolean;
+}
+
+const AppImage = (props: Props): JSX.Element => {
   return <FastImage resizeMode="cover" {...props} />;
 };
 

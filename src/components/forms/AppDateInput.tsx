@@ -47,12 +47,13 @@ const AppDateInput = (props: Props): React.ReactNode => {
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       {value && !!label && <AppText style={styles.label}>{label}</AppText>}
       <TouchableOpacity onPress={() => setShow(true)}>
         <View
           style={[
             styles.container,
+
             !!errorMessage && { borderColor: colors.RED_100 },
           ]}
         >
@@ -67,7 +68,7 @@ const AppDateInput = (props: Props): React.ReactNode => {
             <AppText
               style={[styles.text, !value && { color: colors.GRAY_100 }]}
             >
-              {value ? dayJSFormatter(value, 'hh:mm A') : placeholder}
+              {value ? dayJSFormatter(value, 'hh:mm A', true) : placeholder}
             </AppText>
           )}
           <>

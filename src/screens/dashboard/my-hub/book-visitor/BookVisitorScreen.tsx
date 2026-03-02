@@ -124,7 +124,6 @@ const BookVisitorScreen = (): React.JSX.Element => {
             minimumDate={new Date()}
             value={dateOfVisitation}
             setValue={value => {
-              console.log({ value });
               if (errors?.dateOfVisitation?.message)
                 setError('dateOfVisitation', { message: undefined });
               setValue('dateOfVisitation', value);

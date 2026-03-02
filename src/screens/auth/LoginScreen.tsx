@@ -60,6 +60,7 @@ const LoginScreen = (): React.JSX.Element => {
     useForm<LoginSchema>({
       resolver: joiResolver(schema),
     });
+
   const {
     setLoginResponse,
     setIsDoneOnboarding,

@@ -68,6 +68,8 @@ import EstateRulesScreen from '@src/screens/dashboard/account/screens/help-cente
 import ChangePasswordScreen from '@src/screens/dashboard/account/screens/settings/screens/ChangePasswordScreen';
 import ChangeWalletPinScreen from '@src/screens/dashboard/account/screens/settings/screens/ChangeWalletPinScreen';
 import ResetWalletPinScreen from '@src/screens/dashboard/account/screens/settings/screens/ResetWalletPinScreen';
+import CreateEventSuccessScreen from '@src/screens/dashboard/my-hub/create-events/CreateEventSuccessScreen';
+import { PostEventResData } from '@src/api/events.api';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -102,6 +104,8 @@ export type AppNavigatorParams = {
   [routes.BUY_POWER_FORM_SCREEN]: BuyPowerFormScreenData;
   [routes.BOOK_VISITOR_SCREEN]: undefined;
   [routes.BOOK_VISITOR_SUCCESS_SCREEN]: PostBookVisitorResData;
+  [routes.CREATE_EVENTS_SCREEN]: undefined;
+  [routes.CREATE_EVENT_SUCCESS_SCREEN]: PostEventResData;
 
   // ACCOUNTS SCREEN
   [routes.MANAGE_PROFILE_SCREEN]: undefined;
@@ -168,6 +172,7 @@ const RootStack = createNativeStackNavigator({
         [routes.BOOK_VISITOR_SCREEN]: BookVisitorScreen,
         [routes.BOOK_VISITOR_SUCCESS_SCREEN]: BookVisitorSuccessScreen,
         [routes.CREATE_EVENTS_SCREEN]: CreateEventsScreen,
+        [routes.CREATE_EVENT_SUCCESS_SCREEN]: CreateEventSuccessScreen,
         [routes.GROUP_ACCESS_SCREEN]: GroupAccessScreen,
         [routes.BILLS_AND_COLLECTIONS_SCREEN]: BillsAndCollectionsScreen,
         [routes.BUY_POWER_SCREEN]: BuyPowerScreen,

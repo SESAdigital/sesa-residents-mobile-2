@@ -55,10 +55,6 @@ export function formatMoneyToTwoDecimals(
 
 // TODO DELETE
 
-export const printConsole = (data: any) => {
-  console.log(JSON.stringify(data, null, undefined));
-};
-
 export function maskEmail(email: string): string {
   if (!email) return '';
   const [username, domain] = email?.split('@');
@@ -158,4 +154,8 @@ export const normalizePhoneNumber = (phoneNumber: string) => {
     ?.replace(/\s+/g, '')
     ?.replace(/^\+234/, '0')
     ?.toLowerCase();
+};
+
+export const generateFileName = (index: number, type: string) => {
+  return `image_${Date.now()}_${index}.${type?.split('/')[1] || 'jpg'}`;
 };

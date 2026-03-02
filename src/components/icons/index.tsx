@@ -851,3 +851,36 @@ export function MaterialSymbolsLightLogoutRounded(props: SvgProps) {
     </Svg>
   );
 }
+
+export function MaterialSymbolsAddAPhoto(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M19 7V5h-2V3h2V1h2v2h2v2h-2v2zm-8 10.5q1.875 0 3.188-1.312T15.5 13t-1.312-3.187T11 8.5T7.813 9.813T6.5 13t1.313 3.188T11 17.5m0-2q-1.05 0-1.775-.725T8.5 13t.725-1.775T11 10.5t1.775.725T13.5 13t-.725 1.775T11 15.5M3 21q-.825 0-1.412-.587T1 19V7q0-.825.588-1.412T3 5h3.15L8 3h7v4h2v2h4v10q0 .825-.587 1.413T19 21z"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsPhotoLibraryRounded(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M9 14h10l-3.45-4.5l-2.3 3l-1.55-2zm-1 4q-.825 0-1.412-.587T6 16V4q0-.825.588-1.412T8 2h12q.825 0 1.413.588T22 4v12q0 .825-.587 1.413T20 18zm0-2h12V4H8zm-4 6q-.825 0-1.412-.587T2 20V6h2v14h14v2zM8 4h12v12H8z"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsAndroidCamera(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M12 18q2.075 0 3.538-1.462Q17 15.075 17 13q0-2.075-1.462-3.538Q14.075 8 12 8Q9.925 8 8.463 9.462Q7 10.925 7 13q0 2.075 1.463 3.538Q9.925 18 12 18Zm0-2q-1.25 0-2.125-.875T9 13q0-1.25.875-2.125T12 10q1.25 0 2.125.875T15 13q0 1.25-.875 2.125T12 16Zm6-6q.425 0 .712-.288Q19 9.425 19 9t-.288-.713Q18.425 8 18 8t-.712.287Q17 8.575 17 9t.288.712Q17.575 10 18 10ZM4 21q-.825 0-1.412-.587Q2 19.825 2 19V7q0-.825.588-1.412Q3.175 5 4 5h3.15L8.7 3.325q.15-.15.337-.238Q9.225 3 9.425 3h5.15q.2 0 .388.087q.187.088.337.238L16.85 5H20q.825 0 1.413.588Q22 6.175 22 7v12q0 .825-.587 1.413Q20.825 21 20 21Z"
+      />
+    </Svg>
+  );
+}

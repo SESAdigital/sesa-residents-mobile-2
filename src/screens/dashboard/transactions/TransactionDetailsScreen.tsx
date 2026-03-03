@@ -41,7 +41,10 @@ const TransactionDetailsScreen = ({ route }: Props): React.JSX.Element => {
 
     {
       title: 'TRANSACTION DATE',
-      value: dayJSFormatter(param?.timeCreated, 'MMMM D, YYYY h:mm A'),
+      value: dayJSFormatter({
+        value: param?.timeCreated,
+        format: 'MMMM D, YYYY h:mm A',
+      }),
     },
   ];
 

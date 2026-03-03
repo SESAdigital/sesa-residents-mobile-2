@@ -7,7 +7,7 @@ import AppTextInput, { AppTextInputProps } from './AppTextInput';
 function AppMultiLineTextInput<TFieldValues extends FieldValues>(
   props: AppTextInputProps<TFieldValues>,
 ) {
-  const { containerStyle, innerContainerStyle, style, ...otherProps } = props;
+  const { innerContainerStyle, style, ...otherProps } = props;
 
   return (
     <AppTextInput

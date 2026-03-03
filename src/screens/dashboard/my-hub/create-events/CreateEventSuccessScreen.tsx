@@ -54,11 +54,19 @@ const CreateEventSuccessScreen = ({ route }: Props): React.JSX.Element => {
     [
       {
         title: 'EVENT STARTS',
-        value: dayJSFormatter(param?.startDate, 'MMMM D, YYYY h:mm A'),
+        value: dayJSFormatter({
+          value: param?.startDate,
+          format: 'MMMM D, YYYY h:mm A',
+          shouldNotLocalize: true,
+        }),
       },
       {
         title: 'EVENT ENDS',
-        value: dayJSFormatter(param?.endDate, 'MMMM D, YYYY h:mm A'),
+        value: dayJSFormatter({
+          value: param?.endDate,
+          format: 'MMMM D, YYYY h:mm A',
+          shouldNotLocalize: true,
+        }),
       },
     ],
 

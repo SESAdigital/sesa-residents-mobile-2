@@ -119,3 +119,16 @@ export const GenderTypeData = {
 } as const;
 
 export type GenderType = (typeof GenderTypeData)[keyof typeof GenderTypeData];
+
+export const RepeatDaysTypeData = {
+  MON: 'Mon',
+  TUE: 'Tues',
+  WED: 'Wed',
+  THU: 'Thur',
+  FRI: 'Fri',
+  SAT: 'Sat',
+  SUN: 'Sun',
+} as const;
+
+export type RepeatDaysType =
+  (typeof RepeatDaysTypeData)[keyof typeof RepeatDaysTypeData];

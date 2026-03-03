@@ -43,10 +43,10 @@ const TransactionListRow = ({ val }: Props): React.JSX.Element => {
             <View style={styles.descriptionContainer}>
               <AppText style={styles.title}>{transaction?.description}</AppText>
               <AppText style={styles.transactionTime}>
-                {dayJSFormatter(
-                  transaction?.timeCreated,
-                  'MMMM D, YYYY h:mm A',
-                )}
+                {dayJSFormatter({
+                  value: transaction?.timeCreated,
+                  format: 'MMMM D, YYYY h:mm A',
+                })}
               </AppText>
               {/* <AppText style={styles.transactionTime}>
                 {transaction?.timeCreated} {''}

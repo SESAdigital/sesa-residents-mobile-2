@@ -136,10 +136,10 @@ const BuyPowerFormScreen = ({ route }: Props): React.JSX.Element => {
           },
           {
             title: 'TRANSACTION DATE',
-            value: dayJSFormatter(
-              resData?.transactionDate || '',
-              'MMMM D, YYYY h:mm A',
-            ),
+            value: dayJSFormatter({
+              value: resData?.transactionDate || '',
+              format: 'MMMM D, YYYY h:mm A',
+            }),
           },
         ],
       });

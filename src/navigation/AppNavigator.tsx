@@ -70,6 +70,9 @@ import ChangeWalletPinScreen from '@src/screens/dashboard/account/screens/settin
 import ResetWalletPinScreen from '@src/screens/dashboard/account/screens/settings/screens/ResetWalletPinScreen';
 import CreateEventSuccessScreen from '@src/screens/dashboard/my-hub/create-events/CreateEventSuccessScreen';
 import { PostEventResData } from '@src/api/events.api';
+import CreateGroupAccessScreen from '@src/screens/dashboard/my-hub/group-access/CreateGroupAccessScreen';
+import CreateGroupAccessSuccessScreen from '@src/screens/dashboard/my-hub/group-access/CreateGroupAccessSuccessScreen';
+import { PostGroupAccessResData } from '@src/api/group-access.api';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -106,6 +109,9 @@ export type AppNavigatorParams = {
   [routes.BOOK_VISITOR_SUCCESS_SCREEN]: PostBookVisitorResData;
   [routes.CREATE_EVENTS_SCREEN]: undefined;
   [routes.CREATE_EVENT_SUCCESS_SCREEN]: PostEventResData;
+  [routes.GROUP_ACCESS_SCREEN]: undefined;
+  [routes.CREATE_GROUP_ACCESS_SCREEN]: undefined;
+  [routes.CREATE_GROUP_ACCESS_SUCCESS_SCREEN]: PostGroupAccessResData;
 
   // ACCOUNTS SCREEN
   [routes.MANAGE_PROFILE_SCREEN]: undefined;
@@ -174,6 +180,9 @@ const RootStack = createNativeStackNavigator({
         [routes.CREATE_EVENTS_SCREEN]: CreateEventsScreen,
         [routes.CREATE_EVENT_SUCCESS_SCREEN]: CreateEventSuccessScreen,
         [routes.GROUP_ACCESS_SCREEN]: GroupAccessScreen,
+        [routes.CREATE_GROUP_ACCESS_SCREEN]: CreateGroupAccessScreen,
+        [routes.CREATE_GROUP_ACCESS_SUCCESS_SCREEN]:
+          CreateGroupAccessSuccessScreen,
         [routes.BILLS_AND_COLLECTIONS_SCREEN]: BillsAndCollectionsScreen,
         [routes.BUY_POWER_SCREEN]: BuyPowerScreen,
         [routes.BUY_POWER_FORM_SCREEN]: BuyPowerFormScreen,

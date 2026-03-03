@@ -87,7 +87,10 @@ const EstateRulesScreen = (): React.JSX.Element => {
         }}
       >
         Last Updated{' '}
-        {dayJSFormatter(formattedData?.[0]?.timeUpdated, 'MMM D, YYYY')}
+        {dayJSFormatter({
+          value: formattedData?.[0]?.timeUpdated,
+          format: 'MMM D, YYYY',
+        })}
       </AppText>
 
       <FlatList

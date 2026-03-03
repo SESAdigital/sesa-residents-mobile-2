@@ -5,18 +5,14 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
-export const dayJSFormatter = (
-  value: Date | string,
-  format:
-    | 'YYYY-MM-DD'
-    | 'MMM D, YYYY'
-    | 'MMMM D, YYYY h:mm A'
-    | 'MMMM D, YYYY'
-    | 'MMM D'
-    | 'MMM D, YYYY h:mm A'
-    | 'hh:mm A',
-  shouldNotLocalize?: boolean,
-) => {
+interface DayJSFormatterProps {
+  value: Date | string;
+  format: string;
+  shouldNotLocalize?: boolean;
+}
+
+export const dayJSFormatter = (props: DayJSFormatterProps) => {
+  const { value, format, shouldNotLocalize } = props;
   if (!value) return '';
   if (shouldNotLocalize) {
     return dayjs(value).format(format);
@@ -34,7 +30,7 @@ interface CombineDateTimeProps {
   time?: string;
 }
 
-export const combineDateTime = (val: CombineDateTimeProps) => {
+export const combineUTCDateTime = (val: CombineDateTimeProps) => {
   const { date, time } = val;
 
   const startDate = new Date(date ?? '');
@@ -65,6 +61,39 @@ export const combineDateTime = (val: CombineDateTimeProps) => {
   // );
 
   return combinedUTC?.toISOString();
+};
+
+export const combineDateTime = (val: CombineDateTimeProps) => {
+  const { date, time } = val;
+
+  const startDate = new Date(date ?? '');
+  const startTime = new Date(time ?? '');
+
+  const year = startDate.getFullYear();
+  const month = startDate.getMonth(); // 0-indexed
+  const day = startDate.getDate();
+
+  const hours = startTime.getHours();
+  const minutes = startTime.getMinutes();
+  const seconds = startTime.getSeconds();
+  const milliseconds = startTime.getMilliseconds();
+
+  // Combine into new Date (UTC-aware)
+  const combinedDateTime = new Date(
+    Date.UTC(year, month, day, hours, minutes, seconds, milliseconds),
+  );
+
+  // const combinedDateTime = new Date(
+  //   year,
+  //   month,
+  //   day,
+  //   hours,
+  //   minutes,
+  //   seconds,
+  //   milliseconds,
+  // );
+
+  return combinedDateTime?.toISOString();
 };
 
 interface ValidateTimeProps {

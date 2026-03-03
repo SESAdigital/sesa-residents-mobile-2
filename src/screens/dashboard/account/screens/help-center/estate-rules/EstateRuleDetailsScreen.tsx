@@ -22,7 +22,11 @@ const EstateRuleDetailsScreen = ({ route }: Props): React.JSX.Element => {
           {params?.details}
         </AppText>
         <AppText style={styles.time}>
-          Added {dayJSFormatter(params?.timeCreated, 'MMM D, YYYY')}
+          Added{' '}
+          {dayJSFormatter({
+            value: params?.timeCreated,
+            format: 'MMM D, YYYY',
+          })}
         </AppText>
       </ScrollView>
     </AppScreen>

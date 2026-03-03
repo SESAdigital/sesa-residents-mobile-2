@@ -1,5 +1,9 @@
 import { SelectInputData } from '@src/types/default';
-import { ElectricityMeterTypeData, RelationshipTypeData } from './default';
+import {
+  ElectricityMeterTypeData,
+  RelationshipTypeData,
+  RepeatDaysTypeData,
+} from './default';
 
 export const ALL_METER_TYPES: SelectInputData[] = [
   {
@@ -37,4 +41,14 @@ export const ALL_RELATIONSHIP_TYPES: SelectInputData[] = [
     title: 'Daughter',
     value: RelationshipTypeData?.Daughter?.toString(),
   },
+];
+
+export const ALL_DAYS = [
+  RepeatDaysTypeData.SUN,
+  RepeatDaysTypeData.MON,
+  RepeatDaysTypeData.TUE,
+  RepeatDaysTypeData.WED,
+  RepeatDaysTypeData.THU,
+  RepeatDaysTypeData.FRI,
+  RepeatDaysTypeData.SAT,
 ];

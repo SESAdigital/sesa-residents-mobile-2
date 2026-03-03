@@ -884,3 +884,25 @@ export function MaterialSymbolsAndroidCamera(props: SvgProps) {
     </Svg>
   );
 }
+
+export function MaterialSymbolsPersonCheck(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M17.55 12L14 8.45l1.425-1.4l2.125 2.125l4.25-4.25l1.4 1.425zM9 12q-1.65 0-2.825-1.175T5 8t1.175-2.825T9 4t2.825 1.175T13 8t-1.175 2.825T9 12m-8 8v-2.8q0-.85.438-1.562T2.6 14.55q1.55-.775 3.15-1.162T9 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T17 17.2V20z"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsNoAccounts(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M15.2 10.95L10.55 6.3q.35-.15.713-.225T12 6q1.475 0 2.488 1.013T15.5 9.5q0 .375-.075.738t-.225.712M5.85 17.1q1.275-.975 2.85-1.537T12 15q.45 0 .863.038t.862.112l-2.2-2.2q-1.175-.15-2.012-.987T8.525 9.95L5.675 7.1q-.8 1.025-1.237 2.263T4 12q0 1.475.488 2.775T5.85 17.1m12.45-.2q.8-1.025 1.25-2.262T20 12q0-3.325-2.337-5.663T12 4q-1.4 0-2.637.45T7.1 5.7zM12 22q-2.05 0-3.875-.788t-3.187-2.15t-2.15-3.187T2 12q0-2.075.788-3.887t2.15-3.175t3.187-2.15T12 2q2.075 0 3.888.788t3.174 2.15t2.15 3.175T22 12q0 2.05-.788 3.875t-2.15 3.188t-3.175 2.15T12 22"
+      />
+    </Svg>
+  );
+}

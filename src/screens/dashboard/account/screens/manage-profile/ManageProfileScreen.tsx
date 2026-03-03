@@ -63,7 +63,10 @@ const ManageProfileScreen = (): React.JSX.Element => {
       <View style={styles.onboardContainer}>
         <AppText style={{ fontSize: Size.calcAverage(12) }}>
           Onboarded{' '}
-          {dayJSFormatter(details?.dateOnboarded || '', 'MMMM D, YYYY')}
+          {dayJSFormatter({
+            value: details?.dateOnboarded || '',
+            format: 'MMMM D, YYYY',
+          })}
         </AppText>
 
         <View style={styles.row}>

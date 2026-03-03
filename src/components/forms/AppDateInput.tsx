@@ -62,13 +62,21 @@ const AppDateInput = (props: Props): React.ReactNode => {
             <AppText
               style={[styles.text, !value && { color: colors.GRAY_100 }]}
             >
-              {value ? dayJSFormatter(value, 'MMM D, YYYY') : placeholder}
+              {value
+                ? dayJSFormatter({ value, format: 'MMM D, YYYY' })
+                : placeholder}
             </AppText>
           ) : (
             <AppText
               style={[styles.text, !value && { color: colors.GRAY_100 }]}
             >
-              {value ? dayJSFormatter(value, 'hh:mm A', true) : placeholder}
+              {value
+                ? dayJSFormatter({
+                    value,
+                    format: 'hh:mm A',
+                    shouldNotLocalize: true,
+                  })
+                : placeholder}
             </AppText>
           )}
           <>

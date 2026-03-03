@@ -42,6 +42,7 @@ const authenticate1 = async () => {
 import { authenticateWithOptions } from '@sbaiahmed1/react-native-biometrics';
 
 const enhancedAuth = async (options: any) => {
+  console.log(options);
   try {
     const result = await authenticateWithOptions({});
 

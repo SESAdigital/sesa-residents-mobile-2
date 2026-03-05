@@ -44,7 +44,7 @@ import { authenticateWithOptions } from '@sbaiahmed1/react-native-biometrics';
 const enhancedAuth = async (options: any) => {
   console.log(options);
   try {
-    const result = await authenticateWithOptions({});
+    const result = await authenticateWithOptions(options);
 
     if (result.success) {
       console.log('✅ Authentication successful!');
@@ -100,7 +100,7 @@ const authScenarios = {
 };
 
 const authenticate3 = async () => {
-  enhancedAuth(authScenarios.strictBiometric);
+  enhancedAuth(authScenarios.flexibleAuth);
 };
 
 export const biometrics = {

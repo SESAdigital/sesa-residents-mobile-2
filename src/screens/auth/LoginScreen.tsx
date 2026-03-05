@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { getDeviceId } from 'react-native-device-info';
 
+import { authenticateWithOptions } from '@sbaiahmed1/react-native-biometrics';
 import {
   PatchSetupPasswordReq,
   postLogin,
@@ -21,6 +22,7 @@ import AppCheckIcon from '@src/components/custom/AppCheckIcon';
 import AppKeyboardAvoidingView from '@src/components/custom/AppKeyboardAvoidingView';
 import AppTextInput from '@src/components/forms/AppTextInput';
 import SubmitButton from '@src/components/forms/SubmitButton';
+import { MaterialSymbolsFingerprint } from '@src/components/icons';
 import PasswordToggle from '@src/components/icons/PasswordToggle';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
@@ -70,6 +72,7 @@ const LoginScreen = (): React.JSX.Element => {
     setIsPasswordRemembered,
     setLoginReq,
     loginReq,
+    isBiometricEnabled,
   } = useAuthStore();
 
   const password = watch('password');
@@ -86,16 +89,21 @@ const LoginScreen = (): React.JSX.Element => {
 
   const isLoading = postLoginAPI?.isPending;
 
-  const onSubmit = handleSubmit(async data => {
+  const handleBackendSubmit = async (
+    data: LoginSchema,
+    isFromForm: boolean,
+  ) => {
     if (isLoading) return;
 
     const email = data?.email?.trim()?.toLowerCase();
     const phoneNumber = data?.phoneNumber?.trim()?.toLowerCase();
 
-    if (isEmailLogin && !email)
-      return appToast.Info('Please enter an email address');
-    if (!isEmailLogin && !phoneNumber)
-      return appToast.Info('Please enter a phone number');
+    if (isFromForm) {
+      if (isEmailLogin && !email)
+        return appToast.Info('Please enter an email address');
+      if (!isEmailLogin && !phoneNumber)
+        return appToast.Info('Please enter a phone number');
+    }
 
     const loginData: PostLoginReq = {
       deviceId: getDeviceId(),
@@ -115,10 +123,12 @@ const LoginScreen = (): React.JSX.Element => {
       appToast.Dismiss();
       queryClient.resetQueries();
 
-      setLoginReq({
-        password: loginData?.password,
-        ...(isEmailLogin ? { email } : { phoneNumber }),
-      });
+      if (isFromForm) {
+        setLoginReq({
+          password: loginData?.password,
+          ...(isEmailLogin ? { email } : { phoneNumber }),
+        });
+      }
 
       if (
         result?.data?.onboardingStatus === OnboardingStatusData.PasswordSetup
@@ -131,7 +141,7 @@ const LoginScreen = (): React.JSX.Element => {
           pushNotificationToken: loginData?.pushNotificationToken,
           currentPassword: password,
           newPassword: '',
-          ...(isEmailLogin ? { email } : { phoneNumber }),
+          ...(!!email ? { email } : !!phoneNumber ? { phoneNumber } : {}),
           confirmPassword: '',
         };
         navigation.navigate(routes.SETUP_PASSWORD_SCREEN, setupData);
@@ -165,11 +175,49 @@ const LoginScreen = (): React.JSX.Element => {
     }
 
     return;
-  });
+  };
+
+  const onSubmit = handleSubmit(data => handleBackendSubmit(data, true));
+
+  const handleBiometricSignIn = () => {
+    if (!loginReq) return;
+    handleBackendSubmit(
+      {
+        email: loginReq?.email,
+        phoneNumber: loginReq?.phoneNumber,
+        password: loginReq?.password,
+      },
+      false,
+    );
+  };
+
+  const onBiometricSignIn = async () => {
+    try {
+      console.log('1');
+      const result = await authenticateWithOptions({
+        title: 'Sign In to SESA',
+        subtitle: '',
+        description: '',
+        // subtitle: 'Use your biometric to access your account securely',
+        allowDeviceCredentials: false,
+        disableDeviceFallback: true,
+        fallbackLabel: 'Use Passcode',
+        // description: 'Use your biometric to access your account securely',
+        cancelLabel: 'No, Cancel',
+      });
+
+      if (result?.success) {
+        handleBiometricSignIn();
+      } else {
+        appToast.Info('Authentication failed: ' + result?.error);
+      }
+    } catch (error) {
+      appToast.Info('Authentication failed: ' + error);
+    }
+  };
 
   const handleForgotPassword = () => {
     const { email, phoneNumber } = getValues();
-    console.log({ email, phoneNumber });
     navigation.navigate(routes.FORGOT_PASSWORD_SCREEN, {
       email: email?.trim()?.toLowerCase(),
       phoneNumber: phoneNumber?.trim(),
@@ -195,10 +243,10 @@ const LoginScreen = (): React.JSX.Element => {
       setValue('email', loginReq?.email);
       setValue('password', loginReq?.password);
     } else {
-      if (!isAutoField) {
-        if (loginReq?.password)
-          setLoginReq({ password: '', email: '', phoneNumber: '' });
-      }
+      // if (!isAutoField) {
+      //   if (loginReq?.password)
+      //     setLoginReq({ password: '', email: '', phoneNumber: '' });
+      // }
     }
   };
 
@@ -208,7 +256,7 @@ const LoginScreen = (): React.JSX.Element => {
     if (isPasswordRemembered && !!loginReq?.password) {
       setWasPasswordRemembered(true);
     }
-  }, []);
+  }, [isAutoField]);
 
   return (
     <AppKeyboardAvoidingView
@@ -280,7 +328,23 @@ const LoginScreen = (): React.JSX.Element => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <SubmitButton title="Continue" onPress={onSubmit} />
+          <SubmitButton
+            style={{ flex: 1 }}
+            title="Continue"
+            onPress={onSubmit}
+          />
+          {isBiometricEnabled && loginReq?.password && (
+            <TouchableOpacity
+              onPress={onBiometricSignIn}
+              style={styles.fingerprintContainer}
+            >
+              <MaterialSymbolsFingerprint
+                height={Size.calcAverage(28)}
+                width={Size.calcAverage(28)}
+                color={colors.WHITE_100}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       </AppScreen>
       <AppLoadingModal isLoading={isLoading} title="Logging you in..." />
@@ -292,6 +356,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     paddingTop: Size.calcHeight(15),
     paddingBottom: Size.calcHeight(40),
+    flexDirection: 'row',
+    columnGap: Size.calcWidth(20),
   },
 
   content: {
@@ -308,6 +374,14 @@ const styles = StyleSheet.create({
   forgotPasswordText: {
     fontFamily: fonts.INTER_500,
     color: colors.BLUE_200,
+  },
+
+  fingerprintContainer: {
+    backgroundColor: colors.BLUE_200,
+    aspectRatio: 1,
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   rememberMeContainer: {

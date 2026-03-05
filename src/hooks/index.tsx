@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { getPanicAlertMetrics } from '@src/api/panicAlerts.api';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
@@ -12,6 +12,7 @@ import PanicAlertGenericModal from '@src/screens/dashboard/my-hub/panic-alert/mo
 import WalletIcon from '@src/assets/images/icons/wallet-icon.png';
 import AmbulanceIcon from '@src/assets/images/icons/ambulance-icon.png';
 import { useAuthStore } from '@src/stores/auth.store';
+import { postLogout } from '@src/api/auth.api';
 
 export const useHandlePanicAlert = () => {
   const { latitude, longitude } = useGetCurrentLocation();
@@ -113,4 +114,46 @@ export const useHandlePanicAlert = () => {
   };
 
   return { handlePanicAlertClick, data, latitude, longitude };
+};
+
+export const useLogout = () => {
+  const { logout, loginReq } = useAuthStore();
+  const { reset, setIsAppModalLoading, closeActiveModal, setActiveModal } =
+    useAppStateStore();
+  console.log(loginReq);
+  const queryClient = useQueryClient();
+
+  const handleLogout = async () => {
+    setIsAppModalLoading(true);
+    await postLogout();
+    setIsAppModalLoading(false);
+
+    logout();
+    closeActiveModal();
+    appToast.Success('Logout successful');
+
+    setTimeout(() => {
+      queryClient.cancelQueries();
+      queryClient.removeQueries();
+      queryClient.clear();
+      reset?.();
+    }, 400);
+  };
+
+  const onLogoutClick: () => void = () => {
+    setActiveModal({
+      modalType: 'PROMT_MODAL',
+      promptModal: {
+        yesButtonTitle: 'No, cancel',
+        isInverse: true,
+        noButtonTitle: 'Yes, sign out',
+        title: 'Sign out?',
+        description:
+          'You are about to sign out of your account. Are you sure you want to sign out?',
+        onYesButtonClick: handleLogout,
+      },
+    });
+  };
+
+  return { onLogoutClick };
 };

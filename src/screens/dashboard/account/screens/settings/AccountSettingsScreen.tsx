@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 
+import { authenticateWithOptions } from '@sbaiahmed1/react-native-biometrics';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
@@ -16,8 +17,10 @@ import {
   RiExternalLinkLine,
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
+import { useLogout } from '@src/hooks';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
+import { useAuthStore } from '@src/stores/auth.store';
 import { openURL } from '@src/utils';
 import appConfig from '@src/utils/appConfig';
 import { appToast } from '@src/utils/appToast';
@@ -33,6 +36,30 @@ interface Section {
 
 const AccountSettingsScreen = (): React.JSX.Element => {
   const navigation = useAppNavigator();
+  const { onLogoutClick } = useLogout();
+  const { setIsBiometricEnabled, isBiometricEnabled } = useAuthStore();
+
+  const handleToggleBiometric = async () => {
+    try {
+      const result = await authenticateWithOptions({
+        title: 'Verify your identity',
+        subtitle: 'Use biometric or device passcode',
+        allowDeviceCredentials: true,
+        disableDeviceFallback: false,
+        fallbackLabel: 'Use Passcode',
+        // description: 'Use your biometric to access your account securely',
+        cancelLabel: 'No, Cancel',
+      });
+
+      if (result?.success) {
+        setIsBiometricEnabled(!isBiometricEnabled);
+      } else {
+        appToast.Info('Authentication failed: ' + result?.error);
+      }
+    } catch (error) {
+      appToast.Info('Authentication failed: ' + error);
+    }
+  };
 
   const sections: Section[] = [
     {
@@ -50,9 +77,14 @@ const AccountSettingsScreen = (): React.JSX.Element => {
         },
         {
           title: 'Enable face ID or biometric login',
-          onPress: () => {},
+          onPress: handleToggleBiometric,
           Icon: MaterialSymbolsLightScreenshotFrame2Rounded,
-          rightIcon: <AppSwitch isEnabled onValueChange={() => {}} />,
+          rightIcon: (
+            <AppSwitch
+              isEnabled={isBiometricEnabled}
+              onValueChange={handleToggleBiometric}
+            />
+          ),
         },
       ],
     },
@@ -73,7 +105,7 @@ const AccountSettingsScreen = (): React.JSX.Element => {
         },
         {
           title: 'Frequently asked questions',
-          onPress: () => {},
+          onPress: () => openURL(`${appConfig.APP_WEBSITE_URL}/#faq`),
           Icon: MaterialSymbolsLightContactSupportOutline,
           rightIcon: (
             <RiExternalLinkLine
@@ -94,12 +126,12 @@ const AccountSettingsScreen = (): React.JSX.Element => {
           title: 'Delete account',
           description:
             'Delete your SESA account. Access to your information will be lost.',
-          onPress: () => appToast.Info('Coming soon'),
+          onPress: () => navigation.navigate(routes.DELETE_ACCOUNT_SCREEN),
           Icon: MaterialSymbolsLightDeleteOutlineRounded,
         },
         {
           title: 'Sign out',
-          onPress: () => appToast.Info('Coming soon'),
+          onPress: onLogoutClick,
           Icon: MaterialSymbolsLightLogoutRounded,
         },
       ],

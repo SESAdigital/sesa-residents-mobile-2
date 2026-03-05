@@ -2,7 +2,9 @@ import { JSX } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import AppText from '@src/components/AppText';
-import SubmitButton from '@src/components/forms/SubmitButton';
+import SubmitButton, {
+  SubmitButtonProps,
+} from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useAppStateStore } from '@src/stores/appState.store';
@@ -16,6 +18,8 @@ export interface AppPromptModalProps {
   onNoButtonClick?: () => void;
   onYesButtonClick: () => void;
   isInverse?: boolean;
+  yesButtonProps?: Partial<SubmitButtonProps>;
+  noButtonProps?: Partial<SubmitButtonProps>;
 }
 
 const AppPromptModal = (props: AppPromptModalProps): React.ReactNode => {
@@ -25,6 +29,8 @@ const AppPromptModal = (props: AppPromptModalProps): React.ReactNode => {
     yesButtonTitle,
     onYesButtonClick,
     noButtonTitle,
+    noButtonProps,
+    yesButtonProps,
     onNoButtonClick,
     isInverse,
   } = props;
@@ -56,7 +62,8 @@ const AppPromptModal = (props: AppPromptModalProps): React.ReactNode => {
           variant="SECONDARY"
           isLoading={!!isInverse && isAppModalLoading}
           disabled={isAppModalLoading}
-          onPress={onCloseClick}
+          onPress={isInverse ? onYesButtonClick : onCloseClick}
+          {...noButtonProps}
         />
 
         <SubmitButton
@@ -64,7 +71,8 @@ const AppPromptModal = (props: AppPromptModalProps): React.ReactNode => {
           style={styles.button}
           isLoading={!isInverse && isAppModalLoading}
           disabled={isAppModalLoading}
-          onPress={onYesButtonClick}
+          onPress={isInverse ? onCloseClick : onYesButtonClick}
+          {...yesButtonProps}
         />
       </View>
     </View>

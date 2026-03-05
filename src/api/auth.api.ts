@@ -57,6 +57,12 @@ export const patchNotificationPreference = (
   data: PatchNotificationPreferenceReq,
 ) => baseApi.patch<GenericApiResponse>('/Account/NotificationPreference', data);
 
+export const deleteAccount = () =>
+  baseApi.delete<GenericApiResponse>('/Account');
+
+export const postLogout = () =>
+  baseApi.post<GenericApiResponse>('/Account/Logout');
+
 // ACCOUNT API ENDS HERE
 
 // AUTH TYPES STARTS HERE

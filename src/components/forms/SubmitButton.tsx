@@ -12,7 +12,7 @@ import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
 
-interface Props {
+export interface SubmitButtonProps {
   title: string | React.JSX.Element;
   onPress: () => void;
   isLoading?: boolean;
@@ -29,7 +29,7 @@ interface Props {
   disabled?: boolean;
 }
 
-const SubmitButton = (props: Props): React.JSX.Element => {
+const SubmitButton = (props: SubmitButtonProps): React.JSX.Element => {
   const { isLoading, onPress, title, style, variant, disabled, titleStyle } =
     props;
   return (

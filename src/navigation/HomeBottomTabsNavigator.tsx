@@ -21,9 +21,9 @@ import HomeScreen from '@src/screens/dashboard/home/HomeScreen';
 
 import AccountScreen from '@src/screens/dashboard/account/AccountScreen';
 import ActivityScreen from '@src/screens/dashboard/activity/ActivityScreen';
-import BookingsScreen from '@src/screens/dashboard/bookings/BookingsScreen';
 import MyhubScreen from '@src/screens/dashboard/my-hub/MyhubScreen';
 import Size from '@src/utils/useResponsiveSize';
+import BookingTopTabNavs from './BookingTopTabsNavigator';
 import routes from './routes';
 
 const iconProps = {
@@ -66,7 +66,7 @@ const HomeBottomTabsNavigator = createBottomTabNavigator({
     },
 
     [routes.BOOKINGS_SCREEN]: {
-      screen: BookingsScreen,
+      screen: BookingTopTabNavs,
       options: {
         title: 'Bookings',
         tabBarIcon: ({ focused }) =>

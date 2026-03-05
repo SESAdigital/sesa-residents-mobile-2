@@ -73,6 +73,7 @@ import { PostEventResData } from '@src/api/events.api';
 import CreateGroupAccessScreen from '@src/screens/dashboard/my-hub/group-access/CreateGroupAccessScreen';
 import CreateGroupAccessSuccessScreen from '@src/screens/dashboard/my-hub/group-access/CreateGroupAccessSuccessScreen';
 import { PostGroupAccessResData } from '@src/api/group-access.api';
+import DeleteAccountScreen from '@src/screens/dashboard/account/screens/settings/screens/DeleteAccountScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -126,6 +127,7 @@ export type AppNavigatorParams = {
   [routes.ACCOUNT_SETTINGS_SCREEN]: undefined;
   [routes.CHANGE_PASSWORD_SCREEN]: undefined;
   [routes.CHANGE_WALLET_PIN_SCREEN]: undefined;
+  [routes.DELETE_ACCOUNT_SCREEN]: undefined;
   [routes.RESET_WALLET_PIN_SCREEN]: undefined;
   [routes.HELP_CENTER_SCREEN]: undefined;
   [routes.EMERGENCY_SERVICES_SCREEN]: undefined;
@@ -207,6 +209,7 @@ const RootStack = createNativeStackNavigator({
         [routes.ACCOUNT_SETTINGS_SCREEN]: AccountSettingsScreen,
         [routes.CHANGE_PASSWORD_SCREEN]: ChangePasswordScreen,
         [routes.CHANGE_WALLET_PIN_SCREEN]: ChangeWalletPinScreen,
+        [routes.DELETE_ACCOUNT_SCREEN]: DeleteAccountScreen,
         [routes.RESET_WALLET_PIN_SCREEN]: ResetWalletPinScreen,
         [routes.HELP_CENTER_SCREEN]: HelpCenterScreen,
         [routes.EMERGENCY_SERVICES_SCREEN]: EmergencyServicesScreen,

@@ -63,7 +63,7 @@ const TransactionListScreen = (): React.JSX.Element => {
     queryClient.resetQueries({ queryKey: [queryKeys.GET_WALLET_TRANSACTIONS] });
 
   return (
-    <AppScreen showDownInset style={styles.container}>
+    <AppScreen showDownInset>
       <AppScreenHeader title="Transaction History" />
       <View style={styles.searchContainer}>
         <AppSearchInput
@@ -112,9 +112,7 @@ const TransactionListScreen = (): React.JSX.Element => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 0,
-  },
+
 
   filterButton: {
     marginLeft: Size.calcWidth(10),

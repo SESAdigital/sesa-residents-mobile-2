@@ -25,6 +25,8 @@ import {
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
+import { useGetProperties } from '@src/hooks/useGetRequests';
+import SwitchPropertyModal from '@src/modals/SwitchPropertyModal';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import { useAppStateStore } from '@src/stores/appState.store';
@@ -36,6 +38,7 @@ import AccessHistoryRow, {
   AccessHistoryRowLoader,
 } from './components/AccessHistoryRow';
 import ProfileDetailsRow from './components/ProfileDetailsRow';
+import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 
 const pageSize = DEFAULT_API_DATA_SIZE;
 const queryKey = ['getAccessHistory'];
@@ -44,6 +47,7 @@ const AccountScreen = (): React.JSX.Element => {
   const { setActiveModal } = useAppStateStore();
   const { selectedProperty } = useAuthStore();
   const navigation = useAppNavigator();
+  const { data: properties, isLoading } = useGetProperties();
 
   const actions = [
     {
@@ -80,6 +84,14 @@ const AccountScreen = (): React.JSX.Element => {
         description:
           'This is your access history when you check-in or out using your resident code or QR code',
       },
+    });
+  };
+
+  const handleSwitch = () => {
+    setActiveModal({
+      modalType: 'EMPTY_MODAL',
+      emptyModalComponent: <SwitchPropertyModal />,
+      shouldBackgroundClose: true,
     });
   };
 
@@ -165,16 +177,16 @@ const AccountScreen = (): React.JSX.Element => {
             >
               Current Property
             </AppText>
-            <View style={styles.row}>
+            <TouchableOpacity onPress={handleSwitch} style={styles.row}>
               <AppText style={styles.switchPropertyText}>
-                Switch Property (3)
+                Switch Property ({properties?.length})
               </AppText>
               <MaterialSymbolsArrowDropDown
                 height={Size.calcAverage(16)}
                 width={Size.calcAverage(16)}
                 color={colors.BLUE_200}
               />
-            </View>
+            </TouchableOpacity>
           </View>
 
           <TouchableOpacity style={styles.propertyCard}>
@@ -186,12 +198,27 @@ const AccountScreen = (): React.JSX.Element => {
               />
             </View>
             <View style={{ rowGap: Size.calcHeight(5), flexShrink: 1 }}>
-              <AppText style={styles.propertyName} numberOfLines={1}>
-                {selectedProperty?.name}
-              </AppText>
-              <AppText style={styles.propertyAddress} numberOfLines={1}>
-                {selectedProperty?.propertyAddress}
-              </AppText>
+              {isLoading ? (
+                <AppSkeletonLoader
+                  width="50%"
+                  style={{ paddingVertical: Size.calcHeight(3) }}
+                />
+              ) : (
+                <AppText style={styles.propertyName} numberOfLines={1}>
+                  {selectedProperty?.name}
+                </AppText>
+              )}
+
+              {isLoading ? (
+                <AppSkeletonLoader
+                  width="60%"
+                  style={{ paddingVertical: Size.calcHeight(3) }}
+                />
+              ) : (
+                <AppText style={styles.propertyAddress} numberOfLines={1}>
+                  {selectedProperty?.propertyAddress}
+                </AppText>
+              )}
               <View style={styles.row}>
                 <MaterialSymbolsTouchApp
                   height={Size.calcAverage(14)}

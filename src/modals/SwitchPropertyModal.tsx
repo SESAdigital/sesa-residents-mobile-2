@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import queryKeys from '@src/api/constants/queryKeys';
@@ -18,7 +19,6 @@ import { useGetProperties } from '@src/hooks/useGetRequests';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import Size from '@src/utils/useResponsiveSize';
-import { useState } from 'react';
 
 const SwitchPropertyModal = (): React.JSX.Element => {
   const { closeActiveModal } = useAppStateStore();

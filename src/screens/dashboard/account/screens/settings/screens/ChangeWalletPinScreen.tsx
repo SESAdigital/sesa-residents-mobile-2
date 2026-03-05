@@ -97,6 +97,7 @@ const ChangeWalletPinScreen = (): React.JSX.Element => {
   return (
     <AppScreen showDownInset>
       <AppScreenHeader
+        onBackPress={onBackPress}
         containerStyle={{ paddingVertical: Size.calcHeight(24) }}
       />
 

@@ -40,7 +40,7 @@ const SetupPasswordScreen = ({ route }: Props): React.JSX.Element => {
   const { handleSubmit, reset, control } = useForm<PatchSetupPasswordReq>({
     resolver: joiResolver(schema),
   });
-  const { setLoginResponse } = useAuthStore();
+  const { setLoginResponse, setIsDoneOnboarding } = useAuthStore();
 
   const onSubmit = handleSubmit(async data => {
     if (isLoading) return;
@@ -72,7 +72,11 @@ const SetupPasswordScreen = ({ route }: Props): React.JSX.Element => {
       setLoginResponse(response?.data);
       reset();
       queryClient.invalidateQueries();
-      navigation.replace(routes.ONE_LAST_STEP_SCREEN);
+      if (response?.data?.data?.isEmailVerified) {
+        setIsDoneOnboarding(true);
+      } else {
+        navigation.replace(routes.ONE_LAST_STEP_SCREEN);
+      }
     } else {
       handleToastApiError(response);
     }

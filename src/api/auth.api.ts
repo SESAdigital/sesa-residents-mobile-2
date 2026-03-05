@@ -57,6 +57,12 @@ export const patchNotificationPreference = (
   data: PatchNotificationPreferenceReq,
 ) => baseApi.patch<GenericApiResponse>('/Account/NotificationPreference', data);
 
+export const postSendResetPinOTP = () =>
+  baseApi.post<GenericApiResponse>('/Account/SendResetPinOTP');
+
+export const postValidateResetPinOTP = (data: PostValidateResetPinCodeReq) =>
+  baseApi.post<GenericApiResponse>('/Account/ValidateResetPinCode', data);
+
 export const deleteAccount = () =>
   baseApi.delete<GenericApiResponse>('/Account');
 
@@ -198,6 +204,12 @@ export interface PatchNotificationPreferenceReq {
   allowRFIDUsageActivity: boolean;
   allowAccessCardUsageActivity: boolean;
   allowAnnouncementActivity: boolean;
+}
+
+export interface PostValidateResetPinCodeReq {
+  code: string;
+  newPin: string;
+  confirmPin: string;
 }
 
 // ACCOUNT TYPES ENDS HERE

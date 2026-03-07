@@ -19,6 +19,7 @@ import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useGetPropertyDetails } from '@src/hooks/useGetRequests';
 import Size from '@src/utils/useResponsiveSize';
+import routes from '@src/navigation/routes';
 
 const PropertyDetailScreen = (): React.JSX.Element => {
   const {
@@ -151,7 +152,11 @@ const PropertyDetailScreen = (): React.JSX.Element => {
           <View style={styles.row2}>
             <AppText style={styles.accessText}>Property Access</AppText>
             <TouchableOpacity
-              onPress={() => navigation.navigate}
+              onPress={() =>
+                navigation.navigate(
+                  routes.PROPERTY_DETAILS_CONFIGURE_ACCESS_SCREEN,
+                )
+              }
               disabled={isLoading}
               style={styles.row3}
             >

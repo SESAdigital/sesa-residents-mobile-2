@@ -151,7 +151,7 @@ export const useGetPropertyDetails = () => {
     enabled: !!id && !isNaN(Number(id)),
   });
 
-  const customRefetch = () => queryClient.resetQueries({ queryKey });
+  const customRefetch = () => queryClient.removeQueries({ queryKey });
 
-  return { value, customRefetch };
+  return { value, customRefetch, propertyId: selectedProperty?.id };
 };

@@ -189,7 +189,10 @@ const AccountScreen = (): React.JSX.Element => {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={styles.propertyCard}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate(routes.PROPERTY_DETAILS_SCREEN)}
+            style={styles.propertyCard}
+          >
             <View style={styles.propertyIconContainer}>
               <MaterialSymbolsHome
                 height={Size.calcAverage(24)}

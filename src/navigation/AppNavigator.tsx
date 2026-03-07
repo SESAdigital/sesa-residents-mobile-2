@@ -74,6 +74,10 @@ import CreateGroupAccessScreen from '@src/screens/dashboard/my-hub/group-access/
 import CreateGroupAccessSuccessScreen from '@src/screens/dashboard/my-hub/group-access/CreateGroupAccessSuccessScreen';
 import { PostGroupAccessResData } from '@src/api/group-access.api';
 import DeleteAccountScreen from '@src/screens/dashboard/account/screens/settings/screens/DeleteAccountScreen';
+import HouseHoldActivityDetailsPage from '@src/screens/dashboard/account/screens/property-details/household-activity/HouseHoldActivityDetailsPage';
+import HouseholdActivityPage from '@src/screens/dashboard/account/screens/property-details/household-activity/HouseholdActivityPage';
+import PropertyDetailsConfigureAccessScreen from '@src/screens/dashboard/account/screens/property-details/PropertyDetailsConfigureAccessScreen';
+import PropertyDetailScreen from '@src/screens/dashboard/account/screens/property-details/PropertyDetailScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -124,6 +128,10 @@ export type AppNavigatorParams = {
 
   [routes.MANAGE_HOUSEHOLD_SCREEN]: undefined;
   [routes.MY_QR_CODE_SCREEN]: undefined;
+  [routes.PROPERTY_DETAILS_SCREEN]: undefined;
+  [routes.PROPERTY_DETAILS_CONFIGURE_ACCESS_SCREEN]: undefined;
+  [routes.HOUSEHOLD_ACTIVITY_PAGE]: undefined;
+  [routes.HOUSEHOLD_ACTIVITY_DETAILS_PAGE]: undefined;
   [routes.ACCOUNT_SETTINGS_SCREEN]: undefined;
   [routes.CHANGE_PASSWORD_SCREEN]: undefined;
   [routes.CHANGE_WALLET_PIN_SCREEN]: undefined;
@@ -206,6 +214,11 @@ const RootStack = createNativeStackNavigator({
 
         [routes.MANAGE_HOUSEHOLD_SCREEN]: ManageHouseholdScreen,
         [routes.MY_QR_CODE_SCREEN]: MyQRCodeScreen,
+        [routes.PROPERTY_DETAILS_SCREEN]: PropertyDetailScreen,
+        [routes.PROPERTY_DETAILS_CONFIGURE_ACCESS_SCREEN]:
+          PropertyDetailsConfigureAccessScreen,
+        [routes.HOUSEHOLD_ACTIVITY_PAGE]: HouseholdActivityPage,
+        [routes.HOUSEHOLD_ACTIVITY_DETAILS_PAGE]: HouseHoldActivityDetailsPage,
         [routes.ACCOUNT_SETTINGS_SCREEN]: AccountSettingsScreen,
         [routes.CHANGE_PASSWORD_SCREEN]: ChangePasswordScreen,
         [routes.CHANGE_WALLET_PIN_SCREEN]: ChangeWalletPinScreen,

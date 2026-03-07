@@ -192,6 +192,17 @@ export function MaterialSymbolsBed(props: SvgProps) {
   );
 }
 
+export function MaterialSymbolsLightHistory(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M11.962 20q-3.046 0-5.311-1.99q-2.264-1.989-2.62-5.01h1.011q.408 2.58 2.351 4.29T11.962 19q2.925 0 4.962-2.037T18.962 12t-2.038-4.963T11.962 5q-1.553 0-2.918.656q-1.365.655-2.41 1.805h2.481v1H4.962V4.309h1v2.388q1.16-1.273 2.718-1.984T11.962 4q1.663 0 3.118.626t2.542 1.714t1.714 2.542t.626 3.118t-.626 3.118t-1.714 2.542t-2.542 1.714t-3.118.626m3.204-4.146l-3.647-3.646V7h1v4.792l3.354 3.354z"
+      />
+    </Svg>
+  );
+}
+
 export function MaterialSymbolsHistory(props: SvgProps) {
   return (
     <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
@@ -913,6 +924,17 @@ export function MaterialSymbolsNoAccounts(props: SvgProps) {
       <Path
         fill="currentColor"
         d="M15.2 10.95L10.55 6.3q.35-.15.713-.225T12 6q1.475 0 2.488 1.013T15.5 9.5q0 .375-.075.738t-.225.712M5.85 17.1q1.275-.975 2.85-1.537T12 15q.45 0 .863.038t.862.112l-2.2-2.2q-1.175-.15-2.012-.987T8.525 9.95L5.675 7.1q-.8 1.025-1.237 2.263T4 12q0 1.475.488 2.775T5.85 17.1m12.45-.2q.8-1.025 1.25-2.262T20 12q0-3.325-2.337-5.663T12 4q-1.4 0-2.637.45T7.1 5.7zM12 22q-2.05 0-3.875-.788t-3.187-2.15t-2.15-3.187T2 12q0-2.075.788-3.887t2.15-3.175t3.187-2.15T12 2q2.075 0 3.888.788t3.174 2.15t2.15 3.175T22 12q0 2.05-.788 3.875t-2.15 3.188t-3.175 2.15T12 22"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsLocationHomeRounded(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M12 15q1.25 0 2.125-.875T15 12t-.875-2.125T12 9t-2.125.875T9 12t.875 2.125T12 15m0 1q-1.45 0-2.812.413T6.6 17.6q-.3.175-.45.475t-.15.65V19h12v-.275q0-.35-.15-.65t-.45-.475q-1.225-.775-2.587-1.187T12 16m-6 5q-.825 0-1.412-.587T4 19v-9q0-.475.213-.9t.587-.7l6-4.5q.525-.4 1.2-.4t1.2.4l6 4.5q.375.275.588.7T20 10v9q0 .825-.588 1.413T18 21z"
       />
     </Svg>
   );

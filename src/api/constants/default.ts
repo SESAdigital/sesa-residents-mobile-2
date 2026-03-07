@@ -132,3 +132,11 @@ export const RepeatDaysTypeData = {
 
 export type RepeatDaysType =
   (typeof RepeatDaysTypeData)[keyof typeof RepeatDaysTypeData];
+
+export const PropertyStatusTypeData = {
+  InActive: 0,
+  Active: 1,
+};
+
+export type PropertyStatusType =
+  (typeof PropertyStatusTypeData)[keyof typeof PropertyStatusTypeData];

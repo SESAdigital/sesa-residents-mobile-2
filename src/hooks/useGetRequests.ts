@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import queryKeys from '@src/api/constants/queryKeys';
 import { handleToastApiError } from '@src/utils/handleErrors';
@@ -13,6 +13,7 @@ import {
 } from '@src/api/dashboard.api';
 import { formatMoneyToTwoDecimals } from '@src/utils';
 import { getSingleEmergencyContact } from '@src/api/profile.api';
+import { getPropertyDetails } from '@src/api/property-details.api';
 
 export const useGetUserDetails = () => {
   const { data: profileData, isLoading: isProfileLoading } = useGetProfile();
@@ -128,4 +129,29 @@ export const useGetSingleEmergencyContact = (id: number) => {
     },
     enabled: !!id && !isNaN(Number(id)),
   });
+};
+
+export const useGetPropertyDetails = () => {
+  const { selectedProperty } = useAuthStore();
+  const id = selectedProperty?.id;
+  const queryClient = useQueryClient();
+  const queryKey = [queryKeys.GET_PROPERTY_DETAILS, 'single', id];
+
+  const value = useQuery({
+    queryKey,
+    queryFn: async () => {
+      const response = await getPropertyDetails(id || 0);
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+    enabled: !!id && !isNaN(Number(id)),
+  });
+
+  const customRefetch = () => queryClient.resetQueries({ queryKey });
+
+  return { value, customRefetch };
 };

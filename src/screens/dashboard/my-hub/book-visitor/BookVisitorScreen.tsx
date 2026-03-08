@@ -64,6 +64,7 @@ const BookVisitorScreen = (): React.JSX.Element => {
 
     if (response.ok && response?.data) {
       closeActiveModal();
+      // TODO REFRESH BOOKING LIST
       navigation.replace(
         routes.BOOK_VISITOR_SUCCESS_SCREEN,
         response?.data?.data,

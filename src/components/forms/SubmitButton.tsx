@@ -12,20 +12,23 @@ import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
 
+export type SubmitButtonVariants =
+  | 'PRIMARY'
+  | 'SECONDARY'
+  | 'LIGHT_BLUE'
+  | 'OUTLINE_BLUE'
+  | 'DANGER'
+  | 'DANGER_LIGHT'
+  | 'SUCCESS';
+
 export interface SubmitButtonProps {
   title: string | React.JSX.Element;
   onPress: () => void;
   isLoading?: boolean;
   style?: StyleProp<ViewStyle>;
   titleStyle?: StyleProp<TextStyle>;
-  variant?:
-    | 'PRIMARY'
-    | 'SECONDARY'
-    | 'LIGHT_BLUE'
-    | 'OUTLINE_BLUE'
-    | 'DANGER'
-    | 'DANGER_LIGHT'
-    | 'SUCCESS';
+  variant?: SubmitButtonVariants;
+
   disabled?: boolean;
 }
 

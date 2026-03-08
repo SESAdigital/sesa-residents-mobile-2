@@ -136,7 +136,7 @@ export type RepeatDaysType =
 export const PropertyStatusTypeData = {
   InActive: 0,
   Active: 1,
-};
+} as const;
 
 export type PropertyStatusType =
   (typeof PropertyStatusTypeData)[keyof typeof PropertyStatusTypeData];
@@ -206,7 +206,18 @@ export const NotificationTypeData = {
   MARK_COLLECTION_PAID: 62,
   OVERDUE_INVOICE_REMINDER: 63,
   Others: 64,
-};
+} as const;
 
 export type NotificationType =
   (typeof NotificationTypeData)[keyof typeof NotificationTypeData];
+
+export const AccessNotificationStatusData = {
+  Pending: 0,
+  Approve: 1,
+  Reject: 2,
+  Expired: 3,
+  Cancelled: 4,
+} as const;
+
+export type AccessNotificationStatusType =
+  (typeof AccessNotificationStatusData)[keyof typeof AccessNotificationStatusData];

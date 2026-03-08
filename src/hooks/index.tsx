@@ -13,6 +13,8 @@ import WalletIcon from '@src/assets/images/icons/wallet-icon.png';
 import AmbulanceIcon from '@src/assets/images/icons/ambulance-icon.png';
 import { useAuthStore } from '@src/stores/auth.store';
 import { postLogout } from '@src/api/auth.api';
+import { useGetPropertyDetails } from './useGetRequests';
+import AppRestrictedModal from '@src/modals/AppRestrictedModal';
 
 export const useHandlePanicAlert = () => {
   const { latitude, longitude } = useGetCurrentLocation();
@@ -156,4 +158,44 @@ export const useLogout = () => {
   };
 
   return { onLogoutClick };
+};
+
+export const useCheckIsGroupAccessEnabled = () => {
+  const {
+    value: { data, isLoading },
+  } = useGetPropertyDetails();
+  const navigation = useAppNavigator();
+  const { setActiveModal, closeActiveModal } = useAppStateStore();
+
+  const handlePress = () => {
+    closeActiveModal();
+    navigation.navigate(routes.PROPERTY_DETAILS_CONFIGURE_ACCESS_SCREEN);
+  };
+
+  const handleGroupAccessClick = () => {
+    if (isLoading)
+      return appToast.Warning('Fetching property details, please wait...');
+
+    if (data?.enableGroupAccess) {
+      navigation.navigate(routes.CREATE_GROUP_ACCESS_SCREEN);
+    } else {
+      setActiveModal({
+        modalType: 'EMPTY_MODAL',
+        shouldBackgroundClose: true,
+        emptyModalComponent: (
+          <AppRestrictedModal
+            title="Group access disabled"
+            description="Your group access settings is disabled. Enable it to continue."
+            buttonTitle="Go to access settings"
+            secondaryButtonTitle="Don’t enable"
+            onButtonPress={handlePress}
+          />
+        ),
+      });
+    }
+
+    return;
+  };
+
+  return { handleGroupAccessClick };
 };

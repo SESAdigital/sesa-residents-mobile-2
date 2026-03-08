@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
+import SubmitButton from '@src/components/forms/SubmitButton';
 import {
   MaterialSymbolsDomainAdd,
   MaterialSymbolsNoAccounts,
@@ -10,10 +11,9 @@ import {
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import Size from '@src/utils/useResponsiveSize';
-import SubmitButton from '@src/components/forms/SubmitButton';
+import { useCheckIsGroupAccessEnabled } from '@src/hooks';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
-import routes from '@src/navigation/routes';
+import Size from '@src/utils/useResponsiveSize';
 
 const data = [
   {
@@ -34,6 +34,7 @@ const data = [
 
 const GroupAccessScreen = (): React.JSX.Element => {
   const navigation = useAppNavigator();
+  const { handleGroupAccessClick } = useCheckIsGroupAccessEnabled();
 
   return (
     <AppScreen showDownInset>
@@ -68,7 +69,7 @@ const GroupAccessScreen = (): React.JSX.Element => {
         <SubmitButton
           title="Okay, Got it"
           style={{ width: '47%' }}
-          onPress={() => navigation.replace(routes.CREATE_GROUP_ACCESS_SCREEN)}
+          onPress={handleGroupAccessClick}
         />
       </View>
     </AppScreen>

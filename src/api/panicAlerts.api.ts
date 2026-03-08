@@ -9,6 +9,8 @@ export const getPanicAlertMetrics = (val: GetPanicAlertMetricsReq) =>
 export const postPanicAlert = (val: PostPanicAlertData) =>
   baseApi.post('/PanicAlerts', val);
 
+// TODO ASK ABOUT PATCH PANIC ALERT
+
 // API ENDS
 
 // TYPES STARTS

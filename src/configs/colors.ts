@@ -11,6 +11,7 @@ export default Object.freeze({
   BLUE_150: '#D9E7FF',
   BLUE_160: '#0446B9',
   BLUE_170: '#D4E3FF',
+  BLUE_180: '#1E1E2C',
   BLUE_200: '#0556DB',
   BLUE_300: '#044CB7',
   BLUE_400: '#E5EFFF',

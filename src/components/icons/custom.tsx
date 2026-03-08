@@ -3,6 +3,7 @@ import Svg, {
   ClipPath,
   Defs,
   G,
+  Mask,
   Path,
   Rect,
   SvgProps,
@@ -212,6 +213,85 @@ export function CustomShareIcon(props: SvgProps) {
         d="M1.339 16c-.382 0-.7-.128-.956-.383A1.297 1.297 0 010 14.66V6.566c0-.382.128-.7.383-.956.256-.255.574-.383.956-.383h1.753v.829H1.339a.487.487 0 00-.35.16.487.487 0 00-.16.35v8.095c0 .128.053.245.16.351.105.106.222.16.35.16h8.924a.487.487 0 00.35-.16.488.488 0 00.16-.35V6.565a.487.487 0 00-.16-.35.487.487 0 00-.35-.16H8.51v-.829h1.753c.381 0 .7.128.956.383.255.256.383.574.383.956v8.095c0 .382-.128.7-.383.956a1.297 1.297 0 01-.956.383H1.339zm4.047-5.386V1.591l-1.74 1.74-.586-.591L5.8 0l2.742 2.741-.587.591-1.74-1.74v9.021h-.829z"
         fill="currentColor"
       />
+    </Svg>
+  );
+}
+
+export function SESAHomeIcon(props: SvgProps) {
+  return (
+    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none" {...props}>
+      <Mask
+        id="a"
+        style={{
+          maskType: 'luminance',
+        }}
+        maskUnits="userSpaceOnUse"
+        x={0}
+        y={0}
+        width={20}
+        height={20}
+      >
+        <Path d="M0 0h20v20H0V0z" fill="#fff" />
+      </Mask>
+      <G mask="url(#a)">
+        <Mask
+          id="b"
+          style={{
+            maskType: 'luminance',
+          }}
+          maskUnits="userSpaceOnUse"
+          x={2}
+          y={2}
+          width={17}
+          height={17}
+        >
+          <Path d="M2.031 2.001H18.28v16.248H2.031V2.001z" fill="#fff" />
+        </Mask>
+        <G mask="url(#b)">
+          <Path
+            d="M2.031 13.258v4.991h2.723v-3.641l11.018-8.361-2.255-1.705L2.03 13.258z"
+            fill="#0556DB"
+          />
+        </G>
+        <Mask
+          id="c"
+          style={{
+            maskType: 'luminance',
+          }}
+          maskUnits="userSpaceOnUse"
+          x={2}
+          y={2}
+          width={17}
+          height={17}
+        >
+          <Path d="M2.031 2.001H18.28v16.248H2.031V2.001z" fill="#fff" />
+        </Mask>
+        <G mask="url(#c)">
+          <Path
+            d="M14.612 8.784l.956.722v6.006H6.164v2.736h12.127V8.14l-1.419-1.073-2.26 1.716z"
+            fill="#0556DB"
+          />
+        </G>
+        <Mask
+          id="d"
+          style={{
+            maskType: 'luminance',
+          }}
+          maskUnits="userSpaceOnUse"
+          x={2}
+          y={2}
+          width={17}
+          height={17}
+        >
+          <Path d="M2.031 2.001H18.28v16.248H2.031V2.001z" fill="#fff" />
+        </Mask>
+        <G mask="url(#d)">
+          <Path
+            d="M10.155 2.001L2.031 8.142v3.422L12.4 3.697 10.155 2z"
+            fill="#0556DB"
+          />
+        </G>
+      </G>
     </Svg>
   );
 }

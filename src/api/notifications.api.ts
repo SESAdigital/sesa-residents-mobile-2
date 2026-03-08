@@ -3,7 +3,10 @@ import baseApi, {
   GenericPaginatedResponse,
   GenericPaginationRequest,
 } from './base.api';
-import { NotificationType } from './constants/default';
+import {
+  AccessNotificationStatusType,
+  NotificationType,
+} from './constants/default';
 
 // API STARTS
 
@@ -27,7 +30,9 @@ export const getNotificationVisitorRequest = (id: number) =>
   );
 
 export const patchNotificationVisitorRequest = (val: PatchReq) =>
-  baseApi.patch(`/Notifications/VisitorRequest/${val?.id}/${val?.route}`);
+  baseApi.patch<GenericApiResponse>(
+    `/Notifications/VisitorRequest/${val?.id}/${val?.route}`,
+  );
 
 // API ENDS
 
@@ -44,7 +49,7 @@ export interface GetNotificationsResData {
   isRead: boolean;
   notificationTypeId: number;
   notificationType: NotificationType;
-  timeCreated: string;
+  timeCreated: string; // 2026-03-08T04:09:10.603Z
   timePosted: string;
 }
 
@@ -77,7 +82,7 @@ interface GetNotificationVisitorRequestRes extends GenericApiResponse {
     photo: string;
     modeEntryType: number;
     modeEntryTypeText: string;
-    status: number;
+    status: AccessNotificationStatusType;
     propertyName: string;
     propertyAddress: string;
     code: string;

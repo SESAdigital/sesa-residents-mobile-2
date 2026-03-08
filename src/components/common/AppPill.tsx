@@ -4,10 +4,14 @@ import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
-import { MaterialSymbolsCheckRounded } from '../icons';
+import {
+  MaterialSymbolsCheckRounded,
+  MaterialSymbolsCloseRounded,
+  MaterialSymbolsHorizontalRuleRounded,
+} from '../icons';
 import { SvgProps } from 'react-native-svg';
 
-export type AppPillStatus = 'SUCCESS' | 'DAGNER' | 'DEFAULT';
+export type AppPillStatus = 'SUCCESS' | 'DANGER' | 'DEFAULT';
 
 interface Props {
   status: AppPillStatus;
@@ -82,9 +86,16 @@ function getStatusVariant(status: AppPillStatus): Variant {
       Icon: MaterialSymbolsCheckRounded,
     };
   }
+  if (status === 'DANGER') {
+    return {
+      color: colors.RED_100,
+      borderColor: colors.RED_100,
+      Icon: MaterialSymbolsCloseRounded,
+    };
+  }
 
   return {
     color: colors.GRAY_100,
-    Icon: MaterialSymbolsCheckRounded,
+    Icon: MaterialSymbolsHorizontalRuleRounded,
   };
 }

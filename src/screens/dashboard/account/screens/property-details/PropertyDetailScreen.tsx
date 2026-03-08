@@ -65,7 +65,13 @@ const PropertyDetailScreen = (): React.JSX.Element => {
         title="Property Details"
         icon="close"
         rightIcon={
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate(
+                routes.PROPERTY_DETAILS_OCCUPANT_HISTORY_SCREEN,
+              )
+            }
+          >
             <MaterialSymbolsLightHistory
               height={Size.calcAverage(24)}
               width={Size.calcAverage(24)}
@@ -105,7 +111,7 @@ const PropertyDetailScreen = (): React.JSX.Element => {
                 !!propertyDetails?.status &&
                 propertyDetails?.status?.toLowerCase()?.trim() == 'active'
                   ? 'SUCCESS'
-                  : 'DAGNER'
+                  : 'DANGER'
               }
               statusText={propertyDetails?.status || ''}
             />

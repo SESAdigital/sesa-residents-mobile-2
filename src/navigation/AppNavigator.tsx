@@ -78,6 +78,7 @@ import HouseHoldActivityDetailsPage from '@src/screens/dashboard/account/screens
 import HouseholdActivityPage from '@src/screens/dashboard/account/screens/property-details/household-activity/HouseholdActivityPage';
 import PropertyDetailsConfigureAccessScreen from '@src/screens/dashboard/account/screens/property-details/PropertyDetailsConfigureAccessScreen';
 import PropertyDetailScreen from '@src/screens/dashboard/account/screens/property-details/PropertyDetailScreen';
+import OccupantHistoryPage from '@src/screens/dashboard/account/screens/property-details/occupant-history/OccupantHistoryPage';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -129,6 +130,7 @@ export type AppNavigatorParams = {
   [routes.MANAGE_HOUSEHOLD_SCREEN]: undefined;
   [routes.MY_QR_CODE_SCREEN]: undefined;
   [routes.PROPERTY_DETAILS_SCREEN]: undefined;
+  [routes.PROPERTY_DETAILS_OCCUPANT_HISTORY_SCREEN]: undefined;
   [routes.PROPERTY_DETAILS_CONFIGURE_ACCESS_SCREEN]: undefined;
   [routes.HOUSEHOLD_ACTIVITY_PAGE]: undefined;
   [routes.HOUSEHOLD_ACTIVITY_DETAILS_PAGE]: undefined;
@@ -215,6 +217,7 @@ const RootStack = createNativeStackNavigator({
         [routes.MANAGE_HOUSEHOLD_SCREEN]: ManageHouseholdScreen,
         [routes.MY_QR_CODE_SCREEN]: MyQRCodeScreen,
         [routes.PROPERTY_DETAILS_SCREEN]: PropertyDetailScreen,
+        [routes.PROPERTY_DETAILS_OCCUPANT_HISTORY_SCREEN]: OccupantHistoryPage,
         [routes.PROPERTY_DETAILS_CONFIGURE_ACCESS_SCREEN]:
           PropertyDetailsConfigureAccessScreen,
         [routes.HOUSEHOLD_ACTIVITY_PAGE]: HouseholdActivityPage,

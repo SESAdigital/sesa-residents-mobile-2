@@ -1,6 +1,7 @@
 import baseApi, {
   GenericApiResponse,
   GenericPaginatedResponse,
+  GenericPaginationRequest,
   GenericTypeWithId,
 } from './base.api';
 
@@ -22,9 +23,12 @@ export const getPropertyDetailsPrivileges = (id: number) =>
     `/PropertyDetails/${id}/Privilege`,
   );
 
-export const getPropertyDetailsOccupantHistory = (id: number) =>
+export const getPropertyDetailsOccupantHistory = (
+  val: GenericTypeWithId<GenericPaginationRequest>,
+) =>
   baseApi.get<GetPropertyDetailsOccupantHistoryRes>(
-    `/PropertyDetails/OccupantHistory/${id}`,
+    `/PropertyDetails/OccupantHistory/${val?.id}`,
+    val?.value,
   );
 
 // API ENDS

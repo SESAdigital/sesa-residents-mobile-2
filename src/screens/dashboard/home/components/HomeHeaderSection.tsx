@@ -57,6 +57,7 @@ const HomeHeaderSection = (): React.JSX.Element => {
       </View>
 
       <Pressable
+        hitSlop={Size.calcAverage(30)}
         onPress={() => navigation.navigate(routes.TRANSACTION_LIST_SCREEN)}
         style={styles.viewTransactionsContainer}
       >

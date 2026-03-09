@@ -1,9 +1,11 @@
 import { joiResolver } from '@hookform/resolvers/joi';
+import { useQueryClient } from '@tanstack/react-query';
 import Joi from 'joi';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
+import queryKeys from '@src/api/constants/queryKeys';
 import { postEvent, PostEventReq } from '@src/api/events.api';
 import AppScreen from '@src/components/AppScreen';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
@@ -69,6 +71,7 @@ const CreateEventsScreen = (): React.JSX.Element => {
   const { handleSubmit, watch, setValue, getValues } = form;
   const { selectedProperty } = useAuthStore();
   const [EventType] = watch(['EventType']);
+  const queryClient = useQueryClient();
 
   const onSubmit = handleSubmit(
     ({ StartDate, EndDate, StartTime, EndTime }) => {
@@ -155,8 +158,7 @@ const CreateEventsScreen = (): React.JSX.Element => {
     setIsAppModalLoading(false);
 
     if (response?.ok && response?.data) {
-      // TODO FIX THIS
-      // queryClient.resetQueries({queryKey: [queryKeys.GET_INCIDENT_REPORT]});
+      queryClient.resetQueries({ queryKey: [queryKeys.GET_EVENT_BOOKINGS] });
       appToast.Success(
         response?.data?.message || 'Event created successfully.',
       );

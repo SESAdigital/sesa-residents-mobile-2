@@ -177,9 +177,13 @@ const AccountScreen = (): React.JSX.Element => {
             >
               Current Property
             </AppText>
-            <TouchableOpacity onPress={handleSwitch} style={styles.row}>
+            <TouchableOpacity
+              disabled={isLoading}
+              onPress={handleSwitch}
+              style={styles.row}
+            >
               <AppText style={styles.switchPropertyText}>
-                Switch Property ({properties?.length})
+                Switch Property {properties ? `${properties?.length}` : ''}
               </AppText>
               <MaterialSymbolsArrowDropDown
                 height={Size.calcAverage(16)}

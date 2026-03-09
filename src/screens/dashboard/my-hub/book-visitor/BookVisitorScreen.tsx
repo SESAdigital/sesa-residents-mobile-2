@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
 import { useForm } from 'react-hook-form';
@@ -23,6 +24,7 @@ import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
+import queryKeys from '@src/api/constants/queryKeys';
 
 const schema = Joi.object<PostBookVisitorReq>({
   fullName: joiSchemas.name.label('Full name'),
@@ -33,6 +35,7 @@ const schema = Joi.object<PostBookVisitorReq>({
 const BookVisitorScreen = (): React.JSX.Element => {
   const { setActiveModal, closeActiveModal, setIsAppModalLoading } =
     useAppStateStore();
+  const queryClient = useQueryClient();
   const { selectedProperty } = useAuthStore();
   const {
     handleSubmit,
@@ -63,8 +66,8 @@ const BookVisitorScreen = (): React.JSX.Element => {
     setIsAppModalLoading(false);
 
     if (response.ok && response?.data) {
+      queryClient.resetQueries({ queryKey: [queryKeys.GET_VISTOR_BOOKINGS] });
       closeActiveModal();
-      // TODO REFRESH BOOKING LIST
       navigation.replace(
         routes.BOOK_VISITOR_SUCCESS_SCREEN,
         response?.data?.data,

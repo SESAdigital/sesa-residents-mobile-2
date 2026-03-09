@@ -1,5 +1,9 @@
 import baseApi, { GenericApiResponse } from './base.api';
-import { PropertyCategoryType } from './constants/default';
+import {
+  AccessCodeStatusType,
+  AccessEntityType,
+  PropertyCategoryType,
+} from './constants/default';
 
 // API STARTS HERE
 
@@ -8,6 +12,21 @@ export const getWalletBalance = () =>
 
 export const getDashboardProperties = () =>
   baseApi.get<GetDashboardProperties>('/Dashboard/Properties');
+
+export const getDashboardHappeningTodayVisitors = (id: number) =>
+  baseApi.get<GetDashboardHappeningTodayVisitors>(
+    `/Dashboard/HappeningToday/${id}/Visitors`,
+  );
+
+export const getDashboardHappeningTodayGroupAccess = (id: number) =>
+  baseApi.get<GetDashboardHappeningTodayGroupAccess>(
+    `/Dashboard/HappeningToday/${id}/GroupAccess`,
+  );
+
+export const getDashboardHappeningTodayEvents = (id: number) =>
+  baseApi.get<GetDashboardHappeningTodayEvents>(
+    `/Dashboard/HappeningToday/${id}/Events`,
+  );
 
 // API ENDS HERE
 
@@ -30,6 +49,54 @@ export interface GetDashboardPropertiesData {
 
 interface GetDashboardProperties extends GenericApiResponse {
   data: GetDashboardPropertiesData[];
+}
+
+export interface GetDashboardHappeningTodayGroupAccessData {
+  id: number;
+  code: string;
+  totalCheckInCount: number;
+  endTime: string;
+  isAllDay: boolean;
+  status: number; // TODO  FIX THIS
+  statusText: string;
+  startDate: string;
+}
+
+interface GetDashboardHappeningTodayGroupAccess extends GenericApiResponse {
+  data: GetDashboardHappeningTodayGroupAccessData[];
+}
+
+export interface GetDashboardHappeningTodayVisitorsData {
+  id: number;
+  name: string;
+  code: string;
+  checkInTime: string;
+  checkOutTime: string;
+  dateOfVisitation: string;
+  status: AccessCodeStatusType;
+  visitorType: AccessEntityType;
+  visitorTypeText: string;
+  statusText: string;
+}
+
+interface GetDashboardHappeningTodayVisitors extends GenericApiResponse {
+  data: GetDashboardHappeningTodayVisitorsData[];
+}
+
+export interface GetDashboardHappeningTodayEventsData {
+  id: number;
+  name: string;
+  totalCheckInCount: number;
+  status: number; // TODO  FIX THIS
+  code: string;
+  statusText: string;
+  imagePaths: string;
+  images: string[];
+  startDate: string;
+  endDate: string;
+}
+interface GetDashboardHappeningTodayEvents extends GenericApiResponse {
+  data: GetDashboardHappeningTodayEventsData[];
 }
 
 // TYPES ENDS HERE

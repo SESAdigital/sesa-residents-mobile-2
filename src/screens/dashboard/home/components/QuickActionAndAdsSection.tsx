@@ -9,10 +9,12 @@ import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import routes from '@src/navigation/routes';
 import Size from '@src/utils/useResponsiveSize';
+import { useGetPropertyDetails } from '@src/hooks/useGetRequests';
 
 const QuickActionAndAdsSection = (): React.JSX.Element => {
   const navigation = useNavigation();
   const { quickActions } = useAllHubItems();
+  useGetPropertyDetails();
 
   return (
     <>

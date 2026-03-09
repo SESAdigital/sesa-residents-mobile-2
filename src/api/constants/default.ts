@@ -221,3 +221,31 @@ export const AccessNotificationStatusData = {
 
 export type AccessNotificationStatusType =
   (typeof AccessNotificationStatusData)[keyof typeof AccessNotificationStatusData];
+
+export const AccessCodeStatusData = {
+  Pending: 0,
+  Used: 1,
+  Completed: 2,
+  Cancel: 3,
+  Expired: 4,
+  SignedOut: 5,
+} as const;
+
+export type AccessCodeStatusType =
+  (typeof AccessCodeStatusData)[keyof typeof AccessCodeStatusData];
+
+export const AccessEntityTypeData = {
+  RegisteredVisitor: 1,
+  ArtisanVisitor: 2,
+  WalkInVisitor: 3,
+  EventVisitor: 4,
+  EstateStaff: 5,
+  SiteWorker: 6,
+  Resident: 7,
+  SecurityGuard: 8,
+  GroupAccess: 9,
+  Guest: 10,
+} as const;
+
+export type AccessEntityType =
+  (typeof AccessEntityTypeData)[keyof typeof AccessEntityTypeData];

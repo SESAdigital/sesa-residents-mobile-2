@@ -8,10 +8,11 @@ import {
   MaterialSymbolsCheckRounded,
   MaterialSymbolsCloseRounded,
   MaterialSymbolsHorizontalRuleRounded,
+  RiRecordCircleFill,
 } from '../icons';
 import { SvgProps } from 'react-native-svg';
 
-export type AppPillStatus = 'SUCCESS' | 'DANGER' | 'DEFAULT';
+export type AppPillStatus = 'SUCCESS' | 'DANGER' | 'DEFAULT' | 'WARNING';
 
 interface Props {
   status: AppPillStatus;
@@ -91,6 +92,13 @@ function getStatusVariant(status: AppPillStatus): Variant {
       color: colors.RED_100,
       borderColor: colors.RED_100,
       Icon: MaterialSymbolsCloseRounded,
+    };
+  }
+  if (status === 'WARNING') {
+    return {
+      color: colors.YELLOW_100,
+      borderColor: colors.YELLOW_200,
+      Icon: RiRecordCircleFill,
     };
   }
 

@@ -7,35 +7,66 @@ import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
+import { GetDashboardHappeningTodayVisitorsData } from '@src/api/dashboard.api';
+import { dayJSFormatter } from '@src/utils/time';
+import AppPill from '@src/components/common/AppPill';
+import { AccessCodeStatusData } from '@src/api/constants/default';
 
-const VisitorListRow = (): React.JSX.Element => {
+interface Props {
+  data: GetDashboardHappeningTodayVisitorsData;
+}
+
+const VisitorListRow = ({ data }: Props): React.JSX.Element => {
+  const splitedName = data?.name?.split(' ');
+
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
-        <AppAvatar />
-        <View style={{ paddingHorizontal: Size.calcWidth(12) }}>
-          <AppText style={styles.title}>John Doe</AppText>
-          <AppText style={styles.subtitle}>Artisan (AV-381032)</AppText>
-        </View>
-      </View>
-      <View>
-        <View style={[styles.row, { paddingBottom: Size.calcHeight(2) }]}>
-          <MdiLightArrowRight
-            height={Size.calcAverage(20)}
-            width={Size.calcAverage(20)}
-            color={colors.GREEN_100}
-          />
-          <AppText style={styles.time}>1:30 PM</AppText>
-        </View>
-        <View style={styles.row}>
-          <MdiLightArrowLeft
-            height={Size.calcAverage(20)}
-            width={Size.calcAverage(20)}
-            color={colors.RED_100}
-          />
-          <AppText style={[styles.time, { color: colors.RED_100 }]}>
-            1:30 PM
+      <AppAvatar
+        firstWord={splitedName?.[0]}
+        lastWord={splitedName?.[1]}
+        // imageURL={data?.}
+      />
+      <View style={styles.mainContianer}>
+        <View style={styles.content}>
+          <AppText style={styles.title}>{data?.name}</AppText>
+          <AppText style={styles.subtitle}>
+            {data?.visitorTypeText} ({data?.code})
           </AppText>
+        </View>
+
+        <View style={{ rowGap: Size.calcHeight(2) }}>
+          {data?.status === AccessCodeStatusData.Pending ? (
+            <AppPill statusText={data?.statusText} status="WARNING" />
+          ) : (
+            <>
+              <View style={styles.row}>
+                <MdiLightArrowRight
+                  height={Size.calcAverage(20)}
+                  width={Size.calcAverage(20)}
+                  color={colors.GREEN_100}
+                />
+                <AppText style={styles.time}>
+                  {dayJSFormatter({
+                    value: data?.checkInTime,
+                    format: 'hh:mm A',
+                  })}
+                </AppText>
+              </View>
+              <View style={styles.row}>
+                <MdiLightArrowLeft
+                  height={Size.calcAverage(20)}
+                  width={Size.calcAverage(20)}
+                  color={colors.RED_100}
+                />
+                <AppText style={[styles.time, { color: colors.RED_100 }]}>
+                  {dayJSFormatter({
+                    value: data?.checkOutTime,
+                    format: 'hh:mm A',
+                  })}
+                </AppText>
+              </View>
+            </>
+          )}
         </View>
       </View>
     </View>
@@ -45,36 +76,28 @@ const VisitorListRow = (): React.JSX.Element => {
 export const VisitorListRowLoader = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
-      <View style={styles.row}>
-        <AppAvatar isLoading />
-        <View
-          style={{
-            paddingHorizontal: Size.calcWidth(12),
-            rowGap: Size.calcHeight(10),
-          }}
-        >
+      <AppAvatar isLoading />
+      <View style={styles.mainContianer}>
+        <View style={styles.content}>
           <AppSkeletonLoader
             height={Size.calcHeight(11)}
             width={Size.getWidth() / 3}
           />
           <AppSkeletonLoader
             height={Size.calcHeight(11)}
-            width={Size.getWidth() / 2}
+            width={Size.getWidth() / 2.5}
           />
         </View>
-      </View>
-      <View>
-        <View style={[styles.row, { paddingBottom: Size.calcHeight(8) }]}>
+
+        <View style={{ rowGap: Size.calcHeight(5) }}>
+          <AppSkeletonLoader
+            height={Size.calcHeight(10)}
+            width={Size.calcWidth(80)}
+          />
           <AppSkeletonLoader
             style={{ marginLeft: 'auto' }}
             height={Size.calcHeight(10)}
             width={Size.calcWidth(60)}
-          />
-        </View>
-        <View style={styles.row}>
-          <AppSkeletonLoader
-            height={Size.calcHeight(10)}
-            width={Size.calcWidth(80)}
           />
         </View>
       </View>
@@ -86,11 +109,22 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    paddingHorizontal: Size.calcWidth(21),
+  },
+
+  content: {
+    paddingHorizontal: Size.calcWidth(12),
+    flex: 1,
+    rowGap: Size.calcHeight(5),
+  },
+
+  mainContianer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
     borderBottomWidth: Size.calcHeight(1),
     borderColor: colors.WHITE_300,
     paddingVertical: Size.calcHeight(14),
-    paddingHorizontal: Size.calcWidth(21),
   },
 
   row: {
@@ -113,7 +147,6 @@ const styles = StyleSheet.create({
 
   title: {
     fontFamily: fonts.INTER_500,
-    paddingBottom: Size.calcHeight(2),
     color: colors.BLACK_300,
   },
 });

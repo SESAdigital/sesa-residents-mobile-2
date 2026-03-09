@@ -66,6 +66,7 @@ const PropertyDetailScreen = (): React.JSX.Element => {
         icon="close"
         rightIcon={
           <TouchableOpacity
+            disabled
             onPress={() =>
               navigation.navigate(
                 routes.PROPERTY_DETAILS_OCCUPANT_HISTORY_SCREEN,

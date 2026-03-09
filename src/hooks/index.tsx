@@ -177,7 +177,7 @@ export const useCheckIsGroupAccessEnabled = () => {
       return appToast.Warning('Fetching property details, please wait...');
 
     if (data?.enableGroupAccess) {
-      navigation.navigate(routes.CREATE_GROUP_ACCESS_SCREEN);
+      navigation.replace(routes.CREATE_GROUP_ACCESS_SCREEN);
     } else {
       setActiveModal({
         modalType: 'EMPTY_MODAL',

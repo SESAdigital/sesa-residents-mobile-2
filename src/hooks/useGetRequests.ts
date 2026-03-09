@@ -8,6 +8,9 @@ import {
 } from '@src/api/auth.api';
 import { useAuthStore } from '@src/stores/auth.store';
 import {
+  getDashboardHappeningTodayEvents,
+  getDashboardHappeningTodayGroupAccess,
+  getDashboardHappeningTodayVisitors,
   getDashboardProperties,
   getWalletBalance,
 } from '@src/api/dashboard.api';
@@ -154,4 +157,97 @@ export const useGetPropertyDetails = () => {
   const customRefetch = () => queryClient.removeQueries({ queryKey });
 
   return { value, customRefetch, propertyId: selectedProperty?.id };
+};
+
+export const useGetVistorHappeningToday = () => {
+  const { selectedProperty } = useAuthStore();
+
+  const id = selectedProperty?.id;
+
+  const queryKey = [
+    queryKeys.GET_VISTOR_BOOKINGS,
+    'getDashboardHappeningTodayVisitors',
+    id,
+  ];
+
+  const value = useQuery({
+    queryKey,
+    queryFn: async () => {
+      const response = await getDashboardHappeningTodayVisitors(id!);
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+    enabled: !!id,
+  });
+
+  const queryClient = useQueryClient();
+  const customRefetch = () => queryClient.resetQueries({ queryKey });
+
+  return { value, customRefetch };
+};
+
+export const useGetEventsHappeningToday = () => {
+  const { selectedProperty } = useAuthStore();
+
+  const id = selectedProperty?.id;
+
+  const queryKey = [
+    queryKeys.GET_EVENT_BOOKINGS,
+    'getDashboardHappeningTodayEvents',
+    id,
+  ];
+
+  const value = useQuery({
+    queryKey,
+    queryFn: async () => {
+      const response = await getDashboardHappeningTodayEvents(id!);
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+    enabled: !!id,
+  });
+
+  const queryClient = useQueryClient();
+  const customRefetch = () => queryClient.resetQueries({ queryKey });
+
+  return { value, customRefetch };
+};
+
+export const useGetGroupAccessHappeningToday = () => {
+  const { selectedProperty } = useAuthStore();
+
+  const id = selectedProperty?.id;
+
+  const queryKey = [
+    queryKeys.GET_GROUP_ACCESS_BOOKINGS,
+    'getDashboardHappeningTodayGroupAccess',
+    id,
+  ];
+
+  const value = useQuery({
+    queryKey,
+    queryFn: async () => {
+      const response = await getDashboardHappeningTodayGroupAccess(id!);
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+    enabled: !!id,
+  });
+
+  const queryClient = useQueryClient();
+  const customRefetch = () => queryClient.resetQueries({ queryKey });
+
+  return { value, customRefetch };
 };

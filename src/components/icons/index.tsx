@@ -250,6 +250,17 @@ export function MingcuteSearchLine(props: SvgProps) {
   );
 }
 
+export function RiRecordCircleFill(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10m0-7a3 3 0 1 0 0-6a3 3 0 0 0 0 6"
+      />
+    </Svg>
+  );
+}
+
 export function MaterialSymbolsCloseRounded(props: SvgProps) {
   return (
     <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>

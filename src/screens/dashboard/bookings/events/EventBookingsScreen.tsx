@@ -1,14 +1,11 @@
-import { StyleSheet, View } from 'react-native';
-
-import AppSearchInput from '@src/components/forms/AppSearchInput';
-import AppScreenHeader from '@src/components/common/AppScreenHeader';
-
-const isLoading = false;
+import { StyleSheet, Text, View } from 'react-native';
 
 const EventBookingsScreen = (): React.JSX.Element => {
   return (
     <View>
-      <AppScreenHeader title="Transaction History" />
+      <View style={styles.container}>
+        <Text>EventBookingsScreen</Text>
+      </View>
       {/* <View style={styles.searchContainer}>
         <AppSearchInput
           disabled={isLoading}

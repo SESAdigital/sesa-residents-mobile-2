@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import {
   getBookingsVisitors,
@@ -9,10 +9,12 @@ import {
 import queryKeys from '@src/api/constants/queryKeys';
 import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import DuplicateLoader from '@src/components/DuplicateLoader';
+import EmptyTableComponent from '@src/components/EmptyTableComponent';
+import AppSearchInput from '@src/components/forms/AppSearchInput';
+import colors from '@src/configs/colors';
 import { useAuthStore } from '@src/stores/auth.store';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import EmtpyTransactionComponent from '../../transactions/components/EmtpyTransactionComponent';
 import { TransactionListRowLoader } from '../../transactions/components/TransactionListRow';
 import VisitorBookingRow, {
   MappedVisitorBookingRowData,
@@ -23,7 +25,8 @@ const VistiorBookingsScreen = (): React.JSX.Element => {
   const { selectedProperty } = useAuthStore();
 
   const queryKey = [
-    queryKeys.GET_VISITOR_BOOKINGS,
+    queryKeys.GET_VISTOR_BOOKINGS,
+    'getBookingsVisitors',
     selectedProperty?.id,
     searchText,
   ];
@@ -51,27 +54,43 @@ const VistiorBookingsScreen = (): React.JSX.Element => {
   const refetch = () => queryClient.resetQueries({ queryKey });
 
   return (
-    <FlatList
-      data={mapVisitorHistoryToSections(data || null)}
-      refreshControl={
-        <AppRefreshControl refreshing={isLoading} onRefresh={refetch} />
-      }
-      showsVerticalScrollIndicator
-      ListEmptyComponent={
-        isLoading ? (
-          <DuplicateLoader loader={<TransactionListRowLoader />} />
-        ) : (
-          <EmtpyTransactionComponent />
-        )
-      }
-      renderItem={({ item }) => <VisitorBookingRow val={item} />}
-      keyExtractor={(_, index) => index?.toString()}
-      contentContainerStyle={{ paddingBottom: Size.calcHeight(70) }}
-    />
+    <View>
+      <View style={styles.searchContainer}>
+        <AppSearchInput
+          disabled={isLoading}
+          onSearchDone={val => setSearchText(val)}
+          placeholder="Search visitors"
+        />
+      </View>
+      <FlatList
+        data={mapVisitorHistoryToSections(data || null)}
+        refreshControl={
+          <AppRefreshControl refreshing={isLoading} onRefresh={refetch} />
+        }
+        showsVerticalScrollIndicator
+        ListEmptyComponent={
+          isLoading ? (
+            <DuplicateLoader loader={<TransactionListRowLoader />} />
+          ) : (
+            <EmptyTableComponent />
+          )
+        }
+        renderItem={({ item }) => <VisitorBookingRow val={item} />}
+        keyExtractor={(_, index) => index?.toString()}
+        contentContainerStyle={{ paddingBottom: Size.calcHeight(70) }}
+      />
+    </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  searchContainer: {
+    paddingHorizontal: Size.calcWidth(21),
+    paddingVertical: Size.calcHeight(10),
+    borderBottomWidth: Size.calcHeight(0.5),
+    borderColor: colors.LIGHT_GRAY_200,
+  },
+});
 
 export default VistiorBookingsScreen;
 

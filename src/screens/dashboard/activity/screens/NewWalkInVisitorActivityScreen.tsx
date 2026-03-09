@@ -22,6 +22,7 @@ import { appToast } from '@src/utils/appToast';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
 import { dayJSFormatter } from '@src/utils/time';
 import { AccessNotificationStatusData } from '@src/api/constants/default';
+import InformationRow from '@src/components/common/InformationRow';
 
 type Props = AppScreenProps<'NEW_WALK_IN_VISITOR_ACTIVITY_SCREEN'>;
 
@@ -202,6 +203,9 @@ const NewWalkInVisitorActivityScreen = (props: Props): React.JSX.Element => {
           </View>
         </View>
       </ScrollView>
+      <View style={{ paddingHorizontal: Size.calcWidth(21) }}>
+        <InformationRow title="Approve this walk-in visitor to grant access. Reject if unfamiliar with the individual." />
+      </View>
       <View style={styles.footer}>
         {!data || data?.status !== AccessNotificationStatusData.Pending ? (
           <SubmitButton
@@ -283,8 +287,8 @@ const styles = StyleSheet.create({
 
   footer: {
     paddingVertical: Size.calcHeight(20),
-    borderTopColor: colors.LIGHT_GRAY_100,
-    borderTopWidth: Size.calcAverage(1),
+    // borderTopColor: colors.LIGHT_GRAY_100,
+    // borderTopWidth: Size.calcAverage(1),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

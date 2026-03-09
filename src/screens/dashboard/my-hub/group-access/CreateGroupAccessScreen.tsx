@@ -25,6 +25,8 @@ import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
+import { useQueryClient } from '@tanstack/react-query';
+import queryKeys from '@src/api/constants/queryKeys';
 
 const schema = Joi.object<PostGroupAccessReq>({
   visitationDate: Joi.string().required().label('Date of visitation'),
@@ -53,6 +55,7 @@ const CreateGroupAccessScreen = (): React.JSX.Element => {
   const { selectedProperty } = useAuthStore();
   const { setActiveModal, closeActiveModal, setIsAppModalLoading } =
     useAppStateStore();
+  const queryClient = useQueryClient();
   const navigation = useAppNavigator();
   const [startTime, endTime, isRepeat, repeatDays, visitationDate, isAllDay] =
     watch([
@@ -87,7 +90,9 @@ const CreateGroupAccessScreen = (): React.JSX.Element => {
         routes.CREATE_GROUP_ACCESS_SUCCESS_SCREEN,
         response?.data?.data,
       );
-      //   TODO ADD QUERY CLIENT
+      queryClient.resetQueries({
+        queryKey: [queryKeys.GET_GROUP_ACCESS_BOOKINGS],
+      });
     } else {
       handleToastApiError(response);
     }
@@ -103,7 +108,7 @@ const CreateGroupAccessScreen = (): React.JSX.Element => {
       promptModal: {
         title: 'Are you sure?',
         description: `You are about to create a Group Access code for ${dayJSFormatter(
-          { value: data.visitationDate, format: 'DD MMM YYYY' },
+          { value: data.visitationDate, format: 'MMM D, YYYY' },
         )}.  Are you sure you want to continue?`,
         noButtonTitle: 'Cancel',
         yesButtonTitle: "Yes, I'm sure",

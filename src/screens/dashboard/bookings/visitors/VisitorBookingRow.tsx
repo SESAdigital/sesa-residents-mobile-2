@@ -1,14 +1,11 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { GetBookingsVistorResData } from '@src/api/bookings.api';
-import { TransactionEntryTypeData } from '@src/api/constants/default';
 import AppAvatar from '@src/components/AppAvatar';
 import AppText from '@src/components/AppText';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
-import routes from '@src/navigation/routes';
-import { formatMoneyToTwoDecimals, getTransactionTypeColor } from '@src/utils';
 import Size from '@src/utils/useResponsiveSize';
 
 export interface MappedVisitorBookingRowData {
@@ -23,8 +20,10 @@ interface Props {
 const VisitorBookingRow = ({ val }: Props): React.JSX.Element => {
   const navigation = useAppNavigator();
 
-  const handleView = (id: number) =>
-    navigation.navigate(routes.VISITOR_BOOKING_DETAILS_SCREEN, { id });
+  const handleView = (id: number) => {
+    console.log(id, navigation);
+    // navigation.navigate(routes.VISITOR_BOOKING_DETAILS_SCREEN, { id });
+  };
 
   return (
     <View>

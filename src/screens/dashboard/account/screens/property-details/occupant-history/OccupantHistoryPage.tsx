@@ -24,8 +24,7 @@ const pageSize = DEFAULT_API_DATA_SIZE;
 
 const OccupantHistoryPage = (): React.JSX.Element => {
   const {
-    value: { data: propertyDetails, isLoading: isPropertyLoading },
-    customRefetch,
+    value: { data: propertyDetails },
     propertyId,
   } = useGetPropertyDetails();
 

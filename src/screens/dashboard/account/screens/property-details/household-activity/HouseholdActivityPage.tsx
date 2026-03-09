@@ -10,9 +10,7 @@ import Size from '@src/utils/useResponsiveSize';
 
 const HouseholdActivityPage = (): React.JSX.Element => {
   const {
-    value: { data: propertyDetails, isLoading },
-    customRefetch,
-    propertyId,
+    value: { data: propertyDetails },
   } = useGetPropertyDetails();
 
   return (

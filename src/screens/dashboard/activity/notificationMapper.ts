@@ -31,35 +31,35 @@ interface NotificationRowMapper {
   buttonVariant?: SubmitButtonVariants;
 }
 
-const modifiedBillOrCollection = [
+const modifiedBillOrCollection: NotificationType[] = [
   NotificationTypeData.COLLECTION_DELETED,
   NotificationTypeData.BILL_DELETED,
 ]; // TODO ASK ABOUT THIS IN BLUE
 
 console.log(modifiedBillOrCollection);
 
-const deletedBillOrCollection = [
+const deletedBillOrCollection: NotificationType[] = [
   NotificationTypeData.COLLECTION_DELETED,
   NotificationTypeData.BILL_DELETED,
 ];
 
-const redSiteWorker = [
+const redSiteWorker: NotificationType[] = [
   NotificationTypeData.SITEWORKER_DECLINED,
   NotificationTypeData.SITE_WORKER_CHECK_OUT,
 ];
 
-const greenSiteworker = [
+const greenSiteworker: NotificationType[] = [
   NotificationTypeData.SITEWORKER_APPROVED,
   NotificationTypeData.SITE_WORKER_CHECK_IN,
 ];
 
-const redAccessCard = [
+const redAccessCard: NotificationType[] = [
   NotificationTypeData.ACCESS_CARD_CHECK_OUT,
   NotificationTypeData.ACCESS_CARD_DEACTIVATED,
   NotificationTypeData.ACCESS_CARD_DELETED,
 ];
 
-const greenAccessCard = [
+const greenAccessCard: NotificationType[] = [
   NotificationTypeData.ACCESS_CARD_CHECK_IN,
   NotificationTypeData.ACCESS_CARD_ACTIVATED,
   NotificationTypeData.ACCESS_CARD_ADDED,

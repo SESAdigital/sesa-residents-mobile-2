@@ -104,7 +104,7 @@ const CreateEventSuccessScreen = ({ route }: Props): React.JSX.Element => {
           ]}
         >
           <View style={styles.imageContainer}>
-            {!!image ? (
+            {image ? (
               <AppImage isView source={{ uri: image }} style={styles.image2} />
             ) : (
               <AppImage style={styles.image} source={SuccessCheckIconImage} />

@@ -39,7 +39,7 @@ const ChangePasswordScreen = (): React.JSX.Element => {
 
   const onSubmit = handleSubmit(async data => {
     const password = data?.newPassword?.trim();
-    if (password != data?.confirmPassword?.trim()) {
+    if (password !== data?.confirmPassword?.trim()) {
       return appToast.Info('Passwords do not match');
     }
 

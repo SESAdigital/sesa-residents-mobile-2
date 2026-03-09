@@ -57,7 +57,7 @@ const EventDetailsStep = ({ form }: Props): React.JSX.Element => {
     if (uri) {
       setValue(
         'Images',
-        images?.filter(val => val?.uri != uri),
+        images?.filter(val => val?.uri !== uri),
       );
     }
   };

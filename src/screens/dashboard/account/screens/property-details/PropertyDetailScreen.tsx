@@ -110,7 +110,7 @@ const PropertyDetailScreen = (): React.JSX.Element => {
             <AppPill
               status={
                 !!propertyDetails?.status &&
-                propertyDetails?.status?.toLowerCase()?.trim() == 'active'
+                propertyDetails?.status?.toLowerCase()?.trim() === 'active'
                   ? 'SUCCESS'
                   : 'DANGER'
               }
@@ -191,7 +191,7 @@ const PropertyDetailScreen = (): React.JSX.Element => {
                 >
                   {typeof isEnabled === 'undefined'
                     ? '-'
-                    : !!isEnabled
+                    : isEnabled
                     ? 'ON'
                     : 'OFF'}
                 </AppText>

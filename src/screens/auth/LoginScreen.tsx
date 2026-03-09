@@ -141,7 +141,7 @@ const LoginScreen = (): React.JSX.Element => {
           pushNotificationToken: loginData?.pushNotificationToken,
           currentPassword: password,
           newPassword: '',
-          ...(!!email ? { email } : !!phoneNumber ? { phoneNumber } : {}),
+          ...(email ? { email } : phoneNumber ? { phoneNumber } : {}),
           confirmPassword: '',
         };
         navigation.navigate(routes.SETUP_PASSWORD_SCREEN, setupData);

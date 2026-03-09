@@ -80,9 +80,9 @@ const EmergencyContactListScreen = (): React.JSX.Element => {
     }
   };
 
-  const handleDelete = (data: GetEmergencyContactsResData) => {
-    const firstName = data?.name?.split(' ')?.[0];
-    const lastName = data?.name?.split(' ')?.[1];
+  const handleDelete = (value: GetEmergencyContactsResData) => {
+    const firstName = value?.name?.split(' ')?.[0];
+    const lastName = value?.name?.split(' ')?.[1];
 
     setActiveModal({
       modalType: 'PROMT_MODAL',
@@ -95,21 +95,21 @@ const EmergencyContactListScreen = (): React.JSX.Element => {
         )}. Are you sure you want to continue?`,
         yesButtonTitle: "Yes, I'm Sure",
         noButtonTitle: 'No, Cancel',
-        onNoButtonClick: () => handleModal(data),
-        onYesButtonClick: () => onDelete(data?.id),
+        onNoButtonClick: () => handleModal(value),
+        onYesButtonClick: () => onDelete(value?.id),
       },
     });
   };
 
-  const handleModal = (data: GetEmergencyContactsResData) => {
+  const handleModal = (value: GetEmergencyContactsResData) => {
     setActiveModal({
       modalType: 'EMPTY_MODAL',
       shouldBackgroundClose: true,
       emptyModalComponent: (
         <EmergencyContactActionModal
-          data={data}
-          onEdit={() => handleEdit(data?.id)}
-          onDelete={() => handleDelete(data)}
+          data={value}
+          onEdit={() => handleEdit(value?.id)}
+          onDelete={() => handleDelete(value)}
         />
       ),
     });

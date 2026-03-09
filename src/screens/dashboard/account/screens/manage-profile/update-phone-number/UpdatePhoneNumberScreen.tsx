@@ -45,7 +45,7 @@ const UpdatePhoneNumberScreen = (): React.JSX.Element => {
 
   const onSubmit = handleSubmit(async data => {
     if (
-      data?.PhoneNumber?.trim()?.toLowerCase() ==
+      data?.PhoneNumber?.trim()?.toLowerCase() ===
       details?.phone?.trim()?.toLowerCase()
     ) {
       return appToast.Info('Phone number is the same as the old phone number');

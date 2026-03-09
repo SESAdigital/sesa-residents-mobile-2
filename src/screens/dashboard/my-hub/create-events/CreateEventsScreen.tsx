@@ -117,7 +117,7 @@ const CreateEventsScreen = (): React.JSX.Element => {
       EndDate: endDateTime,
       EventType,
 
-      ...(!!GuestLimit
+      ...(GuestLimit
         ? {
             GuestLimit: formatMoneyValueIntoNumber(GuestLimit?.toString?.()),
             ...(guestLimitType === GuestLimitTypeData.DAILY_LIMIT
@@ -125,8 +125,8 @@ const CreateEventsScreen = (): React.JSX.Element => {
               : {}),
           }
         : {}),
-      ...(!!esmMessage ? { EstateManagerMessage: esmMessage } : {}),
-      ...(!!guardMessage ? { SecurityGuardMessage: guardMessage } : {}),
+      ...(esmMessage ? { EstateManagerMessage: esmMessage } : {}),
+      ...(guardMessage ? { SecurityGuardMessage: guardMessage } : {}),
 
       ...(eventLocationType === EventLocationTypeData.ANOTHER_LOCATION
         ? { Address: Address?.trim() }

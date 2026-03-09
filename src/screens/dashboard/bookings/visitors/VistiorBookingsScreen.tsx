@@ -37,7 +37,7 @@ const VistiorBookingsScreen = (): React.JSX.Element => {
       const response = await getBookingsVisitors({
         id: selectedProperty?.id!,
         query: {
-          ...(!!searchText ? { SearchText: searchText } : {}),
+          ...(searchText ? { SearchText: searchText } : {}),
         },
       });
       if (response.ok) {

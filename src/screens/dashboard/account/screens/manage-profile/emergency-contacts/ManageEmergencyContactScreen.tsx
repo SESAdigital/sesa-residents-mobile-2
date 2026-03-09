@@ -85,13 +85,13 @@ const ManageEmergencyContactScreen = ({ route }: Props): React.JSX.Element => {
     }
   }, [data?.email, isEdit]);
 
-  const onSubmit = handleSubmit(async data => {
-    const relationship = Number(data?.relationship) as RelationshipType;
+  const onSubmit = handleSubmit(async value => {
+    const relationship = Number(value?.relationship) as RelationshipType;
     const formattedData: PostEmergencyContactReq = {
-      email: data?.email?.trim()?.toLowerCase(),
-      firstName: data?.firstName?.trim(),
-      lastName: data?.lastName?.trim(),
-      phoneNumber: data?.phoneNumber?.trim(),
+      email: value?.email?.trim()?.toLowerCase(),
+      firstName: value?.firstName?.trim(),
+      lastName: value?.lastName?.trim(),
+      phoneNumber: value?.phoneNumber?.trim(),
       relationship,
       gender: femaleGenderRelations.includes(relationship)
         ? GenderTypeData.Female

@@ -166,14 +166,16 @@ function AppPhoneInput<TFieldValues extends FieldValues>(
         </AppText>
       </View>
 
-      <AppPhoneInputModal
-        isVisible={isActive && !isDisabled}
-        onSelect={val => {
-          field.onChange(val);
-          setIsActive(false);
-        }}
-        onClose={() => setIsActive(false)}
-      />
+      {isActive && (
+        <AppPhoneInputModal
+          isVisible={isActive && !isDisabled}
+          onSelect={val => {
+            field.onChange(val);
+            setIsActive(false);
+          }}
+          onClose={() => setIsActive(false)}
+        />
+      )}
     </View>
   );
 }

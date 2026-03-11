@@ -66,7 +66,7 @@ const BookVisitorScreen = (): React.JSX.Element => {
     setIsAppModalLoading(false);
 
     if (response.ok && response?.data) {
-      queryClient.resetQueries({ queryKey: [queryKeys.GET_VISTOR_BOOKINGS] });
+      queryClient.resetQueries({ queryKey: [queryKeys.GET_VISITOR_BOOKINGS] });
       closeActiveModal();
       navigation.replace(
         routes.BOOK_VISITOR_SUCCESS_SCREEN,

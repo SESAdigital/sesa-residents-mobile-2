@@ -1,16 +1,13 @@
 import { StyleSheet, View } from 'react-native';
 
+import { GetDashboardHappeningTodayVisitorsData } from '@src/api/dashboard.api';
 import AppAvatar from '@src/components/AppAvatar';
+import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 import AppText from '@src/components/AppText';
-import { MdiLightArrowLeft, MdiLightArrowRight } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
-import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
-import { GetDashboardHappeningTodayVisitorsData } from '@src/api/dashboard.api';
-import { dayJSFormatter } from '@src/utils/time';
-import AppPill from '@src/components/common/AppPill';
-import { AccessCodeStatusData } from '@src/api/constants/default';
+import VisitorBookingStatus from '../../bookings/visitors/VisitorBookingStatus';
 
 interface Props {
   data: GetDashboardHappeningTodayVisitorsData;
@@ -34,40 +31,12 @@ const VisitorListRow = ({ data }: Props): React.JSX.Element => {
           </AppText>
         </View>
 
-        <View style={{ rowGap: Size.calcHeight(2) }}>
-          {data?.status === AccessCodeStatusData.Pending ? (
-            <AppPill statusText={data?.statusText} status="WARNING" />
-          ) : (
-            <>
-              <View style={styles.row}>
-                <MdiLightArrowRight
-                  height={Size.calcAverage(20)}
-                  width={Size.calcAverage(20)}
-                  color={colors.GREEN_100}
-                />
-                <AppText style={styles.time}>
-                  {dayJSFormatter({
-                    value: data?.checkInTime,
-                    format: 'hh:mm A',
-                  })}
-                </AppText>
-              </View>
-              <View style={styles.row}>
-                <MdiLightArrowLeft
-                  height={Size.calcAverage(20)}
-                  width={Size.calcAverage(20)}
-                  color={colors.RED_100}
-                />
-                <AppText style={[styles.time, { color: colors.RED_100 }]}>
-                  {dayJSFormatter({
-                    value: data?.checkOutTime,
-                    format: 'hh:mm A',
-                  })}
-                </AppText>
-              </View>
-            </>
-          )}
-        </View>
+        <VisitorBookingStatus
+          status={data?.status}
+          statusText={data?.statusText}
+          checkInTime={data?.checkInTime}
+          checkOutTime={data?.checkOutTime}
+        />
       </View>
     </View>
   );
@@ -127,22 +96,9 @@ const styles = StyleSheet.create({
     paddingVertical: Size.calcHeight(14),
   },
 
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
   subtitle: {
     color: colors.GRAY_100,
     fontSize: Size.calcAverage(12),
-  },
-
-  time: {
-    fontFamily: fonts.INTER_600,
-    color: colors.GREEN_100,
-    fontSize: Size.calcAverage(12),
-    paddingLeft: Size.calcWidth(2),
-    textAlign: 'right',
   },
 
   title: {

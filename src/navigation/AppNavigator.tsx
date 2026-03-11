@@ -80,6 +80,7 @@ import PropertyDetailsConfigureAccessScreen from '@src/screens/dashboard/account
 import PropertyDetailScreen from '@src/screens/dashboard/account/screens/property-details/PropertyDetailScreen';
 import OccupantHistoryPage from '@src/screens/dashboard/account/screens/property-details/occupant-history/OccupantHistoryPage';
 import NewWalkInVisitorActivityScreen from '@src/screens/dashboard/activity/screens/NewWalkInVisitorActivityScreen';
+import VisitorBookingDetailsScreen from '@src/screens/dashboard/bookings/visitors/VisitorBookingDetailsScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -119,6 +120,9 @@ export type AppNavigatorParams = {
   [routes.GROUP_ACCESS_SCREEN]: undefined;
   [routes.CREATE_GROUP_ACCESS_SCREEN]: undefined;
   [routes.CREATE_GROUP_ACCESS_SUCCESS_SCREEN]: PostGroupAccessResData;
+
+  // BOOKINGS SCREENS
+  [routes.VISITOR_BOOKING_DETAILS_SCREEN]: ScreenWithId;
 
   // ACTIVITY SCREENS
 
@@ -210,6 +214,9 @@ const RootStack = createNativeStackNavigator({
         [routes.TRANSACTION_LIST_SCREEN]: TransactionListScreen,
         [routes.TRANSACTION_DETAILS_SCREEN]: TransactionDetailsScreen,
         [routes.TRANSACTION_SUCCESS_SCREEN]: TransactionSuccessScreen,
+
+        //BOOKING SCREENS
+        [routes.VISITOR_BOOKING_DETAILS_SCREEN]: VisitorBookingDetailsScreen,
 
         // ACTIVITY SCREENS
         [routes.NEW_WALK_IN_VISITOR_ACTIVITY_SCREEN]:

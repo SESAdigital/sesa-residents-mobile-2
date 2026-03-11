@@ -1,4 +1,5 @@
 import baseApi, { GenericApiResponse } from './base.api';
+import { AccessCodeStatusType, AccessEntityType } from './constants/default';
 
 // API STARTS
 
@@ -14,8 +15,12 @@ export const getSingleVisitorBooking = (id: number) =>
 export const patchCancelVisitorBooking = (id: number) =>
   baseApi.patch<GenericApiResponse>(`/Bookings/Visitors/${id}/Cancel`);
 
-export const patchSignOutVisitorBooking = (id: number) =>
-  baseApi.patch<GenericApiResponse>(`/Bookings/Visitors/${id}/SignOut`);
+export const patchSignOutVisitorBooking = (
+  val: PatchSignOutVisitorBookingReq,
+) =>
+  baseApi.patch<GenericApiResponse>(
+    `/Bookings/${val?.propertyId}/Visitors/${val?.id}/SignOut`,
+  );
 
 // API ENDS
 
@@ -35,8 +40,8 @@ export interface GetBookingsVistorResData {
   checkInTime: string;
   checkOutTime: string;
   dateOfVisitation: string;
-  status: number; //TODO FIX THIS
-  visitorType: number; //TODO FIX THIS
+  status: AccessCodeStatusType;
+  visitorType: AccessEntityType;
   visitorTypeText: string;
   statusText: string;
 }
@@ -63,7 +68,7 @@ interface GetSingleVisitorBookingRes extends GenericApiResponse {
     checkOutByPhoto: string;
     checkInTime: string;
     checkOutTime: string;
-    status: number; // TODO FIX THIS
+    status: AccessCodeStatusType;
     statusText: string;
     dateOfVisitation: string;
     modeEntryType: number; // TODO FIX THIS
@@ -71,6 +76,11 @@ interface GetSingleVisitorBookingRes extends GenericApiResponse {
     noOfEntries: string;
     shouldSignOut: boolean;
   };
+}
+
+interface PatchSignOutVisitorBookingReq {
+  id: number;
+  propertyId: number;
 }
 
 // TYPES ENDS

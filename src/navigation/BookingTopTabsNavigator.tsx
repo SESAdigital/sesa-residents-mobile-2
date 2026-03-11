@@ -2,7 +2,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import EventBookingsScreen from '@src/screens/dashboard/bookings/events/EventBookingsScreen';
 import GroupAccessBookingsScreen from '@src/screens/dashboard/bookings/group-access/GroupAccessBookingsScreen';
-import VistiorBookingsScreen from '@src/screens/dashboard/bookings/visitors/VistiorBookingsScreen';
+import VisitorBookingsScreen from '@src/screens/dashboard/bookings/visitors/VisitorBookingsScreen';
 import CustomTopTabBar from './components/CustomTopTabBar';
 import routes from './routes';
 
@@ -10,7 +10,7 @@ const BookingTopTabNavs = createMaterialTopTabNavigator({
   tabBar: props => <CustomTopTabBar {...props} />,
   screens: {
     [routes.VISITOR_BOOKINGS_SCREEN]: {
-      screen: VistiorBookingsScreen,
+      screen: VisitorBookingsScreen,
       options: {
         title: 'Visitors',
       },

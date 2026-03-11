@@ -25,10 +25,15 @@ const AppAvatar = (props: AppAvatarProps): JSX.Element => {
   const firstLetter = firstWord?.[0];
   const lastLetter = lastWord?.[0];
 
+  const loadingStyle = [styles.dimension, size ? { height: size } : {}, style];
+
   if (isLoading) {
     return (
-      <AppSkeletonLoader borderRadius={100}>
-        <View style={styles.dimension} />
+      <AppSkeletonLoader
+        style={loadingStyle}
+        borderRadius={size ? size / 2 : 100}
+      >
+        <View style={loadingStyle} />
       </AppSkeletonLoader>
     );
   }
@@ -38,7 +43,7 @@ const AppAvatar = (props: AppAvatarProps): JSX.Element => {
       style={[
         styles.container,
         styles.dimension,
-        size ? { height: size } : {},
+        size ? { height: size, borderRadius: size / 2 } : {},
         style,
       ]}
     >
@@ -81,6 +86,7 @@ const styles = StyleSheet.create({
   dimension: {
     height: Size.calcAverage(38),
     aspectRatio: 1,
+    flexShrink: 0,
   },
 
   text: {

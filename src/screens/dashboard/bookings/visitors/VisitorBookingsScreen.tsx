@@ -1,3 +1,4 @@
+import { useAppNavigator } from '@src/navigation/AppNavigator';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
@@ -7,25 +8,29 @@ import {
   GetBookingsVisitorsRes,
 } from '@src/api/bookings.api';
 import queryKeys from '@src/api/constants/queryKeys';
+import AppFAB from '@src/components/AppFAB';
 import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import DuplicateLoader from '@src/components/DuplicateLoader';
 import EmptyTableComponent from '@src/components/EmptyTableComponent';
 import AppSearchInput from '@src/components/forms/AppSearchInput';
 import colors from '@src/configs/colors';
+import routes from '@src/navigation/routes';
 import { useAuthStore } from '@src/stores/auth.store';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import { TransactionListRowLoader } from '../../transactions/components/TransactionListRow';
 import VisitorBookingRow, {
   MappedVisitorBookingRowData,
+  VisitorBookingRowLoader,
 } from './VisitorBookingRow';
 
-const VistiorBookingsScreen = (): React.JSX.Element => {
+const VisitorBookingsScreen = (): React.JSX.Element => {
   const [searchText, setSearchText] = useState('');
   const { selectedProperty } = useAuthStore();
 
+  const navigation = useAppNavigator();
+
   const queryKey = [
-    queryKeys.GET_VISTOR_BOOKINGS,
+    queryKeys.GET_VISITOR_BOOKINGS,
     'getBookingsVisitors',
     selectedProperty?.id,
     searchText,
@@ -62,6 +67,7 @@ const VistiorBookingsScreen = (): React.JSX.Element => {
           placeholder="Search visitors"
         />
       </View>
+
       <FlatList
         data={mapVisitorHistoryToSections(data || null)}
         refreshControl={
@@ -70,15 +76,23 @@ const VistiorBookingsScreen = (): React.JSX.Element => {
         showsVerticalScrollIndicator
         ListEmptyComponent={
           isLoading ? (
-            <DuplicateLoader loader={<TransactionListRowLoader />} />
+            <DuplicateLoader loader={<VisitorBookingRowLoader />} />
           ) : (
             <EmptyTableComponent />
           )
         }
-        renderItem={({ item }) => <VisitorBookingRow val={item} />}
+        renderItem={({ item }) => (
+          <VisitorBookingRow
+            onPress={id =>
+              navigation.navigate(routes.VISITOR_BOOKING_DETAILS_SCREEN, { id })
+            }
+            val={item}
+          />
+        )}
         keyExtractor={(_, index) => index?.toString()}
-        contentContainerStyle={{ paddingBottom: Size.calcHeight(70) }}
+        contentContainerStyle={{ paddingBottom: Size.calcHeight(180) }}
       />
+      <AppFAB onPress={() => navigation.navigate(routes.BOOK_VISITOR_SCREEN)} />
     </View>
   );
 };
@@ -92,7 +106,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VistiorBookingsScreen;
+export default VisitorBookingsScreen;
 
 function mapVisitorHistoryToSections(
   response: GetBookingsVisitorsRes | null,

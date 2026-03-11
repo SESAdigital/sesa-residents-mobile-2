@@ -76,7 +76,7 @@ const SubmitButton = (props: SubmitButtonProps): React.JSX.Element => {
 
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: '#002E6666',
+    opacity: 0.4,
   },
 
   container: {

@@ -154,7 +154,7 @@ export const useGetPropertyDetails = () => {
     enabled: !!id && !isNaN(Number(id)),
   });
 
-  const customRefetch = () => queryClient.removeQueries({ queryKey });
+  const customRefetch = () => queryClient.resetQueries({ queryKey });
 
   return { value, customRefetch, propertyId: selectedProperty?.id };
 };
@@ -165,7 +165,7 @@ export const useGetVistorHappeningToday = () => {
   const id = selectedProperty?.id;
 
   const queryKey = [
-    queryKeys.GET_VISTOR_BOOKINGS,
+    queryKeys.GET_VISITOR_BOOKINGS,
     'getDashboardHappeningTodayVisitors',
     id,
   ];

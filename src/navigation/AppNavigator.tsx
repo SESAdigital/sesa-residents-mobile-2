@@ -81,6 +81,9 @@ import PropertyDetailScreen from '@src/screens/dashboard/account/screens/propert
 import OccupantHistoryPage from '@src/screens/dashboard/account/screens/property-details/occupant-history/OccupantHistoryPage';
 import NewWalkInVisitorActivityScreen from '@src/screens/dashboard/activity/screens/NewWalkInVisitorActivityScreen';
 import VisitorBookingDetailsScreen from '@src/screens/dashboard/bookings/visitors/VisitorBookingDetailsScreen';
+import ScanBarCodeScreen, {
+  ScanBarCodeScreenProps,
+} from '@src/screens/dashboard/reusable-screens/ScanBarCodeScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -153,6 +156,9 @@ export type AppNavigatorParams = {
   [routes.EMERGENCY_SERVICE_DETAILS_SCREEN]: GetEmergencyServicesResData;
   [routes.ESTATE_RULES_SCREEN]: undefined;
   [routes.ESTATE_RULE_DETAILS_SCREEN]: GetEstateRulesResData;
+
+  // REUSABLE SCREENS
+  [routes.SCAN_BAR_CODE_SCREEN]: ScanBarCodeScreenProps;
 };
 
 export type AppParamsNavigator = NativeStackNavigationProp<AppNavigatorParams>;
@@ -249,6 +255,9 @@ const RootStack = createNativeStackNavigator({
           EmergencyServiceDetailsScreen,
         [routes.ESTATE_RULES_SCREEN]: EstateRulesScreen,
         [routes.ESTATE_RULE_DETAILS_SCREEN]: EstateRuleDetailsScreen,
+
+        // REUSABLE SCREENS
+        [routes.SCAN_BAR_CODE_SCREEN]: ScanBarCodeScreen,
       },
     },
   },

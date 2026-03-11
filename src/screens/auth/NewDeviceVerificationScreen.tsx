@@ -48,6 +48,7 @@ const NewDeviceVerificationScreen = (): React.JSX.Element => {
       <AppGoBackHeader />
       <WalletPinInput
         showValues
+        preventVibration
         subtitleStyles={{ textAlign: 'left' }}
         titleStyles={{ textAlign: 'left' }}
         pin={pin}

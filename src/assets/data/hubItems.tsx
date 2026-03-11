@@ -13,6 +13,7 @@ import {
   MaterialSymbolsHowToVote,
   MaterialSymbolsLocalMall,
   MaterialSymbolsPayments,
+  MaterialSymbolsQrCodeScanner,
   MaterialSymbolsShieldWithHeart,
   MaterialSymbolsSos,
 } from '@src/components/icons';
@@ -45,6 +46,7 @@ export enum HubItemEnum {
   SESA_MALL,
   INSURANCE,
   SESA_HOMES,
+  SELF_ACCESS,
 }
 
 export type ComingSoonTypes =
@@ -59,6 +61,7 @@ export type ComingSoonTypes =
   | 'SESA Mall'
   | 'Insurance'
   | 'SESA Homes'
+  | 'Self Access'
   | null;
 
 export const allHubItems: HubItem[] = [
@@ -159,6 +162,13 @@ export const allHubItems: HubItem[] = [
     title: 'SESA Homes',
     bgColor: colors.GRAY_900,
     color: colors.PURPLE_100,
+    route: null,
+  },
+  {
+    Icon: MaterialSymbolsQrCodeScanner,
+    title: 'Self Access',
+    bgColor: colors.CYAN_200,
+    color: colors.CYAN_100,
     route: null,
   },
 ];

@@ -14,7 +14,7 @@ import {
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import Size from '@src/utils/useResponsiveSize';
-import BillReminderBanner from './BillReminderBanner';
+// import BillReminderBanner from './BillReminderBanner';
 
 const HomeHeaderSection = (): React.JSX.Element => {
   const navigation = useAppNavigator();
@@ -32,7 +32,7 @@ const HomeHeaderSection = (): React.JSX.Element => {
         </View>
         <AppProfilePicture />
       </View>
-      <BillReminderBanner />
+      {/* <BillReminderBanner /> TODO FIX THIS */}
       <View style={styles.walletContainer}>
         <View>
           <AppText style={{ color: colors.LIGHT_GRAY_100 }}>My Wallet</AppText>

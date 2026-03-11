@@ -9,10 +9,11 @@ import Size from '@src/utils/useResponsiveSize';
 import HomeHeaderSection from '../home/components/HomeHeaderSection';
 
 const MyhubScreen = (): React.JSX.Element => {
-  const { myHubData } = useAllHubItems();
+  const { myHubData, SelfAccessLoading } = useAllHubItems();
 
   return (
     <AppScreen scrollable style={myHubStyles.container}>
+      <SelfAccessLoading />
       <HomeHeaderSection />
       <View style={myHubStyles.contentContainer}>
         {myHubData.map((section, index) => (

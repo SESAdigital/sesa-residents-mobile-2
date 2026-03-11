@@ -1,20 +1,20 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { postLogout } from '@src/api/auth.api';
 import { getPanicAlertMetrics } from '@src/api/panicAlerts.api';
+import AmbulanceIcon from '@src/assets/images/icons/ambulance-icon.png';
+import WalletIcon from '@src/assets/images/icons/wallet-icon.png';
+import AppRestrictedModal from '@src/modals/AppRestrictedModal';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
+import PanicAlertGenericModal from '@src/screens/dashboard/my-hub/panic-alert/modals/PanicAlertGenericModal';
 import { useAppStateStore } from '@src/stores/appState.store';
+import { useAuthStore } from '@src/stores/auth.store';
 import { formatMoneyToTwoDecimals } from '@src/utils';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { useGetCurrentLocation } from './useCurrentLocation';
-import PanicAlertGenericModal from '@src/screens/dashboard/my-hub/panic-alert/modals/PanicAlertGenericModal';
-import WalletIcon from '@src/assets/images/icons/wallet-icon.png';
-import AmbulanceIcon from '@src/assets/images/icons/ambulance-icon.png';
-import { useAuthStore } from '@src/stores/auth.store';
-import { postLogout } from '@src/api/auth.api';
 import { useGetPropertyDetails } from './useGetRequests';
-import AppRestrictedModal from '@src/modals/AppRestrictedModal';
 
 export const useHandlePanicAlert = () => {
   const { latitude, longitude } = useGetCurrentLocation();

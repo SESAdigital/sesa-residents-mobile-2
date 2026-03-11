@@ -5,6 +5,7 @@ import { useAppStateStore } from '@src/stores/appState.store';
 import { allHubItems, ComingSoonTypes, HubItem, HubItemEnum } from './hubItems';
 import { useHandlePanicAlert } from '@src/hooks';
 import routes from '@src/navigation/routes';
+import { useHandleSelfAccess } from '@src/hooks/useHandleSelfAccess';
 
 export { allHubItems, HubItemEnum } from './hubItems';
 
@@ -14,7 +15,7 @@ export const useAllHubItems = () => {
   const { setActiveModal } = useAppStateStore();
   const navigation = useAppNavigator();
   const { handlePanicAlertClick } = useHandlePanicAlert();
-
+  const { handleSelfAccessClick, SelfAccessLoading } = useHandleSelfAccess();
   const handleAction = (route: string | null) => {
     if (!route) return;
     navigation.navigate(route as any);
@@ -118,7 +119,12 @@ export const useAllHubItems = () => {
   };
 
   const newItems: HubItem[] = allHubItems.map(item => {
-    if (item.route === null) {
+    if (item.title === 'Self Access') {
+      return {
+        ...item,
+        onPress: handleSelfAccessClick,
+      };
+    } else if (item.route === null) {
       return {
         ...item,
         onPress: () => handleComingSoon(item.title as ComingSoonTypes),
@@ -142,7 +148,7 @@ export const useAllHubItems = () => {
         [
           newItems[HubItemEnum.BILLS_AND_COLLECTIONS],
           newItems[HubItemEnum.BUY_POWER],
-          newItems[HubItemEnum.EMPTY_ITEM],
+          newItems[HubItemEnum.SELF_ACCESS],
         ],
       ],
     },
@@ -171,13 +177,14 @@ export const useAllHubItems = () => {
 
   const quickActions: HubItem[] = [
     newItems[HubItemEnum.PANIC_ALERT],
+    newItems[HubItemEnum.SELF_ACCESS],
     newItems[HubItemEnum.BOOK_VISITOR],
     newItems[HubItemEnum.CREATE_EVENTS],
     newItems[HubItemEnum.GROUP_ACCESS],
     newItems[HubItemEnum.BILLS_AND_COLLECTIONS],
   ];
 
-  return { myHubData, quickActions };
+  return { myHubData, quickActions, SelfAccessLoading };
 };
 
 interface HubData {

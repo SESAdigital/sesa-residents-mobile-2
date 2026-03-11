@@ -112,6 +112,7 @@ const ResetWalletPinScreen = (): React.JSX.Element => {
       title="Enter OTP"
       pin={OTP}
       pinLength={5}
+      preventVibration
       onDone={() => setCurrentStep(val => val + 1)}
       onPinChange={val => setOTP(val)}
       subtitle={
@@ -137,13 +138,6 @@ const ResetWalletPinScreen = (): React.JSX.Element => {
         </TouchableOpacity>
       }
     />,
-    // <WalletPinInput
-    //   title="Enter your current pin"
-    //   pin={OTP}
-    //   onDone={() => setCurrentStep(val => val + 1)}
-    //   onPinChange={val => setOTP(val)}
-    //   subtitle={'We have sent a verification code to your email address'}
-    // />,
 
     <WalletPinInput
       pin={pin}

@@ -1137,3 +1137,41 @@ export function MaterialSymbolsGroupsRounded(props: SvgProps) {
     </Svg>
   );
 }
+
+export function IonEnterOutline(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 512 512" {...props}>
+      <Path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+        d="M176 176v-40a40 40 0 0 1 40-40h208a40 40 0 0 1 40 40v240a40 40 0 0 1-40 40H216a40 40 0 0 1-40-40v-40"
+      />
+      <Path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+        d="m272 336l80-80l-80-80M48 256h288"
+      />
+    </Svg>
+  );
+}
+
+export function IonExitOutline(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 512 512" {...props}>
+      <Path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="32"
+        d="M320 176v-40a40 40 0 0 0-40-40H88a40 40 0 0 0-40 40v240a40 40 0 0 0 40 40h192a40 40 0 0 0 40-40v-40m64-160l80 80l-80 80m-193-80h273"
+      />
+    </Svg>
+  );
+}

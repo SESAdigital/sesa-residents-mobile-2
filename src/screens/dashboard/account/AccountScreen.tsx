@@ -39,6 +39,7 @@ import AccessHistoryRow, {
 } from './components/AccessHistoryRow';
 import ProfileDetailsRow from './components/ProfileDetailsRow';
 import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
+import { useHandleSelfAccess } from '@src/hooks/useHandleSelfAccess';
 
 const pageSize = DEFAULT_API_DATA_SIZE;
 const queryKey = ['getAccessHistory'];
@@ -48,11 +49,12 @@ const AccountScreen = (): React.JSX.Element => {
   const { selectedProperty } = useAuthStore();
   const navigation = useAppNavigator();
   const { data: properties, isLoading } = useGetProperties();
+  const { SelfAccessLoading, handleSelfAccessClick } = useHandleSelfAccess();
 
   const actions = [
     {
       Icon: MaterialSymbolsQrCodeScanner,
-      onClick: () => {},
+      onClick: handleSelfAccessClick,
     },
     {
       Icon: MaterialSymbolsHelp,
@@ -136,11 +138,8 @@ const AccountScreen = (): React.JSX.Element => {
   const refetch = () => queryClient.resetQueries({ queryKey });
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
+    <View style={{ flex: 1 }}>
+      <SelfAccessLoading />
       <View style={styles.topContainer}>
         <View style={styles.accountHeader}>
           <AppText style={styles.accountTitle}>Account</AppText>

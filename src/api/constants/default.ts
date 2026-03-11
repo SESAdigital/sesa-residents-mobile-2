@@ -101,6 +101,20 @@ export const AccessEntryTypeData = {
 export type AccessEntryType =
   (typeof AccessEntryTypeData)[keyof typeof AccessEntryTypeData];
 
+export const GateTypeData = {
+  ZKTeco: 1,
+  Manual: 2,
+} as const;
+
+export type GateType = (typeof GateTypeData)[keyof typeof GateTypeData];
+
+export const DoorTypeData = {
+  BoomBarrier: 1,
+  Pedestrian: 2,
+} as const;
+
+export type DoorType = (typeof DoorTypeData)[keyof typeof DoorTypeData];
+
 export const RelationshipTypeData = {
   Father: 1,
   Mother: 2,

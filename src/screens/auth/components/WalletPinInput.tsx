@@ -61,6 +61,7 @@ interface Props {
   titleStyles?: TextStyle;
   showValues?: boolean;
   subtitleStyles?: TextStyle;
+  preventVibration?: boolean;
 }
 
 const WalletPinInput = (props: Props): React.JSX.Element => {
@@ -73,13 +74,16 @@ const WalletPinInput = (props: Props): React.JSX.Element => {
     pinLength = appConfig.APP_PIN_LENGTH,
     subtitleStyles,
     titleStyles,
+    preventVibration,
     showValues,
   } = props;
 
   const handleKeyPress = (val: PadValue) => {
     if (val == null) return;
 
-    Vibration.vibrate(5000);
+    if (!preventVibration) {
+      Vibration.vibrate(45);
+    }
 
     if (val === 'DELETE') {
       if (pin) onPinChange(pin?.slice(0, -1));

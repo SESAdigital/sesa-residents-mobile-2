@@ -34,7 +34,11 @@ const AppModal = (): React.JSX.Element => {
   };
 
   return (
-    <AppModalContainer isVisible={!!activeModal} onClose={onClose}>
+    <AppModalContainer
+      style={activeModal?.containerStyle}
+      isVisible={!!activeModal}
+      onClose={onClose}
+    >
       {activeModal?.modalType === 'EMPTY_MODAL' &&
         !!activeModal?.emptyModalComponent &&
         activeModal?.emptyModalComponent}

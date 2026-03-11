@@ -13,12 +13,13 @@ import { useGetPropertyDetails } from '@src/hooks/useGetRequests';
 
 const QuickActionAndAdsSection = (): React.JSX.Element => {
   const navigation = useNavigation();
-  const { quickActions } = useAllHubItems();
+  const { quickActions, SelfAccessLoading } = useAllHubItems();
   useGetPropertyDetails();
 
   return (
     <>
       <View style={styles.row}>
+        <SelfAccessLoading />
         <AppText style={styles.quickActionsText}>Quick Actions</AppText>
         <TouchableOpacity
           // @ts-expect-error nothing for now

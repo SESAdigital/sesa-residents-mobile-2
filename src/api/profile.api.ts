@@ -1,5 +1,11 @@
 import baseApi, { GenericApiResponse, GenericTypeWithId } from './base.api';
-import { GenderType, RelationshipType } from './constants/default';
+import {
+  AccessEntryType,
+  DoorType,
+  GateType,
+  GenderType,
+  RelationshipType,
+} from './constants/default';
 
 // API STARTS
 
@@ -13,6 +19,14 @@ export const getEmergencyContacts = () =>
 
 export const getSingleEmergencyContact = (id: number) =>
   baseApi.get<GetSingleEmergencyContactRes>(`/Profile/EmergencyContacts/${id}`);
+
+export const getVerifyDoorCode = (id: string) =>
+  baseApi.get<GetVerifyDoorCodeRes>(`/Profile/VerifyDoorCode`, {
+    DoorCode: id,
+  });
+
+export const postOpenDoor = (val: PostOpenDoorReq) =>
+  baseApi.post<GenericApiResponse>('/Profile/OpenDoor', val);
 
 export const postEmergencyContact = (data: PostEmergencyContactReq) =>
   baseApi.post<GenericApiResponse>(`/Profile/EmergencyContact`, data);
@@ -67,6 +81,27 @@ export interface PostEmergencyContactReq {
   phoneNumber: string;
   gender: GenderType;
   relationship: RelationshipType;
+}
+
+interface GetVerifyDoorCodeRes extends GenericApiResponse {
+  data: {
+    id: number;
+    deviceId: number;
+    name: string;
+    doorId: string;
+    isActive: boolean;
+    doorEntryType: AccessEntryType;
+    doorEntryTypeText: string;
+    doorType: DoorType;
+    gateType: GateType;
+    doorTypeText: string;
+    timeCreatedFormatted: string;
+    timeCreated: string;
+  };
+}
+interface PostOpenDoorReq {
+  doorId: string;
+  accessEntryType: AccessEntryType;
 }
 
 // TYPES ENDS

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 
   headerButton: {
     position: 'absolute',
-    left: 2,
+    right: Size.calcWidth(20),
     top: 0,
     bottom: 0,
     paddingHorizontal: Size.calcWidth(5),

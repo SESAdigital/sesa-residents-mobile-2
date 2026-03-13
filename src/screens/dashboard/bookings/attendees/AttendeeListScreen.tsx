@@ -14,9 +14,10 @@ import {
   useGetBookingsEventAttendees,
   useGetBookingsGroupAccessAttendees,
 } from '@src/hooks/useGetRequests';
-import { AppScreenProps } from '@src/navigation/AppNavigator';
+import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
 import Size from '@src/utils/useResponsiveSize';
 import AttendeeListRow, { AttendeeListRowLoader } from './AttendeeListRow';
+import routes from '@src/navigation/routes';
 
 export interface AttendeeListScreenProps {
   id: number;
@@ -42,6 +43,7 @@ const AttendeeListScreen = ({ route }: Props): React.JSX.Element => {
   const params = route?.params;
   const isEvent = params?.type === 'EVENT';
   const id = params?.id;
+  const navigation = useAppNavigator();
 
   const {
     formattedData: bookingFormattedData,
@@ -51,6 +53,7 @@ const AttendeeListScreen = ({ route }: Props): React.JSX.Element => {
     enabled: !!id && !isEvent,
     id,
   });
+
   const {
     formattedData: eventFormattedData,
     customRefetch: customEventRefetch,
@@ -122,7 +125,16 @@ const AttendeeListScreen = ({ route }: Props): React.JSX.Element => {
           )
         }
         renderItem={({ item }) => (
-          <AttendeeListRow onPress={() => {}} val={item} />
+          <AttendeeListRow
+            onPress={() =>
+              navigation.navigate(routes.ATTENDEE_DETAIL_SCREEN, {
+                id: item?.id,
+                type: params?.type,
+                parentId: params?.id,
+              })
+            }
+            val={item}
+          />
         )}
         keyExtractor={(_, index) => index?.toString()}
         contentContainerStyle={{ paddingBottom: Size.calcHeight(70) }}

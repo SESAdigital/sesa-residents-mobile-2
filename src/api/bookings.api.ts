@@ -52,7 +52,7 @@ export const getBookingsEventAttendees = (
     val?.value,
   );
 
-export const getSingletBookingsEventsAttendeeDetailRes = (
+export const getSingleBookingsEventsAttendeeDetailRes = (
   val: GetSingleBookingsAttendeeDetailReq,
 ) =>
   baseApi.get<GetSingleBookingsAttendeeDetailRes>(
@@ -210,28 +210,31 @@ export interface GetSingleBookingsAttendeeDetailReq {
   // just for internal use only
   type?: 'GROUP_ACCESS' | 'EVENT';
 }
-export interface GetSingleBookingsAttendeeDetailRes {
-  data: {
+
+export interface GetSingleBookingsAttendeeDetailResData {
+  name: string;
+  phoneNumber: string;
+  noOfEntrants: number;
+  modeEntryType: AccessEntryType;
+  modeEntryText: string;
+  tagNumber: string;
+  checkInTime: string;
+  checkOutTime: string;
+  checkInDate: string;
+  checkedInBy: {
     name: string;
-    phoneNumber: string;
-    noOfEntrants: number;
-    modeEntryType: AccessEntryType;
-    modeEntryText: string;
-    tagNumber: string;
-    checkInTime: string;
-    checkOutTime: string;
-    checkInDate: string;
-    checkedInBy: {
-      name: string;
-      checkTime: string;
-      photo: string;
-    };
-    checkedOutBy: {
-      name: string;
-      checkTime: string;
-      photo: string;
-    };
+    checkTime: string;
+    photo: string;
   };
+  checkedOutBy: {
+    name: string;
+    checkTime: string;
+    photo: string;
+  };
+}
+
+interface GetSingleBookingsAttendeeDetailRes {
+  data: GetSingleBookingsAttendeeDetailResData;
 }
 
 // GROUP ACCESS

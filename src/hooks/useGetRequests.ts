@@ -4,13 +4,17 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import queryKeys from '@src/api/constants/queryKeys';
-import { handleToastApiError } from '@src/utils/handleErrors';
 import {
   getAccountProfile,
   getNotificationPreference,
 } from '@src/api/auth.api';
-import { useAuthStore } from '@src/stores/auth.store';
+import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
+import {
+  getBookingsEventAttendees,
+  getBookingsGroupAccessAttendees,
+  getSingleBookingsEventsAttendeeDetailRes,
+} from '@src/api/bookings.api';
+import queryKeys from '@src/api/constants/queryKeys';
 import {
   getDashboardHappeningTodayEvents,
   getDashboardHappeningTodayGroupAccess,
@@ -18,14 +22,11 @@ import {
   getDashboardProperties,
   getWalletBalance,
 } from '@src/api/dashboard.api';
-import { formatMoneyToTwoDecimals, getTotalPages } from '@src/utils';
 import { getSingleEmergencyContact } from '@src/api/profile.api';
 import { getPropertyDetails } from '@src/api/property-details.api';
-import {
-  getBookingsEventAttendees,
-  getBookingsGroupAccessAttendees,
-} from '@src/api/bookings.api';
-import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
+import { useAuthStore } from '@src/stores/auth.store';
+import { formatMoneyToTwoDecimals, getTotalPages } from '@src/utils';
+import { handleToastApiError } from '@src/utils/handleErrors';
 
 export const useGetUserDetails = () => {
   const { data: profileData, isLoading: isProfileLoading } = useGetProfile();
@@ -361,4 +362,77 @@ export const useGetBookingsGroupAccessAttendees = (
   const customRefetch = () => queryClient.resetQueries({ queryKey });
 
   return { customRefetch, formattedData, queryData };
+};
+
+interface UseGetBookingsAttendeeDetailsProps
+  extends UseGetBookingsAttendeesProps {
+  parentId: number;
+}
+
+export const useGetBookingsEventAttendeeDetails = (
+  props: UseGetBookingsAttendeeDetailsProps,
+) => {
+  const { enabled, id, parentId } = props;
+  const queryKey = [
+    queryKeys.GET_EVENT_BOOKINGS,
+    'getSingleBookingsEventsAttendeeDetailRes',
+    id,
+    parentId,
+  ];
+
+  const queryData = useQuery({
+    queryKey,
+    queryFn: async () => {
+      const response = await getSingleBookingsEventsAttendeeDetailRes({
+        id,
+        parentId,
+      });
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+    enabled,
+  });
+
+  const queryClient = useQueryClient();
+  const customRefetch = () => queryClient.resetQueries({ queryKey });
+
+  return { customRefetch, queryData };
+};
+
+export const useGetBookingsGroupAccessAttendeeDetails = (
+  props: UseGetBookingsAttendeeDetailsProps,
+) => {
+  const { enabled, id, parentId } = props;
+  const queryKey = [
+    queryKeys.GET_GROUP_ACCESS_BOOKINGS,
+    'getSingleBookingsEventsAttendeeDetailRes',
+    id,
+    parentId,
+  ];
+
+  const queryData = useQuery({
+    queryKey,
+    queryFn: async () => {
+      const response = await getSingleBookingsEventsAttendeeDetailRes({
+        id,
+        parentId,
+      });
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+    enabled,
+  });
+
+  const queryClient = useQueryClient();
+  const customRefetch = () => queryClient.resetQueries({ queryKey });
+
+  return { customRefetch, queryData };
 };

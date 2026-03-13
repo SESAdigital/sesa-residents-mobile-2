@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 
 import colors from '@src/configs/colors';
 import Size from '@src/utils/useResponsiveSize';
@@ -6,10 +6,11 @@ import { MaterialSymbolsAddRounded } from './icons';
 
 interface Props {
   onPress: () => void;
+  style?: ViewStyle;
 }
-const AppFAB = ({ onPress }: Props): React.JSX.Element => {
+const AppFAB = ({ onPress, style }: Props): React.JSX.Element => {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
       <MaterialSymbolsAddRounded
         color={colors.WHITE_100}
         height={Size.calcAverage(28)}

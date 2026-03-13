@@ -10,6 +10,7 @@ export type AppDetailCardDetailItem = {
   title: string;
   value: string;
   skipLoading?: boolean;
+  isCopy?: boolean;
 }[][];
 
 interface Props {

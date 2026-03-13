@@ -263,3 +263,15 @@ export const AccessEntityTypeData = {
 
 export type AccessEntityType =
   (typeof AccessEntityTypeData)[keyof typeof AccessEntityTypeData];
+
+export const EventStatusTypeData = {
+  New: 0,
+  Active: 1,
+  Ongoing: 2,
+  Completed: 3,
+  Declined: 4,
+  Cancelled: 5,
+} as const;
+
+export type EventStatusType =
+  (typeof EventStatusTypeData)[keyof typeof EventStatusTypeData];

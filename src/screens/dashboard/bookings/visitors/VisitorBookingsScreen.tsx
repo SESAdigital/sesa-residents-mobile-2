@@ -59,7 +59,7 @@ const VisitorBookingsScreen = (): React.JSX.Element => {
   const refetch = () => queryClient.resetQueries({ queryKey });
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.searchContainer}>
         <AppSearchInput
           disabled={isLoading}
@@ -90,9 +90,12 @@ const VisitorBookingsScreen = (): React.JSX.Element => {
           />
         )}
         keyExtractor={(_, index) => index?.toString()}
-        contentContainerStyle={{ paddingBottom: Size.calcHeight(180) }}
+        contentContainerStyle={{ paddingBottom: Size.calcHeight(100) }}
       />
-      <AppFAB onPress={() => navigation.navigate(routes.BOOK_VISITOR_SCREEN)} />
+      <AppFAB
+        onPress={() => navigation.navigate(routes.BOOK_VISITOR_SCREEN)}
+        style={{ bottom: Size.calcHeight(30) }}
+      />
     </View>
   );
 };

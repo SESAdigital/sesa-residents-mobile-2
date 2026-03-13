@@ -16,6 +16,8 @@ import AppDetailCard, {
   AppDetailCardDetailItem,
 } from '@src/components/common/AppDetailCard';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
+import AppRefreshControl from '@src/components/custom/AppRefreshControl';
+import BookingAccessByCard from '@src/components/custom/BookingAccessByCard';
 import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
@@ -24,10 +26,9 @@ import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
+import { dayJSFormatter } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
 import VisitorBookingStatus from './VisitorBookingStatus';
-import { dayJSFormatter } from '@src/utils/time';
-import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 
 type Props = AppScreenProps<'VISITOR_BOOKING_DETAILS_SCREEN'>;
 
@@ -222,7 +223,7 @@ const VisitorBookingDetailsScreen = (props: Props): React.JSX.Element => {
         <AppDetailCard isLoading={isLoading} detailList={detailList} />
 
         {data?.checkInTime && (
-          <CheckedInCard
+          <BookingAccessByCard
             title="Checked-in by"
             name={data?.checkInBy || ''}
             time={data?.checkInTime}
@@ -231,7 +232,7 @@ const VisitorBookingDetailsScreen = (props: Props): React.JSX.Element => {
           />
         )}
         {data?.checkOutTime && (
-          <CheckedInCard
+          <BookingAccessByCard
             title="Checked-out by"
             name={data?.checkOutBy || ''}
             time={data?.checkOutTime}
@@ -263,70 +264,7 @@ const VisitorBookingDetailsScreen = (props: Props): React.JSX.Element => {
   );
 };
 
-interface CheckedInCardProps {
-  name: string;
-  isLoading: boolean;
-  time: string;
-  imageURL: string;
-  title: string;
-}
-
-function CheckedInCard(props: CheckedInCardProps) {
-  const { isLoading, name, time, title, imageURL } = props;
-
-  const splitedName = name?.split(' ');
-  return (
-    <>
-      <AppText style={styles.checkedInByText}>{title} </AppText>
-      <View style={styles.checkedInByContainer}>
-        <AppAvatar
-          firstWord={splitedName?.[0]}
-          lastWord={splitedName?.[1]}
-          imageURL={imageURL}
-          size={Size.calcAverage(32)}
-          isLoading={isLoading}
-        />
-
-        <View
-          style={
-            isLoading
-              ? { rowGap: Size.calcHeight(5) }
-              : { rowGap: Size.calcHeight(2) }
-          }
-        >
-          {isLoading ? (
-            <AppSkeletonLoader width={Size.calcWidth(150)} />
-          ) : (
-            <AppText style={styles.vistorName}>{name}</AppText>
-          )}
-
-          {isLoading ? (
-            <AppSkeletonLoader width={Size.calcWidth(100)} />
-          ) : (
-            <AppText style={styles.time}>{time}</AppText>
-          )}
-        </View>
-      </View>
-    </>
-  );
-}
-
 const styles = StyleSheet.create({
-  checkedInByContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: Size.calcWidth(10),
-  },
-
-  checkedInByText: {
-    color: colors.GRAY_300,
-    fontSize: Size.calcAverage(12),
-    fontFamily: fonts.INTER_500,
-    paddingHorizontal: Size.calcWidth(10),
-    paddingTop: Size.calcHeight(20),
-    paddingBottom: Size.calcHeight(9),
-  },
-
   container: {
     paddingVertical: Size.calcHeight(21),
     paddingHorizontal: Size.calcWidth(21),
@@ -349,16 +287,6 @@ const styles = StyleSheet.create({
     fontSize: Size.calcAverage(16),
     fontFamily: fonts.INTER_600,
     textAlign: 'center',
-  },
-
-  time: {
-    fontSize: Size.calcAverage(12),
-    color: colors.GRAY_100,
-  },
-
-  vistorName: {
-    fontFamily: fonts.INTER_500,
-    color: colors.GRAY_400,
   },
 });
 

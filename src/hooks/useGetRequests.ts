@@ -1,4 +1,8 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import queryKeys from '@src/api/constants/queryKeys';
 import { handleToastApiError } from '@src/utils/handleErrors';
@@ -14,9 +18,14 @@ import {
   getDashboardProperties,
   getWalletBalance,
 } from '@src/api/dashboard.api';
-import { formatMoneyToTwoDecimals } from '@src/utils';
+import { formatMoneyToTwoDecimals, getTotalPages } from '@src/utils';
 import { getSingleEmergencyContact } from '@src/api/profile.api';
 import { getPropertyDetails } from '@src/api/property-details.api';
+import {
+  getBookingsEventAttendees,
+  getBookingsGroupAccessAttendees,
+} from '@src/api/bookings.api';
+import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
 
 export const useGetUserDetails = () => {
   const { data: profileData, isLoading: isProfileLoading } = useGetProfile();
@@ -250,4 +259,106 @@ export const useGetGroupAccessHappeningToday = () => {
   const customRefetch = () => queryClient.resetQueries({ queryKey });
 
   return { value, customRefetch };
+};
+
+interface UseGetBookingsAttendeesProps {
+  enabled: boolean;
+  id: number;
+}
+const pageSize = DEFAULT_API_DATA_SIZE;
+
+export const useGetBookingsEventAttendees = (
+  props: UseGetBookingsAttendeesProps,
+) => {
+  const { enabled, id } = props;
+  const queryKey = [
+    queryKeys.GET_EVENT_BOOKINGS,
+    'getBookingsEventAttendees',
+    id,
+  ];
+  const queryData = useInfiniteQuery({
+    queryKey,
+    queryFn: async ({ pageParam }) => {
+      const response = await getBookingsEventAttendees({
+        id,
+        value: {
+          PageNumber: pageParam,
+          PageSize: pageSize,
+        },
+      });
+      if (response.ok) {
+        return response?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+
+    initialPageParam: 1,
+    enabled,
+    getNextPageParam: lastPage => {
+      if (!lastPage) return undefined;
+      const { currentPage, totalRecordCount: totalItems } = lastPage.data;
+      const totalPages = getTotalPages({ pageSize, totalItems });
+      return currentPage < totalPages ? currentPage + 1 : undefined;
+    },
+  });
+
+  const formattedData =
+    queryData?.data?.pages
+      ?.flatMap(page => page?.data?.records)
+      ?.filter(val => !!val) || [];
+
+  const queryClient = useQueryClient();
+  const customRefetch = () => queryClient.resetQueries({ queryKey });
+
+  return { customRefetch, formattedData, queryData };
+};
+
+export const useGetBookingsGroupAccessAttendees = (
+  props: UseGetBookingsAttendeesProps,
+) => {
+  const { enabled, id } = props;
+  const queryKey = [
+    queryKeys.GET_GROUP_ACCESS_BOOKINGS,
+    'getBookingsGroupAccessAttendees',
+    id,
+  ];
+  const queryData = useInfiniteQuery({
+    queryKey,
+    queryFn: async ({ pageParam }) => {
+      const response = await getBookingsGroupAccessAttendees({
+        id,
+        value: {
+          PageNumber: pageParam,
+          PageSize: pageSize,
+        },
+      });
+      if (response.ok) {
+        return response?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+
+    initialPageParam: 1,
+    enabled,
+    getNextPageParam: lastPage => {
+      if (!lastPage) return undefined;
+      const { currentPage, totalRecordCount: totalItems } = lastPage.data;
+      const totalPages = getTotalPages({ pageSize, totalItems });
+      return currentPage < totalPages ? currentPage + 1 : undefined;
+    },
+  });
+
+  const formattedData =
+    queryData?.data?.pages
+      ?.flatMap(page => page?.data?.records)
+      ?.filter(val => !!val) || [];
+
+  const queryClient = useQueryClient();
+  const customRefetch = () => queryClient.resetQueries({ queryKey });
+
+  return { customRefetch, formattedData, queryData };
 };

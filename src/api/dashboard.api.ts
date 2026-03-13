@@ -57,7 +57,7 @@ export interface GetDashboardHappeningTodayGroupAccessData {
   totalCheckInCount: number;
   endTime: string;
   isAllDay: boolean;
-  status: number; // TODO  FIX THIS
+  status: number; // TODO  FIX THIS GROUP ACCESS
   statusText: string;
   startDate: string;
 }

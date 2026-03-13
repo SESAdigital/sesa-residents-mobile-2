@@ -16,11 +16,20 @@ export interface AppAvatarProps {
   style?: ViewStyle;
   size?: number;
   isLoading?: boolean;
+  loadingRadius?: number;
   // isClickable?: boolean;
 }
 
 const AppAvatar = (props: AppAvatarProps): JSX.Element => {
-  const { firstWord, imageURL, lastWord, style, isLoading, size } = props;
+  const {
+    firstWord,
+    imageURL,
+    lastWord,
+    style,
+    isLoading,
+    size,
+    loadingRadius,
+  } = props;
 
   const firstLetter = firstWord?.[0];
   const lastLetter = lastWord?.[0];
@@ -31,7 +40,7 @@ const AppAvatar = (props: AppAvatarProps): JSX.Element => {
     return (
       <AppSkeletonLoader
         style={loadingStyle}
-        borderRadius={size ? size / 2 : 100}
+        borderRadius={loadingRadius ? loadingRadius : size ? size / 2 : 100}
       >
         <View style={loadingStyle} />
       </AppSkeletonLoader>

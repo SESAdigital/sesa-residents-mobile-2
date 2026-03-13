@@ -26,56 +26,62 @@ interface Props {
 }
 
 const VisitorBookingRow = ({ val, onPress }: Props): React.JSX.Element => {
-  console.log(val);
   return (
     <View>
       <View style={styles.dateContainer}>
         <AppText style={styles.date}>{val?.title}</AppText>
       </View>
-      {val?.data?.map((value, index) => (
-        <View style={styles.container} key={index}>
-          <AppAvatar />
+      {val?.data?.map((value, index) => {
+        const splittedName = value?.name?.split(' ');
 
-          <TouchableOpacity
-            onPress={() => onPress(value?.id)}
-            style={styles.contentContainer}
-          >
-            <View style={styles.descriptionContainer}>
-              <AppText style={styles.title}>{value?.name}</AppText>
+        return (
+          <View style={styles.container} key={index}>
+            <AppAvatar
+              firstWord={splittedName?.[0]}
+              lastWord={splittedName?.[1]}
+            />
 
-              <View style={styles.row2}>
-                <View style={styles.row}>
-                  <MaterialSymbolsCalendarTodayRounded
-                    color={colors.GRAY_100}
-                    height={Size.calcAverage(12)}
-                    width={Size.calcAverage(12)}
-                  />
-                  <AppText style={styles.text}>
-                    {dayJSFormatter({
-                      value: value?.dateOfVisitation,
-                      format: 'MMM D, YYYY',
-                    })}
-                  </AppText>
-                </View>
-                <View style={styles.row}>
-                  <MaterialSymbolsAccountCircle
-                    color={colors.GRAY_100}
-                    height={Size.calcAverage(12)}
-                    width={Size.calcAverage(12)}
-                  />
-                  <AppText style={styles.text}>{value?.code}</AppText>
+            <TouchableOpacity
+              onPress={() => onPress(value?.id)}
+              style={styles.contentContainer}
+            >
+              <View style={styles.descriptionContainer}>
+                <AppText style={styles.title}>{value?.name}</AppText>
+
+                <View style={styles.row2}>
+                  <View style={styles.row}>
+                    <MaterialSymbolsCalendarTodayRounded
+                      color={colors.GRAY_100}
+                      height={Size.calcAverage(12)}
+                      width={Size.calcAverage(12)}
+                    />
+                    <AppText style={styles.text}>
+                      {dayJSFormatter({
+                        value: value?.dateOfVisitation,
+                        format: 'MMM D, YYYY',
+                      })}
+                    </AppText>
+                  </View>
+                  <View style={styles.row}>
+                    <MaterialSymbolsAccountCircle
+                      color={colors.GRAY_100}
+                      height={Size.calcAverage(12)}
+                      width={Size.calcAverage(12)}
+                    />
+                    <AppText style={styles.text}>{value?.code}</AppText>
+                  </View>
                 </View>
               </View>
-            </View>
-            <VisitorBookingStatus
-              status={value?.status}
-              statusText={value?.statusText}
-              checkInTime={value?.checkInTime}
-              checkOutTime={value?.checkOutTime}
-            />
-          </TouchableOpacity>
-        </View>
-      ))}
+              <VisitorBookingStatus
+                status={value?.status}
+                statusText={value?.statusText}
+                checkInTime={value?.checkInTime}
+                checkOutTime={value?.checkOutTime}
+              />
+            </TouchableOpacity>
+          </View>
+        );
+      })}
     </View>
   );
 };
@@ -124,14 +130,6 @@ export const VisitorBookingRowLoader = (): React.JSX.Element => {
 };
 
 const styles = StyleSheet.create({
-  amount: {
-    textAlign: 'right',
-    flex: 1,
-    paddingRight: Size.calcWidth(18),
-    fontSize: Size.calcAverage(12),
-    fontFamily: fonts.INTER_600,
-  },
-
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -178,6 +176,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: Size.calcWidth(10),
+    flexWrap: 'wrap',
   },
 
   title: {

@@ -84,6 +84,15 @@ import VisitorBookingDetailsScreen from '@src/screens/dashboard/bookings/visitor
 import ScanBarCodeScreen, {
   ScanBarCodeScreenProps,
 } from '@src/screens/dashboard/reusable-screens/ScanBarCodeScreen';
+import { GetSingleBookingsAttendeeDetailReq } from '@src/api/bookings.api';
+import AttendeeDetailScreen from '@src/screens/dashboard/bookings/attendees/AttendeeDetailScreen';
+import AttendeeListScreen, {
+  AttendeeListScreenProps,
+} from '@src/screens/dashboard/bookings/attendees/AttendeeListScreen';
+import EventBookingDetailsScreen from '@src/screens/dashboard/bookings/events/EventBookingDetailsScreen';
+import GroupAccessAttendeeDetailScreen from '@src/screens/dashboard/bookings/group-access/GroupAccessAttendeeDetailScreen';
+import GroupAccessAttendeeListScreen from '@src/screens/dashboard/bookings/group-access/GroupAccessAttendeeListScreen';
+import GroupAccessBookingDetailsScreen from '@src/screens/dashboard/bookings/group-access/GroupAccessBookingDetailsScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -126,6 +135,10 @@ export type AppNavigatorParams = {
 
   // BOOKINGS SCREENS
   [routes.VISITOR_BOOKING_DETAILS_SCREEN]: ScreenWithId;
+  [routes.EVENT_BOOKING_DETAILS_SCREEN]: ScreenWithId;
+  [routes.ATTENDEE_LIST_SCREEN]: AttendeeListScreenProps;
+  [routes.ATTENDEE_DETAIL_SCREEN]: GetSingleBookingsAttendeeDetailReq;
+  [routes.GROUP_ACCESS_BOOKING_DETAILS_SCREEN]: ScreenWithId;
 
   // ACTIVITY SCREENS
 
@@ -223,6 +236,11 @@ const RootStack = createNativeStackNavigator({
 
         //BOOKING SCREENS
         [routes.VISITOR_BOOKING_DETAILS_SCREEN]: VisitorBookingDetailsScreen,
+        [routes.EVENT_BOOKING_DETAILS_SCREEN]: EventBookingDetailsScreen,
+        [routes.GROUP_ACCESS_BOOKING_DETAILS_SCREEN]:
+          GroupAccessBookingDetailsScreen,
+        [routes.ATTENDEE_LIST_SCREEN]: AttendeeListScreen,
+        [routes.ATTENDEE_DETAIL_SCREEN]: AttendeeDetailScreen,
 
         // ACTIVITY SCREENS
         [routes.NEW_WALK_IN_VISITOR_ACTIVITY_SCREEN]:

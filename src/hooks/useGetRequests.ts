@@ -27,6 +27,7 @@ import { getPropertyDetails } from '@src/api/property-details.api';
 import { useAuthStore } from '@src/stores/auth.store';
 import { formatMoneyToTwoDecimals, getTotalPages } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
+import { getBillsMetrics } from '@src/api/bills.api';
 
 export const useGetUserDetails = () => {
   const { data: profileData, isLoading: isProfileLoading } = useGetProfile();
@@ -435,4 +436,58 @@ export const useGetBookingsGroupAccessAttendeeDetails = (
   const customRefetch = () => queryClient.resetQueries({ queryKey });
 
   return { customRefetch, queryData };
+};
+
+export const useGetBillsMetrics = () => {
+  const { selectedProperty } = useAuthStore();
+  const id = selectedProperty?.id;
+  const queryKey = [queryKeys.GET_BILLS_AND_COLLECTIONS, 'getBillsMetrics', id];
+
+  const { data, isLoading } = useQuery({
+    queryKey,
+    queryFn: async () => {
+      const response = await getBillsMetrics(id || 0);
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+    enabled: !!id,
+  });
+
+  const queryClient = useQueryClient();
+  const customRefetch = () => queryClient.resetQueries({ queryKey });
+
+  const unPaidEstatePaymentCount =
+    (data?.totalUnpaidBillCount || 0) + (data?.totalUnpaidCollectionCount || 0);
+
+  const unpaidEstatePaymentAmount =
+    (data?.totalBillDueAmount || 0) + (data?.totalColllectionDueAmount || 0);
+
+  const overDueEstatePaymentCount =
+    (data?.overDueBillCount || 0) + (data?.overDueCollectionCount || 0);
+
+  const dueEstatePaymentCount =
+    (data?.totalDueBillCount || 0) + (data?.totalDueCollectionCount || 0);
+
+  const isEstatePaymentOverdue =
+    !!data?.isBillOverDue || !!data?.isCollectionOverDue;
+
+  const earliestPaymentDueDay = Math.min(
+    data?.dueBillDays || 0,
+    data?.dueCollectionDays || 0,
+  );
+
+  return {
+    unPaidEstatePaymentCount,
+    unpaidEstatePaymentAmount,
+    overDueEstatePaymentCount,
+    dueEstatePaymentCount,
+    earliestPaymentDueDay,
+    isEstatePaymentOverdue,
+    isLoading,
+    customRefetch,
+  };
 };

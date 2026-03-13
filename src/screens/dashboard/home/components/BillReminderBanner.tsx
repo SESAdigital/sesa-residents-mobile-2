@@ -9,21 +9,57 @@ import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import Size from '@src/utils/useResponsiveSize';
+import routes from '@src/navigation/routes';
+import { useGetBillsMetrics } from '@src/hooks/useGetRequests';
 
 type Status = 'SUCCESS' | 'INFO' | 'DANGER';
 
-const BillReminderBanner = (): React.JSX.Element => {
-  const status: Status = 'SUCCESS';
-  const { color, backgroundColor } = getColors(status);
-  const navigation = useAppNavigator();
+interface ComponentProp {
+  message: string;
+  status: Status;
+}
 
-  const handlePress = () => {
-    console.log(navigation);
+const BillReminderBanner = (): React.ReactNode => {
+  const navigation = useAppNavigator();
+  const {
+    isEstatePaymentOverdue,
+    isLoading,
+    unPaidEstatePaymentCount,
+    earliestPaymentDueDay,
+  } = useGetBillsMetrics();
+
+  const getComponentProps = (): ComponentProp => {
+    if (isEstatePaymentOverdue || earliestPaymentDueDay < 0) {
+      return {
+        status: 'DANGER',
+        message: 'You have an overdue estate payment to pay.',
+      };
+    }
+
+    if (earliestPaymentDueDay === 0) {
+      return {
+        status: 'SUCCESS',
+        message: 'You have an estate payment due today',
+      };
+    }
+
+    return {
+      status: 'INFO',
+      message: `You have an estate payment due in ${earliestPaymentDueDay} day${
+        earliestPaymentDueDay > 1 ? 's' : ''
+      }`,
+    };
   };
+
+  const { message, status } = getComponentProps();
+
+  const { color, backgroundColor } = getColors(status);
+
+  if (isLoading || unPaidEstatePaymentCount) return null;
 
   return (
     <Pressable
-      onPress={handlePress}
+      onPress={() => navigation.navigate(routes.BILLS_AND_COLLECTIONS_SCREEN)}
       style={[styles.container, { backgroundColor }]}
     >
       <View style={styles.row}>
@@ -32,7 +68,7 @@ const BillReminderBanner = (): React.JSX.Element => {
           width={Size.calcAverage(20)}
           color={color}
         />
-        <AppText style={styles.text}>You have a bill due in 2 day(s)</AppText>
+        <AppText style={styles.text}>{message}</AppText>
       </View>
       <MaterialSymbolsChevronRightRounded
         height={Size.calcAverage(20)}

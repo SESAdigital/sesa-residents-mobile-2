@@ -23,7 +23,7 @@ import { formatMoneyToTwoDecimals } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 
-const queryKey = [queryKeys.ELECTRICITY, 'METRICS'];
+const queryKey = [queryKeys.GET_ELECTRICITY, 'METRICS'];
 
 interface Option {
   title: BuyPowerFormScreenType;

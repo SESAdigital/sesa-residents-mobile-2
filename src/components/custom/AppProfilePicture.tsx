@@ -8,15 +8,17 @@ import Size from '@src/utils/useResponsiveSize';
 
 interface Props {
   size?: number;
+  disabled?: boolean;
 }
 
 const AppProfilePicture = (props: Props): React.JSX.Element => {
   const { details } = useGetUserDetails();
-  const { size } = props;
+  const { size, disabled } = props;
   const navigation = useAppNavigator();
 
   return (
     <TouchableOpacity
+      disabled={disabled}
       hitSlop={Size.calcAverage(30)}
       onPress={() => navigation.navigate(routes.MANAGE_PROFILE_SCREEN)}
     >

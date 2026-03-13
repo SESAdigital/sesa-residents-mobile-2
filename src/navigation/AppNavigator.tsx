@@ -10,6 +10,13 @@ import {
 } from '@react-navigation/native-stack';
 
 import { PatchSetupPasswordReq } from '@src/api/auth.api';
+import { GetSingleBookingsAttendeeDetailReq } from '@src/api/bookings.api';
+import { PostEventResData } from '@src/api/events.api';
+import { PostGroupAccessResData } from '@src/api/group-access.api';
+import {
+  GetEmergencyServicesResData,
+  GetEstateRulesResData,
+} from '@src/api/helpCenter.api';
 import { PostBookVisitorResData } from '@src/api/visitors.api';
 import { WalletTransactionDetails } from '@src/api/wallets.api';
 import ForgotPasswordScreen, {
@@ -25,27 +32,59 @@ import PreLoginSuccessScreen from '@src/screens/auth/PreLoginSuccessScreen';
 import RetrieveAccountScreen from '@src/screens/auth/RetrieveAccountScreen';
 import SetupPasswordScreen from '@src/screens/auth/SetupPasswordScreen';
 import SetupWalletPinScreen from '@src/screens/auth/SetupWalletPinScreen';
+import EmergencyServiceDetailsScreen from '@src/screens/dashboard/account/screens/help-center/emergency-services/EmergencyServiceDetailsScreen';
+import EmergencyServicesScreen from '@src/screens/dashboard/account/screens/help-center/emergency-services/EmergencyServicesScreen';
+import EstateRuleDetailsScreen from '@src/screens/dashboard/account/screens/help-center/estate-rules/EstateRuleDetailsScreen';
+import EstateRulesScreen from '@src/screens/dashboard/account/screens/help-center/estate-rules/EstateRulesScreen';
 import HelpCenterScreen from '@src/screens/dashboard/account/screens/help-center/HelpCenterScreen';
 import ManageHouseholdScreen from '@src/screens/dashboard/account/screens/manage-household/ManageHouseholdScreen';
+import EmergencyContactListScreen from '@src/screens/dashboard/account/screens/manage-profile/emergency-contacts/EmergencyContactListScreen';
 import EmergencyContactsScreen from '@src/screens/dashboard/account/screens/manage-profile/emergency-contacts/EmergencyContactsScreen';
+import ManageEmergencyContactScreen from '@src/screens/dashboard/account/screens/manage-profile/emergency-contacts/ManageEmergencyContactScreen';
 import ManageProfileScreen from '@src/screens/dashboard/account/screens/manage-profile/ManageProfileScreen';
 import NotificationPreferencesScreen from '@src/screens/dashboard/account/screens/manage-profile/notification-preferences/NotificationPreferencesScreen';
 import UpdatePhoneNumberScreen from '@src/screens/dashboard/account/screens/manage-profile/update-phone-number/UpdatePhoneNumberScreen';
 import MyQRCodeScreen from '@src/screens/dashboard/account/screens/my-qr-code/MyQRCodeScreen';
+import HouseHoldActivityDetailsPage from '@src/screens/dashboard/account/screens/property-details/household-activity/HouseHoldActivityDetailsPage';
+import HouseholdActivityPage from '@src/screens/dashboard/account/screens/property-details/household-activity/HouseholdActivityPage';
+import OccupantHistoryPage from '@src/screens/dashboard/account/screens/property-details/occupant-history/OccupantHistoryPage';
+import PropertyDetailsConfigureAccessScreen from '@src/screens/dashboard/account/screens/property-details/PropertyDetailsConfigureAccessScreen';
+import PropertyDetailScreen from '@src/screens/dashboard/account/screens/property-details/PropertyDetailScreen';
 import AccountSettingsScreen from '@src/screens/dashboard/account/screens/settings/AccountSettingsScreen';
+import ChangePasswordScreen from '@src/screens/dashboard/account/screens/settings/screens/ChangePasswordScreen';
+import ChangeWalletPinScreen from '@src/screens/dashboard/account/screens/settings/screens/ChangeWalletPinScreen';
+import DeleteAccountScreen from '@src/screens/dashboard/account/screens/settings/screens/DeleteAccountScreen';
+import ResetWalletPinScreen from '@src/screens/dashboard/account/screens/settings/screens/ResetWalletPinScreen';
+import NewWalkInVisitorActivityScreen from '@src/screens/dashboard/activity/screens/NewWalkInVisitorActivityScreen';
 import AddMoneyScreen from '@src/screens/dashboard/add-money/AddMoneyScreen';
 import AddMoneyViaCardScreen from '@src/screens/dashboard/add-money/AddMoneyViaCardScreen';
+import AttendeeDetailScreen from '@src/screens/dashboard/bookings/attendees/AttendeeDetailScreen';
+import AttendeeListScreen, {
+  AttendeeListScreenProps,
+} from '@src/screens/dashboard/bookings/attendees/AttendeeListScreen';
+import EventBookingDetailsScreen from '@src/screens/dashboard/bookings/events/EventBookingDetailsScreen';
+import GroupAccessBookingDetailsScreen from '@src/screens/dashboard/bookings/group-access/GroupAccessBookingDetailsScreen';
+import VisitorBookingDetailsScreen from '@src/screens/dashboard/bookings/visitors/VisitorBookingDetailsScreen';
+import BillInvoiceDetailsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/BillInvoiceDetailsScreen';
 import BillsAndCollectionsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/BillsAndCollectionsScreen';
+import PayInvoiceScreen from '@src/screens/dashboard/my-hub/bills-and-collections/PayInvoiceScreen';
+import UnPaidEstatePaymentsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/UnPaidEstatePaymentsScreen';
 import BookVisitorScreen from '@src/screens/dashboard/my-hub/book-visitor/BookVisitorScreen';
 import BookVisitorSuccessScreen from '@src/screens/dashboard/my-hub/book-visitor/BookVistorSuccessScreen';
 import BuyPowerFormScreen from '@src/screens/dashboard/my-hub/buy-power/BuyPowerFormScreen';
 import BuyPowerScreen from '@src/screens/dashboard/my-hub/buy-power/BuyPowerScreen';
 import CreateEventsScreen from '@src/screens/dashboard/my-hub/create-events/CreateEventsScreen';
+import CreateEventSuccessScreen from '@src/screens/dashboard/my-hub/create-events/CreateEventSuccessScreen';
+import CreateGroupAccessScreen from '@src/screens/dashboard/my-hub/group-access/CreateGroupAccessScreen';
+import CreateGroupAccessSuccessScreen from '@src/screens/dashboard/my-hub/group-access/CreateGroupAccessSuccessScreen';
 import GroupAccessScreen from '@src/screens/dashboard/my-hub/group-access/GroupAccessScreen';
 import HireArtisanScreen from '@src/screens/dashboard/my-hub/hire-artisan/HireArtisanScreen';
 import PanicAlertScreen, {
   PanicAlertScreenData,
 } from '@src/screens/dashboard/my-hub/panic-alert/PanicAlertScreen';
+import ScanBarCodeScreen, {
+  ScanBarCodeScreenProps,
+} from '@src/screens/dashboard/reusable-screens/ScanBarCodeScreen';
 import TransactionSuccessScreen, {
   TransactionSuccessScreenData,
 } from '@src/screens/dashboard/reusable-screens/TransactionSuccessScreen';
@@ -55,44 +94,6 @@ import { useAuthStore } from '@src/stores/auth.store';
 import { BuyPowerFormScreenData } from '@src/types/default';
 import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
-import ManageEmergencyContactScreen from '@src/screens/dashboard/account/screens/manage-profile/emergency-contacts/ManageEmergencyContactScreen';
-import EmergencyContactListScreen from '@src/screens/dashboard/account/screens/manage-profile/emergency-contacts/EmergencyContactListScreen';
-import {
-  GetEmergencyServicesResData,
-  GetEstateRulesResData,
-} from '@src/api/helpCenter.api';
-import EmergencyServiceDetailsScreen from '@src/screens/dashboard/account/screens/help-center/emergency-services/EmergencyServiceDetailsScreen';
-import EmergencyServicesScreen from '@src/screens/dashboard/account/screens/help-center/emergency-services/EmergencyServicesScreen';
-import EstateRuleDetailsScreen from '@src/screens/dashboard/account/screens/help-center/estate-rules/EstateRuleDetailsScreen';
-import EstateRulesScreen from '@src/screens/dashboard/account/screens/help-center/estate-rules/EstateRulesScreen';
-import ChangePasswordScreen from '@src/screens/dashboard/account/screens/settings/screens/ChangePasswordScreen';
-import ChangeWalletPinScreen from '@src/screens/dashboard/account/screens/settings/screens/ChangeWalletPinScreen';
-import ResetWalletPinScreen from '@src/screens/dashboard/account/screens/settings/screens/ResetWalletPinScreen';
-import CreateEventSuccessScreen from '@src/screens/dashboard/my-hub/create-events/CreateEventSuccessScreen';
-import { PostEventResData } from '@src/api/events.api';
-import CreateGroupAccessScreen from '@src/screens/dashboard/my-hub/group-access/CreateGroupAccessScreen';
-import CreateGroupAccessSuccessScreen from '@src/screens/dashboard/my-hub/group-access/CreateGroupAccessSuccessScreen';
-import { PostGroupAccessResData } from '@src/api/group-access.api';
-import DeleteAccountScreen from '@src/screens/dashboard/account/screens/settings/screens/DeleteAccountScreen';
-import HouseHoldActivityDetailsPage from '@src/screens/dashboard/account/screens/property-details/household-activity/HouseHoldActivityDetailsPage';
-import HouseholdActivityPage from '@src/screens/dashboard/account/screens/property-details/household-activity/HouseholdActivityPage';
-import PropertyDetailsConfigureAccessScreen from '@src/screens/dashboard/account/screens/property-details/PropertyDetailsConfigureAccessScreen';
-import PropertyDetailScreen from '@src/screens/dashboard/account/screens/property-details/PropertyDetailScreen';
-import OccupantHistoryPage from '@src/screens/dashboard/account/screens/property-details/occupant-history/OccupantHistoryPage';
-import NewWalkInVisitorActivityScreen from '@src/screens/dashboard/activity/screens/NewWalkInVisitorActivityScreen';
-import VisitorBookingDetailsScreen from '@src/screens/dashboard/bookings/visitors/VisitorBookingDetailsScreen';
-import ScanBarCodeScreen, {
-  ScanBarCodeScreenProps,
-} from '@src/screens/dashboard/reusable-screens/ScanBarCodeScreen';
-import { GetSingleBookingsAttendeeDetailReq } from '@src/api/bookings.api';
-import AttendeeDetailScreen from '@src/screens/dashboard/bookings/attendees/AttendeeDetailScreen';
-import AttendeeListScreen, {
-  AttendeeListScreenProps,
-} from '@src/screens/dashboard/bookings/attendees/AttendeeListScreen';
-import EventBookingDetailsScreen from '@src/screens/dashboard/bookings/events/EventBookingDetailsScreen';
-import GroupAccessAttendeeDetailScreen from '@src/screens/dashboard/bookings/group-access/GroupAccessAttendeeDetailScreen';
-import GroupAccessAttendeeListScreen from '@src/screens/dashboard/bookings/group-access/GroupAccessAttendeeListScreen';
-import GroupAccessBookingDetailsScreen from '@src/screens/dashboard/bookings/group-access/GroupAccessBookingDetailsScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -122,6 +123,7 @@ export type AppNavigatorParams = {
 
   [routes.HOME_BOTTOM_TABS_NAVIGATOR]: undefined;
 
+  // MY HUB SCREENS
   [routes.PANIC_ALERT_SCREEN]: PanicAlertScreenData;
   [routes.BUY_POWER_SCREEN]: undefined;
   [routes.BUY_POWER_FORM_SCREEN]: BuyPowerFormScreenData;
@@ -132,6 +134,10 @@ export type AppNavigatorParams = {
   [routes.GROUP_ACCESS_SCREEN]: undefined;
   [routes.CREATE_GROUP_ACCESS_SCREEN]: undefined;
   [routes.CREATE_GROUP_ACCESS_SUCCESS_SCREEN]: PostGroupAccessResData;
+  [routes.BILLS_AND_COLLECTIONS_SCREEN]: undefined;
+  [routes.UNPAID_ESTATE_PAYMENT_SCREEN]: undefined;
+  [routes.PAY_INVOICE_SCREEN]: undefined;
+  [routes.BILL_INVOICE_DETAILS_SCREEN]: undefined;
 
   // BOOKINGS SCREENS
   [routes.VISITOR_BOOKING_DETAILS_SCREEN]: ScreenWithId;
@@ -213,7 +219,7 @@ const RootStack = createNativeStackNavigator({
     AUTHORIZED_USER: {
       if: useIsSignedIn,
       screens: {
-        // AUTH PAGES
+        // HOME SCREEN / MY HUB PAGES
         [routes.HOME_BOTTOM_TABS_NAVIGATOR]: HomeBottomTabsNavigator,
         [routes.BOOK_VISITOR_SCREEN]: BookVisitorScreen,
         [routes.BOOK_VISITOR_SUCCESS_SCREEN]: BookVisitorSuccessScreen,
@@ -224,6 +230,9 @@ const RootStack = createNativeStackNavigator({
         [routes.CREATE_GROUP_ACCESS_SUCCESS_SCREEN]:
           CreateGroupAccessSuccessScreen,
         [routes.BILLS_AND_COLLECTIONS_SCREEN]: BillsAndCollectionsScreen,
+        [routes.UNPAID_ESTATE_PAYMENT_SCREEN]: UnPaidEstatePaymentsScreen,
+        [routes.PAY_INVOICE_SCREEN]: PayInvoiceScreen,
+        [routes.BILL_INVOICE_DETAILS_SCREEN]: BillInvoiceDetailsScreen,
         [routes.BUY_POWER_SCREEN]: BuyPowerScreen,
         [routes.BUY_POWER_FORM_SCREEN]: BuyPowerFormScreen,
         [routes.PANIC_ALERT_SCREEN]: PanicAlertScreen,

@@ -275,3 +275,45 @@ export const EventStatusTypeData = {
 
 export type EventStatusType =
   (typeof EventStatusTypeData)[keyof typeof EventStatusTypeData];
+
+export const BillFrequencyTypeData = {
+  OneOff: 1,
+  Monthly: 2,
+  Quarterly: 3,
+  BiAnnually: 4,
+  Yearly: 5,
+  Weekly: 6,
+} as const;
+
+export type BillFrequencyType =
+  (typeof BillFrequencyTypeData)[keyof typeof BillFrequencyTypeData];
+
+export const CollectionTypeData = {
+  Fixed: 1,
+  Variable: 2,
+  Multiple: 3,
+} as const;
+
+export type CollectionType =
+  (typeof CollectionTypeData)[keyof typeof CollectionTypeData];
+
+export const InvoicePurposeTypeData = {
+  PlatformSubscription: 1,
+  Bill: 2,
+  Collection: 3,
+} as const;
+
+export type InvoicePurposeType =
+  (typeof InvoicePurposeTypeData)[keyof typeof InvoicePurposeTypeData];
+
+export const InvoiceStatusTypeData = {
+  Pending: 0,
+  Queried: 1,
+  Cancelled: 2,
+  Declined: 3,
+  PartialPay: 4,
+  Completed: 5,
+} as const;
+
+export type InvoiceStatusType =
+  (typeof InvoiceStatusTypeData)[keyof typeof InvoiceStatusTypeData];

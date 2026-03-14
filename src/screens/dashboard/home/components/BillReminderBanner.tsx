@@ -55,7 +55,7 @@ const BillReminderBanner = (): React.ReactNode => {
 
   const { color, backgroundColor } = getColors(status);
 
-  if (isLoading || unPaidEstatePaymentCount) return null;
+  if (isLoading || !unPaidEstatePaymentCount) return null;
 
   return (
     <Pressable

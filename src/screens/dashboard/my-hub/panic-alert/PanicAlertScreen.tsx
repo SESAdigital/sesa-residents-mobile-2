@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';

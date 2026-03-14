@@ -79,7 +79,13 @@ const PayInvoiceScreen = ({ route }: Props): React.JSX.Element => {
   const steps = [
     {
       title: 'Select Payment Method',
-      component: <PayInvoiceStep1 onDone={() => setCurrentStep(2)} />,
+      component: (
+        <PayInvoiceStep1
+          amountDue={dueAmount}
+          invoiceNumber={id?.toString()}
+          onDone={() => setCurrentStep(2)}
+        />
+      ),
     },
     {
       title: '',

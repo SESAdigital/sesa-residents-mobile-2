@@ -1,6 +1,10 @@
 import { View } from 'react-native';
 import { SvgProps } from 'react-native-svg';
 
+import {
+  AccessCodeStatusData,
+  AccessCodeStatusType,
+} from '@src/api/constants/default';
 import AppText from '@src/components/AppText';
 import {
   MaterialSymbolsCalendarTodayRounded,
@@ -14,6 +18,7 @@ interface Props {
   isAllDay: boolean;
   startDate: string;
   endTime: string;
+  status: AccessCodeStatusType;
 }
 
 interface Details {
@@ -23,7 +28,7 @@ interface Details {
 }
 
 const GroupAccessBookingStatus = (props: Props): React.JSX.Element => {
-  const { endTime, isAllDay, startDate } = props;
+  const { endTime, isAllDay, startDate, status } = props;
 
   const formattedEndTime = dayJSFormatter({
     shouldNotLocalize: true,
@@ -48,7 +53,11 @@ const GroupAccessBookingStatus = (props: Props): React.JSX.Element => {
         color: colors.GRAY_100,
         Icon: MaterialSymbolsCalendarTodayRounded,
         text: `${formattedStartDate}  ${
-          isAllDay ? 'All Day' : `${formattedEndTime}`
+          status === AccessCodeStatusData.Cancel
+            ? 'Cancelled'
+            : isAllDay
+            ? 'All Day'
+            : `${formattedEndTime}`
         }`,
       };
     }

@@ -245,7 +245,7 @@ export interface GetBookingsGroupAccessResData {
   totalCheckInCount: number;
   endTime: string;
   isAllDay: boolean;
-  status: number; // TODO  FIX THIS GROUP ACCESS
+  status: EventStatusType;
   statusText: string;
   startDate: string;
 }
@@ -269,7 +269,7 @@ interface GetSingleGroupAccessBookingRes extends GenericApiResponse {
     endTime: string;
     isAllDay: boolean;
     checkInCounts: number;
-    status: number; // TODO  FIX THIS GROUP ACCESS
+    status: AccessCodeStatusType;
     statusText: string;
     repeatDays: string[];
   };

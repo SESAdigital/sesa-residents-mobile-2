@@ -128,8 +128,8 @@ QR code: ${appConfig.APP_WEBSITE_URL}/access/${param?.code}
             <AppText style={styles.description}>
               Share this access code with walk-in visitors ONLY after they
               arrive at your property. They will be allowed to check in without
-              an access code but will be required to present this code
-              (GA-xxxxx) at check-out.
+              an access code but will be required to present this code (
+              {param?.code}) at check-out.
             </AppText>
 
             <View style={styles.detailContainer}>

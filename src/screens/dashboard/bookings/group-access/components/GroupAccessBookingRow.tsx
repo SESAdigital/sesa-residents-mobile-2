@@ -41,6 +41,7 @@ const GroupAccessBookingRow = ({ val, onPress }: Props): React.JSX.Element => {
                 isAllDay={value?.isAllDay}
                 endTime={value?.endTime}
                 startDate={value?.startDate}
+                status={value?.status}
               />
             </View>
             {!!value?.totalCheckInCount && (

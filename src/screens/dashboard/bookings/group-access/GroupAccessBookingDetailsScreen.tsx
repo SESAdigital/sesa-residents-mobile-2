@@ -24,7 +24,7 @@ import routes from '@src/navigation/routes';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
-import { dayJSFormatter } from '@src/utils/time';
+import { dayJSFormatter, isToday } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
 import GroupAccessBookingStatus from './components/GroupAccessBookingStatus';
 import { EventStatusTypeData } from '@src/api/constants/default';
@@ -205,12 +205,15 @@ const GroupAccessBookingDetailsScreen = (props: Props): React.JSX.Element => {
         >
           {isLoading ? (
             <AppSkeletonLoader width={Size.getWidth() / 2.8} />
-          ) : (
+          ) : isToday(data?.startTime || '') ? (
             <GroupAccessBookingStatus
+              isAllDay={data?.isAllDay || false}
               endTime={data?.endTime || ''}
               startDate={data?.startTime || ''}
-              isAllDay={data?.isAllDay || false}
+              status={data?.status || 0}
             />
+          ) : (
+            <AppText style={styles.statusText}>{data?.statusText}</AppText>
           )}
           {isLoading ? (
             <AppSkeletonLoader width={Size.getWidth() / 2.8} />
@@ -230,8 +233,7 @@ const GroupAccessBookingDetailsScreen = (props: Props): React.JSX.Element => {
 
         <AppDetailCard isLoading={isLoading} detailList={detailList} />
       </ScrollView>
-      {(data?.status === EventStatusTypeData.New ||
-        data?.status === EventStatusTypeData.Active) && (
+      {data?.status === EventStatusTypeData.New && (
         <View style={styles.footer}>
           <SubmitButton
             variant="DANGER_LIGHT"
@@ -299,6 +301,12 @@ const styles = StyleSheet.create({
   },
 
   statsText: {
+    fontFamily: fonts.INTER_500,
+    color: colors.GRAY_400,
+    fontSize: Size.calcAverage(12),
+  },
+
+  statusText: {
     fontFamily: fonts.INTER_500,
     color: colors.GRAY_400,
     fontSize: Size.calcAverage(12),

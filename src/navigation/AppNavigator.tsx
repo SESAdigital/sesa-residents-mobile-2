@@ -67,7 +67,9 @@ import GroupAccessBookingDetailsScreen from '@src/screens/dashboard/bookings/gro
 import VisitorBookingDetailsScreen from '@src/screens/dashboard/bookings/visitors/VisitorBookingDetailsScreen';
 import BillInvoiceDetailsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/BillInvoiceDetailsScreen';
 import BillsAndCollectionsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/BillsAndCollectionsScreen';
-import PayInvoiceScreen from '@src/screens/dashboard/my-hub/bills-and-collections/PayInvoiceScreen';
+import PayInvoiceScreen, {
+  PayInvoiceScreenProps,
+} from '@src/screens/dashboard/my-hub/bills-and-collections/PayInvoiceScreen';
 import UnPaidEstatePaymentsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/UnPaidEstatePaymentsScreen';
 import BookVisitorScreen from '@src/screens/dashboard/my-hub/book-visitor/BookVisitorScreen';
 import BookVisitorSuccessScreen from '@src/screens/dashboard/my-hub/book-visitor/BookVistorSuccessScreen';
@@ -136,7 +138,7 @@ export type AppNavigatorParams = {
   [routes.CREATE_GROUP_ACCESS_SUCCESS_SCREEN]: PostGroupAccessResData;
   [routes.BILLS_AND_COLLECTIONS_SCREEN]: undefined;
   [routes.UNPAID_ESTATE_PAYMENT_SCREEN]: undefined;
-  [routes.PAY_INVOICE_SCREEN]: undefined;
+  [routes.PAY_INVOICE_SCREEN]: PayInvoiceScreenProps;
   [routes.BILL_INVOICE_DETAILS_SCREEN]: undefined;
 
   // BOOKINGS SCREENS

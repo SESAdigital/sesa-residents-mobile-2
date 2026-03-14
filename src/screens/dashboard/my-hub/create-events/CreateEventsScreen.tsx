@@ -231,9 +231,9 @@ const CreateEventsScreen = (): React.JSX.Element => {
       selectedType={EventType}
       setSelectedType={type => setValue('EventType', type)}
     />,
-    <EventDetailsStep form={form} />,
-    <EventSummaryStep form={form} />,
-    <EventMessageStep form={form} />,
+    <EventDetailsStep key={CreateEventSteps.EVENT_DETAILS_STEP} form={form} />,
+    <EventSummaryStep key={CreateEventSteps.EVENT_SUMMARY_STEP} form={form} />,
+    <EventMessageStep key={CreateEventSteps.EVENT_MESSAGE_STEP} form={form} />,
   ];
 
   return (

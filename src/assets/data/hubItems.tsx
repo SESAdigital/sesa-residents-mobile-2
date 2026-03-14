@@ -112,7 +112,8 @@ export const allHubItems: HubItem[] = [
     ),
     bgColor: colors.BLUE_900,
     color: colors.BLUE_200,
-    route: routes.BILLS_AND_COLLECTIONS_SCREEN,
+    // route: routes.BILLS_AND_COLLECTIONS_SCREEN,
+    route: routes.PAY_INVOICE_SCREEN,
   },
   {
     Icon: MaterialSymbolsEmojiObjects,

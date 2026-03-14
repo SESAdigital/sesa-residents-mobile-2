@@ -3,12 +3,13 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
-import { NotificationTypeData } from '@src/api/constants/default';
+import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
+import queryKeys from '@src/api/constants/queryKeys';
 import {
   getNofications,
-  GetNotificationsResData,
   getNotificationsUnreadCount,
   postNotification,
 } from '@src/api/notifications.api';
@@ -28,37 +29,34 @@ import Size from '@src/utils/useResponsiveSize';
 import NotificationRow, {
   NotificationRowLoader,
 } from './components/NotificationRow';
-import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
-import queryKeys from '@src/api/constants/queryKeys';
 import { useNotificationClick } from './useNotificationClick';
-import { useEffect, useState } from 'react';
 
-const now = new Date().toISOString();
+// const now = new Date().toISOString();
 
-const notifications: GetNotificationsResData[] = Object.entries(
-  NotificationTypeData,
-).flatMap(([key, value], index) => [
-  {
-    id: index * 2 + 1,
-    title: key.replace(/_/g, ' '),
-    message: `${key.replace(/_/g, ' ')} notification.`,
-    isRead: true,
-    notificationTypeId: value,
-    notificationType: value,
-    timeCreated: now,
-    timePosted: now,
-  },
-  {
-    id: index * 2 + 2,
-    title: key.replace(/_/g, ' '),
-    message: `${key.replace(/_/g, ' ')} notification.`,
-    isRead: false,
-    notificationTypeId: value,
-    notificationType: value,
-    timeCreated: now,
-    timePosted: now,
-  },
-]);
+// const notifications: GetNotificationsResData[] = Object.entries(
+//   NotificationTypeData,
+// ).flatMap(([key, value], index) => [
+//   {
+//     id: index * 2 + 1,
+//     title: key.replace(/_/g, ' '),
+//     message: `${key.replace(/_/g, ' ')} notification.`,
+//     isRead: true,
+//     notificationTypeId: value,
+//     notificationType: value,
+//     timeCreated: now,
+//     timePosted: now,
+//   },
+//   {
+//     id: index * 2 + 2,
+//     title: key.replace(/_/g, ' '),
+//     message: `${key.replace(/_/g, ' ')} notification.`,
+//     isRead: false,
+//     notificationTypeId: value,
+//     notificationType: value,
+//     timeCreated: now,
+//     timePosted: now,
+//   },
+// ]);
 
 const queryKey = [queryKeys.GET_NOTIFICATIONS];
 
@@ -128,8 +126,6 @@ const ActivityScreen = (): React.JSX.Element => {
 
   const { handleNotificationClick } = useNotificationClick();
 
-  console.log(formattedData);
-
   const handlePushUnReadId = (id: number) => {
     if (!unReadIds.includes(id)) {
       setUnReadIds(prev => [...prev, id]);
@@ -169,7 +165,7 @@ const ActivityScreen = (): React.JSX.Element => {
       </View>
 
       <FlatList
-        data={notifications}
+        data={formattedData}
         refreshControl={
           <AppRefreshControl refreshing={isLoading} onRefresh={refetch} />
         }

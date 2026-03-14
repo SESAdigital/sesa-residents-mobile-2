@@ -70,10 +70,10 @@ const AccountScreen = (): React.JSX.Element => {
       title: 'Manage Profile',
       onClick: () => navigation.navigate(routes.MANAGE_PROFILE_SCREEN),
     },
-    {
-      title: 'Manage Household',
-      onClick: () => navigation.navigate(routes.MANAGE_HOUSEHOLD_SCREEN),
-    },
+    // {
+    //   title: 'Manage Household',
+    //   onClick: () => navigation.navigate(routes.MANAGE_HOUSEHOLD_SCREEN),
+    // },
   ];
 
   const viewAccessInfo = () => {
@@ -315,7 +315,8 @@ const styles = StyleSheet.create({
 
   actionButton: {
     backgroundColor: colors.WHITE_200,
-    width: '46%',
+    // width: '46%',
+    width: '100%',
     paddingVertical: Size.calcHeight(8),
     paddingHorizontal: Size.calcWidth(16),
     borderRadius: 100,

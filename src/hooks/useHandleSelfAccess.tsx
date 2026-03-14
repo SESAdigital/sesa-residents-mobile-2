@@ -1,5 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { OnReadCodeData } from 'react-native-camera-kit/dist/CameraProps';
 
 import { AccessEntryType } from '@src/api/constants/default';
@@ -16,18 +15,24 @@ export const useHandleSelfAccess = () => {
   const { setActiveModal } = useAppStateStore();
   const navigation = useAppNavigator();
   const isScanning = useRef(false);
-  const getVerifyDoorCodeAPI = useMutation({ mutationFn: getVerifyDoorCode });
-  const postOpenDoorAPI = useMutation({ mutationFn: postOpenDoor });
+  const [isLoading, setIsLoading] = useState(false);
+  // const getVerifyDoorCodeAPI = useMutation({ mutationFn: getVerifyDoorCode });
+  // const postOpenDoorAPI = useMutation({ mutationFn: postOpenDoor });
 
-  const isLoading =
-    getVerifyDoorCodeAPI?.isPending || postOpenDoorAPI?.isPending;
+  // const isLoading =
+  //   getVerifyDoorCodeAPI?.isPending || postOpenDoorAPI?.isPending;
 
   const handleOpenDoor = async (doorId: string, option: AccessEntryType) => {
-    const response = await postOpenDoorAPI.mutateAsync({
+    // const response = await postOpenDoorAPI.mutateAsync({
+    //   doorId,
+    //   accessEntryType: option,
+    // });
+    const response = await postOpenDoor({
       doorId,
       accessEntryType: option,
     });
 
+    setIsLoading(false);
     if (response?.ok) {
       appToast.Success(response?.data?.message || 'Door opened successfully');
     } else {
@@ -37,14 +42,17 @@ export const useHandleSelfAccess = () => {
 
   const handleVerifyDoor = async (code: number, option: AccessEntryType) => {
     const codeValue = code?.toString?.();
-    const response = await getVerifyDoorCodeAPI.mutateAsync(codeValue);
+
+    setIsLoading(true);
+    const response = await getVerifyDoorCode(codeValue);
 
     if (response?.ok) {
-      appToast.Success(
-        response?.data?.message || 'Door code verified successfully',
-      );
+      // appToast.Success(
+      //   response?.data?.message || 'Door code verified successfully',
+      // );
       handleOpenDoor(codeValue, option);
     } else {
+      setIsLoading(false);
       handleToastApiError(response);
     }
   };
@@ -59,7 +67,7 @@ export const useHandleSelfAccess = () => {
 
     if (!isNaN(codeValue)) {
       appToast.Success(`Code scanned successfully ${codeValue} `);
-      navigation.goBack();
+      navigation.pop();
       handleVerifyDoor(codeValue, option);
     } else {
       setTimeout(() => {

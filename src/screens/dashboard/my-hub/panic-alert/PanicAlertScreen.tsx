@@ -4,7 +4,6 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PanicAlertType, PanicAlertTypeData } from '@src/api/constants/default';
-import queryKeys from '@src/api/constants/queryKeys';
 import {
   PanicAlertMetricsData,
   postPanicAlert,
@@ -23,6 +22,7 @@ import {
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
+import { useHandleTransactionRefresh } from '@src/hooks';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
 import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
 import { useAppStateStore } from '@src/stores/appState.store';
@@ -67,7 +67,8 @@ const PanicAlertScreen = ({ route }: Props): React.JSX.Element => {
   const [panicType, setPanicType] = useState<PanicAlertType>(
     PanicAlertTypeData.SecurityEmergency,
   );
-  const queryClient = useQueryClient();
+  const { handleRefreshTransactionalData: handleRefreshTransactions } =
+    useHandleTransactionRefresh();
   const { selectedProperty } = useAuthStore();
   const {
     setIsAppModalLoading,
@@ -97,12 +98,7 @@ const PanicAlertScreen = ({ route }: Props): React.JSX.Element => {
     }
 
     if (response.ok) {
-      queryClient.invalidateQueries({
-        queryKey: [queryKeys.GET_WALLET_BALANCE],
-      });
-      queryClient.invalidateQueries({
-        queryKey: [queryKeys.GET_WALLET_TRANSACTIONS],
-      });
+      handleRefreshTransactions();
       setActiveModal({
         modalType: 'EMPTY_MODAL',
         emptyModalComponent: (

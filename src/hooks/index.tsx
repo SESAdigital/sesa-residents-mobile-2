@@ -15,6 +15,7 @@ import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { useGetCurrentLocation } from './useCurrentLocation';
 import { useGetPropertyDetails } from './useGetRequests';
+import queryKeys from '@src/api/constants/queryKeys';
 
 export const useHandlePanicAlert = () => {
   const { latitude, longitude } = useGetCurrentLocation();
@@ -197,4 +198,15 @@ export const useCheckIsGroupAccessEnabled = () => {
   };
 
   return { handleGroupAccessClick };
+};
+
+export const useHandleTransactionRefresh = () => {
+  const queryClient = useQueryClient();
+
+  const handleRefreshTransactionalData = () => {
+    queryClient.resetQueries({ queryKey: [queryKeys.GET_WALLET_BALANCE] });
+    queryClient.resetQueries({ queryKey: [queryKeys.GET_WALLET_TRANSACTIONS] });
+  };
+
+  return { handleRefreshTransactionalData };
 };

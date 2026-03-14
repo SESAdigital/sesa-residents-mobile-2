@@ -70,7 +70,7 @@ const AddMoneyScreen = (): React.JSX.Element => {
   const accountNumber = bankDetails?.[2]?.value;
 
   return (
-    <AppScreen style={styles.container}>
+    <AppScreen showDownInset>
       <AppScreenHeader
         icon="close"
         containerStyle={styles.header}
@@ -186,11 +186,6 @@ const styles = StyleSheet.create({
   bankDetailValue: {
     fontSize: Size.calcAverage(12),
     fontFamily: fonts.INTER_500,
-  },
-
-  container: {
-    paddingHorizontal: 0,
-    backgroundColor: colors.WHITE_200,
   },
 
   copyButton: {

@@ -1,5 +1,4 @@
 import { joiResolver } from '@hookform/resolvers/joi';
-import { useQueryClient } from '@tanstack/react-query';
 import Joi from 'joi';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -7,7 +6,6 @@ import { StyleSheet, View } from 'react-native';
 import { usePaystack } from 'react-native-paystack-webview';
 import { PaystackTransactionResponse } from 'react-native-paystack-webview/production/lib/types';
 
-import queryKeys from '@src/api/constants/queryKeys';
 import {
   postWalletCompleteCardTopUp,
   postWalletInitiateCardTopUp,
@@ -22,6 +20,7 @@ import SubmitButton from '@src/components/forms/SubmitButton';
 import { PaystackIcon } from '@src/components/icons/custom';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
+import { useHandleTransactionRefresh } from '@src/hooks';
 import { useGetUserDetails } from '@src/hooks/useGetRequests';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
@@ -47,7 +46,7 @@ const AddMoneyViaCardScreen = (): React.JSX.Element => {
     useForm<PostWalletInitiateCardTopUpReq>({
       resolver: joiResolver(schema),
     });
-  const queryClient = useQueryClient();
+  const { handleRefreshTransactionalData } = useHandleTransactionRefresh();
   const [isVerifying, setIsVerifying] = useState(false);
   const { setActiveModal, setIsAppModalLoading, closeActiveModal } =
     useAppStateStore();
@@ -66,10 +65,7 @@ const AddMoneyViaCardScreen = (): React.JSX.Element => {
 
     if (response?.ok) {
       reset?.();
-      queryClient.resetQueries({ queryKey: [queryKeys.GET_WALLET_BALANCE] });
-      queryClient.invalidateQueries({
-        queryKey: [queryKeys.GET_WALLET_TRANSACTIONS],
-      });
+      handleRefreshTransactionalData();
       // appToast.Success(response?.data?.message || 'Payment successful');
       navigation.navigate(routes.TRANSACTION_SUCCESS_SCREEN, {
         title: 'Wallet Funded',

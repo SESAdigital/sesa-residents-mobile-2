@@ -119,10 +119,9 @@ export const useHandlePanicAlert = () => {
 };
 
 export const useLogout = () => {
-  const { logout, loginReq } = useAuthStore();
+  const { logout } = useAuthStore();
   const { reset, setIsAppModalLoading, closeActiveModal, setActiveModal } =
     useAppStateStore();
-  console.log(loginReq);
   const queryClient = useQueryClient();
 
   const handleLogout = async () => {

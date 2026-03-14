@@ -217,7 +217,7 @@ const EventBookingDetailsScreen = (props: Props): React.JSX.Element => {
           ) : (
             <View style={styles.stats}>
               <AppText style={styles.statsText}>
-                {data?.totalCheckInCount || 0} Check-ins
+                {data?.totalCheckInCount?.toLocaleString() || 0} Check-ins
               </AppText>
               <MaterialSymbolsChevronRightRounded
                 color={colors.BLACK_100}

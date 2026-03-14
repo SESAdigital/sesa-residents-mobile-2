@@ -81,7 +81,7 @@ export const getBookingsGroupAccessAttendees = (
     val?.value,
   );
 
-export const getSingletBookingsGroupAccessAttendeeDetailRes = (
+export const getSingleBookingsGroupAccessAttendeeDetailRes = (
   val: GetSingleBookingsAttendeeDetailReq,
 ) =>
   baseApi.get<GetSingleBookingsAttendeeDetailRes>(
@@ -258,19 +258,21 @@ export interface GetBookingsGroupAccessRes extends GenericApiResponse {
   };
 }
 
-interface GetSingleGroupAccessBookingRes {
-  id: number;
-  code: string;
-  propertyAddress: string;
-  addressPlaceId: string;
-  propertyName: string;
-  startTime: string;
-  endTime: string;
-  isAllDay: boolean;
-  checkInCounts: number;
-  status: number; // TODO  FIX THIS GROUP ACCESS
-  statusText: string;
-  repeatDays: string[];
+interface GetSingleGroupAccessBookingRes extends GenericApiResponse {
+  data: {
+    id: number;
+    code: string;
+    propertyAddress: string;
+    addressPlaceId: string;
+    propertyName: string;
+    startTime: string;
+    endTime: string;
+    isAllDay: boolean;
+    checkInCounts: number;
+    status: number; // TODO  FIX THIS GROUP ACCESS
+    statusText: string;
+    repeatDays: string[];
+  };
 }
 
 // TYPES ENDS

@@ -151,3 +151,17 @@ export function isStartGreaterOrEqual(props: ValidateTimeProps): boolean {
 
   return startDateTime.getTime() >= endDateTime.getTime();
 }
+
+export function isToday(dateString: string) {
+  const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) {
+    return false;
+  }
+  const today = new Date();
+  return (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  );
+}

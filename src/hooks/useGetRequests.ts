@@ -13,6 +13,7 @@ import {
   getBookingsEventAttendees,
   getBookingsGroupAccessAttendees,
   getSingleBookingsEventsAttendeeDetailRes,
+  getSingleBookingsGroupAccessAttendeeDetailRes,
 } from '@src/api/bookings.api';
 import queryKeys from '@src/api/constants/queryKeys';
 import {
@@ -410,7 +411,7 @@ export const useGetBookingsGroupAccessAttendeeDetails = (
   const { enabled, id, parentId } = props;
   const queryKey = [
     queryKeys.GET_GROUP_ACCESS_BOOKINGS,
-    'getSingleBookingsEventsAttendeeDetailRes',
+    'getSingleBookingsGroupAccessAttendeeDetailRes',
     id,
     parentId,
   ];
@@ -418,7 +419,7 @@ export const useGetBookingsGroupAccessAttendeeDetails = (
   const queryData = useQuery({
     queryKey,
     queryFn: async () => {
-      const response = await getSingleBookingsEventsAttendeeDetailRes({
+      const response = await getSingleBookingsGroupAccessAttendeeDetailRes({
         id,
         parentId,
       });

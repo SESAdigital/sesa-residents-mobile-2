@@ -200,6 +200,7 @@ export const useCheckIsGroupAccessEnabled = () => {
   return { handleGroupAccessClick };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const includeItems = [queryKeys.GET_BILLS_AND_COLLECTIONS];
 interface HandleRefreshTransactionalData {
   include?: (typeof includeItems)[number][];

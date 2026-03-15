@@ -1,10 +1,12 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
 import AppSkeletonLoader from '../AppSkeletonLoader';
+import { copyTextToClipboard } from '@src/utils';
+import { MaterialSymbolsContentCopyOutline } from '../icons';
 
 export type AppDetailCardDetailItem = {
   title: string;
@@ -30,7 +32,7 @@ const AppDetailCard = ({ detailList, isLoading }: Props): React.JSX.Element => {
               <View style={styles.detailItem} key={secondIndex}>
                 <View
                   style={[
-                    { width: '100%' },
+                    styles.detailItemContainer,
                     isLoading && { rowGap: Size.calcHeight(5) },
                   ]}
                 >
@@ -45,6 +47,23 @@ const AppDetailCard = ({ detailList, isLoading }: Props): React.JSX.Element => {
                     </AppText>
                   )}
                 </View>
+                {!!detail?.isCopy && detail?.value && (
+                  <TouchableOpacity
+                    onPress={() =>
+                      copyTextToClipboard({
+                        text: detail?.value,
+                        successText: `${detail?.title} Copied Successfully`,
+                        errorText: 'Failed to copy to clipboard',
+                      })
+                    }
+                  >
+                    <MaterialSymbolsContentCopyOutline
+                      height={Size.calcAverage(18)}
+                      width={Size.calcAverage(18)}
+                      color={colors.GRAY_100}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
             );
           })}
@@ -79,6 +98,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderRightWidth: Size.calcWidth(1),
     borderColor: colors.WHITE_300,
+  },
+
+  detailItemContainer: {
+    width: '100%',
+    flexShrink: 1,
   },
 
   detailItemRow: {

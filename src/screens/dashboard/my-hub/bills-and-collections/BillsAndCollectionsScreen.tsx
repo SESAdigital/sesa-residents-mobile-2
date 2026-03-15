@@ -27,9 +27,9 @@ import { useAuthStore } from '@src/stores/auth.store';
 import { getTotalPages } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import OlderPaymentRow, {
-  OlderPaymentRowLoader,
-} from './components/OlderPaymentRow';
+import EstatePaymentRow, {
+  EstatePaymentRowLoader,
+} from './components/EstatePaymentRow';
 
 const pageSize = DEFAULT_API_DATA_SIZE;
 
@@ -151,19 +151,12 @@ const BillsAndCollectionsScreen = (): React.JSX.Element => {
         showsVerticalScrollIndicator
         ListEmptyComponent={
           isOlderPaymentLoading ? (
-            <DuplicateLoader loader={<OlderPaymentRowLoader />} />
+            <DuplicateLoader loader={<EstatePaymentRowLoader />} />
           ) : (
             <EmptyTableComponent />
           )
         }
-        renderItem={({ item }) => (
-          <OlderPaymentRow
-            onPress={() =>
-              navigation.navigate(routes.BILL_INVOICE_DETAILS_SCREEN)
-            }
-            data={item}
-          />
-        )}
+        renderItem={({ item }) => <EstatePaymentRow data={item} />}
         keyExtractor={(_, index) => index?.toString()}
         contentContainerStyle={{ paddingBottom: Size.calcHeight(70) }}
         onEndReached={() => {

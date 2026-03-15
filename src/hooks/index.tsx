@@ -200,12 +200,22 @@ export const useCheckIsGroupAccessEnabled = () => {
   return { handleGroupAccessClick };
 };
 
+const includeItems = [queryKeys.GET_BILLS_AND_COLLECTIONS];
+interface HandleRefreshTransactionalData {
+  include?: (typeof includeItems)[number][];
+}
+
 export const useHandleTransactionRefresh = () => {
   const queryClient = useQueryClient();
 
-  const handleRefreshTransactionalData = () => {
+  const handleRefreshTransactionalData = (
+    props?: HandleRefreshTransactionalData,
+  ) => {
     queryClient.resetQueries({ queryKey: [queryKeys.GET_WALLET_BALANCE] });
     queryClient.resetQueries({ queryKey: [queryKeys.GET_WALLET_TRANSACTIONS] });
+    props?.include?.forEach(item => {
+      queryClient.resetQueries({ queryKey: [item] });
+    });
   };
 
   return { handleRefreshTransactionalData };

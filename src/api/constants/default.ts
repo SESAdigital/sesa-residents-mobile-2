@@ -292,6 +292,7 @@ export const CollectionTypeData = {
   Fixed: 1,
   Variable: 2,
   Multiple: 3,
+  Installment: 4,
 } as const;
 
 export type CollectionType =

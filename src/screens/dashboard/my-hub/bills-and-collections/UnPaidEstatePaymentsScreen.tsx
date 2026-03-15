@@ -14,14 +14,12 @@ import DuplicateLoader from '@src/components/DuplicateLoader';
 import EmptyTableComponent from '@src/components/EmptyTableComponent';
 import colors from '@src/configs/colors';
 import { useGetBillsMetrics } from '@src/hooks/useGetRequests';
-import { useAppNavigator } from '@src/navigation/AppNavigator';
-import routes from '@src/navigation/routes';
 import { formatMoneyToTwoDecimals, getTotalPages } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import OlderPaymentRow, {
-  OlderPaymentRowLoader,
-} from './components/OlderPaymentRow';
+import EstatePaymentRow, {
+  EstatePaymentRowLoader,
+} from './components/EstatePaymentRow';
 
 const pageSize = DEFAULT_API_DATA_SIZE;
 const queryKey = [queryKeys.GET_BILLS_AND_COLLECTIONS, 'getBillsUnpaid'];
@@ -33,7 +31,6 @@ const UnPaidEstatePaymentsScreen = (): React.JSX.Element => {
     unpaidEstatePaymentAmount,
     isLoading: isMetricsLoading,
   } = useGetBillsMetrics();
-  const navigation = useAppNavigator();
 
   const {
     data,
@@ -116,19 +113,12 @@ const UnPaidEstatePaymentsScreen = (): React.JSX.Element => {
         showsVerticalScrollIndicator
         ListEmptyComponent={
           isPaymentLoading ? (
-            <DuplicateLoader loader={<OlderPaymentRowLoader />} />
+            <DuplicateLoader loader={<EstatePaymentRowLoader />} />
           ) : (
             <EmptyTableComponent />
           )
         }
-        renderItem={({ item }) => (
-          <OlderPaymentRow
-            onPress={() =>
-              navigation.navigate(routes.BILL_INVOICE_DETAILS_SCREEN)
-            }
-            data={item}
-          />
-        )}
+        renderItem={({ item }) => <EstatePaymentRow data={item} />}
         keyExtractor={(_, index) => index?.toString()}
         contentContainerStyle={{ paddingBottom: Size.calcHeight(70) }}
         onEndReached={() => {

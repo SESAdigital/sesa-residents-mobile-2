@@ -25,6 +25,7 @@ export interface TransactionSuccessScreenData {
   title: string;
   subTite?: string;
   details: Details[];
+  onFinishAndClose?: () => void;
 }
 
 type Props = AppScreenProps<'TRANSACTION_SUCCESS_SCREEN'>;
@@ -33,10 +34,14 @@ const TransactionSuccessScreen = ({ route }: Props): React.JSX.Element => {
   const param = route?.params;
   const navigation = useAppNavigator();
   const handleClose = () => {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: routes.HOME_BOTTOM_TABS_NAVIGATOR }],
-    });
+    if (param?.onFinishAndClose) {
+      param?.onFinishAndClose?.();
+    } else {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: routes.HOME_BOTTOM_TABS_NAVIGATOR }],
+      });
+    }
   };
 
   useBackHandler(handleClose, 1);

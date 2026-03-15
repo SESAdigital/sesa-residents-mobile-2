@@ -8,9 +8,13 @@ import {
   useGetVistorHappeningToday,
   useGetEventsHappeningToday,
   useGetGroupAccessHappeningToday,
+  useGetBillsMetrics,
 } from '@src/hooks/useGetRequests';
 
 const HomeScreen = (): React.JSX.Element => {
+  const { isLoading: isPaymentsLoading, customRefetch: refetchPayments } =
+    useGetBillsMetrics();
+
   const {
     value: { isLoading: isVisitorLoading },
     customRefetch: customVisitorRefetch,
@@ -30,9 +34,14 @@ const HomeScreen = (): React.JSX.Element => {
     customEventRefetch();
     customVisitorRefetch();
     custonGroupAccessRefetch();
+    refetchPayments();
   };
 
-  const isLoading = isEventLoading || isGroupAccessLoading || isVisitorLoading;
+  const isLoading =
+    isEventLoading ||
+    isGroupAccessLoading ||
+    isVisitorLoading ||
+    isPaymentsLoading;
 
   return (
     <AppScreen>

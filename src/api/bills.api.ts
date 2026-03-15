@@ -23,11 +23,11 @@ export const getBillsUnpaid = (val: GenericPaginationRequest) =>
   baseApi.get<GetBillOlderRes>('/Bills/Unpaid', val);
 
 export const getBillInvoice = (id: number) =>
-  baseApi.get<GetBillInvoiceRes>(`/Bills/Invoice/${id}`);
+  baseApi.get<GetBillInvoiceRes>(`/Bills/${id}`);
 
 export const postPayBillInvoice = (
   val: GenericTypeWithId<PostPayBillInvoiceReq>,
-) => baseApi.post<GenericApiResponse>(`/Bills/Invoice${val?.id}`, val?.value);
+) => baseApi.post<GenericApiResponse>(`/Bills/${val?.id}`, val?.value);
 
 // API ENDS
 

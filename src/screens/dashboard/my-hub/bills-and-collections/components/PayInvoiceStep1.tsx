@@ -1,19 +1,30 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import ATMCardImageIcon from '@src/assets/images/icons/atm-card-icon.png';
+import PayOnlineImageIcon from '@src/assets/images/icons/pay-online-image-icon.png';
 import BankImageIcon from '@src/assets/images/icons/bank-image-icon.png';
 import WalletImageIcon from '@src/assets/images/icons/wallet-icon.png';
 import AppImage from '@src/components/AppImage';
 import AppText from '@src/components/AppText';
-import { MaterialSymbolsContentCopyOutline } from '@src/components/icons';
+import {
+  MaterialSymbolsContentCopyOutline,
+  MaterialSymbolsOpenInNewRounded,
+} from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useGetWalletBalance } from '@src/hooks/useGetRequests';
 import AddMoneyHelpModal from '@src/screens/dashboard/add-money/modals/AddMoneyHelpModal';
 import { useAppStateStore } from '@src/stores/appState.store';
-import { copyTextToClipboard } from '@src/utils';
+import {
+  copyTextToClipboard,
+  formatMoneyToTwoDecimals,
+  openURL,
+} from '@src/utils';
 import { appToast } from '@src/utils/appToast';
 import Size from '@src/utils/useResponsiveSize';
+import appConfig from '@src/utils/appConfig';
+import queryKeys from '@src/api/constants/queryKeys';
+import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 
 interface Props {
   onDone: () => void;
@@ -24,7 +35,11 @@ interface Props {
 const PayInvoiceStep1 = (props: Props): React.JSX.Element => {
   const { onDone, amountDue, invoiceNumber } = props;
   const { setActiveModal } = useAppStateStore();
-  const { data: walletBalance } = useGetWalletBalance();
+  const { data: walletBalance, isLoading } = useGetWalletBalance();
+  const queryClient = useQueryClient();
+
+  const handleRefetch = () =>
+    queryClient.resetQueries({ queryKey: [queryKeys.GET_WALLET_BALANCE] });
 
   const handleHelp = () => {
     setActiveModal({
@@ -60,11 +75,18 @@ const PayInvoiceStep1 = (props: Props): React.JSX.Element => {
 
   return (
     <View>
-      <View>
-        <AppText></AppText>
+      <View style={styles.headerContainer}>
+        <AppText style={styles.text}>How would you like to pay?</AppText>
+        <AppText style={styles.text}>
+          Due {formatMoneyToTwoDecimals({ amount: amountDue })}
+        </AppText>
       </View>
 
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <AppRefreshControl refreshing={isLoading} onRefresh={handleRefetch} />
+        }
+      >
         <TouchableOpacity
           onPress={handleSesaPay}
           style={[styles.layoutContainer, { alignItems: 'center' }]}
@@ -77,14 +99,15 @@ const PayInvoiceStep1 = (props: Props): React.JSX.Element => {
             <AppText style={styles.title}>Fund Via SESA Wallet</AppText>
 
             <AppText style={styles.subtitle}>
-              Wallet balance: {walletBalance?.formattedAmount}
+              Wallet balance:{' '}
+              {isLoading ? 'Loading...' : walletBalance?.formattedAmount}
             </AppText>
           </View>
         </TouchableOpacity>
 
         <View style={styles.layoutContainer}>
           <View style={styles.imageContainer}>
-            <AppImage source={ATMCardImageIcon} style={styles.image} />
+            <AppImage source={PayOnlineImageIcon} style={styles.image} />
           </View>
 
           <View style={{ flex: 1 }}>
@@ -108,9 +131,16 @@ const PayInvoiceStep1 = (props: Props): React.JSX.Element => {
 
               <View style={styles.divider} />
 
-              <TouchableOpacity onPress={handleCopy} style={styles.copyButton}>
-                <AppText style={styles.copyText}>Copy invoice no.</AppText>
-                <MaterialSymbolsContentCopyOutline
+              <TouchableOpacity
+                onPress={() =>
+                  openURL(
+                    `${appConfig.APP_WEBSITE_URL}/pay-estate-bills?invoiceNo=${invoiceNumber}`,
+                  )
+                }
+                style={styles.copyButton}
+              >
+                <AppText style={styles.copyText}>Go to website</AppText>
+                <MaterialSymbolsOpenInNewRounded
                   height={Size.calcAverage(14)}
                   width={Size.calcAverage(14)}
                   color={colors.BLUE_200}
@@ -171,6 +201,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.BLUE_200,
   },
 
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: Size.calcHeight(7),
+    paddingHorizontal: Size.calcWidth(21),
+    backgroundColor: colors.WHITE_300,
+    flexWrap: 'wrap',
+    gap: Size.calcAverage(10),
+  },
+
   image: {
     height: Size.calcAverage(32),
     width: Size.calcAverage(32),
@@ -224,6 +265,11 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: fonts.INTER_500,
     color: colors.BLACK_300,
+  },
+
+  text: {
+    fontSize: Size.calcAverage(12),
+    color: colors.GRAY_100,
   },
 });
 

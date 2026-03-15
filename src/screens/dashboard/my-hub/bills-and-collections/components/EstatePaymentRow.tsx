@@ -6,31 +6,50 @@ import Size from '@src/utils/useResponsiveSize';
 import fonts from '@src/configs/fonts';
 import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 import { GetBillOlderResData } from '@src/api/bills.api';
+import { formatMoneyToTwoDecimals } from '@src/utils';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
+import { dayJSFormatter } from '@src/utils/time';
 
 interface Props {
   data: GetBillOlderResData;
-  onPress: () => void;
 }
 
-const OlderPaymentRow = ({ onPress }: Props): React.JSX.Element => {
+const EstatePaymentRow = ({ data }: Props): React.JSX.Element => {
+  const navigation = useAppNavigator();
+
+  const handlePress = () => {
+    navigation.navigate(routes.PAYMENT_INVOICE_DETAILS_SCREEN, {
+      title: data?.collectionType ? 'Collection Invoice' : 'Bill Invoice',
+      id: data?.invoiceId,
+    });
+  };
+
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
+    <TouchableOpacity onPress={handlePress} style={styles.container}>
       <View style={styles.contentContainer}>
         <AppText style={{ fontFamily: fonts.INTER_500 }}>
-          Regular monthly service charge
+          {data?.description}
         </AppText>
         <View style={styles.row}>
-          <AppText style={styles.text}>Monthly</AppText>
-          <AppText style={styles.text}> Paid 24th Nov 2025</AppText>
+          <AppText style={styles.text}>{data?.billFrequencyText}</AppText>
+          {data?.datePaid && (
+            <AppText style={styles.text}>
+              Paid{' '}
+              {dayJSFormatter({ value: data?.datePaid, format: 'MMM D, YYYY' })}
+            </AppText>
+          )}
         </View>
       </View>
 
-      <AppText style={styles.amount}>24th Nov 2025</AppText>
+      <AppText style={styles.amount}>
+        {formatMoneyToTwoDecimals({ amount: data?.amount })}
+      </AppText>
     </TouchableOpacity>
   );
 };
 
-export const OlderPaymentRowLoader = (): React.JSX.Element => {
+export const EstatePaymentRowLoader = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
@@ -82,4 +101,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OlderPaymentRow;
+export default EstatePaymentRow;

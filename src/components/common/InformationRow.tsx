@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import colors from '@src/configs/colors';
 import Size from '@src/utils/useResponsiveSize';
@@ -7,11 +7,12 @@ import { RiInformationFill } from '../icons';
 
 interface Props {
   title: string;
+  style?: StyleProp<ViewStyle>;
 }
 
-const InformationRow = ({ title }: Props): React.JSX.Element => {
+const InformationRow = ({ title, style }: Props): React.JSX.Element => {
   return (
-    <View style={styles.row}>
+    <View style={[styles.row, style]}>
       <RiInformationFill
         height={Size.calcAverage(20)}
         width={Size.calcAverage(20)}

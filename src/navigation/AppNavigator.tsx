@@ -65,7 +65,9 @@ import AttendeeListScreen, {
 import EventBookingDetailsScreen from '@src/screens/dashboard/bookings/events/EventBookingDetailsScreen';
 import GroupAccessBookingDetailsScreen from '@src/screens/dashboard/bookings/group-access/GroupAccessBookingDetailsScreen';
 import VisitorBookingDetailsScreen from '@src/screens/dashboard/bookings/visitors/VisitorBookingDetailsScreen';
-import BillInvoiceDetailsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/BillInvoiceDetailsScreen';
+import PaymentInvoiceDetailsScreen, {
+  BillInvoiceDetailsScreenProps,
+} from '@src/screens/dashboard/my-hub/bills-and-collections/PaymentInvoiceDetailsScreen';
 import BillsAndCollectionsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/BillsAndCollectionsScreen';
 import PayInvoiceScreen, {
   PayInvoiceScreenProps,
@@ -139,7 +141,7 @@ export type AppNavigatorParams = {
   [routes.BILLS_AND_COLLECTIONS_SCREEN]: undefined;
   [routes.UNPAID_ESTATE_PAYMENT_SCREEN]: undefined;
   [routes.PAY_INVOICE_SCREEN]: PayInvoiceScreenProps;
-  [routes.BILL_INVOICE_DETAILS_SCREEN]: undefined;
+  [routes.PAYMENT_INVOICE_DETAILS_SCREEN]: BillInvoiceDetailsScreenProps;
 
   // BOOKINGS SCREENS
   [routes.VISITOR_BOOKING_DETAILS_SCREEN]: ScreenWithId;
@@ -234,7 +236,7 @@ const RootStack = createNativeStackNavigator({
         [routes.BILLS_AND_COLLECTIONS_SCREEN]: BillsAndCollectionsScreen,
         [routes.UNPAID_ESTATE_PAYMENT_SCREEN]: UnPaidEstatePaymentsScreen,
         [routes.PAY_INVOICE_SCREEN]: PayInvoiceScreen,
-        [routes.BILL_INVOICE_DETAILS_SCREEN]: BillInvoiceDetailsScreen,
+        [routes.PAYMENT_INVOICE_DETAILS_SCREEN]: PaymentInvoiceDetailsScreen,
         [routes.BUY_POWER_SCREEN]: BuyPowerScreen,
         [routes.BUY_POWER_FORM_SCREEN]: BuyPowerFormScreen,
         [routes.PANIC_ALERT_SCREEN]: PanicAlertScreen,

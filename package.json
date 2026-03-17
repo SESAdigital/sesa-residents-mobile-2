@@ -10,6 +10,7 @@
     "test": "jest",
     "dev": "yarn android",
     "build": "yarn build:lint-version-android && cd android && gradlew clean && gradlew assembleRelease",
+    "build:aab": "yarn build:lint-version-android && cd android && gradlew clean && gradlew bundleRelease",
     "build:lint-version-android": "yarn lint && yarn release:patch",
     "build:no-clean": "yarn build:lint-version-android &&  cd android && gradlew assembleRelease",
     "clear": "yarn start --reset-cache",

@@ -82,8 +82,8 @@ android {
         applicationId "com.sesa.resident"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9
-        versionName "0.0.5"
+        versionCode 41
+        versionName "1.3.8"
     }
     signingConfigs {
         debug {
@@ -93,12 +93,10 @@ android {
             keyPassword 'android'
         }
         release {
-            if (project.hasProperty('upload-key-store.jks')) {
-                storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
-            }
+            storeFile file(SESA_RESIDENT_APP_UPLOAD_STORE_FILE)
+            storePassword SESA_RESIDENT_APP_UPLOAD_STORE_PASSWORD
+            keyAlias SESA_RESIDENT_APP_UPLOAD_KEY_ALIAS
+            keyPassword SESA_RESIDENT_APP_UPLOAD_KEY_PASSWORD
         }
 
     }

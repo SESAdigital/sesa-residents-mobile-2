@@ -21,7 +21,7 @@ const variants: Record<EnvType, Variant> = {
 };
 
 const { APP_BACKEND_BASE_URL, APP_PAYSTACK_KEY, APP_WEBSITE_URL } =
-  variants?.DEV;
+  variants?.PRODUCTION;
 
 export default Object.freeze({
   APP_PAYSTACK_KEY,

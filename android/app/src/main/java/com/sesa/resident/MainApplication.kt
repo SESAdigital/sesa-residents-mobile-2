@@ -1,4 +1,4 @@
-package com.trysesa.residents
+package com.sesa.resident
 
 import android.app.Application
 import com.facebook.react.PackageList

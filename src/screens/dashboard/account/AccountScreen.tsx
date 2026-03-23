@@ -70,10 +70,10 @@ const AccountScreen = (): React.JSX.Element => {
       title: 'Manage Profile',
       onClick: () => navigation.navigate(routes.MANAGE_PROFILE_SCREEN),
     },
-    // {
-    //   title: 'Manage Household',
-    //   onClick: () => navigation.navigate(routes.MANAGE_HOUSEHOLD_SCREEN),
-    // },
+    {
+      title: 'Manage Household',
+      onClick: () => navigation.navigate(routes.MANAGE_HOUSEHOLD_SCREEN),
+    },
   ];
 
   const viewAccessInfo = () => {
@@ -175,67 +175,80 @@ const AccountScreen = (): React.JSX.Element => {
             >
               Current Property
             </AppText>
-            <TouchableOpacity
-              disabled={isLoading}
-              onPress={handleSwitch}
-              style={styles.row}
-            >
-              <AppText style={styles.switchPropertyText}>
-                Switch Property {properties ? `${properties?.length}` : ''}
-              </AppText>
-              <MaterialSymbolsArrowDropDown
-                height={Size.calcAverage(16)}
-                width={Size.calcAverage(16)}
-                color={colors.BLUE_200}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate(routes.PROPERTY_DETAILS_SCREEN)}
-            style={styles.propertyCard}
-          >
-            <View style={styles.propertyIconContainer}>
-              <MaterialSymbolsHome
-                height={Size.calcAverage(24)}
-                width={Size.calcAverage(24)}
-                color={colors.WHITE_200}
-              />
-            </View>
-            <View style={{ rowGap: Size.calcHeight(5), flexShrink: 1 }}>
-              {isLoading ? (
-                <AppSkeletonLoader
-                  width="50%"
-                  style={{ paddingVertical: Size.calcHeight(3) }}
-                />
-              ) : (
-                <AppText style={styles.propertyName} numberOfLines={1}>
-                  {selectedProperty?.name}
+            {isLoading ? (
+              <AppSkeletonLoader width={Size.calcWidth(120)} />
+            ) : !!properties && properties?.length > 0 ? (
+              <TouchableOpacity
+                disabled={isLoading}
+                onPress={handleSwitch}
+                style={styles.row}
+              >
+                <AppText style={styles.switchPropertyText}>
+                  Switch Property {properties ? `${properties?.length}` : ''}
                 </AppText>
-              )}
-
-              {isLoading ? (
-                <AppSkeletonLoader
-                  width="60%"
-                  style={{ paddingVertical: Size.calcHeight(3) }}
-                />
-              ) : (
-                <AppText style={styles.propertyAddress} numberOfLines={1}>
-                  {selectedProperty?.propertyAddress}
-                </AppText>
-              )}
-              <View style={styles.row}>
-                <MaterialSymbolsTouchApp
-                  height={Size.calcAverage(14)}
-                  width={Size.calcAverage(14)}
+                <MaterialSymbolsArrowDropDown
+                  height={Size.calcAverage(16)}
+                  width={Size.calcAverage(16)}
                   color={colors.BLUE_200}
                 />
-                <AppText style={styles.propertyInstruction}>
-                  Tap to view or configure access settings.
-                </AppText>
+              </TouchableOpacity>
+            ) : (
+              <AppText style={styles.switchPropertyText}>
+                No Properties Found
+              </AppText>
+            )}
+          </View>
+
+          {(isLoading || !!selectedProperty) && (
+            <TouchableOpacity
+              disabled={isLoading}
+              onPress={() =>
+                navigation.navigate(routes.PROPERTY_DETAILS_SCREEN)
+              }
+              style={styles.propertyCard}
+            >
+              <View style={styles.propertyIconContainer}>
+                <MaterialSymbolsHome
+                  height={Size.calcAverage(24)}
+                  width={Size.calcAverage(24)}
+                  color={colors.WHITE_200}
+                />
               </View>
-            </View>
-          </TouchableOpacity>
+              <View style={{ rowGap: Size.calcHeight(5), flexShrink: 1 }}>
+                {isLoading ? (
+                  <AppSkeletonLoader
+                    width="50%"
+                    style={{ paddingVertical: Size.calcHeight(3) }}
+                  />
+                ) : (
+                  <AppText style={styles.propertyName} numberOfLines={1}>
+                    {selectedProperty?.name}
+                  </AppText>
+                )}
+
+                {isLoading ? (
+                  <AppSkeletonLoader
+                    width="60%"
+                    style={{ paddingVertical: Size.calcHeight(3) }}
+                  />
+                ) : (
+                  <AppText style={styles.propertyAddress} numberOfLines={1}>
+                    {selectedProperty?.propertyAddress}
+                  </AppText>
+                )}
+                <View style={styles.row}>
+                  <MaterialSymbolsTouchApp
+                    height={Size.calcAverage(14)}
+                    width={Size.calcAverage(14)}
+                    color={colors.BLUE_200}
+                  />
+                  <AppText style={styles.propertyInstruction}>
+                    Tap to view or configure access settings.
+                  </AppText>
+                </View>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
       <View style={styles.accessHistoryContainer}>
@@ -315,8 +328,8 @@ const styles = StyleSheet.create({
 
   actionButton: {
     backgroundColor: colors.WHITE_200,
-    // width: '46%',
-    width: '100%',
+    width: '49%',
+    // width: '100%',
     paddingVertical: Size.calcHeight(8),
     paddingHorizontal: Size.calcWidth(16),
     borderRadius: 100,

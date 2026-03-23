@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import AppScreen from '@src/components/AppScreen';
@@ -10,7 +11,6 @@ import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import Size from '@src/utils/useResponsiveSize';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
-import { useEffect, useState } from 'react';
 
 interface Props {
   subtitle: string;
@@ -70,7 +70,7 @@ const CheckYourMailComponent = (props: Props): React.JSX.Element => {
   };
 
   return (
-    <AppScreen showDownInset>
+    <AppScreen showDownInset style={{ paddingHorizontal: Size.calcWidth(21) }}>
       <View style={styles.innerContainer}>
         <MailSuccessIcon
           style={{ marginHorizontal: 'auto' }}

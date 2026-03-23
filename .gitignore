@@ -76,3 +76,6 @@ yarn-error.log
 
 
 android/app/*.jks
+
+.env
+.env.*

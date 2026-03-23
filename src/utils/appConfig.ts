@@ -1,38 +1,15 @@
-type EnvType = 'PRODUCTION' | 'DEV';
-
-interface Variant {
-  APP_BACKEND_BASE_URL: string;
-  APP_PAYSTACK_KEY: string;
-  APP_WEBSITE_URL: string;
-}
-
-const variants: Record<EnvType, Variant> = {
-  DEV: {
-    APP_BACKEND_BASE_URL: 'https://sesa-residents.intbithq.com/api',
-    APP_PAYSTACK_KEY: 'pk_test_ef9246e1ed7f1d0a51b77cb7a81c5b93f70e40ca',
-    APP_WEBSITE_URL: 'https://sesa-website-dev.netlify.app',
-  },
-
-  PRODUCTION: {
-    APP_BACKEND_BASE_URL: 'https://sesa-resident-g8wmo.ondigitalocean.app/api',
-    APP_PAYSTACK_KEY: 'pk_live_2d2fcc60d9061ee4b9fcb941ae0f40e6ef1f4c54',
-    APP_WEBSITE_URL: 'https://trysesa.com',
-  },
-};
-
-const { APP_BACKEND_BASE_URL, APP_PAYSTACK_KEY, APP_WEBSITE_URL } =
-  variants?.DEV;
+import Config from 'react-native-config';
 
 export default Object.freeze({
-  APP_PAYSTACK_KEY,
+  APP_PAYSTACK_KEY: Config?.APP_PAYSTACK_KEY || '',
 
-  APP_WEBSITE_URL,
+  APP_WEBSITE_URL: Config?.APP_WEBSITE_URL || '',
 
-  APP_BACKEND_BASE_URL,
+  APP_BACKEND_BASE_URL: Config?.APP_BACKEND_BASE_URL || '',
+
+  APP_MMKV_ENCRYPTION_KEY: Config?.APP_MMKV_ENCRYPTION_KEY || '',
 
   APP_PIN_LENGTH: 4,
-
-  APP_MMKV_ENCRYPTION_KEY: 'sesa-residents-2026',
 
   APP_MIMIMUM_ELECTRICITY_PURCHAGE_AMOUNT: 1_000,
 

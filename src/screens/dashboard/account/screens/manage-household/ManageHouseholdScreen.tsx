@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import AppScreen from '@src/components/AppScreen';
-import AppScreenHeader from '@src/components/common/AppScreenHeader';
 import AppText from '@src/components/AppText';
+import AppScreenHeader from '@src/components/common/AppScreenHeader';
+import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
-import colors from '@src/configs/colors';
 
 const ManageHouseholdScreen = (): React.JSX.Element => {
   return (

@@ -9,6 +9,10 @@ export default Object.freeze({
 
   APP_MMKV_ENCRYPTION_KEY: Config?.APP_MMKV_ENCRYPTION_KEY || '',
 
+  APP_CUSTOM_FLAVOUR: Config?.APP_CUSTOM_FLAVOUR || '',
+
+  APPLICATION_ID: 'com.sesa.resident',
+
   APP_PIN_LENGTH: 4,
 
   APP_MIMIMUM_ELECTRICITY_PURCHAGE_AMOUNT: 1_000,

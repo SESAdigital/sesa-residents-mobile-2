@@ -8,6 +8,7 @@ import { PostLoginRes } from '@src/api/auth.api';
 import type { GetDashboardPropertiesData } from '@src/api/dashboard.api';
 import { LoginSchema } from '@src/screens/auth/LoginScreen';
 import { LoginModeData, LoginModeType } from '@src/api/constants/default';
+import appConfig from '@src/utils/appConfig';
 
 export interface AuthStore {
   loginResponse: PostLoginRes | null;
@@ -28,7 +29,7 @@ export interface AuthStore {
   setLoginMode: (value: LoginModeType) => void;
 }
 
-const authStoreName = 'useResidentsAuthStore';
+const authStoreName = `useAuthStore-${appConfig.APP_CUSTOM_FLAVOUR}-${appConfig.APPLICATION_ID}`;
 
 const defaultState = {
   loginResponse: null,

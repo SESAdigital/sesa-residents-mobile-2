@@ -17,8 +17,9 @@ export interface ActionItemData {
   Icon: (props: SvgProps) => React.JSX.Element;
   title: string;
   description?: string;
-  onPress: () => void;
+  onPress?: () => void;
   rightIcon?: React.JSX.Element;
+  endText?: string | React.JSX.Element;
 }
 
 interface Props {
@@ -29,34 +30,51 @@ interface Props {
 const ActionItem = ({ data, containerStyle }: Props): React.JSX.Element => {
   return (
     <View style={[styles.actionsContainer, containerStyle]}>
-      {data.map(({ Icon, title, onPress, rightIcon, description }, index) => (
-        <TouchableOpacity
-          style={styles.actionRow}
-          onPress={onPress}
-          key={index}
-        >
-          <Icon
-            color={colors.BLACK_100}
-            height={Size.calcAverage(24)}
-            width={Size.calcAverage(24)}
-          />
-          <View style={styles.actionContainer}>
-            <AppText style={{ fontFamily: fonts.INTER_500 }}>{title}</AppText>
-            {description && (
-              <AppText style={styles.actionDescription}>{description}</AppText>
-            )}
-          </View>
-          {rightIcon ? (
-            rightIcon
-          ) : (
-            <MaterialSymbolsChevronRightRounded
+      {data.map((value, index) => {
+        const { Icon, title, onPress, rightIcon, description, endText } = value;
+        return (
+          <TouchableOpacity
+            style={styles.actionRow}
+            disabled={!onPress}
+            onPress={onPress}
+            key={index}
+          >
+            <Icon
               color={colors.BLACK_100}
               height={Size.calcAverage(24)}
               width={Size.calcAverage(24)}
             />
-          )}
-        </TouchableOpacity>
-      ))}
+            <View style={styles.actionContainer}>
+              <AppText style={{ fontFamily: fonts.INTER_500 }}>{title}</AppText>
+              {description && (
+                <AppText style={styles.actionDescription}>
+                  {description}
+                </AppText>
+              )}
+            </View>
+            {rightIcon ? (
+              rightIcon
+            ) : (
+              <View style={styles.row}>
+                {!!endText && (
+                  <>
+                    {typeof endText === 'string' ? (
+                      <AppText style={styles.endText}>{endText}</AppText>
+                    ) : (
+                      endText
+                    )}
+                  </>
+                )}
+                <MaterialSymbolsChevronRightRounded
+                  color={colors.BLACK_100}
+                  height={Size.calcAverage(24)}
+                  width={Size.calcAverage(24)}
+                />
+              </View>
+            )}
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 };
@@ -84,6 +102,18 @@ const styles = StyleSheet.create({
     fontSize: Size.calcAverage(12),
     fontFamily: fonts.INTER_400,
     color: colors.GRAY_100,
+  },
+
+  endText: {
+    fontSize: Size.calcAverage(12),
+    color: colors.GRAY_100,
+    fontFamily: fonts.INTER_500,
+  },
+
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    columnGap: Size.calcWidth(8),
   },
 });
 

@@ -57,7 +57,7 @@ const OccupantHistoryRow = ({ data }: Props): React.JSX.Element => {
               width={Size.calcAverage(16)}
             />
 
-            {data?.timeCreated}
+            <AppText>{data?.timeCreated}</AppText>
 
             <MdiLightArrowRight
               color={colors.GRAY_100}

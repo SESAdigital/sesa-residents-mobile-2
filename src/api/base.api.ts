@@ -52,9 +52,8 @@ export interface GenericPaginationRequest {
   SearchText?: string;
 }
 
-export interface GenericPaginationRequestWithId
-  extends GenericPaginationRequest {
-  id?: string;
+export interface GenericPaginationReqWithId extends GenericPaginationRequest {
+  id?: number;
 }
 export interface GenericPaginatedResponse<T> {
   records: T[];

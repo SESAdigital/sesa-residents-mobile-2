@@ -1,9 +1,10 @@
+import { useFocusEffect } from '@react-navigation/native';
 import {
   useInfiniteQuery,
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
@@ -132,22 +133,30 @@ const ActivityScreen = (): React.JSX.Element => {
     }
   };
 
+  const unReadIdsRef = useRef(unReadIds);
+  unReadIdsRef.current = unReadIds;
+
   const handleMarkAsRead = async () => {
-    if (unReadIds?.length > 0) {
+    const idsToMark = unReadIdsRef.current;
+    if (idsToMark?.length > 0) {
       const response = await postNotification({
-        notificationIds: unReadIds,
+        notificationIds: idsToMark,
       });
       if (response.ok) {
+        queryClient.resetQueries({ queryKey });
         setUnReadIds([]);
+        unReadIdsRef.current = [];
       }
     }
   };
 
-  useEffect(() => {
-    return () => {
-      handleMarkAsRead();
-    };
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        handleMarkAsRead();
+      };
+    }, []),
+  );
 
   return (
     <AppScreen>

@@ -1,4 +1,4 @@
-import {execSync} from 'child_process';
+import { execSync } from 'child_process';
 
 type Format = 'apk' | 'aab';
 type BuildType = 'debug' | 'release';
@@ -68,7 +68,8 @@ try {
     }
 
     console.log(`🚀 Running app locally...\n`);
-    execSync(cmd, {stdio: 'inherit'});
+    console.log(`${cmd} \n`);
+    execSync(cmd, { stdio: 'inherit' });
   }
 
   // -------- BUILD (RELEASE) --------
@@ -90,7 +91,8 @@ try {
     const cmd = `cd android && ${envPrefix} gradlew clean  && gradlew ${gradleTask}`;
 
     console.log(`🚀 Building ${format.toUpperCase()}...\n`);
-    execSync(cmd, {stdio: 'inherit'});
+    console.log(`${cmd} \n`);
+    execSync(cmd, { stdio: 'inherit' });
   }
 } catch (e) {
   console.error('\n❌ Failed');

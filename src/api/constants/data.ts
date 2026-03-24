@@ -1,6 +1,8 @@
 import { SelectInputData } from '@src/types/default';
 import {
   ElectricityMeterTypeData,
+  PropertyCategoryData,
+  PropertyCategoryType,
   RelationshipTypeData,
   RepeatDaysTypeData,
 } from './default';
@@ -52,3 +54,18 @@ export const ALL_DAYS = [
   RepeatDaysTypeData.FRI,
   RepeatDaysTypeData.SAT,
 ];
+
+export const mapPropertyCategoryTypeToShortCharacter = (
+  val: PropertyCategoryType,
+) => {
+  if (val === PropertyCategoryData.Commercial) {
+    return 'C';
+  }
+  if (val === PropertyCategoryData.Residential) {
+    return 'R';
+  }
+  if (val === PropertyCategoryData.Shortlet) {
+    return 'S';
+  }
+  return 'U';
+};

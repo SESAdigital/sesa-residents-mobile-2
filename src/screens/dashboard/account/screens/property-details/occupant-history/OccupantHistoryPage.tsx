@@ -90,7 +90,7 @@ const OccupantHistoryPage = (): React.JSX.Element => {
         }
         showsVerticalScrollIndicator
         ListEmptyComponent={
-          isLoading ? (
+          isLoading ? ( //TODO FIX THIS
             <DuplicateLoader loader={<EmergencyServiceRowLoader />} />
           ) : (
             <EmptyTableComponent />
@@ -114,8 +114,6 @@ const OccupantHistoryPage = (): React.JSX.Element => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
-
   address: {
     color: colors.GRAY_100,
     fontSize: Size.calcAverage(12),

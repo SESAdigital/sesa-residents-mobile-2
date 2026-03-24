@@ -4,13 +4,13 @@ import { GetNotificationsResData } from '@src/api/notifications.api';
 import AppAvatar from '@src/components/AppAvatar';
 import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 import AppText from '@src/components/AppText';
+import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { formatRelativeTime } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
-import { notificationMapper } from '../notificationMapper';
-import SubmitButton from '@src/components/forms/SubmitButton';
 import { useLayoutEffect } from 'react';
+import { notificationMapper } from '../notificationMapper';
 
 interface Props {
   data: GetNotificationsResData;

@@ -98,6 +98,7 @@ import { useAuthStore } from '@src/stores/auth.store';
 import { BuyPowerFormScreenData } from '@src/types/default';
 import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
+import HouseHoldMetricsScreen from '@src/screens/dashboard/account/screens/manage-household/HouseHoldMetricsScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -162,7 +163,10 @@ export type AppNavigatorParams = {
   [routes.EMERGENCY_CONTACTS_LIST_SCREEN]: undefined;
   [routes.NOTIFICATION_PREFERENCES_SCREEN]: undefined;
 
+  // MANAGE HOUSEHOLD SCREENS
   [routes.MANAGE_HOUSEHOLD_SCREEN]: undefined;
+  [routes.HOUSEHOLD_METRICS_SCREEN]: ScreenWithId;
+
   [routes.MY_QR_CODE_SCREEN]: undefined;
   [routes.PROPERTY_DETAILS_SCREEN]: undefined;
   [routes.PROPERTY_DETAILS_OCCUPANT_HISTORY_SCREEN]: undefined;
@@ -268,6 +272,7 @@ const RootStack = createNativeStackNavigator({
         [routes.NOTIFICATION_PREFERENCES_SCREEN]: NotificationPreferencesScreen,
 
         [routes.MANAGE_HOUSEHOLD_SCREEN]: ManageHouseholdScreen,
+        [routes.HOUSEHOLD_METRICS_SCREEN]: HouseHoldMetricsScreen,
         [routes.MY_QR_CODE_SCREEN]: MyQRCodeScreen,
         [routes.PROPERTY_DETAILS_SCREEN]: PropertyDetailScreen,
         [routes.PROPERTY_DETAILS_OCCUPANT_HISTORY_SCREEN]: OccupantHistoryPage,

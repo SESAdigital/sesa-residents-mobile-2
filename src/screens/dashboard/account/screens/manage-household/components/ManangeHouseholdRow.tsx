@@ -35,7 +35,7 @@ const ManangeHouseholdRow = ({ data, onPress }: Props): React.JSX.Element => {
     },
     {
       Icon: MaterialSymbolsLightStickyNote2OutlineRounded,
-      value: data?.totalAccessCardCount?.toLocaleString(),
+      value: data?.totalRFIDCount?.toLocaleString(),
     },
     {
       Icon: MaterialSymbolsLightBadgeOutlineRounded,

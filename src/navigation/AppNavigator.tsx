@@ -183,8 +183,8 @@ export type AppNavigatorParams = {
   [routes.PROPERTY_DETAILS_SCREEN]: undefined;
   [routes.PROPERTY_DETAILS_OCCUPANT_HISTORY_SCREEN]: undefined;
   [routes.PROPERTY_DETAILS_CONFIGURE_ACCESS_SCREEN]: undefined;
-  [routes.HOUSEHOLD_ACTIVITY_PAGE]: undefined;
-  [routes.HOUSEHOLD_ACTIVITY_DETAILS_PAGE]: undefined;
+  [routes.HOUSEHOLD_ACTIVITY_PAGE]: ScreenWithIdAndName;
+  [routes.HOUSEHOLD_ACTIVITY_DETAILS_PAGE]: ScreenWithId;
   [routes.ACCOUNT_SETTINGS_SCREEN]: undefined;
   [routes.CHANGE_PASSWORD_SCREEN]: undefined;
   [routes.CHANGE_WALLET_PIN_SCREEN]: undefined;

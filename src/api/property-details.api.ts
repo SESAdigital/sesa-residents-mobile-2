@@ -1,9 +1,11 @@
 import baseApi, {
   GenericApiResponse,
   GenericPaginatedResponse,
+  GenericPaginationRequest,
   GenericPaginationReqWithId,
   GenericTypeWithId,
 } from './base.api';
+import { HouseholdActivityType } from './constants/default';
 
 // API STARTS
 
@@ -30,6 +32,19 @@ export const getPropertyDetailsOccupantHistory = ({
   baseApi.get<GetPropertyDetailsOccupantHistoryRes>(
     `/PropertyDetails/OccupantHistory/${id}`,
     val,
+  );
+
+export const getPropertyDetailsHouseholdActivity = (
+  val: GetPropertyDetailsHouseholdActivityReq,
+) =>
+  baseApi.get<GetPropertyDetailsHouseholdActivityRes>(
+    '/PropertyDetails/HouseholdActivity',
+    val,
+  );
+
+export const getPropertyDetailsSingleHouseholdActivity = (id: number) =>
+  baseApi.get<GetPropertyDetailsSingleHouseholdActivityRes>(
+    `/PropertyDetails/HouseholdActivity/${id}`,
   );
 
 // API ENDS
@@ -89,6 +104,35 @@ export interface GetPropertyDetailsOccupantHistoryResData {
 
 interface GetPropertyDetailsOccupantHistoryRes extends GenericApiResponse {
   data: GenericPaginatedResponse<GetPropertyDetailsOccupantHistoryResData>;
+}
+
+export interface GetPropertyDetailsHouseholdActivityResData {
+  id: number;
+  name: string;
+  activity: HouseholdActivityType;
+  status: string;
+  timeCreated: string;
+}
+
+interface GetPropertyDetailsHouseholdActivityRes extends GenericApiResponse {
+  data: GenericPaginatedResponse<GetPropertyDetailsHouseholdActivityResData>;
+}
+
+interface GetPropertyDetailsHouseholdActivityReq
+  extends GenericPaginationRequest {
+  HouseHoldId: number;
+  PropertyId: number;
+}
+
+interface GetPropertyDetailsSingleHouseholdActivityRes
+  extends GenericApiResponse {
+  data: {
+    activity: number;
+    activityText: string;
+    details: Record<string, string>;
+    additionalDetails: Record<string, string>;
+    timeCreated: string;
+  };
 }
 
 // TYPES ENDS

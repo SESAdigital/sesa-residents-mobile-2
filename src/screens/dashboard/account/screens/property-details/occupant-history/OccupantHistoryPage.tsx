@@ -1,24 +1,27 @@
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { FlatList, StyleSheet, View } from 'react-native';
 
+import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
+import queryKeys from '@src/api/constants/queryKeys';
+import { getPropertyDetailsOccupantHistory } from '@src/api/property-details.api';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
+import AppListFooterLoader from '@src/components/common/AppListFooterLoader';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
+import AppRefreshControl from '@src/components/custom/AppRefreshControl';
+import DuplicateLoader from '@src/components/DuplicateLoader';
+import EmptyTableComponent from '@src/components/EmptyTableComponent';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useGetPropertyDetails } from '@src/hooks/useGetRequests';
-import Size from '@src/utils/useResponsiveSize';
-import OccupantHistoryRow from './OccupantHistoryRow';
-import AppRefreshControl from '@src/components/custom/AppRefreshControl';
-import EmptyTableComponent from '@src/components/EmptyTableComponent';
-import queryKeys from '@src/api/constants/queryKeys';
-import { getPropertyDetailsOccupantHistory } from '@src/api/property-details.api';
-import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
-import { handleToastApiError } from '@src/utils/handleErrors';
 import { getTotalPages } from '@src/utils';
-import DuplicateLoader from '@src/components/DuplicateLoader';
-import { EmergencyServiceRowLoader } from '../../help-center/emergency-services/EmergencyServiceRow';
-import AppListFooterLoader from '@src/components/common/AppListFooterLoader';
+import { handleToastApiError } from '@src/utils/handleErrors';
+import Size from '@src/utils/useResponsiveSize';
+import OccupantHistoryRow, {
+  OccupantHistoryRowLoader,
+} from './OccupantHistoryRow';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
 
 const pageSize = DEFAULT_API_DATA_SIZE;
 
@@ -33,7 +36,7 @@ const OccupantHistoryPage = (): React.JSX.Element => {
     'getPropertyDetailsOccupantHistory',
     propertyId,
   ];
-
+  const navigation = useAppNavigator();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
       queryKey,
@@ -88,13 +91,23 @@ const OccupantHistoryPage = (): React.JSX.Element => {
         }
         showsVerticalScrollIndicator
         ListEmptyComponent={
-          isLoading ? ( //TODO FIX THIS
-            <DuplicateLoader loader={<EmergencyServiceRowLoader />} />
+          isLoading ? (
+            <DuplicateLoader loader={<OccupantHistoryRowLoader />} />
           ) : (
             <EmptyTableComponent />
           )
         }
-        renderItem={({ item }) => <OccupantHistoryRow data={item} />}
+        renderItem={({ item }) => (
+          <OccupantHistoryRow
+            onPress={() =>
+              navigation.navigate(routes.HOUSEHOLD_ACTIVITY_PAGE, {
+                id: item?.id,
+                name: item?.name,
+              })
+            }
+            data={item}
+          />
+        )}
         keyExtractor={(_, index) => index?.toString()}
         contentContainerStyle={{ paddingBottom: Size.calcHeight(70) }}
         onEndReached={() => {
@@ -115,6 +128,7 @@ const styles = StyleSheet.create({
   address: {
     color: colors.GRAY_100,
     fontSize: Size.calcAverage(12),
+    textAlign: 'center',
     paddingHorizontal: Size.calcWidth(50),
   },
 

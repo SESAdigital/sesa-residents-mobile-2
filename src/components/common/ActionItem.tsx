@@ -68,11 +68,13 @@ const ActionItem = (props: Props): React.JSX.Element => {
                     )}
                   </>
                 )}
-                <MaterialSymbolsChevronRightRounded
-                  color={colors.BLACK_100}
-                  height={Size.calcAverage(24)}
-                  width={Size.calcAverage(24)}
-                />
+                {!!onPress && (
+                  <MaterialSymbolsChevronRightRounded
+                    color={colors.BLACK_100}
+                    height={Size.calcAverage(24)}
+                    width={Size.calcAverage(24)}
+                  />
+                )}
               </View>
             )}
           </TouchableOpacity>
@@ -111,6 +113,8 @@ const styles = StyleSheet.create({
     fontSize: Size.calcAverage(12),
     color: colors.GRAY_100,
     fontFamily: fonts.INTER_500,
+    textAlign: 'right',
+    maxWidth: Size.calcWidth(190),
   },
 
   row: {

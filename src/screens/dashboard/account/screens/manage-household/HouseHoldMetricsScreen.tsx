@@ -16,6 +16,8 @@ import {
   MaterialSymbolsLightDeployedCodeAccountOutlineRounded,
   MaterialSymbolsLightEngineeringOutlineRounded,
   MaterialSymbolsLightGroupOutline,
+  MaterialSymbolsLightHomeOutlineRounded,
+  MaterialSymbolsLightHomePinOutlineRounded,
   MaterialSymbolsLightStickyNote2OutlineRounded,
   MaterialSymbolsLightSupervisorAccountOutline,
 } from '@src/components/icons';
@@ -25,6 +27,8 @@ import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
+import { useAuthStore } from '@src/stores/auth.store';
+import { mapPropertyCategoryTypeToShortCharacter } from '@src/api/constants/data';
 
 type Props = AppScreenProps<'HOUSEHOLD_METRICS_SCREEN'>;
 
@@ -35,6 +39,8 @@ const HouseHoldMetricsScreen = ({ route }: Props): React.JSX.Element => {
     'getHouseholdPropertyMetrics',
     id,
   ];
+
+  const { selectedProperty } = useAuthStore();
 
   const { data, isLoading } = useQuery({
     queryKey,
@@ -64,6 +70,27 @@ const HouseHoldMetricsScreen = ({ route }: Props): React.JSX.Element => {
   }
 
   const sections: ActionSectionItemData[] = [
+    {
+      title: 'Property Details',
+      actions: [
+        {
+          title: 'Property Type',
+          Icon: MaterialSymbolsLightHomeOutlineRounded,
+          endText: handleLoading(
+            `${
+              selectedProperty?.name || ''
+            } (${mapPropertyCategoryTypeToShortCharacter(
+              selectedProperty?.propertyCategory || 1,
+            )})`,
+          ),
+        },
+        {
+          title: 'Property Address',
+          Icon: MaterialSymbolsLightHomePinOutlineRounded,
+          endText: handleLoading(selectedProperty?.propertyAddress || ''),
+        },
+      ],
+    },
     {
       title: 'People',
       actions: [

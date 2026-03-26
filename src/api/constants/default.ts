@@ -336,3 +336,37 @@ export const InvoiceStatusTypeData = {
 
 export type InvoiceStatusType =
   (typeof InvoiceStatusTypeData)[keyof typeof InvoiceStatusTypeData];
+
+export const HouseholdActivityTypeData = {
+  HouseholdCreated: 1,
+  HouseholdUpdated: 2,
+  OccupantAdded: 3,
+  OccupantRemoved: 4,
+  RFIDAdded: 5,
+  RFIDUpdated: 6,
+  RFIDActivated: 7,
+  RFIDDeactivated: 8,
+  RFIDRemoved: 9,
+  AccessCardAdded: 10,
+  AccessCardUpdated: 11,
+  AccessCardActivated: 12,
+  AccessCardDeactivated: 13,
+  AccessCardRemoved: 14,
+  HouseholdDeactivated: 15,
+  HouseholdActivated: 16,
+  HouseholdOccupantRemoved: 17,
+  HouseholdOccupantDeparted: 18,
+  AlphaOccupantAdded: 19,
+  AlphaOccupantRemoved: 20,
+  DependentOccupantActivated: 21,
+  DependentOccupantDeactivated: 22,
+  MTAGAdded: 23,
+  MTAGUpdated: 24,
+  MTAGActivated: 25,
+  MTAGDeactivated: 26,
+  MTAGRemoved: 27,
+  HouseholdClosed: 28,
+} as const;
+
+export type HouseholdActivityType =
+  (typeof HouseholdActivityTypeData)[keyof typeof HouseholdActivityTypeData];

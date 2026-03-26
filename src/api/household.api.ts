@@ -10,6 +10,7 @@ import {
   AccessEntryType,
   GenderType,
   PropertyCategoryType,
+  RFIDType,
 } from './constants/default';
 
 // API STARTS
@@ -161,10 +162,10 @@ export interface GetHouseholdRFIDsResData {
   serialNumber: string;
   registrationNumber: string;
   rfidMake: string;
-  type: number; // TODO FIX THIS
+  type: RFIDType;
   typeDescription: string;
   photo: string;
-  status: number; // TODO FIX THIS
+  status: AccessCardStatusType;
   statusDescription: string;
 }
 

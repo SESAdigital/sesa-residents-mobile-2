@@ -164,6 +164,15 @@ export const AccessCardStatusTypeData = {
 export type AccessCardStatusType =
   (typeof AccessCardStatusTypeData)[keyof typeof AccessCardStatusTypeData];
 
+export const RFIDTypeData = {
+  Car: 1,
+  Motocycle: 2,
+  Tricycle: 3,
+  Bus: 4,
+} as const;
+
+export type RFIDType = (typeof RFIDTypeData)[keyof typeof RFIDTypeData];
+
 export const NotificationTypeData = {
   NEW_WALK_IN_VISITOR: 1,
   APPROVE_ACCESS_REQUEST: 2,

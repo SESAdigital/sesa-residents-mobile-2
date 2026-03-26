@@ -103,7 +103,10 @@ import ManageRFIDsScreen from '@src/screens/dashboard/account/screens/manage-hou
 import ManageAccessCardsScreen from '@src/screens/dashboard/account/screens/manage-household/manage-access-cards/ManageAccessCardsScreen';
 import AccessCardHistoryScreen from '@src/screens/dashboard/account/screens/manage-household/manage-access-cards/AccessCardHistoryScreen';
 import RFIDHistoryScreen from '@src/screens/dashboard/account/screens/manage-household/manage-rfids/RFIDHistoryScreen';
-import { GetHouseholdAccessCardsResData } from '@src/api/household.api';
+import {
+  GetHouseholdAccessCardsResData,
+  GetHouseholdRFIDsResData,
+} from '@src/api/household.api';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -174,7 +177,7 @@ export type AppNavigatorParams = {
   [routes.MANAGE_ACCESS_CARDS_SCREEN]: ScreenWithIdAndName;
   [routes.MANAGE_RFIDS_SCREEN]: ScreenWithIdAndName;
   [routes.ACCESS_CARD_HISTORY_SCREEN]: GetHouseholdAccessCardsResData;
-  [routes.RFID_HISTORY_SCREEN]: ScreenWithIdAndName;
+  [routes.RFID_HISTORY_SCREEN]: GetHouseholdRFIDsResData;
 
   [routes.MY_QR_CODE_SCREEN]: undefined;
   [routes.PROPERTY_DETAILS_SCREEN]: undefined;

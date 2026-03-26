@@ -41,10 +41,8 @@ const OccupantHistoryPage = (): React.JSX.Element => {
       queryFn: async ({ pageParam }) => {
         const response = await getPropertyDetailsOccupantHistory({
           id: propertyId!,
-          value: {
-            PageNumber: pageParam,
-            PageSize: pageSize,
-          },
+          PageNumber: pageParam,
+          PageSize: pageSize,
         });
         if (response.ok) {
           return response?.data;

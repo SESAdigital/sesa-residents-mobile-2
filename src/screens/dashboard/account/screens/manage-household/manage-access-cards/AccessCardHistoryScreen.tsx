@@ -101,12 +101,12 @@ const AccessCardHistoryScreen = ({ route }: Props): React.JSX.Element => {
     setIsAppModalLoading(false);
 
     if (response.ok) {
+      queryClient.resetQueries({ queryKey: [queryKeys.GET_HOUSEHOLDS] });
+      navigation.goBack();
+      closeActiveModal();
       appToast.Success(
         response?.data?.message || `${status}d access card successfully`,
       );
-      navigation.goBack();
-      queryClient.resetQueries({ queryKey: [queryKeys.GET_HOUSEHOLDS] });
-      closeActiveModal();
     } else {
       handleToastApiError(response);
     }

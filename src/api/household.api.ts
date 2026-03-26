@@ -3,8 +3,10 @@ import baseApi, {
   GenericPaginatedResponse,
   GenericPaginationRequest,
   GenericPaginationReqWithId,
+  GenericPatchStatusReq,
 } from './base.api';
 import {
+  AccessCardStatusType,
   AccessEntryType,
   GenderType,
   PropertyCategoryType,
@@ -35,6 +37,53 @@ export const getHouseholdDependentsCheckInOut = ({
     `/Household/Dependents/${id}/CheckInOut`,
     query,
   );
+
+export const getHouseholdRFIDs = ({
+  id,
+  ...query
+}: GenericPaginationReqWithId) =>
+  baseApi.get<GetHouseholdRFIDsRes>(`/Household/RFIDs/${id}`, query);
+
+export const getHouseholdRFIDsHistory = ({
+  id,
+  ...query
+}: GenericPaginationReqWithId) =>
+  baseApi.get<GetHouseholdRFIDsHistoryRes>(
+    `/Household/RFIDs/${id}/History`,
+    query,
+  );
+
+export const patchHouseholdRFIDStatus = (val: GenericPatchStatusReq) =>
+  baseApi.patch<GenericApiResponse>(`/Household/RFID/${val.id}/${val?.status}`);
+
+export const deleteHouseholdRFID = (id: number) =>
+  baseApi.delete<GenericApiResponse>(`/Household/RFID/${id}`);
+
+export const getHouseholdAccessCards = ({
+  id,
+  ...query
+}: GenericPaginationReqWithId) =>
+  baseApi.get<GetHouseholdAccessCardsRes>(
+    `/Household/AccessCards/${id}`,
+    query,
+  );
+
+export const getHouseholdAccessCardHistory = ({
+  id,
+  ...query
+}: GenericPaginationReqWithId) =>
+  baseApi.get<GetHouseholdRFIDsHistoryRes>(
+    `/Household/AccessCard/${id}/History`,
+    query,
+  );
+
+export const patchHouseholdAccessCardStatus = (val: GenericPatchStatusReq) =>
+  baseApi.patch<GenericApiResponse>(
+    `/Household/AccessCard/${val.id}/${val?.status}`,
+  );
+
+export const deleteHouseholdAccessCard = (id: number) =>
+  baseApi.delete<GenericApiResponse>(`/Household/AccessCard/${id}`);
 
 // API ENDS
 
@@ -80,7 +129,7 @@ export interface GetHouseholdPropertyDependentsResData {
   code: string;
   gender: GenderType;
   genderText: string;
-  status: 0; // TODO FIX THIS
+  status: number; // TODO FIX THIS
   statusText: string;
   isPendingApproval: boolean;
   lastactivity: string;
@@ -105,6 +154,49 @@ export interface GetHouseholdDependentsCheckInOutResData {
 
 interface GetHouseholdDependentsCheckInOutRes extends GenericApiResponse {
   data: GenericPaginatedResponse<GetHouseholdDependentsCheckInOutResData>;
+}
+
+export interface GetHouseholdRFIDsResData {
+  id: number;
+  serialNumber: string;
+  registrationNumber: string;
+  rfidMake: string;
+  type: number; // TODO FIX THIS
+  typeDescription: string;
+  photo: string;
+  status: number; // TODO FIX THIS
+  statusDescription: string;
+}
+
+interface GetHouseholdRFIDsRes extends GenericApiResponse {
+  data: GenericPaginatedResponse<GetHouseholdRFIDsResData>;
+}
+
+export interface GetHouseholdRFIDsHistoryResData {
+  timeCreated: string;
+  accessEntryDatas: {
+    guardName: string;
+    residentName: string;
+    entryType: AccessEntryType;
+    entryTypeDescription: string;
+    entryTime: string;
+  }[];
+}
+interface GetHouseholdRFIDsHistoryRes extends GenericApiResponse {
+  data: GenericPaginatedResponse<GetHouseholdRFIDsHistoryResData>;
+}
+
+export interface GetHouseholdAccessCardsResData {
+  id: number;
+  holderName: string;
+  serialNumber: string;
+  phoneNumber: string;
+  status: AccessCardStatusType;
+  statusDescription: string;
+}
+
+interface GetHouseholdAccessCardsRes extends GenericApiResponse {
+  data: GenericPaginatedResponse<GetHouseholdAccessCardsResData>;
 }
 
 //  TYPES ENDS

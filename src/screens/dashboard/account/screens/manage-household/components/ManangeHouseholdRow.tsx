@@ -1,5 +1,8 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import { mapPropertyCategoryTypeToShortCharacter } from '@src/api/constants/data';
+import { GetHouseholdPropertiesResData } from '@src/api/household.api';
+import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 import AppText from '@src/components/AppText';
 import {
   MaterialSymbolsCheckRounded,
@@ -8,14 +11,12 @@ import {
   MaterialSymbolsLightBadgeOutlineRounded,
   MaterialSymbolsLightEngineeringOutlineRounded,
   MaterialSymbolsLightGroupOutline,
+  MaterialSymbolsLightStickyNote2OutlineRounded,
+  MaterialSymbolsLightSupervisorAccountOutline,
 } from '@src/components/icons';
-import { DependentIcon, RFIDIcon } from '@src/components/icons/custom';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
-import { GetHouseholdPropertiesResData } from '@src/api/household.api';
-import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
-import { mapPropertyCategoryTypeToShortCharacter } from '@src/api/constants/data';
 
 interface Props {
   data: GetHouseholdPropertiesResData;
@@ -29,11 +30,11 @@ const ManangeHouseholdRow = ({ data, onPress }: Props): React.JSX.Element => {
       value: data?.totalAlphaCount?.toLocaleString(),
     },
     {
-      Icon: DependentIcon,
+      Icon: MaterialSymbolsLightSupervisorAccountOutline,
       value: data?.totalDependentCount?.toLocaleString(),
     },
     {
-      Icon: RFIDIcon,
+      Icon: MaterialSymbolsLightStickyNote2OutlineRounded,
       value: data?.totalAccessCardCount?.toLocaleString(),
     },
     {
@@ -48,19 +49,6 @@ const ManangeHouseholdRow = ({ data, onPress }: Props): React.JSX.Element => {
       value: data?.totalSiteWorkerCount?.toLocaleString(),
     });
   }
-
-  const getIconSize = (index: number) => {
-    if (index === 0) {
-      return Size.calcAverage(21);
-    }
-    if (index === 1) {
-      return Size.calcAverage(17);
-    }
-    if (index === 2) {
-      return Size.calcAverage(13);
-    }
-    return Size.calcAverage(20);
-  };
 
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
@@ -106,8 +94,8 @@ const ManangeHouseholdRow = ({ data, onPress }: Props): React.JSX.Element => {
                 <View key={index} style={styles.row}>
                   <Icon
                     color={colors.GRAY_100}
-                    height={getIconSize(index)}
-                    width={getIconSize(index)}
+                    height={Size.calcAverage(21)}
+                    width={Size.calcAverage(21)}
                   />
                   <AppText style={styles.textValue}>{value}</AppText>
                 </View>
@@ -128,23 +116,10 @@ const ManangeHouseholdRow = ({ data, onPress }: Props): React.JSX.Element => {
 export const ManangeHouseholdRowLoader = (): React.JSX.Element => {
   const listData = [
     MaterialSymbolsLightGroupOutline,
-    DependentIcon,
-    RFIDIcon,
+    MaterialSymbolsLightSupervisorAccountOutline,
+    MaterialSymbolsLightStickyNote2OutlineRounded,
     MaterialSymbolsLightBadgeOutlineRounded,
   ];
-
-  const getIconSize = (index: number) => {
-    if (index === 0) {
-      return Size.calcAverage(21);
-    }
-    if (index === 1) {
-      return Size.calcAverage(17);
-    }
-    if (index === 2) {
-      return Size.calcAverage(13);
-    }
-    return Size.calcAverage(20);
-  };
 
   return (
     <View style={styles.container}>
@@ -170,8 +145,8 @@ export const ManangeHouseholdRowLoader = (): React.JSX.Element => {
               <View key={index} style={styles.row}>
                 <Icon
                   color={colors.GRAY_100}
-                  height={getIconSize(index)}
-                  width={getIconSize(index)}
+                  height={Size.calcAverage(21)}
+                  width={Size.calcAverage(21)}
                 />
                 <AppSkeletonLoader width={Size.calcWidth(30)} />
               </View>

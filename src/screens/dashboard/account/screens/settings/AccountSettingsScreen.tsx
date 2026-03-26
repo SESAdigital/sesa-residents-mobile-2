@@ -24,8 +24,8 @@ import { openURL } from '@src/utils';
 import appConfig from '@src/utils/appConfig';
 import { appToast } from '@src/utils/appToast';
 import Size from '@src/utils/useResponsiveSize';
-import { ActionItemData } from '../manage-profile/components/ActionItem';
-import ActionSectionItem from '../manage-profile/components/ActionSectionItem';
+import { ActionItemData } from '../../../../../components/common/ActionItem';
+import ActionSectionItem from '../../../../../components/common/ActionSectionItem';
 
 interface Section {
   title: string;

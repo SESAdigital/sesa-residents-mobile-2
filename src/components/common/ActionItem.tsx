@@ -25,9 +25,12 @@ export interface ActionItemData {
 interface Props {
   data: ActionItemData[];
   containerStyle?: StyleProp<ViewStyle>;
+  disabled?: boolean;
 }
 
-const ActionItem = ({ data, containerStyle }: Props): React.JSX.Element => {
+const ActionItem = (props: Props): React.JSX.Element => {
+  const { data, containerStyle, disabled } = props;
+
   return (
     <View style={[styles.actionsContainer, containerStyle]}>
       {data.map((value, index) => {
@@ -35,7 +38,7 @@ const ActionItem = ({ data, containerStyle }: Props): React.JSX.Element => {
         return (
           <TouchableOpacity
             style={styles.actionRow}
-            disabled={!onPress}
+            disabled={!onPress || disabled}
             onPress={onPress}
             key={index}
           >

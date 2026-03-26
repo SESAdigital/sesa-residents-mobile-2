@@ -155,6 +155,15 @@ export const PropertyStatusTypeData = {
 export type PropertyStatusType =
   (typeof PropertyStatusTypeData)[keyof typeof PropertyStatusTypeData];
 
+export const AccessCardStatusTypeData = {
+  InActive: 0,
+  Active: 1,
+  Delete: 2,
+} as const;
+
+export type AccessCardStatusType =
+  (typeof AccessCardStatusTypeData)[keyof typeof AccessCardStatusTypeData];
+
 export const NotificationTypeData = {
   NEW_WALK_IN_VISITOR: 1,
   APPROVE_ACCESS_REQUEST: 2,

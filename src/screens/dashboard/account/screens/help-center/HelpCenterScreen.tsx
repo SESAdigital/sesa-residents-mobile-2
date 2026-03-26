@@ -20,7 +20,7 @@ import { appToast } from '@src/utils/appToast';
 import Size from '@src/utils/useResponsiveSize';
 import ActionItem, {
   ActionItemData,
-} from '../manage-profile/components/ActionItem';
+} from '../../../../../components/common/ActionItem';
 import routes from '@src/navigation/routes';
 import AppVersionText from '@src/components/custom/AppVersionText';
 

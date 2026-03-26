@@ -69,6 +69,7 @@ const AppScreenHeader = (props: Props): React.JSX.Element => {
 const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: Size.calcWidth(40),
+    flex: 1,
   },
 
   header: {

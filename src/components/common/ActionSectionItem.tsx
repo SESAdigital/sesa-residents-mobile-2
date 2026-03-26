@@ -12,9 +12,12 @@ export interface ActionSectionItemData {
 
 interface Props {
   sections: ActionSectionItemData[];
+  disabled?: boolean;
 }
 
-const ActionSectionItem = ({ sections }: Props): React.JSX.Element => {
+const ActionSectionItem = (props: Props): React.JSX.Element => {
+  const { sections, disabled } = props;
+
   return (
     <View style={styles.container}>
       {sections?.map((section, index) => (
@@ -23,6 +26,7 @@ const ActionSectionItem = ({ sections }: Props): React.JSX.Element => {
           <ActionItem
             containerStyle={{ paddingVertical: 0 }}
             data={section?.actions}
+            disabled={disabled}
           />
         </View>
       ))}

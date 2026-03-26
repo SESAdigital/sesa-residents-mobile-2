@@ -29,12 +29,12 @@ const EmergencyContactActionModal = (props: Props): React.JSX.Element => {
     {
       title: 'Edit emergency contact',
       onPress: onEdit,
-      Icon: MaterialSymbolsDeleteOutline,
+      Icon: MaterialSymbolsEditOutline,
     },
     {
       title: 'Delete emergency contact',
       onPress: onDelete,
-      Icon: MaterialSymbolsEditOutline,
+      Icon: MaterialSymbolsDeleteOutline,
     },
   ];
 

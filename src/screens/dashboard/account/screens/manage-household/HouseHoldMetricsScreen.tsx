@@ -6,32 +6,25 @@ import { getHouseholdPropertyMetrics } from '@src/api/household.api';
 import AppScreen from '@src/components/AppScreen';
 import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 import AppText from '@src/components/AppText';
+import ActionSectionItem, {
+  ActionSectionItemData,
+} from '@src/components/common/ActionSectionItem';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
-import AppSwitch from '@src/components/forms/AppSwitch';
+import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import {
   MaterialSymbolsLightBadgeOutlineRounded,
-  MaterialSymbolsLightContactSupportOutline,
+  MaterialSymbolsLightDeployedCodeAccountOutlineRounded,
   MaterialSymbolsLightEngineeringOutlineRounded,
-  MaterialSymbolsLightGavelRounded,
   MaterialSymbolsLightGroupOutline,
-  MaterialSymbolsLightLockOutline,
-  MaterialSymbolsLightPasswordRounded,
-  MaterialSymbolsLightScreenshotFrame2Rounded,
-  RiExternalLinkLine,
+  MaterialSymbolsLightStickyNote2OutlineRounded,
+  MaterialSymbolsLightSupervisorAccountOutline,
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
-import { openURL } from '@src/utils';
-import appConfig from '@src/utils/appConfig';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import ActionSectionItem, {
-  ActionSectionItemData,
-} from '../manage-profile/components/ActionSectionItem';
-import { DependentIcon, RFIDIcon } from '@src/components/icons/custom';
-import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 
 type Props = AppScreenProps<'HOUSEHOLD_METRICS_SCREEN'>;
 
@@ -55,6 +48,9 @@ const HouseHoldMetricsScreen = ({ route }: Props): React.JSX.Element => {
       }
     },
   });
+
+  const name = data?.name || '';
+
   const navigation = useAppNavigator();
   const queryClient = useQueryClient();
   const customRefetch = () => queryClient.resetQueries({ queryKey });
@@ -82,7 +78,7 @@ const HouseHoldMetricsScreen = ({ route }: Props): React.JSX.Element => {
         {
           title: 'Manage dependents',
           onPress: () => console.log(routes.CHANGE_WALLET_PIN_SCREEN),
-          Icon: DependentIcon,
+          Icon: MaterialSymbolsLightSupervisorAccountOutline,
           endText: handleLoading(
             `${data?.totalDependentCount?.toLocaleString() || ''} added of ${
               data?.dependentMaximumCount?.toLocaleString() || ''
@@ -92,7 +88,7 @@ const HouseHoldMetricsScreen = ({ route }: Props): React.JSX.Element => {
         {
           title: 'Manage household staff',
           onPress: () => console.log(routes.CHANGE_WALLET_PIN_SCREEN),
-          Icon: DependentIcon, // TODO: change icon
+          Icon: MaterialSymbolsLightDeployedCodeAccountOutlineRounded,
           endText: handleLoading(
             `${data?.totalHouseholdStaffCount?.toLocaleString() || ''}`,
           ),
@@ -112,15 +108,20 @@ const HouseHoldMetricsScreen = ({ route }: Props): React.JSX.Element => {
       actions: [
         {
           title: 'Manage RFIDs',
-          onPress: () => console.log(routes.CHANGE_WALLET_PIN_SCREEN),
-          Icon: RFIDIcon,
+          onPress: () =>
+            navigation.navigate(routes.MANAGE_RFIDS_SCREEN, { id, name }),
+          Icon: MaterialSymbolsLightStickyNote2OutlineRounded,
           endText: handleLoading(
             `${data?.totalRFIDCount?.toLocaleString() || ''}`,
           ),
         },
         {
           title: 'Manage access cards',
-          onPress: () => console.log(routes.CHANGE_WALLET_PIN_SCREEN),
+          onPress: () =>
+            navigation.navigate(routes.MANAGE_ACCESS_CARDS_SCREEN, {
+              id,
+              name,
+            }),
           Icon: MaterialSymbolsLightBadgeOutlineRounded,
           endText: handleLoading(
             `${data?.totalAccessCardCount?.toLocaleString() || ''}`,
@@ -140,7 +141,7 @@ const HouseHoldMetricsScreen = ({ route }: Props): React.JSX.Element => {
             width={Size.calcWidth(100)}
           />
         ) : (
-          <AppText style={styles.headerSubtitle}>{data?.name}</AppText>
+          <AppText style={styles.headerSubtitle}>{name}</AppText>
         )}
       </AppScreenHeader>
       <ScrollView
@@ -148,7 +149,7 @@ const HouseHoldMetricsScreen = ({ route }: Props): React.JSX.Element => {
           <AppRefreshControl refreshing={isLoading} onRefresh={customRefetch} />
         }
       >
-        <ActionSectionItem sections={sections} />
+        <ActionSectionItem disabled={isLoading} sections={sections} />
       </ScrollView>
     </AppScreen>
   );

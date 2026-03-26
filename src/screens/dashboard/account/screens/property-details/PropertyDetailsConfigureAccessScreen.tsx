@@ -21,7 +21,7 @@ import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 import ActionItem, {
   ActionItemData,
-} from '../manage-profile/components/ActionItem';
+} from '../../../../../components/common/ActionItem';
 
 const PropertyDetailsConfigureAccessScreen = (): React.JSX.Element => {
   const {

@@ -11,12 +11,50 @@ const baseApi = create({
   paramsSerializer: { indexes: null },
 });
 
+// baseApi.addAsyncRequestTransform(async request => {
+//   const { loginResponse } = authStore.getState();
+//   const userToken = loginResponse?.data?.token;
+//   const expireTime = loginResponse?.data?.expiresTime;
+
+//   if (expireTime) {
+//     const tokenExpiryDate = new Date(expireTime);
+//     const currentDate = new Date();
+
+//     if (currentDate >= tokenExpiryDate) {
+//     } else {
+//       authStore.getState().logout();
+//       setTimeout(() => {
+//         appToast.Warning('Session Expired.');
+//       }, 1000);
+//     }
+//   } else {
+//     if (userToken) {
+//       if (request?.headers)
+//         request.headers.Authorization = `Bearer ${userToken}`;
+//     }
+//   }
+// });
+
 baseApi.addAsyncRequestTransform(async request => {
   const { loginResponse } = authStore.getState();
   const userToken = loginResponse?.data?.token;
+  const expireTime = loginResponse?.data?.expiresTime;
 
-  if (userToken) {
-    if (request?.headers) request.headers.Authorization = `Bearer ${userToken}`;
+  if (expireTime) {
+    const tokenExpiryDate = new Date(expireTime);
+    const currentDate = new Date();
+    if (currentDate >= tokenExpiryDate) {
+      authStore.getState().logout();
+      setTimeout(() => {
+        appToast.Warning('Session Expired.');
+      }, 1000);
+
+      return;
+    }
+  }
+
+  if (userToken && request?.headers) {
+    request.headers.Authorization = `Bearer ${userToken}`;
   }
 });
 
@@ -64,5 +102,10 @@ export interface GenericPaginatedResponse<T> {
 }
 export interface GenericTypeWithId<T> {
   value: T;
+  id: number;
+}
+
+export interface GenericPatchStatusReq {
+  status: 'Activate' | 'Deactivate';
   id: number;
 }

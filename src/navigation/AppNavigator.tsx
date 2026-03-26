@@ -99,6 +99,11 @@ import { BuyPowerFormScreenData } from '@src/types/default';
 import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
 import HouseHoldMetricsScreen from '@src/screens/dashboard/account/screens/manage-household/HouseHoldMetricsScreen';
+import ManageRFIDsScreen from '@src/screens/dashboard/account/screens/manage-household/manage-rfids/ManageRFIDsScreen';
+import ManageAccessCardsScreen from '@src/screens/dashboard/account/screens/manage-household/manage-access-cards/ManageAccessCardsScreen';
+import AccessCardHistoryScreen from '@src/screens/dashboard/account/screens/manage-household/manage-access-cards/AccessCardHistoryScreen';
+import RFIDHistoryScreen from '@src/screens/dashboard/account/screens/manage-household/manage-rfids/RFIDHistoryScreen';
+import { GetHouseholdAccessCardsResData } from '@src/api/household.api';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -166,6 +171,10 @@ export type AppNavigatorParams = {
   // MANAGE HOUSEHOLD SCREENS
   [routes.MANAGE_HOUSEHOLD_SCREEN]: undefined;
   [routes.HOUSEHOLD_METRICS_SCREEN]: ScreenWithId;
+  [routes.MANAGE_ACCESS_CARDS_SCREEN]: ScreenWithIdAndName;
+  [routes.MANAGE_RFIDS_SCREEN]: ScreenWithIdAndName;
+  [routes.ACCESS_CARD_HISTORY_SCREEN]: GetHouseholdAccessCardsResData;
+  [routes.RFID_HISTORY_SCREEN]: ScreenWithIdAndName;
 
   [routes.MY_QR_CODE_SCREEN]: undefined;
   [routes.PROPERTY_DETAILS_SCREEN]: undefined;
@@ -273,6 +282,11 @@ const RootStack = createNativeStackNavigator({
 
         [routes.MANAGE_HOUSEHOLD_SCREEN]: ManageHouseholdScreen,
         [routes.HOUSEHOLD_METRICS_SCREEN]: HouseHoldMetricsScreen,
+        [routes.MANAGE_ACCESS_CARDS_SCREEN]: ManageAccessCardsScreen,
+        [routes.MANAGE_RFIDS_SCREEN]: ManageRFIDsScreen,
+        [routes.ACCESS_CARD_HISTORY_SCREEN]: AccessCardHistoryScreen,
+        [routes.RFID_HISTORY_SCREEN]: RFIDHistoryScreen,
+
         [routes.MY_QR_CODE_SCREEN]: MyQRCodeScreen,
         [routes.PROPERTY_DETAILS_SCREEN]: PropertyDetailScreen,
         [routes.PROPERTY_DETAILS_OCCUPANT_HISTORY_SCREEN]: OccupantHistoryPage,
@@ -311,4 +325,9 @@ declare global {
 
 interface ScreenWithId {
   id: number;
+}
+
+interface ScreenWithIdAndName {
+  id: number;
+  name: string;
 }

@@ -28,7 +28,7 @@ import routes from '@src/navigation/routes';
 import { dayJSFormatter } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
 import ProfileDetailsRow from '../../components/ProfileDetailsRow';
-import ActionItem from './components/ActionItem';
+import ActionItem from '../../../../../components/common/ActionItem';
 
 const ManageProfileScreen = (): React.JSX.Element => {
   const { details } = useGetUserDetails();

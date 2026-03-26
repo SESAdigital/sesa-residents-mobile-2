@@ -95,7 +95,7 @@ try {
     execSync(cmd, { stdio: 'inherit' });
   }
 } catch (e) {
-  console.error('\n❌ Failed');
+  console.error('\n❌ Failed', e);
   process.exit(1);
 }
 

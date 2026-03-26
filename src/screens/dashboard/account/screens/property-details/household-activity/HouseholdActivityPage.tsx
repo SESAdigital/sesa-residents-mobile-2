@@ -21,8 +21,9 @@ import { useAuthStore } from '@src/stores/auth.store';
 import { getTotalPages } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import { EstateRuleRowLoader } from '../../help-center/estate-rules/EstateRuleRow';
-import HouseholdActivityRow from './components/HouseholdActivityRow';
+import HouseholdActivityRow, {
+  HouseholdActivityRowLoader,
+} from './components/HouseholdActivityRow';
 
 type Props = AppScreenProps<'HOUSEHOLD_ACTIVITY_PAGE'>;
 
@@ -106,7 +107,7 @@ const HouseholdActivityPage = ({ route }: Props): React.JSX.Element => {
         showsVerticalScrollIndicator
         ListEmptyComponent={
           isLoading ? (
-            <DuplicateLoader loader={<EstateRuleRowLoader />} />
+            <DuplicateLoader loader={<HouseholdActivityRowLoader />} />
           ) : (
             <EmptyTableComponent />
           )

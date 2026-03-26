@@ -10,7 +10,7 @@ import { MaterialSymbolsContentCopyOutline } from '../icons';
 
 export type AppDetailCardDetailItem = {
   title: string;
-  value: string;
+  value: string | React.JSX.Element;
   skipLoading?: boolean;
   isCopy?: boolean;
 }[][];
@@ -47,11 +47,11 @@ const AppDetailCard = ({ detailList, isLoading }: Props): React.JSX.Element => {
                     </AppText>
                   )}
                 </View>
-                {!!detail?.isCopy && detail?.value && (
+                {!!detail?.isCopy && typeof detail?.value === 'string' && (
                   <TouchableOpacity
                     onPress={() =>
                       copyTextToClipboard({
-                        text: detail?.value,
+                        text: detail?.value?.toString(),
                         successText: `${detail?.title} Copied Successfully`,
                         errorText: 'Failed to copy to clipboard',
                       })

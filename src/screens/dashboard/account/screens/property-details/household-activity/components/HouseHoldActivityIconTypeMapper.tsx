@@ -8,12 +8,12 @@ import {
 import {
   MaterialSymbolsAddRounded,
   MaterialSymbolsBadgeRounded,
+  MaterialSymbolsGroups,
+  MaterialSymbolsHomeRounded,
   MaterialSymbolsHorizontalRuleRounded,
-  MaterialSymbolsLightGroupOutline,
-  MaterialSymbolsLightHomeOutlineRounded,
-  MaterialSymbolsLightSupervisorAccountOutline,
   MaterialSymbolsPentagonRounded,
   MaterialSymbolsStickyNote2Rounded,
+  MaterialSymbolsSupervisorAccountRounded,
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import Size from '@src/utils/useResponsiveSize';
@@ -44,15 +44,15 @@ const HouseHoldActivityIconTypeMapper = (props: Props): React.JSX.Element => {
       ]}
     >
       <Icon
-        height={Size.calcAverage(20)}
+        height={Size.calcAverage(size / 2)}
         color={iconColor}
-        width={Size.calcAverage(20)}
+        width={Size.calcAverage(size / 2)}
       />
       <View style={[styles.subIcon, { borderColor: backgroundColor }]}>
         <SubIcon
-          height={Size.calcAverage(10)}
+          height={Size.calcAverage(size / 4)}
           color={color}
-          width={Size.calcAverage(10)}
+          width={Size.calcAverage(size / 4)}
         />
       </View>
     </View>
@@ -203,41 +203,41 @@ function getBasicConfiguration(
   if (greenOccupant.includes(val)) {
     return {
       variant: 'SUCCESS',
-      Icon: MaterialSymbolsLightSupervisorAccountOutline,
+      Icon: MaterialSymbolsSupervisorAccountRounded,
     };
   }
 
   if (redOccupant.includes(val)) {
     return {
       variant: 'DANGER',
-      Icon: MaterialSymbolsLightSupervisorAccountOutline,
+      Icon: MaterialSymbolsSupervisorAccountRounded,
     };
   }
 
   if (greenHousehold.includes(val)) {
     return {
       variant: 'SUCCESS',
-      Icon: MaterialSymbolsLightHomeOutlineRounded,
+      Icon: MaterialSymbolsHomeRounded,
     };
   }
 
   if (redHousehold.includes(val)) {
     return {
       variant: 'DANGER',
-      Icon: MaterialSymbolsLightHomeOutlineRounded,
+      Icon: MaterialSymbolsHomeRounded,
     };
   }
 
   if (val === HouseholdActivityTypeData.AlphaOccupantAdded) {
     return {
       variant: 'SUCCESS',
-      Icon: MaterialSymbolsLightGroupOutline,
+      Icon: MaterialSymbolsGroups,
     };
   }
   if (val === HouseholdActivityTypeData.AlphaOccupantRemoved) {
     return {
       variant: 'DANGER',
-      Icon: MaterialSymbolsLightGroupOutline,
+      Icon: MaterialSymbolsGroups,
     };
   }
 

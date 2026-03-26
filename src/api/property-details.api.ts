@@ -127,7 +127,7 @@ interface GetPropertyDetailsHouseholdActivityReq
 interface GetPropertyDetailsSingleHouseholdActivityRes
   extends GenericApiResponse {
   data: {
-    activity: number;
+    activity: HouseholdActivityType;
     activityText: string;
     details: Record<string, string>;
     additionalDetails: Record<string, string>;

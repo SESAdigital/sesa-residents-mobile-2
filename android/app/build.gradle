@@ -2,6 +2,9 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+// APP CUSTOM FOR FIREBASE
+apply plugin: 'com.google.gms.google-services'
+
 // APP CUSTOM FOR FLAVOURING USING REACT-NATIVE-CONFIG STARTS
 
 project.ext.envConfigFiles = [

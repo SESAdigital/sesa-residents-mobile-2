@@ -1,5 +1,9 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import { Alert, Linking } from 'react-native';
+import { Alert, Linking, Platform } from 'react-native';
+import notifee, {
+  AndroidImportance,
+  AndroidVisibility,
+} from '@notifee/react-native';
 
 import appConfig from './appConfig';
 import { appToast } from './appToast';
@@ -221,4 +225,61 @@ export const formatKYCGender = (value?: string | null | number): string => {
   if (stringValue === 'female') return GenderTypeData.Female?.toString();
 
   return stringValue;
+};
+
+export const handleSetupAndroidNotificationChannel = async () => {
+  let channelId = '';
+
+  const name = `${appConfig.APP_NAME}_CHANNEL1_${appConfig.APP_CUSTOM_FLAVOUR}`;
+  if (Platform.OS === 'android') {
+    // Create or update a channel
+    channelId = await notifee.createChannel({
+      id: name,
+      sound: 'sesanotifsound2',
+      name,
+      vibration: true,
+      importance: AndroidImportance.HIGH,
+      visibility: AndroidVisibility.PUBLIC,
+      bypassDnd: true,
+      lights: true,
+      description:
+        'Receive timely important alerts and reminders, including panic notifications and patrol updates.',
+      vibrationPattern: [300, 500],
+    });
+  }
+  return channelId;
+};
+
+export interface NotifProps {
+  title: string;
+  body: string;
+  largeIcon?: string;
+}
+
+export const handlePushNotifiee = async (props: NotifProps) => {
+  const { title, body, largeIcon } = props;
+
+  try {
+    const channelId = await handleSetupAndroidNotificationChannel();
+
+    await notifee.displayNotification({
+      title,
+      body,
+      android: {
+        channelId,
+        largeIcon: largeIcon || appConfig.APP_ICON,
+        importance: AndroidImportance.HIGH,
+        visibility: AndroidVisibility.PUBLIC,
+        color: colors.WHITE_100,
+        smallIcon: 'ic_notification',
+        sound: 'sesanotifsound2',
+        vibrationPattern: [300, 500],
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+  } catch (error) {
+    appToast.Warning(`An error occured while handling notification ${error}`);
+  }
 };

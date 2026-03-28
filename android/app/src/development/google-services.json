@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "225882128683",
+    "project_id": "sesa-c3ed6",
+    "storage_bucket": "sesa-c3ed6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225882128683:android:56d95e4d77e1caf973c56e",
+        "android_client_info": {
+          "package_name": "com.sesa.resident"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRei5_aQHi_UV-uCceX2INMWM3eIFlrzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225882128683:android:81ecde5020ccade573c56e",
+        "android_client_info": {
+          "package_name": "com.sesa.resident.development"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRei5_aQHi_UV-uCceX2INMWM3eIFlrzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

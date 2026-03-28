@@ -16,6 +16,7 @@ export interface AuthStore {
   isPasswordRemembered: boolean;
   isBiometricEnabled: boolean;
   loginMode: LoginModeType;
+  FCMToken: string | null;
   isDoneOnboarding: boolean;
   selectedProperty: GetDashboardPropertiesData | null;
 
@@ -25,6 +26,7 @@ export interface AuthStore {
   setIsDoneOnboarding: (value: boolean) => void;
   setLoginReq: (value: LoginSchema) => void;
   setIsPasswordRemembered: (value: boolean) => void;
+  setFCMToken: (value: string) => void;
   setIsBiometricEnabled: (value: boolean) => void;
   setLoginMode: (value: LoginModeType) => void;
 }
@@ -41,6 +43,7 @@ const doNotDeleteState = {
   loginReq: null,
   isPasswordRemembered: false,
   isBiometricEnabled: false,
+  FCMToken: null,
   loginMode: LoginModeData.EmailAddress,
 };
 
@@ -66,6 +69,8 @@ export const authStore = createWithEqualityFn(
 
       setIsPasswordRemembered: isPasswordRemembered =>
         set(() => ({ isPasswordRemembered })),
+
+      setFCMToken: FCMToken => set(() => ({ FCMToken })),
 
       setIsBiometricEnabled: isBiometricEnabled =>
         set(() => ({ isBiometricEnabled })),

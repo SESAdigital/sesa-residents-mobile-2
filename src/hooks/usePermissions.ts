@@ -1,6 +1,6 @@
-// import messaging from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging';
 import { useCallback, useEffect, useState } from 'react';
-import { Alert, Platform } from 'react-native';
+import { Alert, Platform, PermissionsAndroid } from 'react-native';
 import {
   PERMISSIONS,
   PermissionStatus,
@@ -10,10 +10,10 @@ import {
   request,
 } from 'react-native-permissions';
 
-// import {useAppStateStore} from '@src/stores/appState.store';
-// import {useAuthStore} from '@src/stores/auth.store';
-// import {appToast} from '@src/utils/appToast';
-// import {handleSetupAndroidNotificationChannel} from '@src/utils';
+import { useAppStateStore } from '@src/stores/appState.store';
+import { useAuthStore } from '@src/stores/auth.store';
+import { appToast } from '@src/utils/appToast';
+import { handleSetupAndroidNotificationChannel } from '@src/utils';
 
 type PermissionState = {
   status: PermissionStatus | null;
@@ -93,83 +93,83 @@ export const useCameraPermission = () => {
   };
 };
 
-// export const useRequestNotificationPermissionAndroid = () => {
-//   const {setActiveModal, closeActiveModal} = useAppStateStore();
-//   const {FCMToken, setFCMToken} = useAuthStore();
-//   handleSetupAndroidNotificationChannel();
+export const useRequestNotificationPermissionAndroid = () => {
+  const { setActiveModal, closeActiveModal } = useAppStateStore();
+  const { FCMToken, setFCMToken } = useAuthStore();
+  handleSetupAndroidNotificationChannel();
 
-//   const getFCMToken = async () => {
-//     if (!FCMToken) {
-//       try {
-//         const token = await messaging().getToken();
-//         setFCMToken(token);
-//       } catch (error) {
-//         console.error('Failed to get FCM Token', error);
-//       }
-//     }
-//   };
+  const getFCMToken = async () => {
+    if (!FCMToken) {
+      try {
+        const token = await messaging().getToken();
+        setFCMToken(token);
+      } catch (error) {
+        console.error('Failed to get FCM Token', error);
+      }
+    }
+  };
 
-//   const handleNeverAsk = () => {
-//     setActiveModal({
-//       modalType: 'SINGLE_PROMPT_MODAL',
-//       singlePromptModal: {
-//         title: 'Enable Notifications',
-//         description:
-//           'We need your permission to send important updates. Open settings to enable notifications.',
-//         onPress: () => {
-//           closeActiveModal();
-//           openSettings().catch(() =>
-//             appToast.Warning('Unable to open settings'),
-//           );
-//         },
-//         buttonTitle: 'Open Settings',
-//       },
-//     });
-//   };
+  const handleNeverAsk = () => {
+    // setActiveModal({
+    //   modalType: 'SINGLE_PROMPT_MODAL',
+    //   singlePromptModal: {
+    //     title: 'Enable Notifications',
+    //     description:
+    //       'We need your permission to send important updates. Open settings to enable notifications.',
+    //     onPress: () => {
+    //       closeActiveModal();
+    //       openSettings().catch(() =>
+    //         appToast.Warning('Unable to open settings'),
+    //       );
+    //     },
+    //     buttonTitle: 'Open Settings',
+    //   },
+    // });
+  };
 
-//   const handleDenied = () => {
-//     setActiveModal({
-//       modalType: 'SINGLE_PROMPT_MODAL',
-//       singlePromptModal: {
-//         title: 'Enable Notifications',
-//         description: "We'd like to send you updates and alerts.",
-//         onPress: () => {
-//           closeActiveModal();
-//           requestNotificationPermissionAndroid();
-//         },
-//         buttonTitle: 'Request Permission',
-//       },
-//     });
-//   };
+  const handleDenied = () => {
+    // setActiveModal({
+    //   modalType: 'SINGLE_PROMPT_MODAL',
+    //   singlePromptModal: {
+    //     title: 'Enable Notifications',
+    //     description: "We'd like to send you updates and alerts.",
+    //     onPress: () => {
+    //       closeActiveModal();
+    //       requestNotificationPermissionAndroid();
+    //     },
+    //     buttonTitle: 'Request Permission',
+    //   },
+    // });
+  };
 
-//   const requestNotificationPermissionAndroid = async () => {
-//     if (Platform.OS !== 'android') return;
+  const requestNotificationPermissionAndroid = async () => {
+    if (Platform.OS !== 'android') return;
 
-//     try {
-//       const granted = await PermissionsAndroid.request(
-//         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-//       );
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
 
-//       if (granted === PermissionsAndroid.RESULTS.GRANTED) return;
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) return;
 
-//       if (granted === PermissionsAndroid.RESULTS.DENIED) {
-//         handleDenied();
-//         return;
-//       }
+      if (granted === PermissionsAndroid.RESULTS.DENIED) {
+        handleDenied();
+        return;
+      }
 
-//       if (granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-//         handleNeverAsk();
-//         return;
-//       }
-//     } catch (error) {
-//       appToast.Warning(
-//         `Notification permission request error: ${JSON.stringify(error)}`,
-//       );
-//     }
-//   };
+      if (granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+        handleNeverAsk();
+        return;
+      }
+    } catch (error) {
+      appToast.Warning(
+        `Notification permission request error: ${JSON.stringify(error)}`,
+      );
+    }
+  };
 
-//   useEffect(() => {
-//     requestNotificationPermissionAndroid();
-//     getFCMToken();
-//   }, []);
-// };
+  useEffect(() => {
+    requestNotificationPermissionAndroid();
+    getFCMToken();
+  }, []);
+};

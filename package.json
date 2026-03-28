@@ -4,13 +4,10 @@
   "private": true,
   "scripts": {
     "app-build": "ts-node ./src/scripts/build.ts",
-    
     "build:local": "yarn app-build --flavor=development --type=debug",
     "build:staging:apk": "yarn lint && yarn app-build --type=release --flavor=staging --format=apk",
     "build:production:aab": "yarn lint &&  yarn release:patch && yarn app-build --flavor=production --type=release --format=aab",
-      
     "dev": "yarn build:local",
-
     "ios": "react-native run-ios",
     "lint": "tsc --noEmit && eslint .",
     "start": "react-native start",
@@ -24,10 +21,13 @@
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "^3.0.11",
     "@hookform/resolvers": "^5.2.2",
+    "@notifee/react-native": "^9.1.8",
     "@react-native-clipboard/clipboard": "^1.16.3",
     "@react-native-community/datetimepicker": "^8.6.0",
     "@react-native-community/geolocation": "^3.4.0",
     "@react-native-community/netinfo": "^11.4.1",
+    "@react-native-firebase/app": "^23.8.8",
+    "@react-native-firebase/messaging": "^23.8.8",
     "@react-native-masked-view/masked-view": "^0.3.2",
     "@react-navigation/bottom-tabs": "^7.9.0",
     "@react-navigation/material-top-tabs": "^7.4.17",

@@ -35,7 +35,34 @@ const baseApi = create({
 //   }
 // });
 
+// baseApi.addAsyncRequestTransform(async request => {
+//   const { loginResponse } = authStore.getState();
+//   const userToken = loginResponse?.data?.token;
+//   const expireTime = loginResponse?.data?.expiresTime;
+
+//   if (expireTime) {
+//     const tokenExpiryDate = new Date(expireTime);
+//     const currentDate = new Date();
+//     if (currentDate >= tokenExpiryDate) {
+//       authStore.getState().logout();
+//       setTimeout(() => {
+//         appToast.Warning('Session Expired.');
+//       }, 1000);
+
+//       return;
+//     }
+//   }
+
+//   if (userToken && request?.headers) {
+//     request.headers.Authorization = `Bearer ${userToken}`;
+//   }
+// });
+
+let globalAbortController = new AbortController();
+
 baseApi.addAsyncRequestTransform(async request => {
+  request.signal = globalAbortController.signal;
+
   const { loginResponse } = authStore.getState();
   const userToken = loginResponse?.data?.token;
   const expireTime = loginResponse?.data?.expiresTime;
@@ -43,13 +70,21 @@ baseApi.addAsyncRequestTransform(async request => {
   if (expireTime) {
     const tokenExpiryDate = new Date(expireTime);
     const currentDate = new Date();
+
     if (currentDate >= tokenExpiryDate) {
       authStore.getState().logout();
+
+      globalAbortController.abort();
+
+      setTimeout(() => {
+        globalAbortController = new AbortController();
+      }, 500);
+
       setTimeout(() => {
         appToast.Warning('Session Expired.');
       }, 1000);
 
-      return;
+      throw new Error('Session Expired');
     }
   }
 
@@ -108,4 +143,11 @@ export interface GenericTypeWithId<T> {
 export interface GenericPatchStatusReq {
   status: 'Activate' | 'Deactivate';
   id: number;
+}
+
+export interface GenericGetIdNameRes extends GenericApiResponse {
+  data: {
+    id: number;
+    name: string;
+  }[];
 }

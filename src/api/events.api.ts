@@ -1,8 +1,10 @@
-import { Asset } from 'react-native-image-picker';
-
+import {
+  AppImageType,
+  EventLocationType,
+  GuestLimitType,
+} from '@src/types/default';
 import baseApi, { GenericApiResponse } from './base.api';
 import { EventDetailsType } from './constants/default';
-import { EventLocationType, GuestLimitType } from '@src/types/default';
 
 // API STARTS
 
@@ -27,7 +29,7 @@ export interface PostEventReq {
   IsDailyLimit?: boolean;
   SecurityGuardMessage?: string;
   EstateManagerMessage?: string;
-  Images?: Asset[];
+  Images?: AppImageType[];
 
   //   for internal form use only
   StartTime?: string;

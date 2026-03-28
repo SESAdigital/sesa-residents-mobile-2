@@ -21,7 +21,7 @@ interface Props {
 }
 const AccessCardActionsModal = (props: Props): React.JSX.Element => {
   const { closeActiveModal } = useAppStateStore();
-  const { data, onDelete, onStatusToggle: onStatusToggle } = props;
+  const { data, onDelete, onStatusToggle } = props;
 
   const actions = [
     {

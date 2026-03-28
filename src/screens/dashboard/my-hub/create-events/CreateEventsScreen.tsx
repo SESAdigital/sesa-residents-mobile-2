@@ -26,6 +26,7 @@ import EventDetailsStep from './steps/EventDetailsStep';
 import EventMessageStep from './steps/EventMessageStep';
 import EventSummaryStep from './steps/EventSummaryStep';
 import EventTypeStep from './steps/EventTypeStep';
+import AppStepIndicator from '@src/components/common/AppStepIndicator';
 
 const schema = Joi.object<PostEventReq>({
   EventType: Joi.number().optional(),
@@ -239,19 +240,7 @@ const CreateEventsScreen = (): React.JSX.Element => {
   return (
     <AppScreen showDownInset>
       <AppScreenHeader title="Create Event" />
-      <View style={styles.indicatorContainer}>
-        {Array.from({ length: steps?.length }).map((_, index) => (
-          <View
-            style={[
-              styles.indicator,
-              index < currentStep && {
-                backgroundColor: colors.GREEN_600,
-              },
-            ]}
-            key={index}
-          />
-        ))}
-      </View>
+      <AppStepIndicator currentStep={currentStep} totalSteps={steps?.length} />
 
       <ScrollView>{steps?.[currentStep - 1]}</ScrollView>
 
@@ -291,23 +280,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: Size.calcWidth(21),
     borderTopWidth: Size.calcAverage(1),
     borderTopColor: colors.WHITE_300,
-  },
-
-  indicator: {
-    flex: 1,
-    height: Size.calcHeight(4),
-    borderRadius: Size.calcWidth(4),
-    backgroundColor: colors.LIGHT_GRAY_200,
-  },
-
-  indicatorContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: Size.calcWidth(16),
-    paddingHorizontal: Size.calcWidth(21),
-    paddingVertical: Size.calcHeight(10),
-    borderBottomWidth: Size.calcHeight(1),
-    borderBottomColor: colors.WHITE_300,
   },
 });
 

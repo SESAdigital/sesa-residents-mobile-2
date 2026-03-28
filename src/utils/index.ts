@@ -5,6 +5,7 @@ import appConfig from './appConfig';
 import { appToast } from './appToast';
 import colors from '@src/configs/colors';
 import {
+  GenderTypeData,
   TransactionEntryType,
   TransactionEntryTypeData,
 } from '@src/api/constants/default';
@@ -158,4 +159,66 @@ export const normalizePhoneNumber = (phoneNumber: string) => {
 
 export const generateFileName = (index: number, type: string) => {
   return `image_${Date.now()}_${index}.${type?.split('/')[1] || 'jpg'}`;
+};
+
+function detectBase64ImageType(base64String: string) {
+  if (base64String.startsWith('iVBORw0KG')) {
+    return 'image/png';
+  }
+
+  if (base64String.startsWith('/9j/')) {
+    return 'image/jpeg';
+  }
+
+  if (
+    base64String.startsWith('R0lGODdh') ||
+    base64String.startsWith('R0lGODlh')
+  ) {
+    return 'image/gif';
+  }
+
+  if (base64String.startsWith('UklGR')) {
+    return 'image/webp';
+  }
+
+  if (base64String.startsWith('Qk')) {
+    return 'image/bmp';
+  }
+
+  if (base64String.trim().startsWith('<svg')) {
+    return 'image/svg+xml';
+  }
+  console.warn('Unknown image format');
+  return '';
+}
+
+export const formatBase64Image = (image: string) => {
+  if (!image) return '';
+
+  const prefix = detectBase64ImageType(image);
+
+  return `data:${prefix};base64,${image}`;
+};
+
+export const isBase64Image = (value: string) => {
+  if (value?.startsWith('data:image')) return true;
+
+  return false;
+};
+
+export const mapGenderTitle = (gender?: string | number) => {
+  if (gender?.toString() === GenderTypeData.Male?.toString()) return 'Male';
+  if (gender?.toString() === GenderTypeData.Female?.toString()) return 'Female';
+  return 'Unknown';
+};
+
+export const formatKYCGender = (value?: string | null | number): string => {
+  if (!value) return '';
+
+  const stringValue = value?.toString()?.trim()?.toLowerCase();
+
+  if (stringValue === 'male') return GenderTypeData.Male?.toString();
+  if (stringValue === 'female') return GenderTypeData.Female?.toString();
+
+  return stringValue;
 };

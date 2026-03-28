@@ -14,10 +14,10 @@ import {
   MaterialSymbolsDirectionsWalkRounded,
   MaterialSymbolsEmojiObjects,
   MaterialSymbolsEngineeringRounded,
-  MaterialSymbolsGroupsRounded,
   MaterialSymbolsHowToVoteRounded,
   MaterialSymbolsNotificationsActiveRounded,
   MaterialSymbolsPayments,
+  MaterialSymbolsSupervisorAccountRounded,
   MaterialSymbolsWallet,
 } from '@src/components/icons';
 import { SESAHomeIcon } from '@src/components/icons/custom';
@@ -226,7 +226,7 @@ export function notificationMapper(
 
   if (type === NotificationTypeData.GROUP_ACCESS_CHECK_IN) {
     return {
-      Icon: MaterialSymbolsGroupsRounded,
+      Icon: MaterialSymbolsSupervisorAccountRounded,
       iconColor: colors.GREEN_600,
     };
   }

@@ -23,7 +23,9 @@ interface Props {
   setValue: (value: string) => void;
   mode: 'date' | 'time' | 'datetime' | 'countdown';
   minimumDate?: Date;
+  maximumDate?: Date;
   description?: string;
+  isOptional?: boolean;
 }
 
 const AppDateInput = (props: Props): React.ReactNode => {
@@ -34,16 +36,21 @@ const AppDateInput = (props: Props): React.ReactNode => {
     placeholder,
     setValue,
     minimumDate,
+    maximumDate,
     mode,
     description,
+    isOptional,
   } = props;
   const [show, setShow] = useState(false);
 
-  const onChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
-    if (selectedDate) {
+  const onChange = (e: DateTimePickerEvent, selectedDate?: Date) => {
+    setShow(false);
+    if (e?.type === 'set' && selectedDate) {
       setValue(checkInvalidDate(selectedDate?.toISOString?.()));
     }
-    setShow(Platform.OS === 'ios');
+    if (isOptional && e?.type === 'dismissed') {
+      setValue('');
+    }
   };
 
   return (
@@ -104,9 +111,10 @@ const AppDateInput = (props: Props): React.ReactNode => {
 
       {show && (
         <DateTimePicker
-          value={new Date(value)}
+          value={value ? new Date(value) : new Date()}
           mode={mode}
           minimumDate={minimumDate}
+          maximumDate={maximumDate}
           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
           onChange={onChange}
         />

@@ -104,7 +104,8 @@ const HouseHoldMetricsScreen = ({ route }: Props): React.JSX.Element => {
         },
         {
           title: 'Manage dependents',
-          onPress: () => console.log(routes.CHANGE_WALLET_PIN_SCREEN),
+          onPress: () =>
+            navigation.navigate(routes.MANAGE_DEPENDENTS_SCREEN, { id, name }),
           Icon: MaterialSymbolsLightSupervisorAccountOutline,
           endText: handleLoading(
             `${data?.totalDependentCount?.toLocaleString() || ''} added of ${

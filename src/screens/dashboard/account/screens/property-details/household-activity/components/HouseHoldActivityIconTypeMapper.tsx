@@ -166,8 +166,6 @@ const redHousehold: HouseholdActivityType[] = [
   HouseholdActivityTypeData.HouseholdDeactivated,
   HouseholdActivityTypeData.HouseholdClosed,
 ];
-//   HouseholdActivityTypeData.AlphaOccupantAdded,
-//   HouseholdActivityTypeData.AlphaOccupantRemoved,
 
 function getBasicConfiguration(
   val: HouseholdActivityType,

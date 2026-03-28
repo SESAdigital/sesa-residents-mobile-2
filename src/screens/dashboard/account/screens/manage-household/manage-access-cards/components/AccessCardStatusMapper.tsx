@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Size.calcAverage(4),
+    gap: Size.calcAverage(2),
   },
 
   text: {

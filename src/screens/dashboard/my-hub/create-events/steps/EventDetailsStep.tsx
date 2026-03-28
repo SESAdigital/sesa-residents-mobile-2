@@ -6,6 +6,7 @@ import { PostEventReq } from '@src/api/events.api';
 import AppImage from '@src/components/AppImage';
 import AppText from '@src/components/AppText';
 import AppDateInput from '@src/components/forms/AppDateInput';
+import AppTextInput from '@src/components/forms/AppTextInput';
 import {
   MaterialSymbolsAddAPhoto,
   MaterialSymbolsDeleteOutline,
@@ -16,7 +17,6 @@ import AppActionsModal from '@src/modals/AppActionsModal';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { defaultSelectImageOptions } from '@src/utils/imageSelect';
 import Size from '@src/utils/useResponsiveSize';
-import AppTextInput from '@src/components/forms/AppTextInput';
 
 interface Props {
   form: UseFormReturn<PostEventReq, any, PostEventReq>;

@@ -1,3 +1,5 @@
+import { Asset } from 'react-native-image-picker';
+
 export interface SelectInputData {
   title: string;
   value: string;
@@ -26,3 +28,5 @@ export const GuestLimitTypeData = {
 
 export type GuestLimitType =
   (typeof GuestLimitTypeData)[keyof typeof GuestLimitTypeData];
+
+export type AppImageType = Asset;

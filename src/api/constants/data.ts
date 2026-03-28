@@ -1,6 +1,7 @@
 import { SelectInputData } from '@src/types/default';
 import {
   ElectricityMeterTypeData,
+  GenderTypeData,
   PropertyCategoryData,
   PropertyCategoryType,
   RelationshipTypeData,
@@ -15,6 +16,17 @@ export const ALL_METER_TYPES: SelectInputData[] = [
   {
     title: 'Prepaid Meter',
     value: ElectricityMeterTypeData?.PrePaid?.toString(),
+  },
+];
+
+export const ALL_GENDER_TYPES: SelectInputData[] = [
+  {
+    title: 'Male',
+    value: GenderTypeData?.Male?.toString(),
+  },
+  {
+    title: 'Female',
+    value: GenderTypeData?.Female?.toString(),
   },
 ];
 

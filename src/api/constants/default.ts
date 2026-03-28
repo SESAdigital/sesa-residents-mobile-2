@@ -27,6 +27,14 @@ export const UserAccountStatusData = {
 export type UserAccountStatusType =
   (typeof UserAccountStatusData)[keyof typeof UserAccountStatusData];
 
+export const EntityKYCStatusEnumData = {
+  NotVerified: 0,
+  Verified: 1,
+} as const;
+
+export type EntityKYCStatusEnum =
+  (typeof EntityKYCStatusEnumData)[keyof typeof EntityKYCStatusEnumData];
+
 export const PropertyCategoryData = {
   Commercial: 1,
   Residential: 2,
@@ -370,3 +378,16 @@ export const HouseholdActivityTypeData = {
 
 export type HouseholdActivityType =
   (typeof HouseholdActivityTypeData)[keyof typeof HouseholdActivityTypeData];
+
+export const KYCVerificationTypeData = {
+  PhoneNumber: 1,
+  BVN: 2,
+  DriversLicense: 3,
+  VNIN: 4,
+  IntlPassport: 5,
+  VotersCard: 6,
+  NIN: 7,
+} as const;
+
+export type KYCVerificationType =
+  (typeof KYCVerificationTypeData)[keyof typeof KYCVerificationTypeData];

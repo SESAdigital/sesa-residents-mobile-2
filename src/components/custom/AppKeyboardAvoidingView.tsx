@@ -10,8 +10,9 @@ const AppKeyboardAvoidingView = (
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 70 : 20}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 70 : 0}
       behavior={'padding'}
+      // behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
       {...props}
     />
   );

@@ -107,6 +107,12 @@ import {
   GetHouseholdAccessCardsResData,
   GetHouseholdRFIDsResData,
 } from '@src/api/household.api';
+import AddDependentScreen from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/AddDependentScreen';
+import DependentDetailsNavigator from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/DependentDetailsNavigator';
+import ManageDependentsScreen from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/ManageDependentsScreen';
+import AddDependentFormScreen, {
+  AddDependentFormScreenProps,
+} from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/AddDependentFormScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -174,6 +180,10 @@ export type AppNavigatorParams = {
   // MANAGE HOUSEHOLD SCREENS
   [routes.MANAGE_HOUSEHOLD_SCREEN]: undefined;
   [routes.HOUSEHOLD_METRICS_SCREEN]: ScreenWithId;
+  [routes.MANAGE_DEPENDENTS_SCREEN]: ScreenWithIdAndName;
+  [routes.ADD_DEPENDENT_SCREEN]: ScreenWithIdAndName;
+  [routes.ADD_DEPENDENT_FORM_SCREEN]: AddDependentFormScreenProps;
+  [routes.DEPENDENT_DETAILS_NAVIGATOR]: undefined;
   [routes.MANAGE_ACCESS_CARDS_SCREEN]: ScreenWithIdAndName;
   [routes.MANAGE_RFIDS_SCREEN]: ScreenWithIdAndName;
   [routes.ACCESS_CARD_HISTORY_SCREEN]: GetHouseholdAccessCardsResData;
@@ -285,6 +295,10 @@ const RootStack = createNativeStackNavigator({
 
         [routes.MANAGE_HOUSEHOLD_SCREEN]: ManageHouseholdScreen,
         [routes.HOUSEHOLD_METRICS_SCREEN]: HouseHoldMetricsScreen,
+        [routes.MANAGE_DEPENDENTS_SCREEN]: ManageDependentsScreen,
+        [routes.ADD_DEPENDENT_SCREEN]: AddDependentScreen,
+        [routes.ADD_DEPENDENT_FORM_SCREEN]: AddDependentFormScreen,
+        [routes.DEPENDENT_DETAILS_NAVIGATOR]: DependentDetailsNavigator,
         [routes.MANAGE_ACCESS_CARDS_SCREEN]: ManageAccessCardsScreen,
         [routes.MANAGE_RFIDS_SCREEN]: ManageRFIDsScreen,
         [routes.ACCESS_CARD_HISTORY_SCREEN]: AccessCardHistoryScreen,

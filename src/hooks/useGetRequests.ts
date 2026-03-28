@@ -29,6 +29,7 @@ import { useAuthStore } from '@src/stores/auth.store';
 import { formatMoneyToTwoDecimals, getTotalPages } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { getBillsMetrics } from '@src/api/bills.api';
+import { getUtilitiesFees } from '@src/api/utilities.api';
 
 export const useGetUserDetails = () => {
   const { data: profileData, isLoading: isProfileLoading } = useGetProfile();
@@ -491,4 +492,19 @@ export const useGetBillsMetrics = () => {
     isLoading,
     customRefetch,
   };
+};
+
+export const useGetFees = () => {
+  return useQuery({
+    queryKey: ['getUtilitiesFees'],
+    queryFn: async () => {
+      const response = await getUtilitiesFees();
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+  });
 };

@@ -45,38 +45,38 @@ interface CombineDateTimeProps {
   time?: string;
 }
 
-export const combineUTCDateTime = (val: CombineDateTimeProps) => {
-  const { date, time } = val;
+// export const combineUTCDateTime = (val: CombineDateTimeProps) => {
+//   const { date, time } = val;
 
-  const startDate = new Date(date ?? '');
-  const startTime = new Date(time ?? '');
+//   const startDate = new Date(date ?? '');
+//   const startTime = new Date(time ?? '');
 
-  const year = startDate.getUTCFullYear();
-  const month = startDate.getUTCMonth(); // 0-indexed
-  const day = startDate.getUTCDate();
+//   const year = startDate.getUTCFullYear();
+//   const month = startDate.getUTCMonth(); // 0-indexed
+//   const day = startDate.getUTCDate();
 
-  const hours = startTime.getUTCHours();
-  const minutes = startTime.getUTCMinutes();
-  const seconds = startTime.getUTCSeconds();
-  const milliseconds = startTime.getUTCMilliseconds();
+//   const hours = startTime.getUTCHours();
+//   const minutes = startTime.getUTCMinutes();
+//   const seconds = startTime.getUTCSeconds();
+//   const milliseconds = startTime.getUTCMilliseconds();
 
-  // Combine into new Date (UTC-aware)
-  const combinedUTC = new Date(
-    Date.UTC(year, month, day, hours, minutes, seconds, milliseconds),
-  );
+//   // Combine into new Date (UTC-aware)
+//   const combinedUTC = new Date(
+//     Date.UTC(year, month, day, hours, minutes, seconds, milliseconds),
+//   );
 
-  // const combinedDateTime = new Date(
-  //   year,
-  //   month,
-  //   day,
-  //   hours,
-  //   minutes,
-  //   seconds,
-  //   milliseconds,
-  // );
+//   // const combinedDateTime = new Date(
+//   //   year,
+//   //   month,
+//   //   day,
+//   //   hours,
+//   //   minutes,
+//   //   seconds,
+//   //   milliseconds,
+//   // );
 
-  return combinedUTC?.toISOString();
-};
+//   return combinedUTC?.toISOString();
+// };
 
 export const combineDateTime = (val: CombineDateTimeProps) => {
   const { date, time } = val;
@@ -95,7 +95,13 @@ export const combineDateTime = (val: CombineDateTimeProps) => {
 
   // Combine into new Date (UTC-aware)
   const combinedDateTime = new Date(
-    Date.UTC(year, month, day, hours, minutes, seconds, milliseconds),
+    year,
+    month,
+    day,
+    hours,
+    minutes,
+    seconds,
+    milliseconds,
   );
 
   // const combinedDateTime = new Date(

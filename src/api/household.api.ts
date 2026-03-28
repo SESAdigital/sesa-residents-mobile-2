@@ -1,3 +1,4 @@
+import { AppImageType } from '@src/types/default';
 import baseApi, {
   GenericApiResponse,
   GenericPaginatedResponse,
@@ -8,9 +9,11 @@ import baseApi, {
 import {
   AccessCardStatusType,
   AccessEntryType,
+  EntityKYCStatusEnum,
   GenderType,
   PropertyCategoryType,
   RFIDType,
+  UserAccountStatusType,
 } from './constants/default';
 
 // API STARTS
@@ -38,6 +41,44 @@ export const getHouseholdDependentsCheckInOut = ({
     `/Household/Dependents/${id}/CheckInOut`,
     query,
   );
+
+export const getPropertyDependentsVisitors = ({
+  propId,
+  id,
+  ...query
+}: PropIdPagReq) =>
+  baseApi.get<GetPropertyDependentsVisitorsRes>(
+    `/Household/${propId}/Dependents/${id}/Visitors`,
+    query,
+  );
+
+export const getPropertyDependentsEvents = ({
+  propId,
+  id,
+  ...query
+}: PropIdPagReq) =>
+  baseApi.get<GetPropertyDependentsEventsRes>(
+    `/Household/${propId}/Dependents/${id}/Events`,
+    query,
+  );
+
+export const getPropertyDependentsGroupAccess = ({
+  propId,
+  id,
+  ...query
+}: PropIdPagReq) =>
+  baseApi.get<GetPropertyDependentsGroupAccessRes>(
+    `/Household/${propId}/Dependents/${id}/GroupAccess`,
+    query,
+  );
+
+export const patchDependentStatus = (val: GenericPatchStatusReq) =>
+  baseApi.patch<GenericApiResponse>(
+    `/Household/Dependent/${val.id}/${val?.status}`,
+  );
+
+export const deleteDependent = (id: number) =>
+  baseApi.delete<GenericApiResponse>(`/Household/Dependents/${id}`);
 
 export const getHouseholdRFIDs = ({
   id,
@@ -86,6 +127,15 @@ export const patchHouseholdAccessCardStatus = (val: GenericPatchStatusReq) =>
 export const deleteHouseholdAccessCard = (id: number) =>
   baseApi.delete<GenericApiResponse>(`/Household/AccessCard/${id}`);
 
+export const postHouseholdCreateOccupant = (val: FormData) =>
+  baseApi.post<PostHouseholdCreateOccupantRes>(
+    `/Household/CreateOccupant`,
+    val,
+    {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    },
+  );
+
 // API ENDS
 
 //  TYPES STARTS
@@ -130,7 +180,7 @@ export interface GetHouseholdPropertyDependentsResData {
   code: string;
   gender: GenderType;
   genderText: string;
-  status: number; // TODO FIX THIS
+  status: AccessCardStatusType;
   statusText: string;
   isPendingApproval: boolean;
   lastactivity: string;
@@ -155,6 +205,41 @@ export interface GetHouseholdDependentsCheckInOutResData {
 
 interface GetHouseholdDependentsCheckInOutRes extends GenericApiResponse {
   data: GenericPaginatedResponse<GetHouseholdDependentsCheckInOutResData>;
+}
+
+export interface GetPropertyDependentsVisitorsResData {
+  name: string;
+  code: string;
+  checkInTime: string;
+  checkOutTime: string;
+  dateOfVisitation: string;
+}
+
+interface GetPropertyDependentsVisitorsRes extends GenericApiResponse {
+  data: GenericPaginatedResponse<GetPropertyDependentsVisitorsResData>;
+}
+
+export interface GetPropertyDependentsEventsResData {
+  name: string;
+  status: number; // TODO FIX THIS
+  statusText: string;
+  totalCheckInCount: number;
+  startDate: string;
+}
+
+interface GetPropertyDependentsEventsRes extends GenericApiResponse {
+  data: GenericPaginatedResponse<GetPropertyDependentsEventsResData>;
+}
+
+export interface GetPropertyDependentsGroupAccessResData {
+  code: string;
+  totalCheckInCount: number;
+  startDate: string;
+  endDate: string;
+}
+
+interface GetPropertyDependentsGroupAccessRes extends GenericApiResponse {
+  data: GenericPaginatedResponse<GetPropertyDependentsGroupAccessResData>;
 }
 
 export interface GetHouseholdRFIDsResData {
@@ -198,6 +283,53 @@ export interface GetHouseholdAccessCardsResData {
 
 interface GetHouseholdAccessCardsRes extends GenericApiResponse {
   data: GenericPaginatedResponse<GetHouseholdAccessCardsResData>;
+}
+
+interface PropIdPagReq extends GenericPaginationReqWithId {
+  propId: number;
+}
+
+export interface PostHouseholdCreateOccupantReq {
+  PropertyUnitId: number;
+  IsAlpha: boolean;
+  FirstName: string;
+  LastName: string;
+  Email: string;
+  PhoneNumber: string;
+  DateOfBirth: string;
+  Gender: GenderType;
+  HomeAddress: string;
+  HomeAddressPlaceId: string;
+  Photo: AppImageType;
+  KYCId: number;
+}
+
+interface PostHouseholdCreateOccupantRes extends GenericApiResponse {
+  data: {
+    id: number;
+    estateId: number;
+    photo: string;
+    gender: GenderType;
+    genderText: string;
+    firstName: string;
+    lastName: string;
+    emailAddress: string;
+    userName: string;
+    phoneNumber: string;
+    code: string;
+    dateOfBirth: string;
+    timeCreated: string;
+    timeCreatedFormatted: string;
+    accountStatus: UserAccountStatusType;
+    accountStatusText: string;
+    kycStatus: EntityKYCStatusEnum;
+    kycStatusText: string;
+    kycId: number;
+    isAlphaResident: boolean;
+    address: string;
+    addressPlaceId: string;
+    propertyUnitName: string;
+  };
 }
 
 //  TYPES ENDS

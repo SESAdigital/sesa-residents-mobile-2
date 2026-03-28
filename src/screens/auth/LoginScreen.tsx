@@ -241,7 +241,7 @@ const LoginScreen = (): React.JSX.Element => {
 
     if (isAutoField && !email && !password) {
       setValue('email', loginReq?.email);
-      setValue('password', loginReq?.password);
+      // setValue('password', loginReq?.password);
     } else {
       // if (!isAutoField) {
       //   if (loginReq?.password)

@@ -26,4 +26,16 @@ export const joiSchemas = {
   name: Joi.string().min(3).max(255).required(),
 
   phone: Joi.string().length(11).required(),
+
+  address: Joi.string().required().min(7).max(160).label('Address'),
+
+  image: Joi.object()
+    .required()
+    .label('Image')
+    .custom((value, helpers) => {
+      if (!value?.uri) {
+        return helpers.error('any.required');
+      }
+      return value;
+    }),
 };

@@ -1182,17 +1182,6 @@ export function MaterialSymbolsNotificationsActiveRounded(props: SvgProps) {
   );
 }
 
-export function MaterialSymbolsGroupsRounded(props: SvgProps) {
-  return (
-    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
-      <Path
-        fill="currentColor"
-        d="M1 18q-.425 0-.712-.288T0 17v-.575q0-1.075 1.1-1.75T4 14q.325 0 .625.013t.575.062q-.35.525-.525 1.1t-.175 1.2V18zm6 0q-.425 0-.712-.288T6 17v-.625q0-.8.438-1.463t1.237-1.162T9.588 13T12 12.75q1.325 0 2.438.25t1.912.75t1.225 1.163t.425 1.462V17q0 .425-.287.713T17 18zm12.5 0v-1.625q0-.65-.162-1.225t-.488-1.075q.275-.05.563-.062T20 14q1.8 0 2.9.663t1.1 1.762V17q0 .425-.288.713T23 18zM4 13q-.825 0-1.412-.587T2 11q0-.85.588-1.425T4 9q.85 0 1.425.575T6 11q0 .825-.575 1.413T4 13m16 0q-.825 0-1.412-.587T18 11q0-.85.588-1.425T20 9q.85 0 1.425.575T22 11q0 .825-.575 1.413T20 13m-8-1q-1.25 0-2.125-.875T9 9q0-1.275.875-2.137T12 6q1.275 0 2.138.863T15 9q0 1.25-.862 2.125T12 12"
-      />
-    </Svg>
-  );
-}
-
 export function IonEnterOutline(props: SvgProps) {
   return (
     <Svg width="1em" height="1em" viewBox="0 0 512 512" {...props}>
@@ -1371,6 +1360,50 @@ export function MaterialSymbolsShieldPersonRounded(props: SvgProps) {
       <Path
         fill="currentColor"
         d="M12 13q1.45 0 2.475-1.025T15.5 9.5t-1.025-2.475T12 6T9.525 7.025T8.5 9.5t1.025 2.475T12 13m0 6.9q1.475-.475 2.613-1.487t1.987-2.288q-1.075-.55-2.238-.837T12 15t-2.363.288t-2.237.837q.85 1.275 1.988 2.288T12 19.9m0 2q-.175 0-.325-.025t-.3-.075Q8 20.675 6 17.638T4 11.1V6.375q0-.625.363-1.125t.937-.725l6-2.25q.35-.125.7-.125t.7.125l6 2.25q.575.225.938.725T20 6.375V11.1q0 3.5-2 6.538T12.625 21.8q-.15.05-.3.075T12 21.9"
+      />
+    </Svg>
+  );
+}
+
+export function RiWomenLine(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M11 15.934A7.501 7.501 0 0 1 12 1a7.5 7.5 0 0 1 1 14.934V18h5v2h-5v4h-2v-4H6v-2h5zM12 14a5.5 5.5 0 1 0 0-11a5.5 5.5 0 0 0 0 11"
+      />
+    </Svg>
+  );
+}
+
+export function RiMenLine(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M15.05 8.537L18.585 5H14V3h8v8h-2V6.414l-3.537 3.537a7.5 7.5 0 1 1-1.414-1.414M10.5 20a5.5 5.5 0 1 0 0-11a5.5 5.5 0 0 0 0 11"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsLocationAwayRounded(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M7 21H4q-.825 0-1.412-.587T2 19v-9q0-.475.213-.9t.587-.7l6-4.5q.275-.2.575-.3T10 3.5t.625.1t.575.3l3.3 2.5q.25.2.188.5t-.388.4q-.975.35-1.725 1.063T11.4 10.025t-.413 1.988t.438 1.987q.125.325.013.638t-.413.437q-1.05.475-1.6.925t-.9 1.1q-.275.45-.4.963T8 19.1v.9q0 .425-.288.713T7 21m9-5q1.35 0 2.613.35t2.412 1.025q.45.275.713.738T22 19.1q0 .8-.55 1.35T20.1 21h-8.2q-.8 0-1.35-.55T10 19.1q0-.525.263-.988t.712-.737q1.15-.675 2.413-1.025T16 16m0-1q-1.25 0-2.125-.875T13 12t.875-2.125T16 9t2.125.875T19 12t-.875 2.125T16 15"
+      />
+    </Svg>
+  );
+}
+
+export function MaterialSymbolsPhotoCameraRounded(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M12 17.5q1.875 0 3.188-1.312T16.5 13t-1.312-3.187T12 8.5T8.813 9.813T7.5 13t1.313 3.188T12 17.5m0-2q-1.05 0-1.775-.725T9.5 13t.725-1.775T12 10.5t1.775.725T14.5 13t-.725 1.775T12 15.5M4 21q-.825 0-1.412-.587T2 19V7q0-.825.588-1.412T4 5h3.15L8.4 3.65q.275-.3.663-.475T9.875 3h4.25q.425 0 .813.175t.662.475L16.85 5H20q.825 0 1.413.588T22 7v12q0 .825-.587 1.413T20 21z"
       />
     </Svg>
   );

@@ -17,8 +17,13 @@ import {
   GetEmergencyServicesResData,
   GetEstateRulesResData,
 } from '@src/api/helpCenter.api';
+import {
+  GetHouseholdAccessCardsResData,
+  GetHouseholdRFIDsResData,
+} from '@src/api/household.api';
 import { PostBookVisitorResData } from '@src/api/visitors.api';
 import { WalletTransactionDetails } from '@src/api/wallets.api';
+import DependentTopTabsNavigator from '@src/navigation/DependentTopTabsNavigator';
 import ForgotPasswordScreen, {
   ForgotPasswordScreenParam,
 } from '@src/screens/auth/ForgotPasswordScreen';
@@ -37,6 +42,16 @@ import EmergencyServicesScreen from '@src/screens/dashboard/account/screens/help
 import EstateRuleDetailsScreen from '@src/screens/dashboard/account/screens/help-center/estate-rules/EstateRuleDetailsScreen';
 import EstateRulesScreen from '@src/screens/dashboard/account/screens/help-center/estate-rules/EstateRulesScreen';
 import HelpCenterScreen from '@src/screens/dashboard/account/screens/help-center/HelpCenterScreen';
+import HouseHoldMetricsScreen from '@src/screens/dashboard/account/screens/manage-household/HouseHoldMetricsScreen';
+import AccessCardHistoryScreen from '@src/screens/dashboard/account/screens/manage-household/manage-access-cards/AccessCardHistoryScreen';
+import ManageAccessCardsScreen from '@src/screens/dashboard/account/screens/manage-household/manage-access-cards/ManageAccessCardsScreen';
+import AddDependentFormScreen, {
+  AddDependentFormScreenProps,
+} from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/AddDependentFormScreen';
+import AddDependentScreen from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/AddDependentScreen';
+import ManageDependentsScreen from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/ManageDependentsScreen';
+import ManageRFIDsScreen from '@src/screens/dashboard/account/screens/manage-household/manage-rfids/ManageRFIDsScreen';
+import RFIDHistoryScreen from '@src/screens/dashboard/account/screens/manage-household/manage-rfids/RFIDHistoryScreen';
 import ManageHouseholdScreen from '@src/screens/dashboard/account/screens/manage-household/ManageHouseholdScreen';
 import EmergencyContactListScreen from '@src/screens/dashboard/account/screens/manage-profile/emergency-contacts/EmergencyContactListScreen';
 import EmergencyContactsScreen from '@src/screens/dashboard/account/screens/manage-profile/emergency-contacts/EmergencyContactsScreen';
@@ -65,13 +80,13 @@ import AttendeeListScreen, {
 import EventBookingDetailsScreen from '@src/screens/dashboard/bookings/events/EventBookingDetailsScreen';
 import GroupAccessBookingDetailsScreen from '@src/screens/dashboard/bookings/group-access/GroupAccessBookingDetailsScreen';
 import VisitorBookingDetailsScreen from '@src/screens/dashboard/bookings/visitors/VisitorBookingDetailsScreen';
-import PaymentInvoiceDetailsScreen, {
-  BillInvoiceDetailsScreenProps,
-} from '@src/screens/dashboard/my-hub/bills-and-collections/PaymentInvoiceDetailsScreen';
 import BillsAndCollectionsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/BillsAndCollectionsScreen';
 import PayInvoiceScreen, {
   PayInvoiceScreenProps,
 } from '@src/screens/dashboard/my-hub/bills-and-collections/PayInvoiceScreen';
+import PaymentInvoiceDetailsScreen, {
+  BillInvoiceDetailsScreenProps,
+} from '@src/screens/dashboard/my-hub/bills-and-collections/PaymentInvoiceDetailsScreen';
 import UnPaidEstatePaymentsScreen from '@src/screens/dashboard/my-hub/bills-and-collections/UnPaidEstatePaymentsScreen';
 import BookVisitorScreen from '@src/screens/dashboard/my-hub/book-visitor/BookVisitorScreen';
 import BookVisitorSuccessScreen from '@src/screens/dashboard/my-hub/book-visitor/BookVistorSuccessScreen';
@@ -98,21 +113,6 @@ import { useAuthStore } from '@src/stores/auth.store';
 import { BuyPowerFormScreenData } from '@src/types/default';
 import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
-import HouseHoldMetricsScreen from '@src/screens/dashboard/account/screens/manage-household/HouseHoldMetricsScreen';
-import ManageRFIDsScreen from '@src/screens/dashboard/account/screens/manage-household/manage-rfids/ManageRFIDsScreen';
-import ManageAccessCardsScreen from '@src/screens/dashboard/account/screens/manage-household/manage-access-cards/ManageAccessCardsScreen';
-import AccessCardHistoryScreen from '@src/screens/dashboard/account/screens/manage-household/manage-access-cards/AccessCardHistoryScreen';
-import RFIDHistoryScreen from '@src/screens/dashboard/account/screens/manage-household/manage-rfids/RFIDHistoryScreen';
-import {
-  GetHouseholdAccessCardsResData,
-  GetHouseholdRFIDsResData,
-} from '@src/api/household.api';
-import AddDependentScreen from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/AddDependentScreen';
-import DependentDetailsNavigator from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/DependentDetailsNavigator';
-import ManageDependentsScreen from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/ManageDependentsScreen';
-import AddDependentFormScreen, {
-  AddDependentFormScreenProps,
-} from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/AddDependentFormScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -298,7 +298,7 @@ const RootStack = createNativeStackNavigator({
         [routes.MANAGE_DEPENDENTS_SCREEN]: ManageDependentsScreen,
         [routes.ADD_DEPENDENT_SCREEN]: AddDependentScreen,
         [routes.ADD_DEPENDENT_FORM_SCREEN]: AddDependentFormScreen,
-        [routes.DEPENDENT_DETAILS_NAVIGATOR]: DependentDetailsNavigator,
+        [routes.DEPENDENT_DETAILS_NAVIGATOR]: DependentTopTabsNavigator,
         [routes.MANAGE_ACCESS_CARDS_SCREEN]: ManageAccessCardsScreen,
         [routes.MANAGE_RFIDS_SCREEN]: ManageRFIDsScreen,
         [routes.ACCESS_CARD_HISTORY_SCREEN]: AccessCardHistoryScreen,

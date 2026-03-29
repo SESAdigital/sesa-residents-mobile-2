@@ -5,17 +5,20 @@ import { createWithEqualityFn } from 'zustand/traditional';
 
 import { AppModalProps } from '@src/modals/AppModal';
 import { appToast } from '@src/utils/appToast';
+import { GetHouseholdPropertyDependentsResData } from '@src/api/household.api';
 
 interface AppStateStore {
   activeModal: AppModalProps | null;
   isAppModalLoading: boolean;
   allPhoneContacts: Contact[];
+  selectedDependent: GetHouseholdPropertyDependentsResData | null;
 
   closeActiveModal: () => void;
   setActiveModal: (value: AppModalProps) => void;
   setIsAppModalLoading: (val: boolean) => void;
   setAllPhoneContacts: (val: Contact[]) => void;
   reset: () => void;
+  setSelectedDependent: (value: GetHouseholdPropertyDependentsResData) => void;
 }
 
 const defaultState = {
@@ -24,6 +27,7 @@ const defaultState = {
   shiftDetailsScreenId: null,
   qrCodeDetail: null,
   allPhoneContacts: [],
+  selectedDependent: null,
 };
 
 const appStateStore = createWithEqualityFn<AppStateStore>(
@@ -40,6 +44,8 @@ const appStateStore = createWithEqualityFn<AppStateStore>(
       return set(() => ({ activeModal }));
     },
     setAllPhoneContacts: allPhoneContacts => set(() => ({ allPhoneContacts })),
+    setSelectedDependent: selectedDependent =>
+      set(() => ({ selectedDependent })),
   }),
   shallow,
 );

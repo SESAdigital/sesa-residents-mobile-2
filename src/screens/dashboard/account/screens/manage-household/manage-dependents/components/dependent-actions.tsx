@@ -13,8 +13,9 @@ import {
 import AppText from '@src/components/AppText';
 import AppModalHeader from '@src/components/common/AppModalHeader';
 import {
+  MaterialSymbolsCheckRounded,
+  MaterialSymbolsCloseRounded,
   MaterialSymbolsDeleteOutline,
-  MaterialSymbolsEditOutline,
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
@@ -26,7 +27,11 @@ import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 import ManageDependentRow from './ManageDependentRow';
 
-export const useDependentActions = () => {
+interface UseDependentActionsProps {
+  shouldGoBackOnDelete?: boolean;
+}
+
+export const useDependentActions = (props?: UseDependentActionsProps) => {
   const { setActiveModal, setIsAppModalLoading, closeActiveModal } =
     useAppStateStore();
   const queryClient = useQueryClient();
@@ -49,7 +54,7 @@ export const useDependentActions = () => {
 
     if (response.ok) {
       queryClient.resetQueries({ queryKey: [queryKeys.GET_HOUSEHOLDS] });
-      if (status === 'Delete') {
+      if (status === 'Delete' && props?.shouldGoBackOnDelete) {
         navigation.goBack();
       }
       closeActiveModal();
@@ -124,7 +129,10 @@ const DependentActionsModal = (
     {
       title: `${statusTitle} dependent`,
       onPress: onStatusToggle,
-      Icon: MaterialSymbolsEditOutline,
+      Icon:
+        statusTitle === 'Activate'
+          ? MaterialSymbolsCheckRounded
+          : MaterialSymbolsCloseRounded,
     },
     {
       title: 'Delete dependent',

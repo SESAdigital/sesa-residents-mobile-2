@@ -27,6 +27,7 @@ import AppFAB from '@src/components/AppFAB';
 import { useGetFees, useGetWalletBalance } from '@src/hooks/useGetRequests';
 import { useAuthStore } from '@src/stores/auth.store';
 import { appToast } from '@src/utils/appToast';
+import { useAppStateStore } from '@src/stores/appState.store';
 
 type Props = AppScreenProps<'MANAGE_DEPENDENTS_SCREEN'>;
 
@@ -78,6 +79,7 @@ const ManageDependentsScreen = ({ route }: Props): React.JSX.Element => {
   const refetch = () => queryClient.resetQueries({ queryKey });
   const { selectedProperty } = useAuthStore();
   const { handleModal } = useDependentActions();
+  const { setSelectedDependent } = useAppStateStore();
 
   const handleAdd = () => {
     if (!selectedProperty?.id)
@@ -123,9 +125,10 @@ const ManageDependentsScreen = ({ route }: Props): React.JSX.Element => {
         }
         renderItem={({ item }) => (
           <ManageDependentRow
-            onPress={() =>
-              navigation.navigate(routes.DEPENDENT_DETAILS_NAVIGATOR)
-            }
+            onPress={() => {
+              setSelectedDependent(item);
+              navigation.navigate(routes.DEPENDENT_DETAILS_NAVIGATOR);
+            }}
             showActivity
             data={item}
             onMorePress={() => handleModal(item)}

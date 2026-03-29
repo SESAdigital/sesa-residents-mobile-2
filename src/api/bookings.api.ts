@@ -245,7 +245,7 @@ export interface GetBookingsGroupAccessResData {
   totalCheckInCount: number;
   endTime: string;
   isAllDay: boolean;
-  status: EventStatusType;
+  status: EventStatusType; // THIS IS CORRECT. YOU CAN ALSO CONFIRM FROM BACKEND
   statusText: string;
   startDate: string;
 }

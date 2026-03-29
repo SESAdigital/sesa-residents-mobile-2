@@ -8,8 +8,10 @@ import baseApi, {
 } from './base.api';
 import {
   AccessCardStatusType,
+  AccessCodeStatusType,
   AccessEntryType,
   EntityKYCStatusEnum,
+  EventStatusType,
   GenderType,
   PropertyCategoryType,
   RFIDType,
@@ -75,6 +77,7 @@ export const getPropertyDependentsGroupAccess = ({
 export const patchDependentStatus = (val: GenericPatchStatusReq) =>
   baseApi.patch<GenericApiResponse>(
     `/Household/Dependent/${val.id}/${val?.status}`,
+    { reason: '' },
   );
 
 export const deleteDependent = (id: number) =>
@@ -213,6 +216,9 @@ export interface GetPropertyDependentsVisitorsResData {
   checkInTime: string;
   checkOutTime: string;
   dateOfVisitation: string;
+  // FOR INTERNAL USE ONLY
+  status?: AccessCodeStatusType;
+  statusText?: string;
 }
 
 interface GetPropertyDependentsVisitorsRes extends GenericApiResponse {
@@ -221,10 +227,12 @@ interface GetPropertyDependentsVisitorsRes extends GenericApiResponse {
 
 export interface GetPropertyDependentsEventsResData {
   name: string;
-  status: number; // TODO FIX THIS
+  status: EventStatusType;
   statusText: string;
   totalCheckInCount: number;
   startDate: string;
+  // FOR INTERNAL USE ONLY
+  images?: string[];
 }
 
 interface GetPropertyDependentsEventsRes extends GenericApiResponse {
@@ -236,6 +244,10 @@ export interface GetPropertyDependentsGroupAccessResData {
   totalCheckInCount: number;
   startDate: string;
   endDate: string;
+  // FOR INTERNAL USE ONLY
+  isAllDay?: boolean;
+  status?: EventStatusType; // THIS IS CORRECT. YOU CAN ALSO CONFIRM FROM BACKEND
+  statusText?: string;
 }
 
 interface GetPropertyDependentsGroupAccessRes extends GenericApiResponse {

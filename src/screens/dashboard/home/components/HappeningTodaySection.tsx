@@ -16,7 +16,6 @@ import Size from '@src/utils/useResponsiveSize';
 import HappeningTodayEventsSection from '../sections/HappeningTodayEventsSection';
 import HappeningTodayGroupAccessSection from '../sections/HappeningTodayGroupAccessSection';
 import HappeningTodayVisitorSection from '../sections/HappeningTodayVisitorSection';
-import { useAuthStore } from '@src/stores/auth.store';
 
 const tabs = [
   {
@@ -63,9 +62,6 @@ const HappeningTodaySection = (): React.JSX.Element => {
     }
     return 0;
   };
-
-  const { FCMToken } = useAuthStore();
-  console.log({ token: FCMToken });
 
   return (
     <>

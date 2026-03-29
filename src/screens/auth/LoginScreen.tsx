@@ -157,9 +157,11 @@ const LoginScreen = (): React.JSX.Element => {
           longitude: loginData?.longitude,
           loginMode: loginData?.loginMode,
           pushNotificationToken: loginData?.pushNotificationToken,
-          currentPassword: password,
+          currentPassword: loginData?.password,
           newPassword: '',
-          ...(email ? { email } : phoneNumber ? { phoneNumber } : {}),
+          ...(loginData?.email
+            ? { email: loginData?.email }
+            : { phoneNumber: loginData?.phoneNumber }),
           confirmPassword: '',
         };
         navigation.navigate(routes.SETUP_PASSWORD_SCREEN, setupData);

@@ -242,8 +242,7 @@ export const handleSetupAndroidNotificationChannel = async () => {
       visibility: AndroidVisibility.PUBLIC,
       bypassDnd: true,
       lights: true,
-      description:
-        'Receive timely important alerts and reminders, including panic notifications and patrol updates.',
+      description: 'Receive timely important alerts and reminders.',
       vibrationPattern: [300, 500],
     });
   }
@@ -272,7 +271,7 @@ export const handlePushNotifiee = async (props: NotifProps) => {
         visibility: AndroidVisibility.PUBLIC,
         color: colors.WHITE_100,
         smallIcon: 'ic_notification',
-        sound: 'sesanotifsound2',
+        // sound: 'sesanotifsound2',
         vibrationPattern: [300, 500],
         pressAction: {
           id: 'default',
@@ -280,6 +279,7 @@ export const handlePushNotifiee = async (props: NotifProps) => {
       },
     });
   } catch (error) {
-    appToast.Warning(`An error occured while handling notification ${error}`);
+    console.log(`An error occured while handling notification ${error}`);
+    appToast.Android(`An error occured while handling notification ${error}`);
   }
 };

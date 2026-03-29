@@ -4,6 +4,7 @@
 
 import messaging from '@react-native-firebase/messaging';
 import { AppRegistry } from 'react-native';
+import notifee from '@notifee/react-native';
 
 import { handlePushNotifiee } from '@src/utils';
 import App from './App';
@@ -11,22 +12,31 @@ import { name as appName } from './app.json';
 
 async function handleMessage(val) {
   handlePushNotifiee({
-    body: val?.notification?.body || '',
-    title: val?.notification?.title || '',
-    largeIcon: val?.notification?.android?.imageUrl,
+    body: val?.data?.body || val?.notification?.body || '',
+    title: val?.data?.title || val?.notification?.title || '',
+    largeIcon:
+      val?.data?.android?.imageUrl ||
+      val?.notification?.android?.imageUrl ||
+      '',
   });
 }
 
-async function handleOnMessage(val) {
-  handleMessage(val);
-}
-async function handleBackgroundMessage(val) {
+notifee.onBackgroundEvent(async ({ type, detail }) => {
+  if (type === EventType.PRESS) {
+    console.log('User pressed notification in the background ', JSON.stringify(detail, null, 3));
+  }
+});
+
+// async function handleOnMessage(val) {
 //   handleMessage(val);
+// }
+
+// messaging().onMessage(handleOnMessage);
+
+async function handleBackgroundMessage(val) {
+  handleMessage(val);
 }
 
 messaging().setBackgroundMessageHandler(handleBackgroundMessage);
-
-messaging().onMessage(handleOnMessage);
-
 
 AppRegistry.registerComponent(appName, () => App);

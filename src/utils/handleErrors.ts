@@ -14,11 +14,8 @@ export const handleToastApiError = (
   falbackMessage?: string,
   preventToast?: boolean,
 ) => {
-  const message =
-    props?.data?.message ||
-    falbackMessage ||
-    props?.problem ||
-    'FATAL: Invalid error received.';
+  const message = props?.data?.message || getFirstValidationError(props?.data);
+  falbackMessage || props?.problem || 'FATAL: Invalid error received.';
 
   const newMessage = removeDoubleQuotes(
     props?.data?.message || JSON.stringify(message),
@@ -30,3 +27,25 @@ export const handleToastApiError = (
 
   return newMessage;
 };
+
+type ValidationErrorResponse = {
+  errors?: Record<string, string[]>;
+};
+
+function getFirstValidationError(
+  errorResponse: ValidationErrorResponse,
+): string | null {
+  const errors = errorResponse?.errors;
+
+  if (!errors) return null;
+
+  const firstKey = Object.keys(errors)?.[0];
+  if (!firstKey) return null;
+
+  const firstErrorArray = errors?.[firstKey];
+  if (!Array.isArray(firstErrorArray) || firstErrorArray?.length < 1) {
+    return null;
+  }
+
+  return firstErrorArray?.[0];
+}

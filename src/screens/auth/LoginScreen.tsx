@@ -67,6 +67,7 @@ const LoginScreen = (): React.JSX.Element => {
     setLoginResponse,
     setIsDoneOnboarding,
     loginMode,
+    // FCMToken,
     setLoginMode,
     isPasswordRemembered,
     setIsPasswordRemembered,
@@ -105,15 +106,32 @@ const LoginScreen = (): React.JSX.Element => {
         return appToast.Info('Please enter a phone number');
     }
 
-    const loginData: PostLoginReq = {
+    let loginData: PostLoginReq = {
       deviceId: getDeviceId(),
       latitude: location?.latitude?.toString() || '',
       longitude: location?.longitude?.toString() || '',
       loginMode: loginMode,
-      password: password?.trim(),
       pushNotificationToken: '',
+      password: password?.trim(),
       ...(isEmailLogin ? { email } : { phoneNumber }),
     };
+
+    if (!isFromForm) {
+      const email2 = loginReq?.email?.trim() || '';
+
+      const loginMode = !!email2
+        ? LoginModeData.EmailAddress
+        : LoginModeData.PhoneNumber;
+
+      loginData = {
+        ...loginData,
+        loginMode,
+        password: loginReq?.password?.trim() || '',
+        ...(email2
+          ? { email: email2 }
+          : { phoneNumber: loginReq?.phoneNumber?.trim() }),
+      };
+    }
 
     const response = await postLoginAPI.mutateAsync(loginData);
 
@@ -193,7 +211,6 @@ const LoginScreen = (): React.JSX.Element => {
 
   const onBiometricSignIn = async () => {
     try {
-      console.log('1');
       const result = await authenticateWithOptions({
         title: 'Sign In to SESA',
         subtitle: '',

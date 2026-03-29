@@ -14,11 +14,7 @@ const Warning = (message: string) => toast.warning(message);
 const Dismiss = () => toast.dismiss();
 
 const Android = (message: string) =>
-  ToastAndroid.showWithGravity(
-    message,
-    ToastAndroid.SHORT,
-    ToastAndroid.CENTER,
-  );
+  ToastAndroid.showWithGravity(message, ToastAndroid.LONG, ToastAndroid.CENTER);
 
 export const appToast = {
   Default,

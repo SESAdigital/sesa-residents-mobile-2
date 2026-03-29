@@ -16,6 +16,7 @@ import appConfig from '@src/utils/appConfig';
 import { PaystackProvider } from 'react-native-paystack-webview';
 import { appToast } from '@src/utils/appToast';
 import { handlePushNotifiee } from '@src/utils';
+// import { handlePushNotifiee } from '@src/utils';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,17 +52,16 @@ export default function App() {
   useRequestNotificationPermissionAndroid();
 
   useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      handlePushNotifiee({
-        title: remoteMessage?.notification?.title || '',
-        body: remoteMessage?.notification?.body || '',
-        largeIcon: remoteMessage?.notification?.android?.imageUrl,
-      });
-      appToast.Info(
-        remoteMessage?.notification?.title +
-          '\n' +
-          remoteMessage?.notification?.body || '',
-      );
+    const unsubscribe = messaging().onMessage(async val => {
+      const values = {
+        title: val?.data?.title?.toString() || val?.notification?.title || '',
+        body: val?.data?.body?.toString() || val?.notification?.body || '',
+        largeIcon: val?.notification?.android?.imageUrl,
+      };
+      const { title, body, largeIcon } = values;
+
+      handlePushNotifiee({ title, body, largeIcon });
+      appToast.Info(title + '\n' + body);
     });
 
     return unsubscribe;

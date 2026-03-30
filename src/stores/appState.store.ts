@@ -30,7 +30,7 @@ const defaultState = {
   selectedDependent: null,
 };
 
-const appStateStore = createWithEqualityFn<AppStateStore>(
+export const appStateStore = createWithEqualityFn<AppStateStore>(
   set => ({
     ...defaultState,
 

@@ -119,13 +119,13 @@ const LoginScreen = (): React.JSX.Element => {
     if (!isFromForm) {
       const email2 = loginReq?.email?.trim() || '';
 
-      const loginMode = !!email2
+      const LoginMode = email2
         ? LoginModeData.EmailAddress
         : LoginModeData.PhoneNumber;
 
       loginData = {
         ...loginData,
-        loginMode,
+        loginMode: LoginMode,
         password: loginReq?.password?.trim() || '',
         ...(email2
           ? { email: email2 }

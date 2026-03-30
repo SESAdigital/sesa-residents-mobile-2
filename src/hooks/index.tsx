@@ -1,13 +1,13 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { postLogout } from '@src/api/auth.api';
+import queryKeys from '@src/api/constants/queryKeys';
 import { getPanicAlertMetrics } from '@src/api/panicAlerts.api';
 import AmbulanceIcon from '@src/assets/images/icons/ambulance-icon.png';
 import WalletIcon from '@src/assets/images/icons/wallet-icon.png';
 import AppRestrictedModal from '@src/modals/AppRestrictedModal';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
-import PanicAlertGenericModal from '@src/screens/dashboard/my-hub/panic-alert/modals/PanicAlertGenericModal';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import { formatMoneyToTwoDecimals } from '@src/utils';
@@ -15,7 +15,6 @@ import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { useGetCurrentLocation } from './useCurrentLocation';
 import { useGetPropertyDetails } from './useGetRequests';
-import queryKeys from '@src/api/constants/queryKeys';
 
 export const useHandlePanicAlert = () => {
   const { latitude, longitude } = useGetCurrentLocation();
@@ -55,21 +54,20 @@ export const useHandlePanicAlert = () => {
   const handleFundedPanicAlertClick = () => {
     if (!data?.hasEmergencyContact) {
       setActiveModal({
-        modalType: 'EMPTY_MODAL',
-        emptyModalComponent: (
-          <PanicAlertGenericModal
-            title="No emergency contacts"
-            description="To trigger a panic alert, you must have an emergency contact."
-            icon={AmbulanceIcon}
-            yesButtonTitle="Add emergency contact"
-            onYesButtonClick={() => {
-              closeActiveModal();
-              navigation.navigate(routes.EMERGENCY_CONTACTS_SCREEN);
-            }}
-            noButtonTitle="Skip for now"
-            onNoButtonClick={handleSuccess}
-          />
-        ),
+        modalType: 'INFORMATION_MODAL',
+        informationModal: {
+          title: 'No emergency contacts',
+          description:
+            'To trigger a panic alert, you must have an emergency contact.',
+          icon: AmbulanceIcon,
+          yesButtonTitle: 'Add emergency contact',
+          onYesButtonClick: () => {
+            closeActiveModal();
+            navigation.navigate(routes.EMERGENCY_CONTACTS_SCREEN);
+          },
+          noButtonTitle: 'Skip for now',
+          onNoButtonClick: handleSuccess,
+        },
       });
     } else {
       handleSuccess();
@@ -86,19 +84,17 @@ export const useHandlePanicAlert = () => {
 
     if (data?.isWalletLow) {
       setActiveModal({
-        modalType: 'EMPTY_MODAL',
-        emptyModalComponent: (
-          <PanicAlertGenericModal
-            title="Wallet balance too low"
-            description={`To trigger a panic alert, you must have at least ${fee} in your wallet.`}
-            icon={WalletIcon}
-            yesButtonTitle="Add Money"
-            onYesButtonClick={() => {
-              closeActiveModal();
-              navigation.navigate(routes.ADD_MONEY_SCREEN);
-            }}
-          />
-        ),
+        modalType: 'INFORMATION_MODAL',
+        informationModal: {
+          title: 'Wallet balance too low',
+          description: `To trigger a panic alert, you must have at least ${fee} in your wallet.`,
+          icon: WalletIcon,
+          yesButtonTitle: 'Add Money',
+          onYesButtonClick: () => {
+            closeActiveModal();
+            navigation.navigate(routes.ADD_MONEY_SCREEN);
+          },
+        },
       });
     } else {
       setActiveModal({

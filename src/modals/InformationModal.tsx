@@ -9,7 +9,7 @@ import { useAppStateStore } from '@src/stores/appState.store';
 import Size from '@src/utils/useResponsiveSize';
 import fonts from '@src/configs/fonts';
 
-interface Props {
+export interface InformationModalProps {
   title: string;
   description: string;
   noButtonTitle?: string;
@@ -19,7 +19,7 @@ interface Props {
   icon: Source;
 }
 
-const PanicAlertGenericModal = (props: Props): React.JSX.Element => {
+const InformationModal = (props: InformationModalProps): React.JSX.Element => {
   const {
     description,
     icon,
@@ -95,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PanicAlertGenericModal;
+export default InformationModal;

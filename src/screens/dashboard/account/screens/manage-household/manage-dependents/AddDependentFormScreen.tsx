@@ -41,7 +41,7 @@ const schema = Joi.object<PostHouseholdCreateOccupantReq>({
 });
 
 const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
-  const { id, name, isKYC } = route?.params || {};
+  const { name, isKYC } = route?.params || {};
   const firstStep = isKYC
     ? AddDependentSteps.VERIFY_KYC_FORM
     : AddDependentSteps.DEPENDENT_FORM_STEP;

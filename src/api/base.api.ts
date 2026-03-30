@@ -3,6 +3,8 @@ import { create } from 'apisauce';
 import { authStore } from '@src/stores/auth.store';
 import appConfig from '@src/utils/appConfig';
 import { appToast } from '@src/utils/appToast';
+import { appStateStore } from '@src/stores/appState.store';
+import SessionExpiredIcon from '@src/assets/images/icons/session-expired.png';
 
 export const DEFAULT_API_DATA_SIZE: Readonly<number> = 50;
 
@@ -60,6 +62,23 @@ const baseApi = create({
 
 let globalAbortController = new AbortController();
 
+const handleLogoutMessage = (val = 'Session Expired.') => {
+  const { setActiveModal, closeActiveModal } = appStateStore.getState();
+  setActiveModal({
+    shouldBackgroundClose: true,
+    modalType: 'INFORMATION_MODAL',
+    informationModal: {
+      title: val,
+      description: '',
+      icon: SessionExpiredIcon,
+      yesButtonTitle: 'OK, got it',
+      onYesButtonClick: closeActiveModal,
+      onNoButtonClick: null,
+    },
+  });
+  appToast.Warning(val);
+};
+
 baseApi.addAsyncRequestTransform(async request => {
   request.signal = globalAbortController.signal;
 
@@ -81,7 +100,7 @@ baseApi.addAsyncRequestTransform(async request => {
       }, 500);
 
       setTimeout(() => {
-        appToast.Warning('Session Expired.');
+        handleLogoutMessage();
       }, 1000);
 
       throw new Error('Session Expired');
@@ -99,13 +118,13 @@ baseApi.addAsyncResponseTransform(async response => {
   if (response?.status === 401) {
     logout();
     setTimeout(() => {
-      appToast.Warning(response?.data?.message ?? 'Session Expired.');
+      handleLogoutMessage(response?.data?.message || 'Session Expired.');
     }, 1000);
   }
   if (response?.status === 403) {
     logout();
     setTimeout(() => {
-      appToast.Warning(response?.data?.message ?? 'Not allowed.');
+      handleLogoutMessage(response?.data?.message || 'Not allowed.');
     }, 1000);
   }
 });

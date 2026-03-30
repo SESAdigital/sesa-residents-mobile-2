@@ -31,7 +31,6 @@ import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 import CountdownCircle from './components/CountdownCircle';
-import PanicAlertGenericModal from './modals/PanicAlertGenericModal';
 
 const emergencyTypes = [
   {
@@ -99,21 +98,17 @@ const PanicAlertScreen = ({ route }: Props): React.JSX.Element => {
     if (response.ok) {
       handleRefreshTransactions();
       setActiveModal({
-        modalType: 'EMPTY_MODAL',
-        emptyModalComponent: (
-          <PanicAlertGenericModal
-            title="Panic alert sent"
-            description={
-              data?.isWithinEstate
-                ? 'We have notified your estate security and emergency contact(s). Stay calm.'
-                : 'We have notified your emergency contact(s). Stay calm.'
-            }
-            icon={MailIcon}
-            yesButtonTitle="Okay, got it"
-            onNoButtonClick={null}
-            onYesButtonClick={closeActiveModal}
-          />
-        ),
+        modalType: 'INFORMATION_MODAL',
+        informationModal: {
+          title: 'Panic alert sent',
+          description: data?.isWithinEstate
+            ? 'We have notified your estate security and emergency contact(s). Stay calm.'
+            : 'We have notified your emergency contact(s). Stay calm.',
+          icon: MailIcon,
+          yesButtonTitle: 'Okay, got it',
+          onNoButtonClick: null,
+          onYesButtonClick: closeActiveModal,
+        },
       });
     } else {
       handleToastApiError(response);

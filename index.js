@@ -22,7 +22,8 @@ async function handleMessage(val) {
 }
 
 notifee.onBackgroundEvent(async ({ type, detail }) => {
-  if (type === EventType.PRESS) {
+  //NOTIFIE EventType.PRESS
+  if (type === 1 ) {
     console.log('User pressed notification in the background ', JSON.stringify(detail, null, 3));
   }
 });

@@ -78,9 +78,9 @@ const AccountScreen = (): React.JSX.Element => {
 
   const viewAccessInfo = () => {
     setActiveModal({
-      modalType: 'INFORMATION_MODAL',
+      modalType: 'SINGLE_PROMPT_MODAL',
       shouldBackgroundClose: true,
-      informationModal: {
+      singlePromptModal: {
         title: 'Access History',
         description:
           'This is your access history when you check-in or out using your resident code or QR code',

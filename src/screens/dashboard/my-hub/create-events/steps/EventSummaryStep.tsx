@@ -52,8 +52,8 @@ const EventSummaryStep = ({ form }: Props): React.JSX.Element => {
   const onIconPress = (val: GuestLimitType) => {
     if (val === GuestLimitTypeData.DAILY_LIMIT) {
       setActiveModal({
-        modalType: 'INFORMATION_MODAL',
-        informationModal: {
+        modalType: 'SINGLE_PROMPT_MODAL',
+        singlePromptModal: {
           title: 'Daily limit for check-in',
           description:
             'This uses the value entered in the "expected number of guests" field as a daily check-in limit. It resets at the end of each day for events over 1 day.',
@@ -62,8 +62,8 @@ const EventSummaryStep = ({ form }: Props): React.JSX.Element => {
     }
     if (val === GuestLimitTypeData.TOTAL_LIMIT) {
       setActiveModal({
-        modalType: 'INFORMATION_MODAL',
-        informationModal: {
+        modalType: 'SINGLE_PROMPT_MODAL',
+        singlePromptModal: {
           title: 'Total limit for check-in',
           description:
             'This uses the value you entered in the "expected number of guests" field as the total check-in limit for this event irrespective of the number of days the event holds.',

@@ -50,8 +50,7 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
   const form = useForm<PostHouseholdCreateOccupantReq>({
     resolver: joiResolver(schema),
   });
-  const { setActiveModal, setIsAppModalLoading, closeActiveModal } =
-    useAppStateStore();
+  const { setActiveModal } = useAppStateStore();
 
   const onBackPress = () => {
     if (currentStep === firstStep) {

@@ -1,4 +1,3 @@
-import messaging from '@react-native-firebase/messaging';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -8,15 +7,7 @@ import SystemNavigationBar from 'react-native-system-navigation-bar';
 import { Toaster } from 'sonner-native';
 
 import OfflineNotice from '@src/components/OfflineNotice';
-import { useRequestNotificationPermissionAndroid } from '@src/hooks/usePermissions';
-import AppModal from '@src/modals/AppModal';
-import { AppNavigator } from '@src/navigation/AppNavigator';
-import navigationTheme from '@src/navigation/navigationTheme';
-import appConfig from '@src/utils/appConfig';
-import { PaystackProvider } from 'react-native-paystack-webview';
-import { appToast } from '@src/utils/appToast';
-import { handlePushNotifiee } from '@src/utils';
-// import { handlePushNotifiee } from '@src/utils';
+import Main from '@src/Main';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,34 +40,13 @@ export default function App() {
     SystemNavigationBar.setNavigationColor('white');
   }, []);
 
-  useRequestNotificationPermissionAndroid();
-
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(async val => {
-      const values = {
-        title: val?.data?.title?.toString() || val?.notification?.title || '',
-        body: val?.data?.body?.toString() || val?.notification?.body || '',
-        largeIcon: val?.notification?.android?.imageUrl,
-      };
-      const { title, body, largeIcon } = values;
-
-      handlePushNotifiee({ title, body, largeIcon });
-      appToast.Info(title + '\n' + body);
-    });
-
-    return unsubscribe;
-  }, []);
-
   return (
     <GestureHandlerRootView>
       <SafeAreaProvider>
+        <Toaster visibleToasts={1} richColors theme="light" />
         <QueryClientProvider client={queryClient}>
           <OfflineNotice />
-          <PaystackProvider publicKey={appConfig.APP_PAYSTACK_KEY}>
-            <AppNavigator theme={{ ...navigationTheme, dark: true }} />
-            <AppModal />
-          </PaystackProvider>
-          <Toaster visibleToasts={1} richColors theme="light" />
+          <Main />
         </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

@@ -110,36 +110,36 @@ export const useRequestNotificationPermissionAndroid = () => {
   };
 
   const handleNeverAsk = () => {
-    // setActiveModal({
-    //   modalType: 'SINGLE_PROMPT_MODAL',
-    //   singlePromptModal: {
-    //     title: 'Enable Notifications',
-    //     description:
-    //       'We need your permission to send important updates. Open settings to enable notifications.',
-    //     onPress: () => {
-    //       closeActiveModal();
-    //       openSettings().catch(() =>
-    //         appToast.Warning('Unable to open settings'),
-    //       );
-    //     },
-    //     buttonTitle: 'Open Settings',
-    //   },
-    // });
+    setActiveModal({
+      modalType: 'SINGLE_PROMPT_MODAL',
+      singlePromptModal: {
+        title: 'Enable Notifications',
+        description:
+          'We need your permission to send important updates. Open settings to enable notifications.',
+        onPress: () => {
+          closeActiveModal();
+          openSettings().catch(() =>
+            appToast.Warning('Unable to open settings'),
+          );
+        },
+        buttonTitle: 'Open Settings',
+      },
+    });
   };
 
   const handleDenied = () => {
-    // setActiveModal({
-    //   modalType: 'SINGLE_PROMPT_MODAL',
-    //   singlePromptModal: {
-    //     title: 'Enable Notifications',
-    //     description: "We'd like to send you updates and alerts.",
-    //     onPress: () => {
-    //       closeActiveModal();
-    //       requestNotificationPermissionAndroid();
-    //     },
-    //     buttonTitle: 'Request Permission',
-    //   },
-    // });
+    setActiveModal({
+      modalType: 'SINGLE_PROMPT_MODAL',
+      singlePromptModal: {
+        title: 'Enable Notifications',
+        description: "We'd like to send you updates and alerts.",
+        onPress: () => {
+          closeActiveModal();
+          requestNotificationPermissionAndroid();
+        },
+        buttonTitle: 'Request Permission',
+      },
+    });
   };
 
   const requestNotificationPermissionAndroid = async () => {

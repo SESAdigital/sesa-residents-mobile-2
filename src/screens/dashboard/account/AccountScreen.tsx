@@ -38,7 +38,6 @@ import AccessHistoryRow, {
   AccessHistoryRowLoader,
 } from './components/AccessHistoryRow';
 import ProfileDetailsRow from './components/ProfileDetailsRow';
-// import { useHandleSelfAccess } from '@src/hooks/useHandleSelfAccess';
 
 const pageSize = DEFAULT_API_DATA_SIZE;
 const queryKey = ['getAccessHistory'];
@@ -48,12 +47,23 @@ const AccountScreen = (): React.JSX.Element => {
   const { selectedProperty } = useAuthStore();
   const navigation = useAppNavigator();
   const { data: properties, isLoading } = useGetProperties();
-  // const { SelfAccessLoading, handleSelfAccessClick } = useHandleSelfAccess();
+
+  // const handleLogoutTemp = () => {
+  //   appToast.Success('Logging out....');
+
+  //   setTimeout(() => {
+  //     tempLogout();
+  //   }, 1000);
+  // };
 
   const actions = [
     // {
     //   Icon: MaterialSymbolsQrCodeScanner,
     //   onClick: handleSelfAccessClick,
+    // },
+    // {
+    //   Icon: MaterialSymbolsHelp,
+    //   onClick: () => handleLogoutTemp(),
     // },
     {
       Icon: MaterialSymbolsHelp,

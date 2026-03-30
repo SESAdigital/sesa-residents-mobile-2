@@ -1,10 +1,11 @@
 import { create } from 'apisauce';
 
+import SessionExpiredIcon from '@src/assets/images/icons/session-expired.png';
+import { appStateStore } from '@src/stores/appState.store';
 import { authStore } from '@src/stores/auth.store';
 import appConfig from '@src/utils/appConfig';
-import { appToast } from '@src/utils/appToast';
-import { appStateStore } from '@src/stores/appState.store';
-import SessionExpiredIcon from '@src/assets/images/icons/session-expired.png';
+import { navigationRef } from '@src/navigation';
+import routes from '@src/navigation/routes';
 
 export const DEFAULT_API_DATA_SIZE: Readonly<number> = 50;
 
@@ -64,19 +65,33 @@ let globalAbortController = new AbortController();
 
 const handleLogoutMessage = (val = 'Session Expired.') => {
   const { setActiveModal, closeActiveModal } = appStateStore.getState();
+
+  const onYesButtonClick = () => {
+    try {
+      navigationRef.navigate(routes.LOGIN_SCREEN);
+    } catch (error) {
+      console.error(error);
+    }
+    closeActiveModal();
+  };
+
   setActiveModal({
     shouldBackgroundClose: true,
     modalType: 'INFORMATION_MODAL',
+    containerStyle: {
+      justifyContent: 'center',
+    },
     informationModal: {
       title: val,
-      description: '',
+      description:
+        'Sorry your session has expired, you need to login in order to continue',
       icon: SessionExpiredIcon,
       yesButtonTitle: 'OK, got it',
-      onYesButtonClick: closeActiveModal,
+      onYesButtonClick: onYesButtonClick,
       onNoButtonClick: null,
     },
   });
-  appToast.Warning(val);
+  // appToast.Warning(val);
 };
 
 baseApi.addAsyncRequestTransform(async request => {

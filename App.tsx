@@ -43,11 +43,12 @@ export default function App() {
   return (
     <GestureHandlerRootView>
       <SafeAreaProvider>
-        <Toaster visibleToasts={1} richColors theme="light" />
         <QueryClientProvider client={queryClient}>
           <OfflineNotice />
           <Main />
         </QueryClientProvider>
+        {/* Needs to be the last component */}
+        <Toaster visibleToasts={1} richColors theme="light" />
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

@@ -21,6 +21,7 @@ export interface AuthStore {
   selectedProperty: GetDashboardPropertiesData | null;
 
   logout: () => void;
+  // tempLogout: () => void;
   setLoginResponse: (value: PostLoginRes) => void;
   setSelectedProperty: (value: GetDashboardPropertiesData | null) => void;
   setIsDoneOnboarding: (value: boolean) => void;
@@ -61,6 +62,22 @@ export const authStore = createWithEqualityFn(
 
       setSelectedProperty: selectedProperty =>
         set(() => ({ selectedProperty })),
+
+      // tempLogout: () => {
+      //   const authStore = get();
+      //   if (!authStore || !authStore.loginResponse) return;
+      //   const authStoreTemp: AuthStore = {
+      //     ...authStore,
+      //     loginResponse: {
+      //       ...authStore?.loginResponse,
+      //       data: {
+      //         ...authStore?.loginResponse?.data,
+      //         token: 'fake',
+      //       },
+      //     },
+      //   };
+      //   set(() => authStoreTemp);
+      // },
 
       setIsDoneOnboarding: isDoneOnboarding =>
         set(() => ({ isDoneOnboarding })),

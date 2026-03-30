@@ -9,6 +9,7 @@ import navigationTheme from './navigation/navigationTheme';
 import { handlePushNotifiee } from './utils';
 import appConfig from './utils/appConfig';
 import { appToast } from './utils/appToast';
+import { navigationRef } from './navigation';
 
 const Main = (): React.JSX.Element => {
   useRequestNotificationPermissionAndroid();
@@ -30,7 +31,10 @@ const Main = (): React.JSX.Element => {
   }, []);
   return (
     <PaystackProvider publicKey={appConfig.APP_PAYSTACK_KEY}>
-      <AppNavigator theme={{ ...navigationTheme, dark: true }} />
+      <AppNavigator
+        ref={navigationRef}
+        theme={{ ...navigationTheme, dark: true }}
+      />
       <AppModal />
     </PaystackProvider>
   );

@@ -14,12 +14,17 @@ export const handleToastApiError = (
   falbackMessage?: string,
   preventToast?: boolean,
 ) => {
-  const message = props?.data?.message || getFirstValidationError(props?.data);
-  falbackMessage || props?.problem || 'FATAL: Invalid error received.';
+  if (props?.status === 401 || props?.status === 403) {
+    return;
+  }
+  const message =
+    props?.data?.message ||
+    getFirstValidationError(props?.data) ||
+    falbackMessage ||
+    props?.problem ||
+    'FATAL: Invalid error received.';
 
-  const newMessage = removeDoubleQuotes(
-    props?.data?.message || JSON.stringify(message),
-  );
+  const newMessage = removeDoubleQuotes(JSON.stringify(message));
 
   if (!preventToast) {
     appToast.Error(newMessage);

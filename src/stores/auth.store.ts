@@ -21,7 +21,7 @@ export interface AuthStore {
   selectedProperty: GetDashboardPropertiesData | null;
 
   logout: () => void;
-  // tempLogout: () => void;
+  tempLogout: () => void;
   setLoginResponse: (value: PostLoginRes) => void;
   setSelectedProperty: (value: GetDashboardPropertiesData | null) => void;
   setIsDoneOnboarding: (value: boolean) => void;
@@ -50,7 +50,7 @@ const doNotDeleteState = {
 
 export const authStore = createWithEqualityFn(
   persist<AuthStore>(
-    set => ({
+    (set, get) => ({
       // DEFAULT STATE
       ...defaultState,
       ...doNotDeleteState,
@@ -63,21 +63,21 @@ export const authStore = createWithEqualityFn(
       setSelectedProperty: selectedProperty =>
         set(() => ({ selectedProperty })),
 
-      // tempLogout: () => {
-      //   const authStore = get();
-      //   if (!authStore || !authStore.loginResponse) return;
-      //   const authStoreTemp: AuthStore = {
-      //     ...authStore,
-      //     loginResponse: {
-      //       ...authStore?.loginResponse,
-      //       data: {
-      //         ...authStore?.loginResponse?.data,
-      //         token: 'fake',
-      //       },
-      //     },
-      //   };
-      //   set(() => authStoreTemp);
-      // },
+      tempLogout: () => {
+        const authenticationStore = get();
+        if (!authenticationStore || !authenticationStore.loginResponse) return;
+        const authStoreTemp: AuthStore = {
+          ...authenticationStore,
+          loginResponse: {
+            ...authenticationStore?.loginResponse,
+            data: {
+              ...authenticationStore?.loginResponse?.data,
+              token: 'fake',
+            },
+          },
+        };
+        set(() => authStoreTemp);
+      },
 
       setIsDoneOnboarding: isDoneOnboarding =>
         set(() => ({ isDoneOnboarding })),

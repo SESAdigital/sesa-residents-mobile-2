@@ -31,40 +31,34 @@ import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
-import { getTotalPages } from '@src/utils';
+import { copyTextToClipboard, getTotalPages } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 import AccessHistoryRow, {
   AccessHistoryRowLoader,
 } from './components/AccessHistoryRow';
 import ProfileDetailsRow from './components/ProfileDetailsRow';
+import { appToast } from '@src/utils/appToast';
 
 const pageSize = DEFAULT_API_DATA_SIZE;
 const queryKey = ['getAccessHistory'];
 
 const AccountScreen = (): React.JSX.Element => {
   const { setActiveModal } = useAppStateStore();
-  const { selectedProperty } = useAuthStore();
+  const { selectedProperty, tempLogout } = useAuthStore();
   const navigation = useAppNavigator();
   const { data: properties, isLoading } = useGetProperties();
-
-  // const handleLogoutTemp = () => {
-  //   appToast.Success('Logging out....');
-
-  //   setTimeout(() => {
-  //     tempLogout();
-  //   }, 1000);
-  // };
+  const { FCMToken } = useAuthStore();
 
   const actions = [
     // {
     //   Icon: MaterialSymbolsQrCodeScanner,
     //   onClick: handleSelfAccessClick,
     // },
-    // {
-    //   Icon: MaterialSymbolsHelp,
-    //   onClick: () => handleLogoutTemp(),
-    // },
+    {
+      Icon: MaterialSymbolsHelp,
+      onClick: () => handleLogoutTemp(),
+    },
     {
       Icon: MaterialSymbolsHelp,
       onClick: () => navigation.navigate(routes.HELP_CENTER_SCREEN),
@@ -146,6 +140,38 @@ const AccountScreen = (): React.JSX.Element => {
   const queryClient = useQueryClient();
   const refetch = () => queryClient.resetQueries({ queryKey });
 
+  const handleLogoutTemp = () => {
+    appToast.Success('Logging out....');
+
+    setTimeout(() => {
+      tempLogout();
+      appToast.Success('auth token deleted successfully....');
+    }, 1000);
+
+    setTimeout(() => {
+      appToast.Success('Refetching Access history...');
+      refetch();
+    }, 2000);
+  };
+
+  const copyFCMToken = () => {
+    copyTextToClipboard({
+      successText: 'Notification token copied successfully.',
+      text: FCMToken || '',
+    });
+  };
+
+  const actionButtons2 = [
+    {
+      title: 'Test Session Expiry',
+      onClick: handleLogoutTemp,
+    },
+    {
+      title: 'Copy FCM Token',
+      onClick: copyFCMToken,
+    },
+  ];
+
   return (
     <View style={{ flex: 1 }}>
       {/* <SelfAccessLoading /> */}
@@ -167,6 +193,17 @@ const AccountScreen = (): React.JSX.Element => {
         <View style={styles.contentContainer}>
           <ProfileDetailsRow />
 
+          <View style={styles.actionButtons}>
+            {actionButtons2?.map(({ title, onClick }, index) => (
+              <TouchableOpacity
+                style={styles.actionButton}
+                key={index}
+                onPress={onClick}
+              >
+                <AppText style={styles.actionButtonText}>{title}</AppText>
+              </TouchableOpacity>
+            ))}
+          </View>
           <View style={styles.actionButtons}>
             {actionButtons?.map(({ title, onClick }, index) => (
               <TouchableOpacity

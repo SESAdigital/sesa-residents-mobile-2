@@ -37,7 +37,7 @@ import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
 
 const schema = Joi.object<PostEmergencyContactReq>({
-  email: joiSchemas.email.optional().allow(''),
+  email: joiSchemas.email,
   phoneNumber: joiSchemas.phone.label('Phone Number'),
   firstName: joiSchemas.name.label('First name'),
   lastName: joiSchemas.name.label('Last name'),

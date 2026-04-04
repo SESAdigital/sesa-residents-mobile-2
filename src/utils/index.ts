@@ -221,8 +221,10 @@ export const formatKYCGender = (value?: string | null | number): string => {
 
   const stringValue = value?.toString()?.trim()?.toLowerCase();
 
-  if (stringValue === 'male') return GenderTypeData.Male?.toString();
-  if (stringValue === 'female') return GenderTypeData.Female?.toString();
+  if (stringValue === 'male' || stringValue == 'm')
+    return GenderTypeData.Male?.toString();
+  if (stringValue === 'female' || stringValue == 'f')
+    return GenderTypeData.Female?.toString();
 
   return stringValue;
 };
@@ -283,3 +285,15 @@ export const handlePushNotifiee = async (props: NotifProps) => {
     appToast.Android(`An error occured while handling notification ${error}`);
   }
 };
+
+export function formatPhoneNumberPrefill(val: string | number) {
+  const normalizedNumber = val?.toString()?.trim();
+
+  if (normalizedNumber?.startsWith('+234')) {
+    return '0' + normalizedNumber.slice(4);
+  } else if (normalizedNumber?.startsWith('234')) {
+    return '0' + normalizedNumber.slice(3);
+  } else {
+    return normalizedNumber;
+  }
+}

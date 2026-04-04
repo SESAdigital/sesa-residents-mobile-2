@@ -1408,3 +1408,14 @@ export function MaterialSymbolsPhotoCameraRounded(props: SvgProps) {
     </Svg>
   );
 }
+
+export function MaterialSymbolsViewCarouselRounded(props: SvgProps) {
+  return (
+    <Svg width="1em" height="1em" viewBox="0 0 24 24" {...props}>
+      <Path
+        fill="currentColor"
+        d="M3 17q-.425 0-.712-.288T2 16V8q0-.425.288-.712T3 7h2q.425 0 .713.288T6 8v8q0 .425-.288.713T5 17H3Zm5 2q-.425 0-.712-.288T7 18V6q0-.425.288-.712T8 5h8q.425 0 .713.288T17 6v12q0 .425-.288.713T16 19H8Zm11-2q-.425 0-.712-.288T18 16V8q0-.425.288-.712T19 7h2q.425 0 .713.288T22 8v8q0 .425-.288.713T21 17h-2Z"
+      />
+    </Svg>
+  );
+}

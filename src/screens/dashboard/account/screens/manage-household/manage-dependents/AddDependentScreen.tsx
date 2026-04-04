@@ -10,6 +10,7 @@ import {
   MaterialSymbolsCheckCircleRounded,
   MaterialSymbolsLocationAwayRounded,
   MaterialSymbolsPersonAdd,
+  MaterialSymbolsViewCarouselRounded,
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
@@ -22,17 +23,22 @@ import Size from '@src/utils/useResponsiveSize';
 const data = [
   {
     Icon: MaterialSymbolsLocationAwayRounded,
-    title: 'To do this, you must be an Alpha occupant.',
+    title: 'To add a dependant, you must be an Alpha occupant.',
   },
   {
     Icon: MaterialSymbolsPersonAdd,
     title:
-      'The maximum number of dependents you can add depends on the total number of occupants allowed per household by your estate.',
+      'Dependants are key household members who live with you. Once added, they will have access to the SESA Resident app and can generate visitor access codes.',
   },
   {
     Icon: MaterialSymbolsCheckCircleRounded,
     title:
-      'Dependents will become active when they get approved by your estate manager.',
+      'The dependant will become active once they get approved by your estate manager.',
+  },
+  {
+    Icon: MaterialSymbolsViewCarouselRounded,
+    title:
+      'As the alpha occupant, you can manage your dependants - view access activities, activate & deactivate',
   },
 ];
 

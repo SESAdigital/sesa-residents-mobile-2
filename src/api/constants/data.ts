@@ -2,6 +2,7 @@ import { SelectInputData } from '@src/types/default';
 import {
   ElectricityMeterTypeData,
   GenderTypeData,
+  KYCVerificationTypeData,
   PropertyCategoryData,
   PropertyCategoryType,
   RelationshipTypeData,
@@ -81,3 +82,77 @@ export const mapPropertyCategoryTypeToShortCharacter = (
   }
   return 'U';
 };
+
+export const ID_TYPES: SelectInputData[] = [
+  {
+    title: 'Bank Verification Number ( BVN )',
+    value: KYCVerificationTypeData.BVN?.toString(),
+  },
+  {
+    title: "Driver's License",
+    value: KYCVerificationTypeData.DriversLicense?.toString(),
+  },
+  {
+    title: 'International Passport',
+    value: KYCVerificationTypeData.IntlPassport?.toString(),
+  },
+  {
+    title: 'National Identification Number ( NIN )',
+    value: KYCVerificationTypeData.NIN?.toString(),
+  },
+  {
+    title: 'Phone Number',
+    value: KYCVerificationTypeData.PhoneNumber?.toString(),
+  },
+  {
+    title: 'Virtual National Identification Number ( VNIN )',
+    value: KYCVerificationTypeData.VNIN?.toString(),
+  },
+  {
+    title: "Voter's Card",
+    value: KYCVerificationTypeData.VotersCard?.toString(),
+  },
+];
+
+export const STATES: SelectInputData[] = [
+  'Abia',
+  'Adamawa',
+  'Akwa Ibom',
+  'Anambra',
+  'Bauchi',
+  'Bayelsa',
+  'Benue',
+  'Borno',
+  'Cross River',
+  'Delta',
+  'Ebonyi',
+  'Edo',
+  'Ekiti',
+  'Enugu',
+  'FCT - Abuja',
+  'Gombe',
+  'Imo',
+  'Jigawa',
+  'Kaduna',
+  'Kano',
+  'Katsina',
+  'Kebbi',
+  'Kogi',
+  'Kwara',
+  'Lagos',
+  'Nasarawa',
+  'Niger',
+  'Ogun',
+  'Ondo',
+  'Osun',
+  'Oyo',
+  'Plateau',
+  'Rivers',
+  'Sokoto',
+  'Taraba',
+  'Yobe',
+  'Zamfara',
+].map(key => ({
+  title: key,
+  value: key,
+}));

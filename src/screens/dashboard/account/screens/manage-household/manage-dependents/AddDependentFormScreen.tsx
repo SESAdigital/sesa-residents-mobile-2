@@ -20,6 +20,11 @@ import Size from '@src/utils/useResponsiveSize';
 import ConfirmDependentStep from './steps/ConfirmDependentStep';
 import DependentFormStep from './steps/DependentFormStep';
 import { useAppStateStore } from '@src/stores/appState.store';
+import { KYCDetails } from '@src/api/utilities.api';
+import { appToast } from '@src/utils/appToast';
+import { formatBase64Image, formatKYCGender } from '@src/utils';
+import { GenderType } from '@src/api/constants/default';
+import { useVerifyKYCForm } from '@src/hooks/useForms';
 
 export interface AddDependentFormScreenProps {
   id: number;
@@ -38,6 +43,7 @@ const schema = Joi.object<PostHouseholdCreateOccupantReq>({
   DateOfBirth: Joi.string().optional().allow('').label('Date of birth'),
   Gender: Joi.string().required().label('Gender'),
   KYCId: Joi.number().optional(),
+  HomeAddress: Joi.string().optional().allow('').label('Home address'),
 });
 
 const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
@@ -50,6 +56,9 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
   const form = useForm<PostHouseholdCreateOccupantReq>({
     resolver: joiResolver(schema),
   });
+  console.log(form?.formState?.errors);
+  const kycForm = useVerifyKYCForm();
+  const { setValue } = form;
   const { setActiveModal } = useAppStateStore();
 
   const onBackPress = () => {
@@ -78,8 +87,37 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
     });
   };
 
+  const onKYCVerifyDone = (data: KYCDetails | null) => {
+    if (!data) {
+      return appToast.Warning('An error occured while validating kyc details.');
+    }
+
+    const gender = formatKYCGender(data?.res?.gender) as unknown as GenderType;
+
+    setValue('FirstName', data?.res?.firstname ?? '');
+    setValue('LastName', data?.res?.lastname ?? '');
+    setValue('Email', data?.res?.email ?? '');
+    setValue('HomeAddress', data?.res?.address ?? '');
+    setValue('DateOfBirth', data?.res?.dateOfBirth ?? '');
+    setValue('Gender', gender);
+    setValue(
+      'Photo.uri',
+      data?.res?.photo ? formatBase64Image(data?.res?.photo) : '',
+    );
+    setValue('PhoneNumber', data?.res?.phoneNumber ?? '');
+
+    // CHANGE THIS IF NECESSARRY
+    setCurrentStep(AddDependentSteps.DEPENDENT_FORM_STEP);
+    return;
+  };
+
   const steps = [
-    <VerifyKYCForm key={AddDependentSteps.VERIFY_KYC_FORM} />,
+    <VerifyKYCForm
+      key={AddDependentSteps.VERIFY_KYC_FORM}
+      onDone={onKYCVerifyDone}
+      form={kycForm}
+      onBackClick={onBackPress}
+    />,
     <DependentFormStep
       onBackClick={onBackPress}
       key={AddDependentSteps.DEPENDENT_FORM_STEP}

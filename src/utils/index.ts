@@ -1,18 +1,18 @@
-import Clipboard from '@react-native-clipboard/clipboard';
-import { Alert, Linking, Platform } from 'react-native';
 import notifee, {
   AndroidImportance,
   AndroidVisibility,
 } from '@notifee/react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { Alert, Linking, Platform } from 'react-native';
 
-import appConfig from './appConfig';
-import { appToast } from './appToast';
-import colors from '@src/configs/colors';
 import {
   GenderTypeData,
   TransactionEntryType,
   TransactionEntryTypeData,
 } from '@src/api/constants/default';
+import colors from '@src/configs/colors';
+import appConfig from './appConfig';
+import { appToast } from './appToast';
 
 export function truncateText(text: string, maxLength = 100) {
   if (!text) return '';
@@ -197,11 +197,19 @@ function detectBase64ImageType(base64String: string) {
 }
 
 export const formatBase64Image = (image: string) => {
-  if (!image) return '';
+  if (!image)
+    return {
+      data: '',
+      prefix: '',
+    };
 
   const prefix = detectBase64ImageType(image);
+  const data = `data:${prefix};base64,${image}`;
 
-  return `data:${prefix};base64,${image}`;
+  return {
+    data,
+    prefix,
+  };
 };
 
 export const isBase64Image = (value: string) => {

@@ -75,6 +75,8 @@ const ConfirmDependentStep = (props: Props): React.JSX.Element => {
     ],
   ];
 
+  console.log({ uri: Photo?.uri });
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.container}>

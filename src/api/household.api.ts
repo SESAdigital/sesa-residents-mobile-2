@@ -311,37 +311,39 @@ export interface PostHouseholdCreateOccupantReq {
   DateOfBirth: string;
   Gender: GenderType;
   HomeAddress: string;
-  HomeAddressPlaceId: string;
+  HomeAddressPlaceId?: string;
   Photo: AppImageType;
   KYCId: number;
 }
 
+export interface PostHouseholdCreateOccupantResData {
+  id: number;
+  estateId: number;
+  photo: string;
+  gender: GenderType;
+  genderText: string;
+  firstName: string;
+  lastName: string;
+  emailAddress: string;
+  userName: string;
+  phoneNumber: string;
+  code: string;
+  dateOfBirth: string;
+  timeCreated: string;
+  timeCreatedFormatted: string;
+  accountStatus: UserAccountStatusType;
+  accountStatusText: string;
+  kycStatus: EntityKYCStatusEnum;
+  kycStatusText: string;
+  kycId: number;
+  isAlphaResident: boolean;
+  address: string;
+  addressPlaceId: string;
+  propertyUnitName: string;
+}
+
 interface PostHouseholdCreateOccupantRes extends GenericApiResponse {
-  data: {
-    id: number;
-    estateId: number;
-    photo: string;
-    gender: GenderType;
-    genderText: string;
-    firstName: string;
-    lastName: string;
-    emailAddress: string;
-    userName: string;
-    phoneNumber: string;
-    code: string;
-    dateOfBirth: string;
-    timeCreated: string;
-    timeCreatedFormatted: string;
-    accountStatus: UserAccountStatusType;
-    accountStatusText: string;
-    kycStatus: EntityKYCStatusEnum;
-    kycStatusText: string;
-    kycId: number;
-    isAlphaResident: boolean;
-    address: string;
-    addressPlaceId: string;
-    propertyUnitName: string;
-  };
+  data: PostHouseholdCreateOccupantResData;
 }
 
 //  TYPES ENDS

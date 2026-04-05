@@ -27,6 +27,8 @@ import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
+import { useQueryClient } from '@tanstack/react-query';
+import queryKeys from '@src/api/constants/queryKeys';
 
 interface Props {
   onDone: (value: KYCDetails | null) => void;
@@ -49,6 +51,7 @@ const VerifyKYCForm = (props: Props): React.JSX.Element => {
   const { setActiveModal, setIsAppModalLoading, closeActiveModal } =
     useAppStateStore();
   const stringId = idType?.toString();
+  const queryClient = useQueryClient();
 
   const isVotersCard =
     stringId === KYCVerificationTypeData.VotersCard?.toString();
@@ -83,9 +86,13 @@ const VerifyKYCForm = (props: Props): React.JSX.Element => {
               : response?.data?.data?.photo,
         },
       };
-
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.GET_WALLET_BALANCE],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [queryKeys.GET_WALLET_TRANSACTIONS],
+      });
       closeActiveModal();
-
       onDone(formattedKYCDetails);
     } else {
       handleToastApiError(response);

@@ -1,11 +1,17 @@
 import { joiResolver } from '@hookform/resolvers/joi';
+import { useQueryClient } from '@tanstack/react-query';
 import Joi from 'joi';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { StyleSheet } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
-import { PostHouseholdCreateOccupantReq } from '@src/api/household.api';
+import { GenderType } from '@src/api/constants/default';
+import queryKeys from '@src/api/constants/queryKeys';
+import {
+  postHouseholdCreateOccupant,
+  PostHouseholdCreateOccupantReq,
+} from '@src/api/household.api';
+import { KYCDetails } from '@src/api/utilities.api';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
@@ -14,17 +20,23 @@ import VerifyKYCForm from '@src/components/forms/VerifyKYCForm';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import useBackHandler from '@src/hooks/useBackHandler';
-import { AppScreenProps } from '@src/navigation/AppNavigator';
+import { useVerifyKYCForm } from '@src/hooks/useForms';
+import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
+import { useAppStateStore } from '@src/stores/appState.store';
+import { useAuthStore } from '@src/stores/auth.store';
+import {
+  formatBase64Image,
+  formatKYCGender,
+  generateFileName,
+} from '@src/utils';
+import { appToast } from '@src/utils/appToast';
+import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
+import { dayJSFormatter } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
 import ConfirmDependentStep from './steps/ConfirmDependentStep';
 import DependentFormStep from './steps/DependentFormStep';
-import { useAppStateStore } from '@src/stores/appState.store';
-import { KYCDetails } from '@src/api/utilities.api';
-import { appToast } from '@src/utils/appToast';
-import { formatBase64Image, formatKYCGender } from '@src/utils';
-import { GenderType } from '@src/api/constants/default';
-import { useVerifyKYCForm } from '@src/hooks/useForms';
 
 export interface AddDependentFormScreenProps {
   id: number;
@@ -43,23 +55,25 @@ const schema = Joi.object<PostHouseholdCreateOccupantReq>({
   DateOfBirth: Joi.string().optional().allow('').label('Date of birth'),
   Gender: Joi.string().required().label('Gender'),
   KYCId: Joi.number().optional(),
-  HomeAddress: Joi.string().optional().allow('').label('Home address'),
+  // HomeAddress: Joi.string().optional().allow('').label('Home address'),
 });
 
 const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
   const { name, isKYC } = route?.params || {};
+  const { selectedProperty } = useAuthStore();
   const firstStep = isKYC
     ? AddDependentSteps.VERIFY_KYC_FORM
     : AddDependentSteps.DEPENDENT_FORM_STEP;
   const [currentStep, setCurrentStep] = useState(firstStep);
-  const navigation = useNavigation();
+  const navigation = useAppNavigator();
   const form = useForm<PostHouseholdCreateOccupantReq>({
     resolver: joiResolver(schema),
   });
-  console.log(form?.formState?.errors);
   const kycForm = useVerifyKYCForm();
-  const { setValue } = form;
-  const { setActiveModal } = useAppStateStore();
+  const { setValue, getValues } = form;
+  const { setActiveModal, setIsAppModalLoading, closeActiveModal } =
+    useAppStateStore();
+  const queryClient = useQueryClient();
 
   const onBackPress = () => {
     if (currentStep === firstStep) {
@@ -71,7 +85,72 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
 
   useBackHandler(onBackPress, currentStep);
 
-  const onSubmit = () => {};
+  const onSubmit = async () => {
+    const {
+      DateOfBirth,
+      Email,
+      FirstName,
+      Gender,
+      KYCId,
+      LastName,
+      PhoneNumber,
+      Photo,
+    } = getValues();
+
+    const initData: Partial<PostHouseholdCreateOccupantReq> = {
+      FirstName: FirstName?.trim(),
+      LastName: LastName?.trim(),
+      Email: Email?.trim()?.toLowerCase(),
+      PhoneNumber: PhoneNumber?.trim(),
+      ...(DateOfBirth
+        ? {
+            DateOfBirth: dayJSFormatter({
+              value: DateOfBirth,
+              format: 'YYYY-MM-DD',
+            }),
+          }
+        : {}),
+      Gender,
+
+      PropertyUnitId: selectedProperty?.id || 0,
+      HomeAddress: selectedProperty?.propertyAddress || '',
+      HomeAddressPlaceId: selectedProperty?.propertyAddressPlaceId || '',
+      ...(KYCId ? { KYCId } : {}),
+    };
+
+    const dependentFormData = new FormData();
+
+    Object.entries(initData).forEach(([key, value]) => {
+      dependentFormData.append(key, value);
+    });
+
+    const fileName = Photo?.fileName || generateFileName(0, Photo?.type || '');
+
+    dependentFormData.append('Photo', {
+      uri: Photo?.uri,
+      type: Photo?.type,
+      name: fileName,
+    });
+
+    setIsAppModalLoading(true);
+    const response = await postHouseholdCreateOccupant(dependentFormData);
+    setIsAppModalLoading(false);
+
+    if (response?.ok && response?.data) {
+      queryClient.resetQueries({ queryKey: [queryKeys.GET_HOUSEHOLDS] });
+      appToast.Success(
+        response?.data?.message || 'Dependent added successfully.',
+      );
+
+      navigation.replace(
+        routes.ADD_DEPENDENT_SUCCESS_SCREEN,
+        response?.data?.data,
+      );
+      closeActiveModal();
+    } else {
+      handleToastApiError(response);
+    }
+  };
 
   const handleSubmit = () => {
     setActiveModal({
@@ -93,18 +172,19 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
     }
 
     const gender = formatKYCGender(data?.res?.gender) as unknown as GenderType;
+    const photo = formatBase64Image(data?.res?.photo || '');
 
     setValue('FirstName', data?.res?.firstname ?? '');
     setValue('LastName', data?.res?.lastname ?? '');
     setValue('Email', data?.res?.email ?? '');
-    setValue('HomeAddress', data?.res?.address ?? '');
+    // setValue('HomeAddress', data?.res?.address ?? '');
     setValue('DateOfBirth', data?.res?.dateOfBirth ?? '');
     setValue('Gender', gender);
-    setValue(
-      'Photo.uri',
-      data?.res?.photo ? formatBase64Image(data?.res?.photo) : '',
-    );
+    setValue('Photo.uri', photo?.data);
+    setValue('Photo.type', photo?.prefix);
     setValue('PhoneNumber', data?.res?.phoneNumber ?? '');
+
+    setValue('KYCId', data?.res?.kycId || 0);
 
     // CHANGE THIS IF NECESSARRY
     setCurrentStep(AddDependentSteps.DEPENDENT_FORM_STEP);
@@ -127,7 +207,7 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
     <ConfirmDependentStep
       onBackClick={() => setCurrentStep(AddDependentSteps.DEPENDENT_FORM_STEP)}
       key={AddDependentSteps.CONFIRM_DEPENDENT_STEP}
-      getValues={form.getValues}
+      getValues={getValues}
       onDone={handleSubmit}
     />,
   ];

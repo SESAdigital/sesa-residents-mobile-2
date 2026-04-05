@@ -20,6 +20,7 @@ import {
 import {
   GetHouseholdAccessCardsResData,
   GetHouseholdRFIDsResData,
+  PostHouseholdCreateOccupantResData,
 } from '@src/api/household.api';
 import { PostBookVisitorResData } from '@src/api/visitors.api';
 import { WalletTransactionDetails } from '@src/api/wallets.api';
@@ -113,6 +114,7 @@ import { useAuthStore } from '@src/stores/auth.store';
 import { BuyPowerFormScreenData } from '@src/types/default';
 import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
+import AddDependentSuccessScreen from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/AddDependentSuccessScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -183,6 +185,7 @@ export type AppNavigatorParams = {
   [routes.MANAGE_DEPENDENTS_SCREEN]: ScreenWithIdAndName;
   [routes.ADD_DEPENDENT_SCREEN]: ScreenWithIdAndName;
   [routes.ADD_DEPENDENT_FORM_SCREEN]: AddDependentFormScreenProps;
+  [routes.ADD_DEPENDENT_SUCCESS_SCREEN]: PostHouseholdCreateOccupantResData;
   [routes.DEPENDENT_DETAILS_NAVIGATOR]: undefined;
   [routes.MANAGE_ACCESS_CARDS_SCREEN]: ScreenWithIdAndName;
   [routes.MANAGE_RFIDS_SCREEN]: ScreenWithIdAndName;
@@ -298,6 +301,7 @@ const RootStack = createNativeStackNavigator({
         [routes.MANAGE_DEPENDENTS_SCREEN]: ManageDependentsScreen,
         [routes.ADD_DEPENDENT_SCREEN]: AddDependentScreen,
         [routes.ADD_DEPENDENT_FORM_SCREEN]: AddDependentFormScreen,
+        [routes.ADD_DEPENDENT_SUCCESS_SCREEN]: AddDependentSuccessScreen,
         [routes.DEPENDENT_DETAILS_NAVIGATOR]: DependentTopTabsNavigator,
         [routes.MANAGE_ACCESS_CARDS_SCREEN]: ManageAccessCardsScreen,
         [routes.MANAGE_RFIDS_SCREEN]: ManageRFIDsScreen,

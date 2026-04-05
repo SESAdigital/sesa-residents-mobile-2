@@ -115,6 +115,7 @@ import { BuyPowerFormScreenData } from '@src/types/default';
 import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
 import AddDependentSuccessScreen from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/AddDependentSuccessScreen';
+import ManageHouseholdStaffNavigator from './ManageHouseholdStaffNavigator';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -187,6 +188,9 @@ export type AppNavigatorParams = {
   [routes.ADD_DEPENDENT_FORM_SCREEN]: AddDependentFormScreenProps;
   [routes.ADD_DEPENDENT_SUCCESS_SCREEN]: PostHouseholdCreateOccupantResData;
   [routes.DEPENDENT_DETAILS_NAVIGATOR]: undefined;
+
+  // MANAGE HOUSEHOLD STAFF SCREEN
+  [routes.MANAGE_HOUSEHOLD_STAFF_NAVIGATOR]: ScreenWithName;
   [routes.MANAGE_ACCESS_CARDS_SCREEN]: ScreenWithIdAndName;
   [routes.MANAGE_RFIDS_SCREEN]: ScreenWithIdAndName;
   [routes.ACCESS_CARD_HISTORY_SCREEN]: GetHouseholdAccessCardsResData;
@@ -303,6 +307,11 @@ const RootStack = createNativeStackNavigator({
         [routes.ADD_DEPENDENT_FORM_SCREEN]: AddDependentFormScreen,
         [routes.ADD_DEPENDENT_SUCCESS_SCREEN]: AddDependentSuccessScreen,
         [routes.DEPENDENT_DETAILS_NAVIGATOR]: DependentTopTabsNavigator,
+
+        // MANAGE HOUSEHOLD STAFF SCREEN
+        [routes.MANAGE_HOUSEHOLD_STAFF_NAVIGATOR]:
+          ManageHouseholdStaffNavigator,
+
         [routes.MANAGE_ACCESS_CARDS_SCREEN]: ManageAccessCardsScreen,
         [routes.MANAGE_RFIDS_SCREEN]: ManageRFIDsScreen,
         [routes.ACCESS_CARD_HISTORY_SCREEN]: AccessCardHistoryScreen,
@@ -348,7 +357,13 @@ interface ScreenWithId {
   id: number;
 }
 
-interface ScreenWithIdAndName {
-  id: number;
+export interface ScreenWithName {
   name: string;
 }
+
+type ScreenWithIdAndName = ScreenWithId & ScreenWithName;
+
+// interface ScreenWithIdAndName {
+//   id: number;
+//   name: string;
+// }

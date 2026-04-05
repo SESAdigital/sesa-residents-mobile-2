@@ -13,6 +13,7 @@ import {
   EntityKYCStatusEnum,
   EventStatusType,
   GenderType,
+  GetEntityStatusType,
   PropertyCategoryType,
   RFIDType,
   UserAccountStatusType,
@@ -83,6 +84,64 @@ export const patchDependentStatus = (val: GenericPatchStatusReq) =>
 export const deleteDependent = (id: number) =>
   baseApi.delete<GenericApiResponse>(`/Household/Dependents/${id}`);
 
+// SITE WORKERS
+
+export const getHouseholdSiteWorkers = ({ id, ...query }: GetEntityReq) =>
+  baseApi.get<GetHouseholdSiteWorkersRes>(
+    `/Household/SiteWorkers/${id}`,
+    query,
+  );
+
+export const getHouseholdSiteworkerIDCard = (id: number) =>
+  baseApi.get<GetHouseholdSiteworkerIDCardRes>(
+    `/Household/SiteWorkers/${id}/IdCard`,
+  );
+
+export const getHouseholdSiteworkerCheckInOut = ({
+  id,
+  ...query
+}: GenericPaginationReqWithId) =>
+  baseApi.get<GetHouseholdDependentsCheckInOutRes>(
+    `/Household/SiteWorkers/${id}/CheckInOut`,
+    query,
+  );
+
+export const getHouseholdSiteworkerSchedule = (id: number) =>
+  baseApi.get<GetHouseholdSiteworkerScheduleRes>(
+    `/Household/SiteWorkers/${id}/Schedule`,
+  );
+
+export const getSiteWorkerBankAccounts = (id: number) =>
+  baseApi.get<GetEntityBankAccountsRes>(
+    `/Household/SiteWorkers/${id}/BankAccounts`,
+  );
+
+// HOUSEHOLD STAFF
+
+export const getHouseholdStaff = ({ id, ...query }: GetEntityReq) =>
+  baseApi.get<GetHouseholdStaffRes>(`/Household/HouseholdStaff/${id}`, query);
+
+export const getHouseholdStaffIdCard = (id: number) =>
+  baseApi.get<GetHouseholdStaffIDCardRes>(
+    `/Household/HouseholdStaff/${id}/IdCard`,
+  );
+
+export const getHouseholdStaffCheckInOut = ({
+  id,
+  ...query
+}: GenericPaginationReqWithId) =>
+  baseApi.get<GetHouseholdDependentsCheckInOutRes>(
+    `/Household/HouseholdStaff/${id}/CheckInOut`,
+    query,
+  );
+
+export const getHouseholdStaffBankAccounts = (id: number) =>
+  baseApi.get<GetEntityBankAccountsRes>(
+    `/Household/HouseholdStaff/${id}/BankAccounts`,
+  );
+
+// RFIDS
+
 export const getHouseholdRFIDs = ({
   id,
   ...query
@@ -138,6 +197,18 @@ export const postHouseholdCreateOccupant = (val: FormData) =>
       headers: { 'Content-Type': 'multipart/form-data' },
     },
   );
+
+export const postAddSelfAsOccupant = (val: PostAddSelfAsOccupantReq) =>
+  baseApi.post<GenericApiResponse>(`/Household/AddSelfAsOccupant`, val);
+
+export const getHouseholdAlphaOcccupants = (id: number) =>
+  baseApi.get<GetHouseholdAlphaOccupantsRes>(`/Household/${id}/AlphaOccupants`);
+
+export const postCreateSiteWorker = (val: PostCreateSiteWorkerReq) =>
+  baseApi.post<GenericApiResponse>(`/Household/CreateSiteWorker`, val);
+
+export const postCreateHouseholdStaff = (val: PostCreateHouseholdStaffReq) =>
+  baseApi.post<GenericApiResponse>(`/Household/CreateHouseholdStaff`, val);
 
 // API ENDS
 
@@ -254,6 +325,104 @@ interface GetPropertyDependentsGroupAccessRes extends GenericApiResponse {
   data: GenericPaginatedResponse<GetPropertyDependentsGroupAccessResData>;
 }
 
+// SITE WORKERS
+
+interface GetEntityReq extends GenericPaginationRequest {
+  id: number;
+  Status: GetEntityStatusType;
+}
+
+export interface GetHouseholdSiteWorkersResData {
+  id: number;
+  firstName: string;
+  lastName: string;
+  code: string;
+  workPeriodEnd: string;
+  workPeriodStart: string;
+  statusText: string;
+  status: GetEntityStatusType;
+  period: string;
+  photo: string;
+}
+
+interface GetHouseholdSiteWorkersRes extends GenericApiResponse {
+  data: GenericPaginatedResponse<GetHouseholdSiteWorkersResData>;
+}
+
+interface GetHouseholdSiteworkerIDCardRes extends GenericApiResponse {
+  data: {
+    firstName: string;
+    lastName: string;
+    estateName: string;
+    code: string;
+    photo: string;
+    homeAddress: string;
+    homeAddressPlaceId: string;
+    workAddress: string;
+    workAddressPlaceId: string;
+    workPeriodEnd: string;
+    workPeriodStart: string;
+    clockInEnd: string;
+    clockInStart: string;
+  };
+}
+
+interface GetHouseholdSiteworkerScheduleRes extends GenericApiResponse {
+  data: {
+    workPeriodEnd: string;
+    workPeriodStart: string;
+    clockInEnd: string;
+    clockInStart: string;
+    workDays: string[];
+  };
+}
+
+export interface GetEntityBankAccountResData {
+  id: string;
+  bankId: number;
+  bankName: string;
+  bankCode: string;
+  accountName: string;
+  accountNumber: string;
+}
+
+interface GetEntityBankAccountsRes extends GenericApiResponse {
+  data: GetEntityBankAccountResData;
+}
+
+//  HOUSEHOLD STAFF
+
+export interface GetHouseholdStaffResData {
+  id: number;
+  firstName: string;
+  lastName: string;
+  code: string;
+  statusText: string;
+  status: GetEntityStatusType;
+  period: string;
+  photo: string;
+}
+
+interface GetHouseholdStaffRes extends GenericApiResponse {
+  data: GenericPaginatedResponse<GetHouseholdStaffResData>;
+}
+
+interface GetHouseholdStaffIDCardRes extends GenericApiResponse {
+  data: {
+    firstName: string;
+    lastName: string;
+    estateName: string;
+    code: string;
+    photo: string;
+    homeAddress: string;
+    homeAddressPlaceId: string;
+    workAddress: string;
+    workAddressPlaceId: string;
+    workDays: string;
+  };
+}
+
+// RFIDS
 export interface GetHouseholdRFIDsResData {
   id: number;
   serialNumber: string;
@@ -344,6 +513,67 @@ export interface PostHouseholdCreateOccupantResData {
 
 interface PostHouseholdCreateOccupantRes extends GenericApiResponse {
   data: PostHouseholdCreateOccupantResData;
+}
+
+interface PostAddSelfAsOccupantReq {
+  propertyUnitId: number;
+  isAlpha: boolean;
+}
+
+interface GetHouseholdAlphaOccupantsResData {
+  id: 0;
+  name: string;
+  code: string;
+  gender: GenderType;
+  genderText: string;
+  status: UserAccountStatusType;
+  statusText: string;
+  isPendingApproval: boolean;
+  lastactivity: string;
+}
+
+interface GetHouseholdAlphaOccupantsRes extends GenericApiResponse {
+  data: GenericPaginatedResponse<GetHouseholdAlphaOccupantsResData>;
+}
+
+interface PostCreateSiteWorkerReq {
+  KycId: number;
+  FirstName: string;
+  LastName: string;
+  PhoneNumber: string;
+  Email: string;
+  Gender: GenderType;
+  DateOfBirth: string;
+  Photo: AppImageType;
+  HomeAddress: string;
+  HomeAddressPlaceId: string;
+  WorkPropertyStructureId: number;
+  Workdays: string[];
+  WorkPeriodStart: string;
+  WorkPeriodEnd: string;
+  ClockInStart: string;
+  ClockInEnd: string;
+  SecurityGuardMessage?: string;
+}
+
+interface PostCreateHouseholdStaffReq {
+  FirstName: string;
+  LastName: string;
+  Email: string;
+  PhoneNumber: string;
+  DateOfBirth: string;
+  Gender: GenderType;
+  HomeAddress: string;
+  HomeAddressPlaceId?: string;
+  SecurityGuardMessage: string;
+  Photo: AppImageType;
+  KYCId?: number;
+  WorkPropertyUnitId: number;
+  RequireCheckInApproval: boolean;
+  RequireCheckOutApproval: boolean;
+  RequireCheckInPicture: boolean;
+  RequireCheckOutPicture: boolean;
+  WorkDays: string[];
 }
 
 //  TYPES ENDS

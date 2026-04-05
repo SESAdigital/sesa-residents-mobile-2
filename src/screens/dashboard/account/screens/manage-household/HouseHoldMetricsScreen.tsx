@@ -113,9 +113,13 @@ const HouseHoldMetricsScreen = ({ route }: Props): React.JSX.Element => {
             }`,
           ),
         },
+
         {
           title: 'Manage household staff',
-          onPress: () => console.log(routes.CHANGE_WALLET_PIN_SCREEN),
+          onPress: () =>
+            navigation.navigate(routes.MANAGE_HOUSEHOLD_STAFF_NAVIGATOR, {
+              name,
+            }),
           Icon: MaterialSymbolsLightDeployedCodeAccountOutlineRounded,
           endText: handleLoading(
             `${data?.totalHouseholdStaffCount?.toLocaleString() || ''}`,

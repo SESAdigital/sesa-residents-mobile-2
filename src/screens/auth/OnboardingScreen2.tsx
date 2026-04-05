@@ -57,15 +57,16 @@ const OnboardingScreen2 = (): React.JSX.Element => {
 
       <View style={styles.buttonWrapper}>
         <SubmitButton
+          title="I have my login credentials"
+          isLoading={false}
+          onPress={() => navigation.navigate(routes.LOGIN_SCREEN)}
+        />
+
+        <SubmitButton
+          variant="SECONDARY"
           title="I don’t have my login credentials"
           isLoading={false}
           onPress={() => navigation.navigate(routes.RETRIEVE_ACCOUNT_SCREEN)}
-        />
-        <SubmitButton
-          title="I have my login credentials"
-          isLoading={false}
-          variant="SECONDARY"
-          onPress={() => navigation.navigate(routes.LOGIN_SCREEN)}
         />
       </View>
     </AppScreen>

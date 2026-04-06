@@ -57,7 +57,7 @@ const VerifyKYCForm = (props: Props): React.JSX.Element => {
     stringId === KYCVerificationTypeData.VotersCard?.toString();
 
   const onBackendSubmit = async (data: PostUtilitiesKYCReq) => {
-    const { idNumber, dateOfBirth, firstName, lastName, lga, state } = data;
+    const { idNumber, firstName, lastName, lga, state } = data;
     const numIdType = Number(idType) as KYCVerificationType;
 
     setIsAppModalLoading(true);

@@ -138,7 +138,7 @@ const VerifyKYCForm = (props: Props): React.JSX.Element => {
           name="idType"
         />
 
-        <Activity mode={!!idType ? 'visible' : 'hidden'}>
+        <Activity mode={idType ? 'visible' : 'hidden'}>
           <AppTextInput
             placeholder="Enter ID Number"
             label="ID Number"
@@ -281,7 +281,7 @@ function handleVerification(
 
   if (isNaN(idNo)) return false;
 
-  if (idNo == KYCVerificationTypeData.VotersCard) {
+  if (idNo === KYCVerificationTypeData.VotersCard) {
     if (!data?.firstName) {
       appToast.Warning('First name is required');
       return false;
@@ -304,13 +304,13 @@ function handleVerification(
     }
   }
 
-  if (idNo == KYCVerificationTypeData.IntlPassport) {
+  if (idNo === KYCVerificationTypeData.IntlPassport) {
     if (!data?.lastName) {
       appToast.Warning('Last name is required');
       return false;
     }
   }
-  if (idNo == KYCVerificationTypeData.DriversLicense) {
+  if (idNo === KYCVerificationTypeData.DriversLicense) {
     if (!data?.lastName) {
       appToast.Warning('Last name is required');
       return false;

@@ -82,7 +82,10 @@ const HouseholdStaffStatusListScreen = (props: Props): React.JSX.Element => {
     if (!selectedProperty?.id)
       return appToast.Warning('Property details not found.');
 
-    return navigation.navigate(routes.ADD_HOUSEHOLD_STAFF_SCREEN);
+    return navigation.navigate(routes.ADD_HOUSEHOLD_STAFF_SCREEN, {
+      id,
+      name: selectedHousehold?.name || '',
+    });
   };
 
   return (

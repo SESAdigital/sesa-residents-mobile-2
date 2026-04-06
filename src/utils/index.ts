@@ -229,9 +229,9 @@ export const formatKYCGender = (value?: string | null | number): string => {
 
   const stringValue = value?.toString()?.trim()?.toLowerCase();
 
-  if (stringValue === 'male' || stringValue == 'm')
+  if (stringValue === 'male' || stringValue === 'm')
     return GenderTypeData.Male?.toString();
-  if (stringValue === 'female' || stringValue == 'f')
+  if (stringValue === 'female' || stringValue === 'f')
     return GenderTypeData.Female?.toString();
 
   return stringValue;

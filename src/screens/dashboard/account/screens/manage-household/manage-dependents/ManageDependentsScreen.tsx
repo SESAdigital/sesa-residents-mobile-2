@@ -4,30 +4,30 @@ import { FlatList, StyleSheet } from 'react-native';
 import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
 import queryKeys from '@src/api/constants/queryKeys';
 import { getHouseholdPropertyDependents } from '@src/api/household.api';
+import AppFAB from '@src/components/AppFAB';
 import AppScreen from '@src/components/AppScreen';
 import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 import AppText from '@src/components/AppText';
 import AppListFooterLoader from '@src/components/common/AppListFooterLoader';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
+import EmptyPersonnelComponent from '@src/components/common/EmptyPersonnelComponent';
 import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import DuplicateLoader from '@src/components/DuplicateLoader';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
+import { useAppStateStore } from '@src/stores/appState.store';
+import { useAuthStore } from '@src/stores/auth.store';
 import { getTotalPages } from '@src/utils';
+import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import EmptyDependentComponent from './components/EmptyDependentComponent';
+import { useDependentActions } from './components/dependent-actions';
 import ManageDependentRow, {
   ManageDependentRowLoader,
 } from './components/ManageDependentRow';
-import { useDependentActions } from './components/dependent-actions';
-import AppFAB from '@src/components/AppFAB';
-import { useGetFees, useGetWalletBalance } from '@src/hooks/useGetRequests';
-import { useAuthStore } from '@src/stores/auth.store';
-import { appToast } from '@src/utils/appToast';
-import { useAppStateStore } from '@src/stores/appState.store';
+import { MaterialSymbolsSupervisorAccountRounded } from '@src/components/icons';
 
 type Props = AppScreenProps<'MANAGE_DEPENDENTS_SCREEN'>;
 
@@ -35,8 +35,7 @@ const pageSize = DEFAULT_API_DATA_SIZE;
 
 const ManageDependentsScreen = ({ route }: Props): React.JSX.Element => {
   const { id, name } = route?.params;
-  useGetFees();
-  useGetWalletBalance();
+
   const queryKey = [
     queryKeys.GET_HOUSEHOLDS,
     'getHouseholdPropertyDependents',
@@ -120,7 +119,13 @@ const ManageDependentsScreen = ({ route }: Props): React.JSX.Element => {
           isLoading ? (
             <DuplicateLoader loader={<ManageDependentRowLoader />} />
           ) : (
-            <EmptyDependentComponent onPress={handleAdd} />
+            <EmptyPersonnelComponent
+              Icon={MaterialSymbolsSupervisorAccountRounded}
+              title="Add your first dependent"
+              description="Tap “add dependent” to get started."
+              buttonTitle="Add dependent"
+              onPress={handleAdd}
+            />
           )
         }
         renderItem={({ item }) => (

@@ -1,24 +1,146 @@
+import { FlatList, StyleSheet, View } from 'react-native';
+
+import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
+import {
+  GetEntityStatusData,
+  GetEntityStatusType,
+} from '@src/api/constants/default';
+import queryKeys from '@src/api/constants/queryKeys';
+import { getHouseholdStaffs } from '@src/api/household.api';
 import AppFAB from '@src/components/AppFAB';
-import { View, StyleSheet, Text } from 'react-native';
+import AppListFooterLoader from '@src/components/common/AppListFooterLoader';
+import EmptyPersonnelComponent from '@src/components/common/EmptyPersonnelComponent';
+import AppRefreshControl from '@src/components/custom/AppRefreshControl';
+import DuplicateLoader from '@src/components/DuplicateLoader';
+import EmptyTableComponent from '@src/components/EmptyTableComponent';
+import { MaterialSymbolsLightDeployedCodeAccountOutlineRounded } from '@src/components/icons';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
+import { useAppStateStore } from '@src/stores/appState.store';
+import { useAuthStore } from '@src/stores/auth.store';
+import { getTotalPages } from '@src/utils';
+import { appToast } from '@src/utils/appToast';
+import { handleToastApiError } from '@src/utils/handleErrors';
+import Size from '@src/utils/useResponsiveSize';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import HouseholdStaffRow, {
+  HouseholdStaffRowLoader,
+} from './components/HouseholdStaffRow';
 
 interface Props {
-  status: 'all' | 'active' | 'inactive' | 'pending';
+  Status: GetEntityStatusType;
 }
 
+const pageSize = DEFAULT_API_DATA_SIZE;
+
 const HouseholdStaffStatusListScreen = (props: Props): React.JSX.Element => {
-  const { status } = props;
+  const { Status } = props;
+  const { selectedHousehold } = useAppStateStore();
+  const id = selectedHousehold?.id || 0;
+  const { selectedProperty } = useAuthStore();
+
+  const queryKey = [queryKeys.GET_HOUSEHOLDS, 'getHouseholdStaffs', Status];
+  const navigation = useAppNavigator();
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey,
+
+      queryFn: async ({ pageParam }) => {
+        const response = await getHouseholdStaffs({
+          PageNumber: pageParam,
+          PageSize: pageSize,
+          id,
+          Status,
+        });
+        if (response.ok) {
+          return response?.data;
+        } else {
+          handleToastApiError(response);
+          return null;
+        }
+      },
+
+      initialPageParam: 1,
+
+      getNextPageParam: lastPage => {
+        if (!lastPage) return undefined;
+        const { currentPage, totalRecordCount: totalItems } = lastPage.data;
+        const totalPages = getTotalPages({ pageSize, totalItems });
+        return currentPage < totalPages ? currentPage + 1 : undefined;
+      },
+    });
+
+  const formattedData =
+    data?.pages?.flatMap(page => page?.data?.records)?.filter(val => !!val) ||
+    [];
+
+  const queryClient = useQueryClient();
+  const refetch = () => queryClient.resetQueries({ queryKey });
+
+  const handleAdd = () => {
+    if (!selectedProperty?.id)
+      return appToast.Warning('Property details not found.');
+
+    return navigation.navigate(routes.ADD_HOUSEHOLD_STAFF_SCREEN);
+  };
 
   return (
-    <View style={styles.container}>
-      <Text>{status} HouseholdStaffStatusListScreen</Text>
+    <View style={{ flex: 1 }}>
+      <FlatList
+        data={formattedData}
+        refreshControl={
+          <AppRefreshControl refreshing={isLoading} onRefresh={refetch} />
+        }
+        showsVerticalScrollIndicator
+        ListEmptyComponent={
+          isLoading ? (
+            <DuplicateLoader loader={<HouseholdStaffRowLoader />} />
+          ) : Status === GetEntityStatusData.All ? (
+            <EmptyPersonnelComponent
+              Icon={MaterialSymbolsLightDeployedCodeAccountOutlineRounded}
+              title="Add your household staff"
+              description="Tap “Add household staff” to get started."
+              buttonTitle="Add household staff"
+              onPress={handleAdd}
+            />
+          ) : (
+            <EmptyTableComponent />
+          )
+        }
+        renderItem={({ item }) => (
+          <HouseholdStaffRow
+            onPress={() => {
+              //   setSelectedDependent(item);
+              navigation.navigate(routes.DEPENDENT_DETAILS_NAVIGATOR);
+            }}
+            showWorkDays
+            data={item}
+          />
+        )}
+        keyExtractor={(_, index) => index?.toString()}
+        contentContainerStyle={styles.contentContainerStyle}
+        onEndReached={() => {
+          if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }}
+        onEndReachedThreshold={2}
+        ListFooterComponent={
+          <AppListFooterLoader isloading={isFetchingNextPage} />
+        }
+      />
 
-      <AppFAB onPress={() => {}} />
+      <AppFAB onPress={handleAdd} style={{ bottom: Size.calcHeight(100) }} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  contentContainerStyle: {
+    paddingBottom: Size.calcHeight(70),
+    minHeight: '100%',
+  },
 });
 
 export default HouseholdStaffStatusListScreen;

@@ -118,7 +118,7 @@ export const getSiteWorkerBankAccounts = (id: number) =>
 
 // HOUSEHOLD STAFF
 
-export const getHouseholdStaff = ({ id, ...query }: GetEntityReq) =>
+export const getHouseholdStaffs = ({ id, ...query }: GetEntityReq) =>
   baseApi.get<GetHouseholdStaffRes>(`/Household/HouseholdStaff/${id}`, query);
 
 export const getHouseholdStaffIdCard = (id: number) =>
@@ -207,8 +207,10 @@ export const getHouseholdAlphaOcccupants = (id: number) =>
 export const postCreateSiteWorker = (val: PostCreateSiteWorkerReq) =>
   baseApi.post<GenericApiResponse>(`/Household/CreateSiteWorker`, val);
 
-export const postCreateHouseholdStaff = (val: PostCreateHouseholdStaffReq) =>
-  baseApi.post<GenericApiResponse>(`/Household/CreateHouseholdStaff`, val);
+export const postCreateHouseholdStaff = (val: FormData) =>
+  baseApi.post<GenericApiResponse>(`/Household/CreateHouseholdStaff`, val, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 
 // API ENDS
 
@@ -398,7 +400,8 @@ export interface GetHouseholdStaffResData {
   lastName: string;
   code: string;
   statusText: string;
-  status: GetEntityStatusType;
+  // status: GetEntityStatusType;
+  status: AccessCardStatusType;
   period: string;
   photo: string;
 }
@@ -521,7 +524,7 @@ interface PostAddSelfAsOccupantReq {
 }
 
 interface GetHouseholdAlphaOccupantsResData {
-  id: 0;
+  id: number;
   name: string;
   code: string;
   gender: GenderType;
@@ -556,7 +559,7 @@ interface PostCreateSiteWorkerReq {
   SecurityGuardMessage?: string;
 }
 
-interface PostCreateHouseholdStaffReq {
+export interface PostCreateHouseholdStaffReq {
   FirstName: string;
   LastName: string;
   Email: string;
@@ -564,16 +567,16 @@ interface PostCreateHouseholdStaffReq {
   DateOfBirth: string;
   Gender: GenderType;
   HomeAddress: string;
-  HomeAddressPlaceId?: string;
-  SecurityGuardMessage: string;
   Photo: AppImageType;
-  KYCId?: number;
   WorkPropertyUnitId: number;
-  RequireCheckInApproval: boolean;
-  RequireCheckOutApproval: boolean;
-  RequireCheckInPicture: boolean;
-  RequireCheckOutPicture: boolean;
-  WorkDays: string[];
+  RequireCheckInApproval?: boolean;
+  RequireCheckOutApproval?: boolean;
+  RequireCheckInPicture?: boolean;
+  RequireCheckOutPicture?: boolean;
+  SecurityGuardMessage?: string;
+  HomeAddressPlaceId?: string;
+  WorkDays?: string[];
+  KYCId?: number;
 }
 
 //  TYPES ENDS

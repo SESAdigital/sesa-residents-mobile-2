@@ -393,10 +393,10 @@ export type KYCVerificationType =
   (typeof KYCVerificationTypeData)[keyof typeof KYCVerificationTypeData];
 
 export const GetEntityStatusData = {
-  AllSiteWorkers: 0,
-  ActiveSiteWorkers: 1,
-  InactiveSiteWorkers: 2,
-  PendingSiteWorkers: 3,
+  All: 0,
+  Active: 1,
+  New: 2,
+  Inactive: 3,
 } as const;
 
 export type GetEntityStatusType =

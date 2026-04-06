@@ -8,8 +8,8 @@ import { StyleSheet } from 'react-native';
 import { GenderType } from '@src/api/constants/default';
 import queryKeys from '@src/api/constants/queryKeys';
 import {
-  postHouseholdCreateOccupant,
-  PostHouseholdCreateOccupantReq,
+  postCreateHouseholdStaff,
+  PostCreateHouseholdStaffReq,
 } from '@src/api/household.api';
 import { KYCDetails } from '@src/api/utilities.api';
 import AppScreen from '@src/components/AppScreen';
@@ -35,18 +35,14 @@ import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
 import { dayJSFormatter } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
-import ConfirmDependentStep from './steps/ConfirmDependentStep';
-import DependentFormStep from './steps/DependentFormStep';
+import { AddHouseholdStaffSuccessScreenProps } from './AddHouseholdStaffSuccessScreen';
+import ConfigureAccessRequirementStep from './steps/ConfigureAccessRequirementStep';
+import ConfirmHouseholdStaffStep from './steps/ConfirmHouseholdStaffStep';
+import HouseholdStaffFormStep from './steps/HouseholdStaffFormStep';
 
-export interface AddDependentFormScreenProps {
-  id: number;
-  name: string;
-  isKYC: boolean;
-}
+type Props = AppScreenProps<'ADD_HOUSEHOLD_STAFF_FORM_SCREEN'>;
 
-type Props = AppScreenProps<'ADD_DEPENDENT_FORM_SCREEN'>;
-
-const schema = Joi.object<PostHouseholdCreateOccupantReq>({
+const schema = Joi.object<PostCreateHouseholdStaffReq>({
   FirstName: joiSchemas.name.label('First name'),
   LastName: joiSchemas.name.label('Last name'),
   Email: joiSchemas.email,
@@ -55,19 +51,45 @@ const schema = Joi.object<PostHouseholdCreateOccupantReq>({
   DateOfBirth: Joi.string().optional().allow('').label('Date of birth'),
   Gender: Joi.string().required().label('Gender'),
   KYCId: Joi.number().optional(),
-  // HomeAddress: Joi.string().optional().allow('').label('Home address'),
+  HomeAddress: Joi.string().required().label('Home address').min(3).max(1000),
+  RequireCheckInApproval: Joi.boolean()
+    .required()
+    .label('Require check in approval'),
+  RequireCheckOutApproval: Joi.boolean()
+    .required()
+    .label('Require check out approval'),
+  RequireCheckInPicture: Joi.boolean()
+    .required()
+    .label('Require check in picture'),
+  RequireCheckOutPicture: Joi.boolean()
+    .required()
+    .label('Require check out picture'),
+  SecurityGuardMessage: Joi.string()
+    .optional()
+    .allow('')
+    .label('Security guard message')
+    .min(3)
+    .max(500),
+  WorkDays: Joi.array().required().label('Work days'),
 });
 
-const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
+const AddHouseholdStaffFormScreen = ({ route }: Props): React.JSX.Element => {
   const { name, isKYC } = route?.params || {};
   const { selectedProperty } = useAuthStore();
   const firstStep = isKYC
-    ? AddDependentSteps.VERIFY_KYC_FORM
-    : AddDependentSteps.DEPENDENT_FORM_STEP;
+    ? AddHouseholdStaffSteps.VERIFY_KYC_FORM
+    : AddHouseholdStaffSteps.HOUSEHOLD_STAFF_FORM_STEP;
   const [currentStep, setCurrentStep] = useState(firstStep);
   const navigation = useAppNavigator();
-  const form = useForm<PostHouseholdCreateOccupantReq>({
+  const form = useForm<PostCreateHouseholdStaffReq>({
     resolver: joiResolver(schema),
+    defaultValues: {
+      WorkDays: [],
+      RequireCheckInApproval: false,
+      RequireCheckOutApproval: false,
+      RequireCheckInPicture: false,
+      RequireCheckOutPicture: false,
+    },
   });
   const kycForm = useVerifyKYCForm();
   const { setValue, getValues } = form;
@@ -95,13 +117,32 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
       LastName,
       PhoneNumber,
       Photo,
+      HomeAddress,
+      RequireCheckInApproval,
+      RequireCheckOutPicture,
+      WorkDays,
+      SecurityGuardMessage,
+      RequireCheckOutApproval,
+      RequireCheckInPicture,
     } = getValues();
 
-    const initData: Partial<PostHouseholdCreateOccupantReq> = {
+    const guardMessage = SecurityGuardMessage?.trim();
+
+    const initData: Partial<PostCreateHouseholdStaffReq> = {
       FirstName: FirstName?.trim(),
       LastName: LastName?.trim(),
       Email: Email?.trim()?.toLowerCase(),
       PhoneNumber: PhoneNumber?.trim(),
+      RequireCheckInApproval,
+      RequireCheckOutApproval,
+      RequireCheckInPicture,
+      RequireCheckOutPicture,
+      Gender,
+      WorkPropertyUnitId: selectedProperty?.id || 0,
+      HomeAddress,
+      HomeAddressPlaceId: selectedProperty?.propertyAddressPlaceId || '',
+      ...(KYCId ? { KYCId } : {}),
+      ...(guardMessage ? { SecurityGuardMessage: guardMessage } : {}),
       ...(DateOfBirth
         ? {
             DateOfBirth: dayJSFormatter({
@@ -110,41 +151,53 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
             }),
           }
         : {}),
-      Gender,
-
-      PropertyUnitId: selectedProperty?.id || 0,
-      HomeAddress: selectedProperty?.propertyAddress || '',
-      HomeAddressPlaceId: selectedProperty?.propertyAddressPlaceId || '',
-      ...(KYCId ? { KYCId } : {}),
     };
 
-    const dependentFormData = new FormData();
+    const householdStaffFormData = new FormData();
 
     Object.entries(initData).forEach(([key, value]) => {
-      dependentFormData.append(key, value);
+      householdStaffFormData.append(key, value);
     });
 
     const fileName = Photo?.fileName || generateFileName(0, Photo?.type || '');
 
-    dependentFormData.append('Photo', {
+    householdStaffFormData.append('Photo', {
       uri: Photo?.uri,
       type: Photo?.type,
       name: fileName,
     });
 
+    if (!!WorkDays && WorkDays?.length > 0) {
+      WorkDays?.forEach(value => {
+        householdStaffFormData.append('WorkDays[]', value?.toString?.());
+      });
+    }
+    console.log(householdStaffFormData);
+    console.log(initData);
+
     setIsAppModalLoading(true);
-    const response = await postHouseholdCreateOccupant(dependentFormData);
+    const response = await postCreateHouseholdStaff(householdStaffFormData);
     setIsAppModalLoading(false);
 
     if (response?.ok && response?.data) {
       queryClient.resetQueries({ queryKey: [queryKeys.GET_HOUSEHOLDS] });
       appToast.Success(
-        response?.data?.message || 'Dependent added successfully.',
+        response?.data?.message || 'Household staff added successfully.',
       );
 
+      const successValue: AddHouseholdStaffSuccessScreenProps = {
+        firstName: FirstName?.trim(),
+        lastName: LastName?.trim(),
+        emailAddress: Email?.trim()?.toLowerCase(),
+        phoneNumber: PhoneNumber?.trim(),
+        photo: Photo?.uri || '',
+        address: selectedProperty?.propertyAddress || '',
+        propertyUnitName: name,
+      };
+
       navigation.replace(
-        routes.ADD_DEPENDENT_SUCCESS_SCREEN,
-        response?.data?.data,
+        routes.ADD_HOUSEHOLD_STAFF_SUCCESS_SCREEN,
+        successValue,
       );
       closeActiveModal();
     } else {
@@ -156,9 +209,9 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
     setActiveModal({
       modalType: 'PROMT_MODAL',
       promptModal: {
-        title: 'Add dependent?',
+        title: 'Add household staff?',
         description:
-          'You are about to add a new dependent. Are you sure you want to continue?',
+          'You are about to add a new household staff. Are you sure you want to continue?',
         noButtonTitle: 'Cancel',
         yesButtonTitle: "Yes, I'm Sure",
         onYesButtonClick: onSubmit,
@@ -177,36 +230,49 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
     setValue('FirstName', data?.res?.firstname ?? '');
     setValue('LastName', data?.res?.lastname ?? '');
     setValue('Email', data?.res?.email ?? '');
-    // setValue('HomeAddress', data?.res?.address ?? '');
+    setValue('HomeAddress', data?.res?.address ?? '');
     setValue('DateOfBirth', data?.res?.dateOfBirth ?? '');
     setValue('Gender', gender);
     setValue('Photo.uri', photo?.data);
     setValue('Photo.type', photo?.prefix);
     setValue('PhoneNumber', data?.res?.phoneNumber ?? '');
-
     setValue('KYCId', data?.res?.kycId || 0);
 
     // CHANGE THIS IF NECESSARRY
-    setCurrentStep(AddDependentSteps.DEPENDENT_FORM_STEP);
+    setCurrentStep(AddHouseholdStaffSteps.HOUSEHOLD_STAFF_FORM_STEP);
     return;
   };
 
   const steps = [
     <VerifyKYCForm
-      key={AddDependentSteps.VERIFY_KYC_FORM}
+      key={AddHouseholdStaffSteps.VERIFY_KYC_FORM}
       onDone={onKYCVerifyDone}
       form={kycForm}
       onBackClick={onBackPress}
     />,
-    <DependentFormStep
+    <HouseholdStaffFormStep
       onBackClick={onBackPress}
-      key={AddDependentSteps.DEPENDENT_FORM_STEP}
+      key={AddHouseholdStaffSteps.HOUSEHOLD_STAFF_FORM_STEP}
       form={form}
-      onDone={() => setCurrentStep(AddDependentSteps.CONFIRM_DEPENDENT_STEP)}
+      onDone={() =>
+        setCurrentStep(AddHouseholdStaffSteps.CONFIGURE_ACCESS_REQUIREMENT_STEP)
+      }
     />,
-    <ConfirmDependentStep
-      onBackClick={() => setCurrentStep(AddDependentSteps.DEPENDENT_FORM_STEP)}
-      key={AddDependentSteps.CONFIRM_DEPENDENT_STEP}
+    <ConfigureAccessRequirementStep
+      onBackClick={() =>
+        setCurrentStep(AddHouseholdStaffSteps.HOUSEHOLD_STAFF_FORM_STEP)
+      }
+      form={form}
+      key={AddHouseholdStaffSteps.CONFIGURE_ACCESS_REQUIREMENT_STEP}
+      onDone={() =>
+        setCurrentStep(AddHouseholdStaffSteps.CONFIRM_HOUSEHOLD_STAFF_STEP)
+      }
+    />,
+    <ConfirmHouseholdStaffStep
+      onBackClick={() =>
+        setCurrentStep(AddHouseholdStaffSteps.CONFIGURE_ACCESS_REQUIREMENT_STEP)
+      }
+      key={AddHouseholdStaffSteps.CONFIRM_HOUSEHOLD_STAFF_STEP}
       getValues={getValues}
       onDone={handleSubmit}
     />,
@@ -217,7 +283,7 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
   return (
     <AppScreen showDownInset>
       <AppScreenHeader onBackPress={onBackPress}>
-        <AppText style={styles.headerTitle}>Add dependent</AppText>
+        <AppText style={styles.headerTitle}>Add Household Staff</AppText>
         <AppText style={styles.headerSubtitle}>{name}</AppText>
       </AppScreenHeader>
       <AppStepIndicator
@@ -244,10 +310,11 @@ const styles = StyleSheet.create({
   },
 });
 
-enum AddDependentSteps {
+enum AddHouseholdStaffSteps {
   VERIFY_KYC_FORM = 1,
-  DEPENDENT_FORM_STEP,
-  CONFIRM_DEPENDENT_STEP,
+  HOUSEHOLD_STAFF_FORM_STEP,
+  CONFIGURE_ACCESS_REQUIREMENT_STEP,
+  CONFIRM_HOUSEHOLD_STAFF_STEP,
 }
 
-export default AddDependentFormScreen;
+export default AddHouseholdStaffFormScreen;

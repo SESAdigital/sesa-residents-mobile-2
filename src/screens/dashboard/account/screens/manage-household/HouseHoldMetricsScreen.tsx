@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ScrollView, StyleSheet } from 'react-native';
 
+import { mapPropertyCategoryTypeToShortCharacter } from '@src/api/constants/data';
 import queryKeys from '@src/api/constants/queryKeys';
 import { getHouseholdPropertyMetrics } from '@src/api/household.api';
 import AppScreen from '@src/components/AppScreen';
@@ -23,23 +24,24 @@ import {
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
+import { useGetFees, useGetWalletBalance } from '@src/hooks/useGetRequests';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
+import { useAppStateStore } from '@src/stores/appState.store';
+import { useAuthStore } from '@src/stores/auth.store';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import { useAuthStore } from '@src/stores/auth.store';
-import { mapPropertyCategoryTypeToShortCharacter } from '@src/api/constants/data';
 
-type Props = AppScreenProps<'HOUSEHOLD_METRICS_SCREEN'>;
-
-const HouseHoldMetricsScreen = ({ route }: Props): React.JSX.Element => {
-  const id = route?.params?.id;
+const HouseHoldMetricsScreen = (): React.JSX.Element => {
+  const { selectedHousehold } = useAppStateStore();
+  const id = selectedHousehold?.id || 0;
   const queryKey = [
     queryKeys.GET_HOUSEHOLDS,
     'getHouseholdPropertyMetrics',
     id,
   ];
-
+  useGetFees();
+  useGetWalletBalance();
   const { selectedProperty } = useAuthStore();
 
   const { data, isLoading } = useQuery({

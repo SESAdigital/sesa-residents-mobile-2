@@ -156,3 +156,5 @@ export const STATES: SelectInputData[] = [
   title: key,
   value: key,
 }));
+
+export const WORK_DAYS = ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];

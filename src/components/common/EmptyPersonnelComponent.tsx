@@ -1,33 +1,36 @@
 import { StyleSheet, View } from 'react-native';
+import { SvgProps } from 'react-native-svg';
 
 import AppText from '@src/components/AppText';
 import SubmitButton from '@src/components/forms/SubmitButton';
-import { MaterialSymbolsSupervisorAccountRounded } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 
 interface Props {
   onPress: () => void;
+  title?: string;
+  description: string;
+  buttonTitle: string;
+  Icon: (props: SvgProps) => React.JSX.Element;
 }
-const EmptyDependentComponent = ({ onPress }: Props): React.JSX.Element => {
+const EmptyPersonnelComponent = (props: Props): React.JSX.Element => {
+  const { onPress, title, description, buttonTitle, Icon } = props;
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <View style={styles.iconContainer}>
-          <MaterialSymbolsSupervisorAccountRounded
+          <Icon
             height={Size.calcAverage(24)}
             width={Size.calcAverage(24)}
             color={colors.GRAY_100}
           />
         </View>
-        <AppText style={styles.title}>Add your first dependent</AppText>
-        <AppText style={styles.description}>
-          Tap “add dependent” to get started.
-        </AppText>
+        <AppText style={styles.title}>{title}</AppText>
+        <AppText style={styles.description}>{description}</AppText>
         <SubmitButton
           style={styles.button}
-          title="Add dependent"
+          title={buttonTitle}
           onPress={onPress}
         />
       </View>
@@ -78,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EmptyDependentComponent;
+export default EmptyPersonnelComponent;

@@ -1,7 +1,7 @@
 import { UseFormGetValues } from 'react-hook-form';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { PostHouseholdCreateOccupantReq } from '@src/api/household.api';
+import { PostCreateHouseholdStaffReq } from '@src/api/household.api';
 import AppImage from '@src/components/AppImage';
 import AppText from '@src/components/AppText';
 import AppDetailCard, {
@@ -10,26 +10,27 @@ import AppDetailCard, {
 import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useAuthStore } from '@src/stores/auth.store';
 import { mapGenderTitle } from '@src/utils';
 import { dayJSFormatter } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
 
 interface Props {
   onDone: () => void;
-  getValues: UseFormGetValues<PostHouseholdCreateOccupantReq>;
+  getValues: UseFormGetValues<PostCreateHouseholdStaffReq>;
   onBackClick: () => void;
 }
 
-const ConfirmDependentStep = (props: Props): React.JSX.Element => {
+const ConfirmHouseholdStaffStep = (props: Props): React.JSX.Element => {
   const { getValues, onDone, onBackClick } = props;
-  const { selectedProperty } = useAuthStore();
+
   const {
     Photo,
     FirstName,
     LastName,
     Email,
     PhoneNumber,
+    HomeAddress,
+    WorkDays,
     DateOfBirth,
     Gender,
   } = getValues();
@@ -52,12 +53,6 @@ const ConfirmDependentStep = (props: Props): React.JSX.Element => {
         title: 'PHONE NUMBER',
         value: PhoneNumber?.trim(),
       },
-    ],
-    [
-      {
-        title: 'GENDER',
-        value: mapGenderTitle(Gender),
-      },
       {
         title: 'DATE OF BIRTH',
         value: dayJSFormatter({
@@ -69,8 +64,18 @@ const ConfirmDependentStep = (props: Props): React.JSX.Element => {
     ],
     [
       {
+        title: 'GENDER',
+        value: mapGenderTitle(Gender),
+      },
+      {
+        title: 'WORK DAYS',
+        value: WorkDays ? WorkDays?.join(', ') : '',
+      },
+    ],
+    [
+      {
         title: 'HOME ADDRESS',
-        value: selectedProperty?.propertyAddress || '',
+        value: HomeAddress,
       },
     ],
   ];
@@ -80,10 +85,10 @@ const ConfirmDependentStep = (props: Props): React.JSX.Element => {
       <ScrollView contentContainerStyle={styles.container}>
         <AppImage style={styles.image} source={{ uri: Photo?.uri }} />
 
-        <AppText style={styles.headerTitle}>Confirm dependent occupant</AppText>
+        <AppText style={styles.headerTitle}>Confirm household staff</AppText>
         <AppText style={styles.headerSubtitle}>
-          View the details of the occupant below and tap “Confirm” to confirm
-          and add.
+          View the details of the staff below and tap “Confirm” to send the
+          details for approval.
         </AppText>
 
         <AppDetailCard detailList={detailList} />
@@ -147,4 +152,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmDependentStep;
+export default ConfirmHouseholdStaffStep;

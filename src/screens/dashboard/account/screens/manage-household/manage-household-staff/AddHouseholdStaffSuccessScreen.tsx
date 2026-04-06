@@ -1,8 +1,7 @@
-import { UseFormGetValues } from 'react-hook-form';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { PostHouseholdCreateOccupantReq } from '@src/api/household.api';
 import AppImage from '@src/components/AppImage';
+import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppDetailCard, {
   AppDetailCardDetailItem,
@@ -10,80 +9,67 @@ import AppDetailCard, {
 import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useAuthStore } from '@src/stores/auth.store';
-import { mapGenderTitle } from '@src/utils';
-import { dayJSFormatter } from '@src/utils/time';
+import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
 import Size from '@src/utils/useResponsiveSize';
 
-interface Props {
-  onDone: () => void;
-  getValues: UseFormGetValues<PostHouseholdCreateOccupantReq>;
-  onBackClick: () => void;
+export interface AddHouseholdStaffSuccessScreenProps {
+  firstName: string;
+  lastName: string;
+  emailAddress: string;
+  phoneNumber: string;
+  propertyUnitName: string;
+  address: string;
+  photo: string;
 }
 
-const ConfirmDependentStep = (props: Props): React.JSX.Element => {
-  const { getValues, onDone, onBackClick } = props;
-  const { selectedProperty } = useAuthStore();
-  const {
-    Photo,
-    FirstName,
-    LastName,
-    Email,
-    PhoneNumber,
-    DateOfBirth,
-    Gender,
-  } = getValues();
+type Props = AppScreenProps<'ADD_HOUSEHOLD_STAFF_SUCCESS_SCREEN'>;
+
+const AddHouseholdStaffSuccessScreen = (props: Props): React.JSX.Element => {
+  const value = props?.route?.params || {};
+  const navigation = useAppNavigator();
 
   const detailList: AppDetailCardDetailItem = [
     [
       {
-        title: 'FULL NAME',
-        value: `${FirstName?.trim()} ${LastName?.trim()}`,
+        title: 'DEPENDENT OCCUPANT NAME',
+        value: `${value?.firstName?.trim()} ${value?.lastName?.trim()}`,
       },
     ],
     [
       {
         title: 'EMAIL ADDRESS',
-        value: Email?.toLowerCase()?.trim(),
+        value: value?.emailAddress?.toLowerCase()?.trim(),
       },
     ],
     [
       {
         title: 'PHONE NUMBER',
-        value: PhoneNumber?.trim(),
+        value: value?.phoneNumber?.trim(),
       },
     ],
     [
       {
-        title: 'GENDER',
-        value: mapGenderTitle(Gender),
-      },
-      {
-        title: 'DATE OF BIRTH',
-        value: dayJSFormatter({
-          format: 'MMM D, YYYY',
-          value: DateOfBirth || '',
-          shouldNotLocalize: true,
-        }),
+        title: 'ADDED TO',
+        value: value?.propertyUnitName || '',
       },
     ],
     [
       {
-        title: 'HOME ADDRESS',
-        value: selectedProperty?.propertyAddress || '',
+        title: 'PROPERTY ADDRESS',
+        value: value?.address || '',
       },
     ],
   ];
 
   return (
-    <View style={{ flex: 1 }}>
+    <AppScreen showDownInset>
       <ScrollView contentContainerStyle={styles.container}>
-        <AppImage style={styles.image} source={{ uri: Photo?.uri }} />
+        <AppImage style={styles.image} source={{ uri: value.photo }} />
 
-        <AppText style={styles.headerTitle}>Confirm dependent occupant</AppText>
+        <AppText style={styles.headerTitle}>Sent for approval</AppText>
         <AppText style={styles.headerSubtitle}>
-          View the details of the occupant below and tap “Confirm” to confirm
-          and add.
+          Upon approval, this occupant will be added to a household and to your
+          property.
         </AppText>
 
         <AppDetailCard detailList={detailList} />
@@ -91,25 +77,24 @@ const ConfirmDependentStep = (props: Props): React.JSX.Element => {
 
       <View style={styles.footer}>
         <SubmitButton
-          variant="SECONDARY"
-          style={{ width: '47%' }}
-          title="Go Back"
-          onPress={onBackClick}
+          title="Add another household staff"
+          onPress={() => navigation.goBack()}
         />
         <SubmitButton
-          title="Confirm"
-          style={{ width: '47%' }}
-          onPress={onDone}
+          variant="SECONDARY"
+          title="Finish and go back"
+          onPress={() => navigation.pop(2)}
         />
       </View>
-    </View>
+    </AppScreen>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: Size.calcWidth(21),
-    paddingVertical: Size.calcHeight(35),
+    paddingBottom: Size.calcHeight(35),
+    paddingTop: Size.calcHeight(57),
   },
 
   footer: {
@@ -117,9 +102,7 @@ const styles = StyleSheet.create({
     paddingBottom: Size.calcHeight(16 * 3),
     borderTopColor: colors.WHITE_300,
     borderTopWidth: Size.calcAverage(1),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    rowGap: Size.calcHeight(20),
     paddingHorizontal: Size.calcWidth(21),
   },
 
@@ -147,4 +130,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfirmDependentStep;
+export default AddHouseholdStaffSuccessScreen;

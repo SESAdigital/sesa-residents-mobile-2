@@ -14,18 +14,19 @@ import Size from '@src/utils/useResponsiveSize';
 import { ScreenWithName } from './AppNavigator';
 import AppTopTabBar from './components/AppTopTabBar';
 import routes from './routes';
+import { GetEntityStatusData } from '@src/api/constants/default';
 
 const PendingHouseholdStaffScreen = () => (
-  <HouseholdStaffStatusListScreen status="pending" />
+  <HouseholdStaffStatusListScreen Status={GetEntityStatusData.New} />
 );
 const ActiveHouseholdStaffScreen = () => (
-  <HouseholdStaffStatusListScreen status="active" />
+  <HouseholdStaffStatusListScreen Status={GetEntityStatusData.Active} />
 );
 const InactiveHouseholdStaffScreen = () => (
-  <HouseholdStaffStatusListScreen status="inactive" />
+  <HouseholdStaffStatusListScreen Status={GetEntityStatusData.Inactive} />
 );
 const AllHouseholdStaffScreen = () => (
-  <HouseholdStaffStatusListScreen status="all" />
+  <HouseholdStaffStatusListScreen Status={GetEntityStatusData.All} />
 );
 
 const ManageHouseholdStaffNavigator = createMaterialTopTabNavigator({

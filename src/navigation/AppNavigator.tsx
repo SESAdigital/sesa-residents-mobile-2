@@ -116,6 +116,11 @@ import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
 import AddDependentSuccessScreen from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/AddDependentSuccessScreen';
 import ManageHouseholdStaffNavigator from './ManageHouseholdStaffNavigator';
+import AddHouseholdStaffFormScreen from '@src/screens/dashboard/account/screens/manage-household/manage-household-staff/AddHouseholdStaffFormScreen';
+import AddHouseholdStaffScreen from '@src/screens/dashboard/account/screens/manage-household/manage-household-staff/AddHouseholdStaffScreen';
+import AddHouseholdStaffSuccessScreen, {
+  AddHouseholdStaffSuccessScreenProps,
+} from '@src/screens/dashboard/account/screens/manage-household/manage-household-staff/AddHouseholdStaffSuccessScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -182,7 +187,7 @@ export type AppNavigatorParams = {
 
   // MANAGE HOUSEHOLD SCREENS
   [routes.MANAGE_HOUSEHOLD_SCREEN]: undefined;
-  [routes.HOUSEHOLD_METRICS_SCREEN]: ScreenWithId;
+  [routes.HOUSEHOLD_METRICS_SCREEN]: undefined;
   [routes.MANAGE_DEPENDENTS_SCREEN]: ScreenWithIdAndName;
   [routes.ADD_DEPENDENT_SCREEN]: ScreenWithIdAndName;
   [routes.ADD_DEPENDENT_FORM_SCREEN]: AddDependentFormScreenProps;
@@ -191,6 +196,10 @@ export type AppNavigatorParams = {
 
   // MANAGE HOUSEHOLD STAFF SCREEN
   [routes.MANAGE_HOUSEHOLD_STAFF_NAVIGATOR]: ScreenWithName;
+  [routes.ADD_HOUSEHOLD_STAFF_SCREEN]: ScreenWithIdAndName;
+  [routes.ADD_HOUSEHOLD_STAFF_FORM_SCREEN]: AddDependentFormScreenProps;
+  [routes.ADD_HOUSEHOLD_STAFF_SUCCESS_SCREEN]: AddHouseholdStaffSuccessScreenProps;
+
   [routes.MANAGE_ACCESS_CARDS_SCREEN]: ScreenWithIdAndName;
   [routes.MANAGE_RFIDS_SCREEN]: ScreenWithIdAndName;
   [routes.ACCESS_CARD_HISTORY_SCREEN]: GetHouseholdAccessCardsResData;
@@ -311,6 +320,10 @@ const RootStack = createNativeStackNavigator({
         // MANAGE HOUSEHOLD STAFF SCREEN
         [routes.MANAGE_HOUSEHOLD_STAFF_NAVIGATOR]:
           ManageHouseholdStaffNavigator,
+        [routes.ADD_HOUSEHOLD_STAFF_SCREEN]: AddHouseholdStaffScreen,
+        [routes.ADD_HOUSEHOLD_STAFF_FORM_SCREEN]: AddHouseholdStaffFormScreen,
+        [routes.ADD_HOUSEHOLD_STAFF_SUCCESS_SCREEN]:
+          AddHouseholdStaffSuccessScreen,
 
         [routes.MANAGE_ACCESS_CARDS_SCREEN]: ManageAccessCardsScreen,
         [routes.MANAGE_RFIDS_SCREEN]: ManageRFIDsScreen,

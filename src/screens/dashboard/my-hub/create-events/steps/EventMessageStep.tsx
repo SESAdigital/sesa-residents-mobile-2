@@ -12,7 +12,10 @@ interface Props {
 }
 
 const EventMessageStep = ({ form }: Props): React.JSX.Element => {
-  const { control } = form;
+  const {
+    control,
+    formState: { errors },
+  } = form;
 
   return (
     <View style={styles.container}>
@@ -45,6 +48,7 @@ const EventMessageStep = ({ form }: Props): React.JSX.Element => {
         label=""
         name="EstateManagerMessage"
         control={control}
+        errorMessage={errors?.EstateManagerMessage?.message}
       />
     </View>
   );

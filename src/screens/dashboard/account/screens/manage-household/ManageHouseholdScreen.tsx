@@ -14,13 +14,14 @@ import EmptyTableComponent from '@src/components/EmptyTableComponent';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
 import { getTotalPages } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 import ManangeHouseholdRow, {
   ManangeHouseholdRowLoader,
 } from './components/ManangeHouseholdRow';
-import routes from '@src/navigation/routes';
+import { useAppStateStore } from '@src/stores/appState.store';
 
 const queryKey = [queryKeys.GET_HOUSEHOLDS, 'getHouseholdProperties'];
 
@@ -61,6 +62,7 @@ const ManageHouseholdScreen = (): React.JSX.Element => {
   const navigation = useAppNavigator();
   const queryClient = useQueryClient();
   const refetch = () => queryClient.resetQueries({ queryKey });
+  const { setSelectedHousehold } = useAppStateStore();
 
   return (
     <AppScreen showDownInset>
@@ -87,11 +89,10 @@ const ManageHouseholdScreen = (): React.JSX.Element => {
         }
         renderItem={({ item }) => (
           <ManangeHouseholdRow
-            onPress={() =>
-              navigation.navigate(routes.HOUSEHOLD_METRICS_SCREEN, {
-                id: item?.id,
-              })
-            }
+            onPress={() => {
+              setSelectedHousehold(item);
+              navigation.navigate(routes.HOUSEHOLD_METRICS_SCREEN);
+            }}
             data={item}
           />
         )}

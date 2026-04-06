@@ -129,10 +129,13 @@ const HouseHoldMetricsScreen = (): React.JSX.Element => {
         },
         {
           title: 'Manage site workers',
-          onPress: () => console.log(routes.CHANGE_WALLET_PIN_SCREEN),
+          onPress: () =>
+            navigation.navigate(routes.MANAGE_SITE_WORKERS_NAVIGATOR, {
+              name,
+            }),
           Icon: MaterialSymbolsLightEngineeringOutlineRounded,
           endText: handleLoading(
-            `${data?.totalRFIDCount?.toLocaleString() || ''}`,
+            `${data?.totalSiteWorkerCount?.toLocaleString() || ''}`,
           ),
         },
       ],

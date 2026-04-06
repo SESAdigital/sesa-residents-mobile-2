@@ -2,111 +2,60 @@ import { UseFormReturn } from 'react-hook-form';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { WORK_DAYS } from '@src/api/constants/data';
-import { PostCreateHouseholdStaffReq } from '@src/api/household.api';
+import { PostCreateSiteWorkerReq2 } from '@src/api/household.api';
 import AppText from '@src/components/AppText';
 import AppKeyboardAvoidingView from '@src/components/custom/AppKeyboardAvoidingView';
+import AppDateInput from '@src/components/forms/AppDateInput';
 import AppMultiLineTextInput from '@src/components/forms/AppMultiLineTextInput';
-import AppSwitch from '@src/components/forms/AppSwitch';
 import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import Size from '@src/utils/useResponsiveSize';
 import { appToast } from '@src/utils/appToast';
-
-type ToggleKeys =
-  | 'RequireCheckInApproval'
-  | 'RequireCheckInPicture'
-  | 'RequireCheckOutApproval'
-  | 'RequireCheckOutPicture';
-
-interface Requirement {
-  title: string;
-  description: string;
-  toggleKey: ToggleKeys;
-  value?: boolean;
-}
+import Size from '@src/utils/useResponsiveSize';
 
 interface Props {
   onDone: () => void;
   onBackClick: () => void;
-  form: UseFormReturn<
-    PostCreateHouseholdStaffReq,
-    any,
-    PostCreateHouseholdStaffReq
-  >;
+  form: UseFormReturn<PostCreateSiteWorkerReq2, any, PostCreateSiteWorkerReq2>;
 }
-const ConfigureAccessRequirementStep = (props: Props): React.JSX.Element => {
+const SetSiteWorkerScheduleStep = (props: Props): React.JSX.Element => {
   const { onDone, onBackClick, form } = props;
 
   const {
     watch,
     control,
     setValue,
+    setError,
+    handleSubmit,
     formState: { errors },
   } = form;
 
-  const [
-    RequireCheckInApproval,
-    RequireCheckInPicture,
-    RequireCheckOutApproval,
-    RequireCheckOutPicture,
-    WorkDays,
-  ] = watch([
-    'RequireCheckInApproval',
-    'RequireCheckInPicture',
-    'RequireCheckOutApproval',
-    'RequireCheckOutPicture',
-    'WorkDays',
-  ]);
+  const [ClockInEnd, ClockInStart, Workdays, WorkPeriodStart, WorkPeriodEnd] =
+    watch([
+      'ClockInEnd',
+      'ClockInStart',
+      'Workdays',
+      'WorkPeriodStart',
+      'WorkPeriodEnd',
+    ]);
 
-  const handleSubmit = () => {
-    if (!WorkDays || WorkDays?.length < 1)
+  const onSubmit = () => {
+    if (!Workdays || Workdays?.length < 1)
       return appToast.Info('Please select at least one work day');
 
     return onDone();
   };
 
-  const requirements: Requirement[] = [
-    {
-      title: 'Require Check-in Approval (optional)',
-      description:
-        'Guard must get approval from you (or the other alpha occupant) before the household staff can check in.',
-      toggleKey: 'RequireCheckInApproval',
-      value: RequireCheckInApproval,
-    },
-    {
-      title: 'Require Check-out Approval (optional)',
-      description:
-        'Guard must get approval from you (or the other alpha occupant) before the household staff can check out.',
-      toggleKey: 'RequireCheckOutApproval',
-      value: RequireCheckOutApproval,
-    },
-    {
-      title: 'Require Check-in Picture (optional)',
-      description:
-        'Guard must capture a complete picture of the household staff to record their "entry state" before they can check in.',
-      toggleKey: 'RequireCheckInPicture',
-      value: RequireCheckInPicture,
-    },
-    {
-      title: 'Require Check-out Picture (optional)',
-      description:
-        'Guard must capture a complete picture of the household staff to record their "exit state" before they can check out.',
-      toggleKey: 'RequireCheckOutPicture',
-      value: RequireCheckOutPicture,
-    },
-  ];
-
   const handleSelectDay = (day: string) => {
-    if (WorkDays?.includes(day)) {
+    if (Workdays?.includes(day)) {
       setValue(
-        'WorkDays',
-        WorkDays?.filter(d => d !== day),
+        'Workdays',
+        Workdays?.filter(d => d !== day),
       );
-    } else if (!WorkDays?.length) {
-      setValue('WorkDays', [day]);
+    } else if (!Workdays?.length) {
+      setValue('Workdays', [day]);
     } else {
-      setValue('WorkDays', [...WorkDays, day]);
+      setValue('Workdays', [...Workdays, day]);
     }
   };
 
@@ -114,37 +63,76 @@ const ConfigureAccessRequirementStep = (props: Props): React.JSX.Element => {
     <AppKeyboardAvoidingView>
       <ScrollView contentContainerStyle={styles.container}>
         <View>
-          <AppText style={styles.headerTitle}>
-            Configure Access Requirements
-          </AppText>
+          <AppText style={styles.headerTitle}>Set work schedule</AppText>
           <AppText style={{ fontSize: Size.calcAverage(12) }}>
-            This determines the criteria for enabling access in and out of the
-            estate
+            Setup work period and work days.
           </AppText>
         </View>
 
-        {requirements.map((req, index) => (
-          <View style={styles.row} key={index}>
-            <View style={{ flexShrink: 1 }}>
-              <AppText style={styles.title}>{req.title}</AppText>
-              <AppText style={{ fontSize: Size.calcAverage(12) }}>
-                {req.description}
-              </AppText>
-            </View>
-            <AppSwitch
-              isEnabled={!!req?.value}
-              onValueChange={value => setValue(req?.toggleKey, value)}
-            />
-          </View>
-        ))}
+        <View style={styles.dateContainer}>
+          <AppDateInput
+            errorMessage={errors?.WorkPeriodStart?.message || ''}
+            label="Start Date"
+            mode="date"
+            minimumDate={new Date()}
+            value={WorkPeriodStart}
+            setValue={value => {
+              if (errors?.WorkPeriodStart?.message)
+                setError('WorkPeriodStart', { message: undefined });
+              setValue('WorkPeriodStart', value);
+            }}
+            placeholder="Start Date"
+          />
+
+          <AppDateInput
+            errorMessage={errors?.WorkPeriodEnd?.message || ''}
+            label="End Date"
+            mode="date"
+            minimumDate={new Date(WorkPeriodStart)}
+            value={WorkPeriodEnd}
+            setValue={value => {
+              if (errors?.WorkPeriodEnd?.message)
+                setError('WorkPeriodEnd', { message: undefined });
+              setValue('WorkPeriodEnd', value);
+            }}
+            placeholder="End Date"
+          />
+        </View>
+        <View style={styles.dateContainer}>
+          <AppDateInput
+            errorMessage={errors?.ClockInStart?.message || ''}
+            label="Check-in time"
+            mode="time"
+            value={ClockInStart || ''}
+            setValue={value => {
+              if (errors?.ClockInStart?.message)
+                setError('ClockInStart', { message: undefined });
+              setValue('ClockInStart', value);
+            }}
+            placeholder="Check-in time"
+          />
+
+          <AppDateInput
+            errorMessage={errors?.ClockInEnd?.message || ''}
+            label="Check-out time"
+            mode="time"
+            value={ClockInEnd || ''}
+            setValue={value => {
+              if (errors?.ClockInEnd?.message)
+                setError('ClockInEnd', { message: undefined });
+              setValue('ClockInEnd', value);
+            }}
+            placeholder="Check-out time"
+          />
+        </View>
 
         <AppText style={styles.workDayInstruction}>
-          Select work days for this household staff (required)
+          Select work days for this site worker (required)
         </AppText>
 
         <View style={styles.workDayContainer}>
           {WORK_DAYS?.map((day, index) => {
-            const isActive = WorkDays?.includes(day);
+            const isActive = Workdays?.includes(day);
             return (
               <TouchableOpacity
                 style={[
@@ -178,7 +166,7 @@ const ConfigureAccessRequirementStep = (props: Props): React.JSX.Element => {
             }}
           >
             This message will be displayed to the security guards as an
-            instruction when they check-in/out this household staff.
+            instruction when they check-in/out this site worker.
           </AppText>
           <AppMultiLineTextInput
             placeholder="Leave a message"
@@ -200,7 +188,7 @@ const ConfigureAccessRequirementStep = (props: Props): React.JSX.Element => {
         <SubmitButton
           title="Continue"
           style={{ width: '47%' }}
-          onPress={handleSubmit}
+          onPress={handleSubmit(onSubmit)}
         />
       </View>
     </AppKeyboardAvoidingView>
@@ -212,6 +200,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: Size.calcWidth(21),
     rowGap: Size.calcHeight(26),
     paddingVertical: Size.calcHeight(26),
+  },
+
+  dateContainer: {
+    flexDirection: 'row',
+    gap: Size.calcWidth(23),
+    alignItems: 'flex-end',
+    paddingTop: Size.calcHeight(16),
   },
 
   footer: {
@@ -276,4 +271,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConfigureAccessRequirementStep;
+export default SetSiteWorkerScheduleStep;

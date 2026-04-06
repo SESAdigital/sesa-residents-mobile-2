@@ -1,0 +1,189 @@
+import { UseFormGetValues } from 'react-hook-form';
+import { ScrollView, StyleSheet, View } from 'react-native';
+
+import {
+  PostCreateSiteWorkerReq1,
+  PostCreateSiteWorkerReq2,
+} from '@src/api/household.api';
+import AppImage from '@src/components/AppImage';
+import AppText from '@src/components/AppText';
+import AppDetailCard, {
+  AppDetailCardDetailItem,
+} from '@src/components/common/AppDetailCard';
+import SubmitButton from '@src/components/forms/SubmitButton';
+import colors from '@src/configs/colors';
+import fonts from '@src/configs/fonts';
+import { mapGenderTitle } from '@src/utils';
+import { dayJSFormatter } from '@src/utils/time';
+import Size from '@src/utils/useResponsiveSize';
+
+interface Props {
+  onDone: () => void;
+  getValues: UseFormGetValues<PostCreateSiteWorkerReq1>;
+  getForm2Values: UseFormGetValues<PostCreateSiteWorkerReq2>;
+  onBackClick: () => void;
+}
+
+const ConfirmSiteWorkerStep = (props: Props): React.JSX.Element => {
+  const { getValues, getForm2Values, onDone, onBackClick } = props;
+
+  const {
+    Photo,
+    FirstName,
+    LastName,
+    Email,
+    PhoneNumber,
+    HomeAddress,
+    DateOfBirth,
+    Gender,
+  } = getValues();
+
+  const { Workdays, WorkPeriodStart, WorkPeriodEnd, ClockInStart, ClockInEnd } =
+    getForm2Values();
+
+  const detailList: AppDetailCardDetailItem = [
+    [
+      {
+        title: 'FULL NAME',
+        value: `${FirstName?.trim()} ${LastName?.trim()}`,
+      },
+    ],
+    [
+      {
+        title: 'EMAIL ADDRESS',
+        value: Email?.toLowerCase()?.trim(),
+      },
+    ],
+    [
+      {
+        title: 'PHONE NUMBER',
+        value: PhoneNumber?.trim(),
+      },
+      {
+        title: 'DATE OF BIRTH',
+        value: dayJSFormatter({
+          format: 'MMM D, YYYY',
+          value: DateOfBirth || '',
+          shouldNotLocalize: true,
+        }),
+      },
+    ],
+    [
+      {
+        title: 'GENDER',
+        value: mapGenderTitle(Gender),
+      },
+      {
+        title: 'WORK DAYS',
+        value: Workdays ? Workdays?.join(', ') : '',
+      },
+    ],
+    [
+      {
+        title: 'HOME ADDRESS',
+        value: HomeAddress,
+      },
+    ],
+    [
+      {
+        title: 'WORK PERIOD',
+        value: `${dayJSFormatter({
+          format: 'MMM D, YYYY',
+          value: WorkPeriodStart || '',
+          shouldNotLocalize: true,
+        })} to ${dayJSFormatter({
+          format: 'MMM D, YYYY',
+          value: WorkPeriodEnd || '',
+          shouldNotLocalize: true,
+        })}`,
+      },
+    ],
+    [
+      {
+        title: 'CHECK-IN AND CHECK-OUT TIME',
+        value: `${dayJSFormatter({
+          format: 'hh:mm A',
+          value: ClockInStart || '',
+          shouldNotLocalize: true,
+        })} - ${dayJSFormatter({
+          format: 'hh:mm A',
+          value: ClockInEnd || '',
+          shouldNotLocalize: true,
+        })}`,
+      },
+    ],
+  ];
+
+  return (
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <AppImage style={styles.image} source={{ uri: Photo?.uri }} />
+
+        <AppText style={styles.headerTitle}>Confirm site worker</AppText>
+        <AppText style={styles.headerSubtitle}>
+          View the details of the site worker below and tap “Confirm” to send
+          the details for approval.
+        </AppText>
+
+        <AppDetailCard detailList={detailList} />
+      </ScrollView>
+
+      <View style={styles.footer}>
+        <SubmitButton
+          variant="SECONDARY"
+          style={{ width: '47%' }}
+          title="Go Back"
+          onPress={onBackClick}
+        />
+        <SubmitButton
+          title="Confirm"
+          style={{ width: '47%' }}
+          onPress={onDone}
+        />
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: Size.calcWidth(21),
+    paddingVertical: Size.calcHeight(35),
+  },
+
+  footer: {
+    paddingTop: Size.calcHeight(16),
+    paddingBottom: Size.calcHeight(16 * 3),
+    borderTopColor: colors.WHITE_300,
+    borderTopWidth: Size.calcAverage(1),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: Size.calcWidth(21),
+  },
+
+  headerTitle: {
+    fontFamily: fonts.INTER_600,
+    fontSize: Size.calcAverage(16),
+    textAlign: 'center',
+    paddingTop: Size.calcHeight(16),
+  },
+
+  headerSubtitle: {
+    fontSize: Size.calcAverage(12),
+    color: colors.GRAY_100,
+    textAlign: 'center',
+    maxWidth: Size.calcWidth(310),
+    marginHorizontal: 'auto',
+    paddingBottom: Size.calcHeight(24),
+  },
+
+  image: {
+    width: Size.calcWidth(80),
+    height: Size.calcHeight(80),
+    borderRadius: Size.calcAverage(80),
+    marginHorizontal: 'auto',
+  },
+});
+
+export default ConfirmSiteWorkerStep;

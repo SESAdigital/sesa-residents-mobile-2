@@ -12,7 +12,7 @@ import fonts from '@src/configs/fonts';
 import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
 import Size from '@src/utils/useResponsiveSize';
 
-export interface AddHouseholdStaffSuccessScreenProps {
+export interface AddSiteWorkerSuccessScreenProps {
   firstName: string;
   lastName: string;
   emailAddress: string;
@@ -22,9 +22,9 @@ export interface AddHouseholdStaffSuccessScreenProps {
   photo: string;
 }
 
-type Props = AppScreenProps<'ADD_HOUSEHOLD_STAFF_SUCCESS_SCREEN'>;
+type Props = AppScreenProps<'ADD_SITE_WORKER_SUCCESS_SCREEN'>;
 
-const AddHouseholdStaffSuccessScreen = (props: Props): React.JSX.Element => {
+const AddSiteWorkerSuccessScreen = (props: Props): React.JSX.Element => {
   const value = props?.route?.params || {};
   const navigation = useAppNavigator();
 
@@ -68,8 +68,8 @@ const AddHouseholdStaffSuccessScreen = (props: Props): React.JSX.Element => {
 
         <AppText style={styles.headerTitle}>Sent for approval</AppText>
         <AppText style={styles.headerSubtitle}>
-          Upon approval, this household staff will be added to a household and
-          to your property.
+          Upon approval, this site worker will be added to a household and to
+          your property.
         </AppText>
 
         <AppDetailCard detailList={detailList} />
@@ -77,7 +77,7 @@ const AddHouseholdStaffSuccessScreen = (props: Props): React.JSX.Element => {
 
       <View style={styles.footer}>
         <SubmitButton
-          title="Add another household staff"
+          title="Add another site worker"
           onPress={() => navigation.goBack()}
         />
         <SubmitButton
@@ -130,4 +130,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddHouseholdStaffSuccessScreen;
+export default AddSiteWorkerSuccessScreen;

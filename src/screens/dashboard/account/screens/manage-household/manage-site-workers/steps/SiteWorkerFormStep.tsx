@@ -1,30 +1,26 @@
 import { UseFormReturn } from 'react-hook-form';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { PostHouseholdCreateOccupantReq } from '@src/api/household.api';
+import { ALL_GENDER_TYPES } from '@src/api/constants/data';
+import { PostCreateSiteWorkerReq1 } from '@src/api/household.api';
 import AppKeyboardAvoidingView from '@src/components/custom/AppKeyboardAvoidingView';
+import AppDateInput from '@src/components/forms/AppDateInput';
+import AppPhoneInput from '@src/components/forms/AppPhoneInput';
+import AppSelectInput from '@src/components/forms/AppSelectInput';
 import AppTextInput from '@src/components/forms/AppTextInput';
 import ProfilePhotoPicker from '@src/components/forms/ProfilePhotoPicker';
 import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
 import { AppImageType } from '@src/types/default';
 import Size from '@src/utils/useResponsiveSize';
-import AppDateInput from '@src/components/forms/AppDateInput';
-import AppPhoneInput from '@src/components/forms/AppPhoneInput';
-import { ALL_GENDER_TYPES } from '@src/api/constants/data';
-import AppSelectInput from '@src/components/forms/AppSelectInput';
 
 interface Props {
   onDone: () => void;
   onBackClick: () => void;
-  form: UseFormReturn<
-    PostHouseholdCreateOccupantReq,
-    any,
-    PostHouseholdCreateOccupantReq
-  >;
+  form: UseFormReturn<PostCreateSiteWorkerReq1, any, PostCreateSiteWorkerReq1>;
 }
 
-const DependentFormStep = (props: Props): React.JSX.Element => {
+const SiteWorkerFormStep = (props: Props): React.JSX.Element => {
   const { form, onDone, onBackClick } = props;
 
   const {
@@ -105,6 +101,13 @@ const DependentFormStep = (props: Props): React.JSX.Element => {
           }}
           placeholder="Date of Birth (Optional)"
         />
+
+        <AppTextInput
+          placeholder="Home Address"
+          label="Home Address"
+          control={control}
+          name="HomeAddress"
+        />
       </ScrollView>
 
       <View style={styles.footer}>
@@ -141,6 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: Size.calcWidth(21),
   },
+
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -148,4 +152,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DependentFormStep;
+export default SiteWorkerFormStep;

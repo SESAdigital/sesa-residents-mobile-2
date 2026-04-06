@@ -118,7 +118,7 @@ const HouseholdStaffFormStep = (props: Props): React.JSX.Element => {
         <SubmitButton
           variant="SECONDARY"
           style={{ width: '47%' }}
-          title="Cancel"
+          title="Go Back"
           onPress={onBackClick}
         />
         <SubmitButton

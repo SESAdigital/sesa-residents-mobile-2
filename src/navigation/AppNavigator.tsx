@@ -121,6 +121,12 @@ import AddHouseholdStaffScreen from '@src/screens/dashboard/account/screens/mana
 import AddHouseholdStaffSuccessScreen, {
   AddHouseholdStaffSuccessScreenProps,
 } from '@src/screens/dashboard/account/screens/manage-household/manage-household-staff/AddHouseholdStaffSuccessScreen';
+import ManageSiteWorkersNavigator from './ManageSiteWorkersNavigator';
+import AddSiteWorkerFormScreen from '@src/screens/dashboard/account/screens/manage-household/manage-site-workers/AddSiteWorkerFormScreen';
+import AddSiteWorkerScreen from '@src/screens/dashboard/account/screens/manage-household/manage-site-workers/AddSiteWorkerScreen';
+import AddSiteWorkerSuccessScreen, {
+  AddSiteWorkerSuccessScreenProps,
+} from '@src/screens/dashboard/account/screens/manage-household/manage-site-workers/AddSiteWorkerSuccessScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -199,6 +205,12 @@ export type AppNavigatorParams = {
   [routes.ADD_HOUSEHOLD_STAFF_SCREEN]: ScreenWithIdAndName;
   [routes.ADD_HOUSEHOLD_STAFF_FORM_SCREEN]: AddDependentFormScreenProps;
   [routes.ADD_HOUSEHOLD_STAFF_SUCCESS_SCREEN]: AddHouseholdStaffSuccessScreenProps;
+
+  // MANAGE SITE WORKER SCREEN
+  [routes.MANAGE_SITE_WORKERS_NAVIGATOR]: ScreenWithName;
+  [routes.ADD_SITE_WORKER_SCREEN]: ScreenWithIdAndName;
+  [routes.ADD_SITE_WORKER_FORM_SCREEN]: AddDependentFormScreenProps;
+  [routes.ADD_SITE_WORKER_SUCCESS_SCREEN]: AddSiteWorkerSuccessScreenProps;
 
   [routes.MANAGE_ACCESS_CARDS_SCREEN]: ScreenWithIdAndName;
   [routes.MANAGE_RFIDS_SCREEN]: ScreenWithIdAndName;
@@ -324,6 +336,12 @@ const RootStack = createNativeStackNavigator({
         [routes.ADD_HOUSEHOLD_STAFF_FORM_SCREEN]: AddHouseholdStaffFormScreen,
         [routes.ADD_HOUSEHOLD_STAFF_SUCCESS_SCREEN]:
           AddHouseholdStaffSuccessScreen,
+
+        // MANAGE SITE WORKER SCREEN
+        [routes.MANAGE_SITE_WORKERS_NAVIGATOR]: ManageSiteWorkersNavigator,
+        [routes.ADD_SITE_WORKER_SCREEN]: AddSiteWorkerScreen,
+        [routes.ADD_SITE_WORKER_FORM_SCREEN]: AddSiteWorkerFormScreen,
+        [routes.ADD_SITE_WORKER_SUCCESS_SCREEN]: AddSiteWorkerSuccessScreen,
 
         [routes.MANAGE_ACCESS_CARDS_SCREEN]: ManageAccessCardsScreen,
         [routes.MANAGE_RFIDS_SCREEN]: ManageRFIDsScreen,

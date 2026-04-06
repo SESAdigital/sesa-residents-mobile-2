@@ -18,7 +18,8 @@ type AcceptedDateTimeFormats =
   | 'MMMM D, YYYY'
   | 'MMM D'
   | 'MMM D, YYYY h:mm A'
-  | 'hh:mm A';
+  | 'hh:mm A'
+  | 'HH:mma';
 
 interface DayJSFormatterProps {
   value: Date | string;

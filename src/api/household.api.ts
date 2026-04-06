@@ -204,8 +204,10 @@ export const postAddSelfAsOccupant = (val: PostAddSelfAsOccupantReq) =>
 export const getHouseholdAlphaOcccupants = (id: number) =>
   baseApi.get<GetHouseholdAlphaOccupantsRes>(`/Household/${id}/AlphaOccupants`);
 
-export const postCreateSiteWorker = (val: PostCreateSiteWorkerReq) =>
-  baseApi.post<GenericApiResponse>(`/Household/CreateSiteWorker`, val);
+export const postCreateSiteWorker = (val: FormData) =>
+  baseApi.post<GenericApiResponse>(`/Household/CreateSiteWorker`, val, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 
 export const postCreateHouseholdStaff = (val: FormData) =>
   baseApi.post<GenericApiResponse>(`/Household/CreateHouseholdStaff`, val, {
@@ -342,7 +344,7 @@ export interface GetHouseholdSiteWorkersResData {
   workPeriodEnd: string;
   workPeriodStart: string;
   statusText: string;
-  status: GetEntityStatusType;
+  status: AccessCardStatusType;
   period: string;
   photo: string;
 }
@@ -539,7 +541,7 @@ interface GetHouseholdAlphaOccupantsRes extends GenericApiResponse {
   data: GenericPaginatedResponse<GetHouseholdAlphaOccupantsResData>;
 }
 
-interface PostCreateSiteWorkerReq {
+export interface PostCreateSiteWorkerReq1 {
   KycId: number;
   FirstName: string;
   LastName: string;
@@ -549,15 +551,21 @@ interface PostCreateSiteWorkerReq {
   DateOfBirth: string;
   Photo: AppImageType;
   HomeAddress: string;
-  HomeAddressPlaceId: string;
+  HomeAddressPlaceId?: string;
+}
+
+export interface PostCreateSiteWorkerReq2 {
   WorkPropertyStructureId: number;
-  Workdays: string[];
+  Workdays?: string[];
   WorkPeriodStart: string;
   WorkPeriodEnd: string;
   ClockInStart: string;
   ClockInEnd: string;
   SecurityGuardMessage?: string;
 }
+
+export type PostCreateSiteWorkerReq = PostCreateSiteWorkerReq1 &
+  PostCreateSiteWorkerReq2;
 
 export interface PostCreateHouseholdStaffReq {
   FirstName: string;

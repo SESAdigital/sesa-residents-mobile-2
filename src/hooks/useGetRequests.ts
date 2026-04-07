@@ -30,6 +30,8 @@ import { formatMoneyToTwoDecimals, getTotalPages } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { getBillsMetrics } from '@src/api/bills.api';
 import { getUtilitiesFees } from '@src/api/utilities.api';
+import { getHouseholdPropertyMetrics } from '@src/api/household.api';
+import { useAppStateStore } from '@src/stores/appState.store';
 
 export const useGetUserDetails = () => {
   const { data: profileData, isLoading: isProfileLoading } = useGetProfile();
@@ -507,4 +509,36 @@ export const useGetFees = () => {
       }
     },
   });
+};
+
+export const useGetHouseholdMetrics = () => {
+  const { selectedHousehold } = useAppStateStore();
+  const id = selectedHousehold?.id || 0;
+
+  const queryKey = [
+    queryKeys.GET_HOUSEHOLDS,
+    'getHouseholdPropertyMetrics',
+    id,
+  ];
+
+  const value = useQuery({
+    queryKey,
+    queryFn: async () => {
+      const response = await getHouseholdPropertyMetrics(id);
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+  });
+
+  const queryClient = useQueryClient();
+  const customRefetch = () => queryClient.resetQueries({ queryKey });
+
+  return {
+    value,
+    customRefetch,
+  };
 };

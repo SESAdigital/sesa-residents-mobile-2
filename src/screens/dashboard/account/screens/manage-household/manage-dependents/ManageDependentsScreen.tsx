@@ -13,6 +13,7 @@ import AppScreenHeader from '@src/components/common/AppScreenHeader';
 import EmptyPersonnelComponent from '@src/components/common/EmptyPersonnelComponent';
 import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import DuplicateLoader from '@src/components/DuplicateLoader';
+import { MaterialSymbolsSupervisorAccountRounded } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
@@ -27,7 +28,6 @@ import { useDependentActions } from './components/dependent-actions';
 import ManageDependentRow, {
   ManageDependentRowLoader,
 } from './components/ManageDependentRow';
-import { MaterialSymbolsSupervisorAccountRounded } from '@src/components/icons';
 
 type Props = AppScreenProps<'MANAGE_DEPENDENTS_SCREEN'>;
 

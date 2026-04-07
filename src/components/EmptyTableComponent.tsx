@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
@@ -12,14 +12,21 @@ interface Props {
   retryButtonTitle?: string;
   onRetry?: () => void;
   fullScreen?: boolean;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const EmptyTableComponent = (props: Props): React.JSX.Element => {
   // const {title, description, onRetry, retryButtonTitle, fullScreen} = props;
-  const { title, description, onRetry, fullScreen } = props;
+  const { title, description, onRetry, fullScreen, containerStyle } = props;
 
   return (
-    <View style={[styles.container, fullScreen && { minHeight: '80%' }]}>
+    <View
+      style={[
+        styles.container,
+        fullScreen && { minHeight: '80%' },
+        containerStyle,
+      ]}
+    >
       <EmptyTableIcon
         width={Size.calcAverage(40)}
         height={Size.calcAverage(40)}

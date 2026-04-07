@@ -26,6 +26,7 @@ import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import HouseholdStaffRow, {
   HouseholdStaffRowLoader,
 } from './components/HouseholdStaffRow';
+import { useGetHouseholdMetrics } from '@src/hooks/useGetRequests';
 
 interface Props {
   Status: GetEntityStatusType;
@@ -35,7 +36,7 @@ const pageSize = DEFAULT_API_DATA_SIZE;
 
 const HouseholdStaffStatusListScreen = (props: Props): React.JSX.Element => {
   const { Status } = props;
-  const { selectedHousehold } = useAppStateStore();
+  const { selectedHousehold, setSelectedHouseholdStaff } = useAppStateStore();
   const id = selectedHousehold?.id || 0;
   const { selectedProperty } = useAuthStore();
 
@@ -88,6 +89,8 @@ const HouseholdStaffStatusListScreen = (props: Props): React.JSX.Element => {
     });
   };
 
+  const { value } = useGetHouseholdMetrics();
+
   return (
     <View style={{ flex: 1 }}>
       <FlatList
@@ -99,7 +102,8 @@ const HouseholdStaffStatusListScreen = (props: Props): React.JSX.Element => {
         ListEmptyComponent={
           isLoading ? (
             <DuplicateLoader loader={<HouseholdStaffRowLoader />} />
-          ) : Status === GetEntityStatusData.All ? (
+          ) : Status === GetEntityStatusData.All &&
+            !value?.data?.totalHouseholdStaffCount ? (
             <EmptyPersonnelComponent
               Icon={MaterialSymbolsLightDeployedCodeAccountOutlineRounded}
               title="Add your first household staff"
@@ -114,8 +118,8 @@ const HouseholdStaffStatusListScreen = (props: Props): React.JSX.Element => {
         renderItem={({ item }) => (
           <HouseholdStaffRow
             onPress={() => {
-              //   setSelectedDependent(item);
-              navigation.navigate(routes.DEPENDENT_DETAILS_NAVIGATOR);
+              setSelectedHouseholdStaff(item);
+              navigation.navigate(routes.HOUSEHOLD_STAFF_DETAILS_NAVIGATOR);
             }}
             showWorkDays
             data={item}

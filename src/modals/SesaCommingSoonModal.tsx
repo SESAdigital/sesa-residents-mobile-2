@@ -33,7 +33,7 @@ const SesaCommingSoonModal = ({
             color={color}
           />
         </View>
-        <AppText style={styles.title}>{title}</AppText>
+        {!!title && <AppText style={styles.title}>{title}</AppText>}
 
         <View style={styles.detailLayout}>
           {details.map((detail, index) => (
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
   detailLayout: {
     rowGap: Size.calcHeight(12),
     paddingBottom: Size.calcHeight(42),
+    paddingTop: Size.calcHeight(16),
   },
 
   detailTitle: {
@@ -93,7 +94,6 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: fonts.INTER_600,
     fontSize: Size.calcAverage(20),
-    paddingBottom: Size.calcHeight(16),
     paddingTop: Size.calcHeight(13),
     textAlign: 'center',
   },

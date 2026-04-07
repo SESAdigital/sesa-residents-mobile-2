@@ -1,9 +1,6 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ScrollView, StyleSheet } from 'react-native';
 
 import { mapPropertyCategoryTypeToShortCharacter } from '@src/api/constants/data';
-import queryKeys from '@src/api/constants/queryKeys';
-import { getHouseholdPropertyMetrics } from '@src/api/household.api';
 import AppScreen from '@src/components/AppScreen';
 import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 import AppText from '@src/components/AppText';
@@ -24,44 +21,33 @@ import {
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useGetFees, useGetWalletBalance } from '@src/hooks/useGetRequests';
+import {
+  useGetFees,
+  useGetHouseholdMetrics,
+  useGetWalletBalance,
+} from '@src/hooks/useGetRequests';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
-import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 
 const HouseHoldMetricsScreen = (): React.JSX.Element => {
   const { selectedHousehold } = useAppStateStore();
   const id = selectedHousehold?.id || 0;
-  const queryKey = [
-    queryKeys.GET_HOUSEHOLDS,
-    'getHouseholdPropertyMetrics',
-    id,
-  ];
+
   useGetFees();
   useGetWalletBalance();
   const { selectedProperty } = useAuthStore();
 
-  const { data, isLoading } = useQuery({
-    queryKey,
-    queryFn: async () => {
-      const response = await getHouseholdPropertyMetrics(id);
-      if (response.ok) {
-        return response?.data?.data;
-      } else {
-        handleToastApiError(response);
-        return null;
-      }
-    },
-  });
+  const {
+    value: { data, isLoading },
+    customRefetch,
+  } = useGetHouseholdMetrics();
 
   const name = data?.name || '';
 
   const navigation = useAppNavigator();
-  const queryClient = useQueryClient();
-  const customRefetch = () => queryClient.resetQueries({ queryKey });
 
   function handleLoading(val: string) {
     if (isLoading) {

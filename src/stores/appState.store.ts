@@ -9,6 +9,7 @@ import {
   GetHouseholdPropertiesResData,
   GetHouseholdPropertyDependentsResData,
   GetHouseholdSiteWorkersResData,
+  GetHouseholdStaffResData,
 } from '@src/api/household.api';
 
 interface AppStateStore {
@@ -18,6 +19,7 @@ interface AppStateStore {
   selectedDependent: GetHouseholdPropertyDependentsResData | null;
   selectedHousehold: GetHouseholdPropertiesResData | null;
   selectedSiteWorker: GetHouseholdSiteWorkersResData | null;
+  selectedHouseholdStaff: GetHouseholdStaffResData | null;
 
   closeActiveModal: () => void;
   setActiveModal: (value: AppModalProps) => void;
@@ -27,6 +29,7 @@ interface AppStateStore {
   setSelectedDependent: (value: GetHouseholdPropertyDependentsResData) => void;
   setSelectedHousehold: (value: GetHouseholdPropertiesResData) => void;
   setSelectedSiteWorker: (value: GetHouseholdSiteWorkersResData) => void;
+  setSelectedHouseholdStaff: (value: GetHouseholdStaffResData) => void;
 }
 
 const defaultState = {
@@ -38,6 +41,7 @@ const defaultState = {
   selectedDependent: null,
   selectedHousehold: null,
   selectedSiteWorker: null,
+  selectedHouseholdStaff: null,
 };
 
 export const appStateStore = createWithEqualityFn<AppStateStore>(
@@ -60,6 +64,8 @@ export const appStateStore = createWithEqualityFn<AppStateStore>(
       set(() => ({ selectedHousehold })),
     setSelectedSiteWorker: selectedSiteWorker =>
       set(() => ({ selectedSiteWorker })),
+    setSelectedHouseholdStaff: selectedHouseholdStaff =>
+      set(() => ({ selectedHouseholdStaff })),
   }),
   shallow,
 );

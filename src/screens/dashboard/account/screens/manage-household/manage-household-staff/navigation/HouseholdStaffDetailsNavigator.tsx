@@ -8,7 +8,7 @@ import AppScreenHeader from '@src/components/common/AppScreenHeader';
 import AppTopTabBar from '@src/navigation/components/AppTopTabBar';
 import routes from '@src/navigation/routes';
 import { useAppStateStore } from '@src/stores/appState.store';
-import SiteWorkerRow from '../../manage-site-workers/components/SiteWorkerRow';
+import HouseholdStaffRow from '../components/HouseholdStaffRow';
 import HouseholdStaffBankAccountsScreen from '../details/HouseholdStaffBankAccountsScreen';
 import HouseholdStaffCheckInAndOutScreen from '../details/HouseholdStaffCheckInAndOutScreen';
 import HouseholdStaffIdCardScreen from '../details/HouseholdStaffIdCardScreen';
@@ -40,13 +40,13 @@ const HouseholdStaffDetailsNavigator = createMaterialTopTabNavigator({
 export default HouseholdStaffDetailsNavigator;
 
 function CustomTopTabBar(props: MaterialTopTabBarProps): React.JSX.Element {
-  const { selectedSiteWorker } = useAppStateStore();
+  const { selectedHouseholdStaff } = useAppStateStore();
 
   return (
     <View style={{ paddingTop: StatusBar.currentHeight }}>
       <AppScreenHeader>
-        <SiteWorkerRow
-          data={selectedSiteWorker!}
+        <HouseholdStaffRow
+          data={selectedHouseholdStaff!}
           contentContainerStyle={styles.cardRow}
           containerStyle={styles.cardRowContainer}
         />

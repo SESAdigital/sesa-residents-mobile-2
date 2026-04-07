@@ -24,6 +24,7 @@ import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import SiteWorkerRow, { SiteWorkerRowLoader } from './components/SiteWorkerRow';
+import { useGetHouseholdMetrics } from '@src/hooks/useGetRequests';
 interface Props {
   Status: GetEntityStatusType;
 }
@@ -89,6 +90,8 @@ const SiteWorkersStatusListScreen = (props: Props): React.JSX.Element => {
     });
   };
 
+  const { value } = useGetHouseholdMetrics();
+
   return (
     <View style={{ flex: 1 }}>
       <FlatList
@@ -100,7 +103,8 @@ const SiteWorkersStatusListScreen = (props: Props): React.JSX.Element => {
         ListEmptyComponent={
           isLoading ? (
             <DuplicateLoader loader={<SiteWorkerRowLoader />} />
-          ) : Status === GetEntityStatusData.All ? (
+          ) : Status === GetEntityStatusData.All &&
+            !value?.data?.totalSiteWorkerCount ? (
             <EmptyPersonnelComponent
               Icon={MaterialSymbolsLightEngineeringOutlineRounded}
               title="Add your first site worker"
@@ -116,7 +120,7 @@ const SiteWorkersStatusListScreen = (props: Props): React.JSX.Element => {
           <SiteWorkerRow
             onPress={() => {
               setSelectedSiteWorker(item);
-              navigation.navigate(routes.DEPENDENT_DETAILS_NAVIGATOR);
+              navigation.navigate(routes.SITE_WORKER_DETAILS_NAVIGATOR);
             }}
             showWorkDays
             data={item}

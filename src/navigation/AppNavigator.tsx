@@ -115,18 +115,20 @@ import { BuyPowerFormScreenData } from '@src/types/default';
 import HomeBottomTabsNavigator from './HomeBottomTabsNavigator';
 import routes from './routes';
 import AddDependentSuccessScreen from '@src/screens/dashboard/account/screens/manage-household/manage-dependents/AddDependentSuccessScreen';
-import ManageHouseholdStaffNavigator from './ManageHouseholdStaffNavigator';
+import ManageHouseholdStaffNavigator from '../screens/dashboard/account/screens/manage-household/manage-household-staff/navigation/ManageHouseholdStaffNavigator';
 import AddHouseholdStaffFormScreen from '@src/screens/dashboard/account/screens/manage-household/manage-household-staff/AddHouseholdStaffFormScreen';
 import AddHouseholdStaffScreen from '@src/screens/dashboard/account/screens/manage-household/manage-household-staff/AddHouseholdStaffScreen';
 import AddHouseholdStaffSuccessScreen, {
   AddHouseholdStaffSuccessScreenProps,
 } from '@src/screens/dashboard/account/screens/manage-household/manage-household-staff/AddHouseholdStaffSuccessScreen';
-import ManageSiteWorkersNavigator from './ManageSiteWorkersNavigator';
+import ManageSiteWorkersNavigator from '../screens/dashboard/account/screens/manage-household/manage-site-workers/navigation/ManageSiteWorkersNavigator';
 import AddSiteWorkerFormScreen from '@src/screens/dashboard/account/screens/manage-household/manage-site-workers/AddSiteWorkerFormScreen';
 import AddSiteWorkerScreen from '@src/screens/dashboard/account/screens/manage-household/manage-site-workers/AddSiteWorkerScreen';
 import AddSiteWorkerSuccessScreen, {
   AddSiteWorkerSuccessScreenProps,
 } from '@src/screens/dashboard/account/screens/manage-household/manage-site-workers/AddSiteWorkerSuccessScreen';
+import SiteWorkerDetailNavigator from '@src/screens/dashboard/account/screens/manage-household/manage-site-workers/navigation/SiteWorkerDetailNavigator';
+import HouseholdStaffDetailsNavigator from '@src/screens/dashboard/account/screens/manage-household/manage-household-staff/navigation/HouseholdStaffDetailsNavigator';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -205,12 +207,14 @@ export type AppNavigatorParams = {
   [routes.ADD_HOUSEHOLD_STAFF_SCREEN]: ScreenWithIdAndName;
   [routes.ADD_HOUSEHOLD_STAFF_FORM_SCREEN]: AddDependentFormScreenProps;
   [routes.ADD_HOUSEHOLD_STAFF_SUCCESS_SCREEN]: AddHouseholdStaffSuccessScreenProps;
+  [routes.HOUSEHOLD_STAFF_DETAILS_NAVIGATOR]: undefined;
 
   // MANAGE SITE WORKER SCREEN
   [routes.MANAGE_SITE_WORKERS_NAVIGATOR]: ScreenWithName;
   [routes.ADD_SITE_WORKER_SCREEN]: ScreenWithIdAndName;
   [routes.ADD_SITE_WORKER_FORM_SCREEN]: AddDependentFormScreenProps;
   [routes.ADD_SITE_WORKER_SUCCESS_SCREEN]: AddSiteWorkerSuccessScreenProps;
+  [routes.SITE_WORKER_DETAILS_NAVIGATOR]: undefined;
 
   [routes.MANAGE_ACCESS_CARDS_SCREEN]: ScreenWithIdAndName;
   [routes.MANAGE_RFIDS_SCREEN]: ScreenWithIdAndName;
@@ -336,12 +340,15 @@ const RootStack = createNativeStackNavigator({
         [routes.ADD_HOUSEHOLD_STAFF_FORM_SCREEN]: AddHouseholdStaffFormScreen,
         [routes.ADD_HOUSEHOLD_STAFF_SUCCESS_SCREEN]:
           AddHouseholdStaffSuccessScreen,
+        [routes.HOUSEHOLD_STAFF_DETAILS_NAVIGATOR]:
+          HouseholdStaffDetailsNavigator,
 
         // MANAGE SITE WORKER SCREEN
         [routes.MANAGE_SITE_WORKERS_NAVIGATOR]: ManageSiteWorkersNavigator,
         [routes.ADD_SITE_WORKER_SCREEN]: AddSiteWorkerScreen,
         [routes.ADD_SITE_WORKER_FORM_SCREEN]: AddSiteWorkerFormScreen,
         [routes.ADD_SITE_WORKER_SUCCESS_SCREEN]: AddSiteWorkerSuccessScreen,
+        [routes.SITE_WORKER_DETAILS_NAVIGATOR]: SiteWorkerDetailNavigator,
 
         [routes.MANAGE_ACCESS_CARDS_SCREEN]: ManageAccessCardsScreen,
         [routes.MANAGE_RFIDS_SCREEN]: ManageRFIDsScreen,

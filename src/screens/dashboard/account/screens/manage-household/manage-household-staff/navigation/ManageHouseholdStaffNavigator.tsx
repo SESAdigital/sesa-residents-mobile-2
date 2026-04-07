@@ -11,9 +11,9 @@ import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import HouseholdStaffStatusListScreen from '@src/screens/dashboard/account/screens/manage-household/manage-household-staff/HouseholdStaffStatusListScreen';
 import Size from '@src/utils/useResponsiveSize';
-import { ScreenWithName } from './AppNavigator';
-import AppTopTabBar from './components/AppTopTabBar';
-import routes from './routes';
+import { ScreenWithName } from '../../../../../../../navigation/AppNavigator';
+import AppTopTabBar from '../../../../../../../navigation/components/AppTopTabBar';
+import routes from '../../../../../../../navigation/routes';
 import { GetEntityStatusData } from '@src/api/constants/default';
 
 const PendingHouseholdStaffScreen = () => (

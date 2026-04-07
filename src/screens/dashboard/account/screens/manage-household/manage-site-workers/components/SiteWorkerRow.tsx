@@ -10,11 +10,15 @@ import { GetHouseholdSiteWorkersResData } from '@src/api/household.api';
 import AppAvatar from '@src/components/AppAvatar';
 import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
 import AppText from '@src/components/AppText';
-import { MaterialSymbolsAccountCircleOutline } from '@src/components/icons';
+import {
+  MaterialSymbolsAccountCircleOutline,
+  MdiLightArrowRight,
+} from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 import AccessCardStatusMapper from '../../manage-access-cards/components/AccessCardStatusMapper';
+import { dayJSFormatter } from '@src/utils/time';
 
 interface Props {
   onPress?: () => void;
@@ -27,6 +31,8 @@ interface Props {
 const SiteWorkerRow = (props: Props): React.JSX.Element => {
   const { data, onPress, containerStyle, contentContainerStyle, showWorkDays } =
     props;
+
+  const period = Number(data?.period);
 
   return (
     <TouchableOpacity
@@ -64,7 +70,31 @@ const SiteWorkerRow = (props: Props): React.JSX.Element => {
           </View>
 
           {showWorkDays && (
-            <AppText style={styles.text}>Work Days: {data?.period}</AppText>
+            <View style={styles.row}>
+              <AppText style={styles.text}>
+                {dayJSFormatter({
+                  format: 'MMM D, YYYY',
+                  value: data?.workPeriodStart,
+                  shouldNotLocalize: true,
+                })}
+              </AppText>
+              <MdiLightArrowRight
+                height={Size.calcAverage(16)}
+                width={Size.calcAverage(16)}
+                color={colors.GRAY_200}
+              />
+              <AppText style={styles.text}>
+                {dayJSFormatter({
+                  format: 'MMM D, YYYY',
+                  value: data?.workPeriodEnd,
+                  shouldNotLocalize: true,
+                })}
+
+                {!isNaN(period)
+                  ? ` (${period} ${period > 1 ? 'days' : 'day'} p/w)`
+                  : ''}
+              </AppText>
+            </View>
           )}
         </View>
       </View>

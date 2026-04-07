@@ -32,7 +32,7 @@ const pageSize = DEFAULT_API_DATA_SIZE;
 
 const SiteWorkersStatusListScreen = (props: Props): React.JSX.Element => {
   const { Status } = props;
-  const { selectedHousehold } = useAppStateStore();
+  const { selectedHousehold, setSelectedSiteWorker } = useAppStateStore();
   const id = selectedHousehold?.id || 0;
   const { selectedProperty } = useAuthStore();
 
@@ -115,7 +115,7 @@ const SiteWorkersStatusListScreen = (props: Props): React.JSX.Element => {
         renderItem={({ item }) => (
           <SiteWorkerRow
             onPress={() => {
-              //   setSelectedDependent(item);
+              setSelectedSiteWorker(item);
               navigation.navigate(routes.DEPENDENT_DETAILS_NAVIGATOR);
             }}
             showWorkDays

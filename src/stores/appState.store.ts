@@ -8,6 +8,7 @@ import { appToast } from '@src/utils/appToast';
 import {
   GetHouseholdPropertiesResData,
   GetHouseholdPropertyDependentsResData,
+  GetHouseholdSiteWorkersResData,
 } from '@src/api/household.api';
 
 interface AppStateStore {
@@ -16,6 +17,7 @@ interface AppStateStore {
   allPhoneContacts: Contact[];
   selectedDependent: GetHouseholdPropertyDependentsResData | null;
   selectedHousehold: GetHouseholdPropertiesResData | null;
+  selectedSiteWorker: GetHouseholdSiteWorkersResData | null;
 
   closeActiveModal: () => void;
   setActiveModal: (value: AppModalProps) => void;
@@ -24,6 +26,7 @@ interface AppStateStore {
   reset: () => void;
   setSelectedDependent: (value: GetHouseholdPropertyDependentsResData) => void;
   setSelectedHousehold: (value: GetHouseholdPropertiesResData) => void;
+  setSelectedSiteWorker: (value: GetHouseholdSiteWorkersResData) => void;
 }
 
 const defaultState = {
@@ -34,6 +37,7 @@ const defaultState = {
   allPhoneContacts: [],
   selectedDependent: null,
   selectedHousehold: null,
+  selectedSiteWorker: null,
 };
 
 export const appStateStore = createWithEqualityFn<AppStateStore>(
@@ -54,6 +58,8 @@ export const appStateStore = createWithEqualityFn<AppStateStore>(
       set(() => ({ selectedDependent })),
     setSelectedHousehold: selectedHousehold =>
       set(() => ({ selectedHousehold })),
+    setSelectedSiteWorker: selectedSiteWorker =>
+      set(() => ({ selectedSiteWorker })),
   }),
   shallow,
 );

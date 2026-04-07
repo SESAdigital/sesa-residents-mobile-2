@@ -2,19 +2,19 @@ import {
   createMaterialTopTabNavigator,
   MaterialTopTabBarProps,
 } from '@react-navigation/material-top-tabs';
+import { useRoute } from '@react-navigation/native';
 import { StatusBar, StyleSheet, View } from 'react-native';
 
-import { useRoute } from '@react-navigation/native';
 import { GetEntityStatusData } from '@src/api/constants/default';
 import AppText from '@src/components/AppText';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
+import { ScreenWithName } from '@src/navigation/AppNavigator';
+import AppTopTabBar from '@src/navigation/components/AppTopTabBar';
+import routes from '@src/navigation/routes';
 import SiteWorkersStatusListScreen from '@src/screens/dashboard/account/screens/manage-household/manage-site-workers/SiteWorkersStatusListScreen';
 import Size from '@src/utils/useResponsiveSize';
-import { ScreenWithName } from './AppNavigator';
-import AppTopTabBar from './components/AppTopTabBar';
-import routes from './routes';
 
 const PendingSiteWorkersScreen = () => (
   <SiteWorkersStatusListScreen Status={GetEntityStatusData.New} />

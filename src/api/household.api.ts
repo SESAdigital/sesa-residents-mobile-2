@@ -201,8 +201,14 @@ export const postHouseholdCreateOccupant = (val: FormData) =>
 export const postAddSelfAsOccupant = (val: PostAddSelfAsOccupantReq) =>
   baseApi.post<GenericApiResponse>(`/Household/AddSelfAsOccupant`, val);
 
-export const getHouseholdAlphaOcccupants = (id: number) =>
-  baseApi.get<GetHouseholdAlphaOccupantsRes>(`/Household/${id}/AlphaOccupants`);
+export const getHouseholdAlphaOcccupants = ({
+  id,
+  ...query
+}: GenericPaginationReqWithId) =>
+  baseApi.get<GetHouseholdPropertyDependentsRes>(
+    `/Household/${id}/AlphaOccupants`,
+    query,
+  );
 
 export const postCreateSiteWorker = (val: FormData) =>
   baseApi.post<GenericApiResponse>(`/Household/CreateSiteWorker`, val, {
@@ -523,22 +529,6 @@ interface PostHouseholdCreateOccupantRes extends GenericApiResponse {
 interface PostAddSelfAsOccupantReq {
   propertyUnitId: number;
   isAlpha: boolean;
-}
-
-interface GetHouseholdAlphaOccupantsResData {
-  id: number;
-  name: string;
-  code: string;
-  gender: GenderType;
-  genderText: string;
-  status: UserAccountStatusType;
-  statusText: string;
-  isPendingApproval: boolean;
-  lastactivity: string;
-}
-
-interface GetHouseholdAlphaOccupantsRes extends GenericApiResponse {
-  data: GenericPaginatedResponse<GetHouseholdAlphaOccupantsResData>;
 }
 
 export interface PostCreateSiteWorkerReq1 {

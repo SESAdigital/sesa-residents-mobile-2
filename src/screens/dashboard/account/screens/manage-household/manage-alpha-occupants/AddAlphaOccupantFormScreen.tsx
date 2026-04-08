@@ -35,16 +35,16 @@ import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
 import { dayJSFormatter } from '@src/utils/time';
 import Size from '@src/utils/useResponsiveSize';
-import ConfirmDependentStep from './steps/ConfirmDependentStep';
-import DependentFormStep from './steps/DependentFormStep';
+import AlphaOccupantFormStep from './steps/AlphaOccupantFormStep';
+import ConfirmAlphaOccupantStep from './steps/ConfirmAlphaOccupantStep';
 
-export interface AddDependentFormScreenProps {
+export interface AddAlphaOccupantFormScreenProps {
   id: number;
   name: string;
   isKYC: boolean;
 }
 
-type Props = AppScreenProps<'ADD_DEPENDENT_FORM_SCREEN'>;
+type Props = AppScreenProps<'ADD_ALPHA_OCCUPANT_FORM_SCREEN'>;
 
 const schema = Joi.object<PostHouseholdCreateOccupantReq>({
   FirstName: joiSchemas.name.label('First name'),
@@ -58,12 +58,12 @@ const schema = Joi.object<PostHouseholdCreateOccupantReq>({
   // HomeAddress: Joi.string().optional().allow('').label('Home address'),
 });
 
-const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
+const AddAlphaOccupantFormScreen = ({ route }: Props): React.JSX.Element => {
   const { name, isKYC } = route?.params || {};
   const { selectedProperty } = useAuthStore();
   const firstStep = isKYC
-    ? AddDependentSteps.VERIFY_KYC_FORM
-    : AddDependentSteps.DEPENDENT_FORM_STEP;
+    ? AddAlphaOccupantSteps.VERIFY_KYC_FORM
+    : AddAlphaOccupantSteps.ALPHA_OCCUPANT_FORM_STEP;
   const [currentStep, setCurrentStep] = useState(firstStep);
   const navigation = useAppNavigator();
   const form = useForm<PostHouseholdCreateOccupantReq>({
@@ -111,39 +111,39 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
           }
         : {}),
       Gender,
-      IsAlpha: false,
+      IsAlpha: true,
       PropertyUnitId: selectedProperty?.id || 0,
       HomeAddress: selectedProperty?.propertyAddress || '',
       HomeAddressPlaceId: selectedProperty?.propertyAddressPlaceId || '',
       ...(KYCId ? { KYCId } : {}),
     };
 
-    const dependentFormData = new FormData();
+    const alphaOccupantFormData = new FormData();
 
     Object.entries(initData).forEach(([key, value]) => {
-      dependentFormData.append(key, value);
+      alphaOccupantFormData.append(key, value);
     });
 
     const fileName = Photo?.fileName || generateFileName(0, Photo?.type || '');
 
-    dependentFormData.append('Photo', {
+    alphaOccupantFormData.append('Photo', {
       uri: Photo?.uri,
       type: Photo?.type,
       name: fileName,
     });
 
     setIsAppModalLoading(true);
-    const response = await postHouseholdCreateOccupant(dependentFormData);
+    const response = await postHouseholdCreateOccupant(alphaOccupantFormData);
     setIsAppModalLoading(false);
 
     if (response?.ok && response?.data) {
       queryClient.resetQueries({ queryKey: [queryKeys.GET_HOUSEHOLDS] });
       appToast.Success(
-        response?.data?.message || 'Dependent added successfully.',
+        response?.data?.message || 'Alpha occupant added successfully.',
       );
 
       navigation.replace(
-        routes.ADD_DEPENDENT_SUCCESS_SCREEN,
+        routes.ADD_ALPHA_OCCUPANT_SUCCESS_SCREEN,
         response?.data?.data,
       );
       closeActiveModal();
@@ -156,9 +156,9 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
     setActiveModal({
       modalType: 'PROMT_MODAL',
       promptModal: {
-        title: 'Add dependent?',
+        title: 'Add alpha occupant?',
         description:
-          'You are about to add a new dependent. Are you sure you want to continue?',
+          'You are about to add a new alpha occupant. Are you sure you want to continue?',
         noButtonTitle: 'Cancel',
         yesButtonTitle: "Yes, I'm Sure",
         onYesButtonClick: onSubmit,
@@ -187,26 +187,30 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
     setValue('KYCId', data?.res?.kycId || 0);
 
     // CHANGE THIS IF NECESSARRY
-    setCurrentStep(AddDependentSteps.DEPENDENT_FORM_STEP);
+    setCurrentStep(AddAlphaOccupantSteps.ALPHA_OCCUPANT_FORM_STEP);
     return;
   };
 
   const steps = [
     <VerifyKYCForm
-      key={AddDependentSteps.VERIFY_KYC_FORM}
+      key={AddAlphaOccupantSteps.VERIFY_KYC_FORM}
       onDone={onKYCVerifyDone}
       form={kycForm}
       onBackClick={onBackPress}
     />,
-    <DependentFormStep
+    <AlphaOccupantFormStep
       onBackClick={onBackPress}
-      key={AddDependentSteps.DEPENDENT_FORM_STEP}
+      key={AddAlphaOccupantSteps.ALPHA_OCCUPANT_FORM_STEP}
       form={form}
-      onDone={() => setCurrentStep(AddDependentSteps.CONFIRM_DEPENDENT_STEP)}
+      onDone={() =>
+        setCurrentStep(AddAlphaOccupantSteps.CONFIRM_ALPHA_OCCUPANT_STEP)
+      }
     />,
-    <ConfirmDependentStep
-      onBackClick={() => setCurrentStep(AddDependentSteps.DEPENDENT_FORM_STEP)}
-      key={AddDependentSteps.CONFIRM_DEPENDENT_STEP}
+    <ConfirmAlphaOccupantStep
+      onBackClick={() =>
+        setCurrentStep(AddAlphaOccupantSteps.ALPHA_OCCUPANT_FORM_STEP)
+      }
+      key={AddAlphaOccupantSteps.CONFIRM_ALPHA_OCCUPANT_STEP}
       getValues={getValues}
       onDone={handleSubmit}
     />,
@@ -217,7 +221,7 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
   return (
     <AppScreen showDownInset>
       <AppScreenHeader onBackPress={onBackPress}>
-        <AppText style={styles.headerTitle}>Add dependent</AppText>
+        <AppText style={styles.headerTitle}>Add alpha occupant</AppText>
         <AppText style={styles.headerSubtitle}>{name}</AppText>
       </AppScreenHeader>
       <AppStepIndicator
@@ -244,10 +248,10 @@ const styles = StyleSheet.create({
   },
 });
 
-enum AddDependentSteps {
+enum AddAlphaOccupantSteps {
   VERIFY_KYC_FORM = 1,
-  DEPENDENT_FORM_STEP,
-  CONFIRM_DEPENDENT_STEP,
+  ALPHA_OCCUPANT_FORM_STEP,
+  CONFIRM_ALPHA_OCCUPANT_STEP,
 }
 
-export default AddDependentFormScreen;
+export default AddAlphaOccupantFormScreen;

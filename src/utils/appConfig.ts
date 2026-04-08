@@ -27,6 +27,8 @@ export default Object.freeze({
 
   NOT_AVAILABLE_PHOTO: 'Not Available',
 
+  APP_MAX_ALPHA_OCCUPANTS: 2,
+
   APP_ICON:
     'https://res.cloudinary.com/dzgqixmj3/image/upload/v1752076853/sesa/ic_launcher_foreground_gcrsii.png',
 });

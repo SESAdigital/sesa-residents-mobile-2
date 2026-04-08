@@ -3,7 +3,7 @@ import { FlatList, StyleSheet } from 'react-native';
 
 import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
 import queryKeys from '@src/api/constants/queryKeys';
-import { getHouseholdPropertyDependents } from '@src/api/household.api';
+import { getHouseholdAlphaOcccupants } from '@src/api/household.api';
 import AppFAB from '@src/components/AppFAB';
 import AppScreen from '@src/components/AppScreen';
 import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
@@ -16,39 +16,39 @@ import DuplicateLoader from '@src/components/DuplicateLoader';
 import { MaterialSymbolsSupervisorAccountRounded } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useGetHouseholdMetrics } from '@src/hooks/useGetRequests';
-import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
-import routes from '@src/navigation/routes';
+import { AppScreenProps } from '@src/navigation/AppNavigator';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import { getTotalPages } from '@src/utils';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import { useDependentActions } from './components/dependent-actions';
 import ManageDependentRow, {
   ManageDependentRowLoader,
-} from './components/ManageDependentRow';
+} from '../manage-dependents/components/ManageDependentRow';
+import AddAlphaOccupantActionsModal from './components/AddAlphaOccupantActionsModal';
+import { useGetHouseholdMetrics } from '@src/hooks/useGetRequests';
+import appConfig from '@src/utils/appConfig';
 
-type Props = AppScreenProps<'MANAGE_DEPENDENTS_SCREEN'>;
+type Props = AppScreenProps<'MANAGE_ALPHA_OCCUPANTS_SCREEN'>;
 
 const pageSize = DEFAULT_API_DATA_SIZE;
 
-const ManageDependentsScreen = ({ route }: Props): React.JSX.Element => {
+const ManageAlphaOccupantsScreen = ({ route }: Props): React.JSX.Element => {
   const { id, name } = route?.params;
 
   const queryKey = [
     queryKeys.GET_HOUSEHOLDS,
-    'getHouseholdPropertyDependents',
+    'getHouseholdAlphaOcccupants',
     id,
   ];
-  const navigation = useAppNavigator();
+  const { setActiveModal } = useAppStateStore();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
       queryKey,
 
       queryFn: async ({ pageParam }) => {
-        const response = await getHouseholdPropertyDependents({
+        const response = await getHouseholdAlphaOcccupants({
           PageNumber: pageParam,
           PageSize: pageSize,
           id,
@@ -78,41 +78,42 @@ const ManageDependentsScreen = ({ route }: Props): React.JSX.Element => {
   const queryClient = useQueryClient();
   const refetch = () => queryClient.resetQueries({ queryKey });
   const { selectedProperty } = useAuthStore();
-  const { handleModal } = useDependentActions();
-  const { setSelectedDependent } = useAppStateStore();
   const { value } = useGetHouseholdMetrics();
 
   const handleAdd = () => {
     if (!selectedProperty?.id)
       return appToast.Warning('Property details not found.');
 
-    const max = value?.data?.dependentMaximumCount;
-    const totalRecordCount = value?.data?.totalDependentCount;
+    const max = appConfig.APP_MAX_ALPHA_OCCUPANTS;
+    const totalRecordCount = value?.data?.totalAlphaCount;
 
-    if (max === undefined || max === null) {
-      return appToast.Info('Dependent limit not found.');
-    }
+    // if (max === undefined || max === null) {
+    //   return appToast.Info('Alpha occupant limit not found.');
+    // }
 
     if (totalRecordCount === undefined || totalRecordCount === null) {
-      return appToast.Info('Dependent count not found.');
+      return appToast.Info('Alpha occupant count not found.');
     }
 
     if (totalRecordCount >= max) {
       return appToast.Info(
-        'You have reached the maximum number of dependents.',
+        'You have reached the maximum number of alpha occupants.',
       );
     }
 
-    return navigation.navigate(routes.ADD_DEPENDENT_SCREEN, {
-      id: selectedProperty?.id,
-      name,
+    return setActiveModal({
+      modalType: 'EMPTY_MODAL',
+      shouldBackgroundClose: true,
+      emptyModalComponent: (
+        <AddAlphaOccupantActionsModal id={selectedProperty?.id} name={name} />
+      ),
     });
   };
 
   return (
     <AppScreen showDownInset>
       <AppScreenHeader>
-        <AppText style={styles.headerTitle}>Manage dependents</AppText>
+        <AppText style={styles.headerTitle}>Manage alpha occupants</AppText>
         {isLoading ? (
           <AppSkeletonLoader
             style={styles.headerSubtitleLoading}
@@ -122,11 +123,6 @@ const ManageDependentsScreen = ({ route }: Props): React.JSX.Element => {
           <AppText style={styles.headerSubtitle}>{name}</AppText>
         )}
       </AppScreenHeader>
-      {formattedData?.length > 0 && (
-        <AppText style={styles.instructions}>
-          Tap dependent for access & booking history
-        </AppText>
-      )}
 
       <FlatList
         data={formattedData}
@@ -140,24 +136,14 @@ const ManageDependentsScreen = ({ route }: Props): React.JSX.Element => {
           ) : (
             <EmptyPersonnelComponent
               Icon={MaterialSymbolsSupervisorAccountRounded}
-              title="Add your first dependent"
-              description="Tap “add dependent” to get started."
-              buttonTitle="Add dependent"
+              title="Add your first alpha occupant"
+              description="Tap “add alpha occupant” to get started."
+              buttonTitle="Add alpha occupant"
               onPress={handleAdd}
             />
           )
         }
-        renderItem={({ item }) => (
-          <ManageDependentRow
-            onPress={() => {
-              setSelectedDependent(item);
-              navigation.navigate(routes.DEPENDENT_DETAILS_NAVIGATOR);
-            }}
-            showActivity
-            data={item}
-            onMorePress={() => handleModal(item)}
-          />
-        )}
+        renderItem={({ item }) => <ManageDependentRow data={item} />}
         keyExtractor={(_, index) => index?.toString()}
         contentContainerStyle={styles.contentContainerStyle}
         onEndReached={() => {
@@ -210,4 +196,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ManageDependentsScreen;
+export default ManageAlphaOccupantsScreen;

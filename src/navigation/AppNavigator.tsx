@@ -129,6 +129,12 @@ import AddSiteWorkerSuccessScreen, {
 } from '@src/screens/dashboard/account/screens/manage-household/manage-site-workers/AddSiteWorkerSuccessScreen';
 import SiteWorkerDetailNavigator from '@src/screens/dashboard/account/screens/manage-household/manage-site-workers/navigation/SiteWorkerDetailNavigator';
 import HouseholdStaffDetailsNavigator from '@src/screens/dashboard/account/screens/manage-household/manage-household-staff/navigation/HouseholdStaffDetailsNavigator';
+import AddAlphaOccupantFormScreen, {
+  AddAlphaOccupantFormScreenProps,
+} from '@src/screens/dashboard/account/screens/manage-household/manage-alpha-occupants/AddAlphaOccupantFormScreen';
+import AddAlphaOccupantScreen from '@src/screens/dashboard/account/screens/manage-household/manage-alpha-occupants/AddAlphaOccupantScreen';
+import ManageAlphaOccupantsScreen from '@src/screens/dashboard/account/screens/manage-household/manage-alpha-occupants/ManageAlphaOccupantsScreen';
+import AddAlphaOccupantSuccessScreen from '@src/screens/dashboard/account/screens/manage-household/manage-alpha-occupants/AddAlphaOccupantSuccessScreen';
 
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
@@ -196,6 +202,14 @@ export type AppNavigatorParams = {
   // MANAGE HOUSEHOLD SCREENS
   [routes.MANAGE_HOUSEHOLD_SCREEN]: undefined;
   [routes.HOUSEHOLD_METRICS_SCREEN]: undefined;
+
+  // ALPHA OCCUPANTS
+  [routes.MANAGE_ALPHA_OCCUPANTS_SCREEN]: ScreenWithIdAndName;
+  [routes.ADD_ALPHA_OCCUPANT_SCREEN]: ScreenWithIdAndName;
+  [routes.ADD_ALPHA_OCCUPANT_FORM_SCREEN]: AddAlphaOccupantFormScreenProps;
+  [routes.ADD_ALPHA_OCCUPANT_SUCCESS_SCREEN]: PostHouseholdCreateOccupantResData;
+
+  // DEPENDENTS
   [routes.MANAGE_DEPENDENTS_SCREEN]: ScreenWithIdAndName;
   [routes.ADD_DEPENDENT_SCREEN]: ScreenWithIdAndName;
   [routes.ADD_DEPENDENT_FORM_SCREEN]: AddDependentFormScreenProps;
@@ -327,6 +341,15 @@ const RootStack = createNativeStackNavigator({
 
         [routes.MANAGE_HOUSEHOLD_SCREEN]: ManageHouseholdScreen,
         [routes.HOUSEHOLD_METRICS_SCREEN]: HouseHoldMetricsScreen,
+
+        // ALPHA OCCUPANTS
+        [routes.MANAGE_ALPHA_OCCUPANTS_SCREEN]: ManageAlphaOccupantsScreen,
+        [routes.ADD_ALPHA_OCCUPANT_SCREEN]: AddAlphaOccupantScreen,
+        [routes.ADD_ALPHA_OCCUPANT_FORM_SCREEN]: AddAlphaOccupantFormScreen,
+        [routes.ADD_ALPHA_OCCUPANT_SUCCESS_SCREEN]:
+          AddAlphaOccupantSuccessScreen,
+
+        // DEPENDENTS
         [routes.MANAGE_DEPENDENTS_SCREEN]: ManageDependentsScreen,
         [routes.ADD_DEPENDENT_SCREEN]: AddDependentScreen,
         [routes.ADD_DEPENDENT_FORM_SCREEN]: AddDependentFormScreen,

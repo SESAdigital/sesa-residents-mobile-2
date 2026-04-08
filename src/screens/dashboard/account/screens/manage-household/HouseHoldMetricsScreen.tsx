@@ -31,6 +31,7 @@ import routes from '@src/navigation/routes';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import Size from '@src/utils/useResponsiveSize';
+import appConfig from '@src/utils/appConfig';
 
 const HouseHoldMetricsScreen = (): React.JSX.Element => {
   const { selectedHousehold } = useAppStateStore();
@@ -84,10 +85,16 @@ const HouseHoldMetricsScreen = (): React.JSX.Element => {
       actions: [
         {
           title: 'Manage alpha occupants',
-          onPress: () => console.log(routes.CHANGE_PASSWORD_SCREEN),
+          onPress: () =>
+            navigation.navigate(routes.MANAGE_ALPHA_OCCUPANTS_SCREEN, {
+              id,
+              name,
+            }),
           Icon: MaterialSymbolsLightGroupOutline,
           endText: handleLoading(
-            `${data?.totalAlphaCount?.toLocaleString() || ''} added of 2`,
+            `${data?.totalAlphaCount?.toLocaleString() || ''} added of ${
+              appConfig.APP_MAX_ALPHA_OCCUPANTS
+            }`,
           ),
         },
         {

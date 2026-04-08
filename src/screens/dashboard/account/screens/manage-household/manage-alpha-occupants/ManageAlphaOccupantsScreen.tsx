@@ -16,7 +16,7 @@ import DuplicateLoader from '@src/components/DuplicateLoader';
 import { MaterialSymbolsSupervisorAccountRounded } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { AppScreenProps } from '@src/navigation/AppNavigator';
+import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import { getTotalPages } from '@src/utils';
@@ -29,6 +29,7 @@ import ManageDependentRow, {
 import AddAlphaOccupantActionsModal from './components/AddAlphaOccupantActionsModal';
 import { useGetHouseholdMetrics } from '@src/hooks/useGetRequests';
 import appConfig from '@src/utils/appConfig';
+import routes from '@src/navigation/routes';
 
 type Props = AppScreenProps<'MANAGE_ALPHA_OCCUPANTS_SCREEN'>;
 
@@ -36,7 +37,7 @@ const pageSize = DEFAULT_API_DATA_SIZE;
 
 const ManageAlphaOccupantsScreen = ({ route }: Props): React.JSX.Element => {
   const { id, name } = route?.params;
-
+  const navigation = useAppNavigator();
   const queryKey = [
     queryKeys.GET_HOUSEHOLDS,
     'getHouseholdAlphaOcccupants',
@@ -101,11 +102,21 @@ const ManageAlphaOccupantsScreen = ({ route }: Props): React.JSX.Element => {
       );
     }
 
+    const handleNavigation = () => {
+      navigation.navigate(routes.ADD_ALPHA_OCCUPANT_SCREEN, {
+        id: selectedProperty?.id,
+        name,
+      });
+    };
+
     return setActiveModal({
       modalType: 'EMPTY_MODAL',
       shouldBackgroundClose: true,
       emptyModalComponent: (
-        <AddAlphaOccupantActionsModal id={selectedProperty?.id} name={name} />
+        <AddAlphaOccupantActionsModal
+          handleNavigation={handleNavigation}
+          id={selectedProperty?.id}
+        />
       ),
     });
   };

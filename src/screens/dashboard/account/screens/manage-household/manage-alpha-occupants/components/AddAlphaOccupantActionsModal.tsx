@@ -1,33 +1,27 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
+import queryKeys from '@src/api/constants/queryKeys';
 import { postAddSelfAsOccupant } from '@src/api/household.api';
 import AppText from '@src/components/AppText';
 import AppModalHeader from '@src/components/common/AppModalHeader';
-import {
-  MaterialSymbolsLightGroupOutline,
-  MaterialSymbolsLightSupervisorAccountOutline,
-} from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useAppNavigator } from '@src/navigation/AppNavigator';
-import routes from '@src/navigation/routes';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import queryKeys from '@src/api/constants/queryKeys';
 
 interface Props {
-  name: string;
   id: number;
+  handleNavigation: () => void;
 }
 
 const AddAlphaOccupantActionsModal = (props: Props): React.JSX.Element => {
   const { closeActiveModal, setActiveModal, setIsAppModalLoading } =
     useAppStateStore();
   const queryClient = useQueryClient();
-  const navigation = useAppNavigator();
+  const { handleNavigation, id } = props;
 
   const handleNoClick = () => {
     setActiveModal({
@@ -41,7 +35,7 @@ const AddAlphaOccupantActionsModal = (props: Props): React.JSX.Element => {
     setIsAppModalLoading(true);
     const response = await postAddSelfAsOccupant({
       isAlpha: true,
-      propertyUnitId: props?.id,
+      propertyUnitId: id,
     });
     setIsAppModalLoading(false);
 
@@ -74,7 +68,7 @@ const AddAlphaOccupantActionsModal = (props: Props): React.JSX.Element => {
 
   const onAddAplha = () => {
     closeActiveModal();
-    navigation.navigate(routes.ADD_ALPHA_OCCUPANT_SCREEN, props);
+    handleNavigation?.();
   };
 
   const actions = [
@@ -82,13 +76,11 @@ const AddAlphaOccupantActionsModal = (props: Props): React.JSX.Element => {
       title: 'Add alpha occupant',
       description: 'Add another alpha occupant',
       onPress: onAddAplha,
-      Icon: MaterialSymbolsLightGroupOutline,
     },
     {
       title: 'Add myself',
       description: 'Make myself an alpha occupant',
       onPress: onMyselfAdd,
-      Icon: MaterialSymbolsLightSupervisorAccountOutline,
     },
   ];
 
@@ -96,22 +88,15 @@ const AddAlphaOccupantActionsModal = (props: Props): React.JSX.Element => {
     <View style={styles.modalContainer}>
       <AppModalHeader onBackPress={closeActiveModal} title="Select an option" />
 
-      {actions?.map(({ Icon, onPress, title, description }, key) => {
+      {actions?.map(({ onPress, title, description }, key) => {
         return (
           <TouchableOpacity
             onPress={onPress}
             style={styles.actionItem}
             key={key}
           >
-            <Icon
-              height={Size.calcAverage(20)}
-              width={Size.calcAverage(20)}
-              color={colors.GRAY_100}
-            />
-            <View style={{ flexShrink: 1 }}>
-              <AppText style={{ fontFamily: fonts.INTER_500 }}>{title}</AppText>
-              <AppText style={styles.description}>{description}</AppText>
-            </View>
+            <AppText style={{ fontFamily: fonts.INTER_500 }}>{title}</AppText>
+            <AppText style={styles.description}>{description}</AppText>
           </TouchableOpacity>
         );
       })}
@@ -121,9 +106,6 @@ const AddAlphaOccupantActionsModal = (props: Props): React.JSX.Element => {
 
 const styles = StyleSheet.create({
   actionItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    columnGap: Size.calcWidth(10),
     paddingHorizontal: Size.calcWidth(21),
     paddingVertical: Size.calcHeight(25),
     borderTopWidth: Size.calcHeight(1),

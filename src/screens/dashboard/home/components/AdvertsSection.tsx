@@ -10,7 +10,7 @@ const AdvertsSection = (): React.JSX.Element => {
   return (
     <View style={styles.imageContainer}>
       <TouchableOpacity
-        onPress={() => openURL(`${appConfig.APP_WEBSITE_URL}/contact-use`)}
+        onPress={() => openURL(`${appConfig.APP_WEBSITE_URL}/contact`)}
       >
         <AppImage
           style={styles.image}

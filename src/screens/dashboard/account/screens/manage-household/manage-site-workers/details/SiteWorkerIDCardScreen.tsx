@@ -1,26 +1,21 @@
-import ViewShot from 'react-native-view-shot';
-import { useRef } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
+import { useRef } from 'react';
+import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import Share from 'react-native-share';
+import ViewShot from 'react-native-view-shot';
 
 import queryKeys from '@src/api/constants/queryKeys';
 import { getHouseholdSiteworkerIDCard } from '@src/api/household.api';
-import AppImage from '@src/components/AppImage';
 import AppText from '@src/components/AppText';
+import AppIdCard from '@src/components/common/AppIdCard';
+import AppRefreshControl from '@src/components/custom/AppRefreshControl';
+import { CustomShareIcon } from '@src/components/icons/custom';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useAppStateStore } from '@src/stores/appState.store';
+import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
-import SESAWhiteLogo from '@src/assets/images/sesa-white-logo.png';
-import AppRefreshControl from '@src/components/custom/AppRefreshControl';
-import AppAvatar from '@src/components/AppAvatar';
-import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
-import appConfig from '@src/utils/appConfig';
-import { CustomShareIcon } from '@src/components/icons/custom';
-import { appToast } from '@src/utils/appToast';
 
 interface Details {
   title: string;
@@ -120,95 +115,16 @@ const SiteWorkerIDCardScreen = (): React.JSX.Element => {
       contentContainerStyle={{ paddingBottom: Size.calcHeight(20) }}
     >
       <ViewShot ref={viewShotRef}>
-        <View style={styles.container}>
-          <View style={styles.card}>
-            <View style={styles.header}>
-              <AppImage
-                style={styles.logo}
-                resizeMode="contain"
-                source={SESAWhiteLogo}
-              />
-            </View>
-            <View style={{ paddingHorizontal: Size.calcWidth(13) }}>
-              <View style={styles.imageContainer}>
-                <AppAvatar
-                  size={Size.calcAverage(60)}
-                  isLoading={isLoading}
-                  // style={styles.image}
-                  imageURL={data?.photo || ''}
-                />
-              </View>
-
-              <View style={styles.profileRow}>
-                <View style={styles.profileContainer}>
-                  {isLoading ? (
-                    <AppSkeletonLoader width={Size.calcWidth(100)} />
-                  ) : (
-                    <AppText numberOfLines={1} style={styles.name}>
-                      {(data?.firstName || '') + ' ' + (data?.lastName || '')}
-                    </AppText>
-                  )}
-                  <View style={styles.textRow}>
-                    <AppText style={styles.text}>Site Worker</AppText>
-                    <View style={styles.dot} />
-                    {isLoading ? (
-                      <AppSkeletonLoader width={Size.calcWidth(50)} />
-                    ) : (
-                      <AppText style={styles.text}>{data?.code}</AppText>
-                    )}
-                  </View>
-                </View>
-
-                <View style={styles.qrCodeContainer}>
-                  {isLoading ? (
-                    <AppSkeletonLoader
-                      borderRadius={Size.calcAverage(4)}
-                      height={Size.calcAverage(50)}
-                      width={Size.calcAverage(50)}
-                    />
-                  ) : (
-                    <QRCode
-                      size={Size.calcAverage(50)}
-                      value={data?.code || '-'}
-                    />
-                  )}
-                </View>
-              </View>
-
-              <View style={styles.detailContainer}>
-                {details?.map((item, index) => (
-                  <View key={index} style={styles.detailRow}>
-                    {item?.map((detail, detailIndex) => (
-                      <View key={detailIndex} style={styles.detailItem}>
-                        <AppText
-                          style={[
-                            styles.detailTitle,
-                            { width: Size.calcWidth(detail?.width) },
-                          ]}
-                        >
-                          {detail?.title}
-                        </AppText>
-                        {isLoading ? (
-                          <View style={{ flex: 1 }}>
-                            <AppSkeletonLoader width="70%" />
-                          </View>
-                        ) : (
-                          <AppText style={styles.detailTitle}>
-                            {detail?.value}
-                          </AppText>
-                        )}
-                      </View>
-                    ))}
-                  </View>
-                ))}
-              </View>
-            </View>
-            <AppText style={styles.footerText}>
-              Property of {appConfig.APP_NAME}. If found, return to{' '}
-              {data?.estateName}
-            </AppText>
-          </View>
-        </View>
+        <AppIdCard
+          isLoading={isLoading}
+          details={details}
+          photo={data?.photo || ''}
+          code={data?.code || ''}
+          firstName={data?.firstName || ''}
+          lastName={data?.lastName || ''}
+          designation="Site worker"
+          estateName={data?.estateName || ''}
+        />
       </ViewShot>
 
       <TouchableOpacity onPress={captureAndShare} style={styles.footerItem}>

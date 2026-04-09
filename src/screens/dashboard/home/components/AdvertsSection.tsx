@@ -1,21 +1,19 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import SampleAdImage from '@src/assets/images/sample-ad.png';
 import AppImage from '@src/components/AppImage';
 import Size from '@src/utils/useResponsiveSize';
 
 const AdvertsSection = (): React.JSX.Element => {
-
-
-
   return (
     <View style={styles.imageContainer}>
-
-      <AppImage
-        style={styles.image}
-        resizeMode="contain"
-        source={SampleAdImage}
-      />
+      <TouchableOpacity>
+        <AppImage
+          style={styles.image}
+          resizeMode="contain"
+          source={SampleAdImage}
+        />
+      </TouchableOpacity>
     </View>
   );
 };

@@ -9,18 +9,19 @@ import { postPreLogin, PreLoginReq } from '@src/api/auth.api';
 import { LoginModeData, LoginModeType } from '@src/api/constants/default';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
+import AppBackHeaderTrimmed from '@src/components/common/AppBackHeaderTrimmed';
 import AppKeyboardAvoidingView from '@src/components/custom/AppKeyboardAvoidingView';
 import AppTextInput from '@src/components/forms/AppTextInput';
 import SubmitButton from '@src/components/forms/SubmitButton';
 import { RiInformationFill } from '@src/components/icons';
 import colors from '@src/configs/colors';
+import fonts from '@src/configs/fonts';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
 import LoginModeToggle from './components/LoginModeToggle';
-import fonts from '@src/configs/fonts';
 
 const schema = Joi.object<PreLoginReq>({
   email: joiSchemas.email.optional().allow(''),
@@ -77,6 +78,7 @@ const RetrieveAccountScreen = (): React.JSX.Element => {
         showDownInset
         style={{ paddingHorizontal: Size.calcWidth(21) }}
       >
+        <AppBackHeaderTrimmed />
         <AppText style={styles.title}>Welcome to SESA</AppText>
         <AppText style={styles.subTitle}>
           To get started, enter your associated email address or phone number.
@@ -181,7 +183,7 @@ const styles = StyleSheet.create({
     fontSize: Size.calcAverage(24),
     fontFamily: fonts.INTER_600,
     paddingBottom: Size.calcHeight(12),
-    paddingTop: Size.calcHeight(54),
+    paddingTop: Size.calcHeight(15),
   },
 });
 

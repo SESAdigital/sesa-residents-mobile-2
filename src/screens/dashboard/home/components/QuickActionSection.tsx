@@ -2,22 +2,20 @@ import { useNavigation } from '@react-navigation/native';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { useAllHubItems } from '@src/assets/data';
-import SampleAdImage from '@src/assets/images/sample-ad.png';
-import AppImage from '@src/components/AppImage';
 import AppText from '@src/components/AppText';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
+import { useGetPropertyDetails } from '@src/hooks/useGetRequests';
 import routes from '@src/navigation/routes';
 import Size from '@src/utils/useResponsiveSize';
-import { useGetPropertyDetails } from '@src/hooks/useGetRequests';
 
-const QuickActionAndAdsSection = (): React.JSX.Element => {
+const QuickActionSection = (): React.JSX.Element => {
   const navigation = useNavigation();
   const { quickActions, SelfAccessLoading } = useAllHubItems();
   useGetPropertyDetails();
 
   return (
-    <>
+    <View>
       <View style={styles.row}>
         <SelfAccessLoading />
         <AppText style={styles.quickActionsText}>Quick Actions</AppText>
@@ -59,14 +57,7 @@ const QuickActionAndAdsSection = (): React.JSX.Element => {
           )}
         </ScrollView>
       </View>
-      <View style={styles.imageContainer}>
-        <AppImage
-          style={styles.image}
-          resizeMode="contain"
-          source={SampleAdImage}
-        />
-      </View>
-    </>
+    </View>
   );
 };
 
@@ -96,19 +87,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  image: {
-    width: '100%',
-    aspectRatio: 16 / 9,
-    resizeMode: 'contain',
-    borderRadius: Size.calcAverage(8),
-    overflow: 'hidden',
-  },
-
-  imageContainer: {
-    paddingHorizontal: Size.calcWidth(21),
-    paddingVertical: Size.calcHeight(10),
-  },
-
   quickActionsText: {
     fontFamily: fonts.INTER_600,
   },
@@ -123,4 +101,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuickActionAndAdsSection;
+export default QuickActionSection;

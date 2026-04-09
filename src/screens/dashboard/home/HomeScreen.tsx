@@ -1,7 +1,7 @@
 import AppScreen from '@src/components/AppScreen';
 import HappeningTodaySection from './components/HappeningTodaySection';
 import HomeHeaderSection from './components/HomeHeaderSection';
-import QuickActionAndAdsSection from './components/QuickActionAndAdsSection';
+import QuickActionSection from './components/QuickActionSection';
 import { ScrollView } from 'react-native';
 import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import {
@@ -10,6 +10,7 @@ import {
   useGetGroupAccessHappeningToday,
   useGetBillsMetrics,
 } from '@src/hooks/useGetRequests';
+import AdvertsSection from './components/AdvertsSection';
 
 const HomeScreen = (): React.JSX.Element => {
   const { isLoading: isPaymentsLoading, customRefetch: refetchPayments } =
@@ -51,7 +52,8 @@ const HomeScreen = (): React.JSX.Element => {
         }
       >
         <HomeHeaderSection />
-        <QuickActionAndAdsSection />
+        <QuickActionSection />
+        <AdvertsSection />
         <HappeningTodaySection />
       </ScrollView>
     </AppScreen>

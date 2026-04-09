@@ -532,6 +532,7 @@ export const useGetHouseholdMetrics = () => {
         return null;
       }
     },
+    enabled: !!id,
   });
 
   const queryClient = useQueryClient();

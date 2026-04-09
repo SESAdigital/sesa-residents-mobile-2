@@ -7,6 +7,9 @@ import {
 
 // API STARTS HERE
 
+export const getDasboardAdverts = () =>
+  baseApi.get<GetDashboardAdvertsRes>('/Dashboard/Adverts');
+
 export const getWalletBalance = () =>
   baseApi.get<GetWalletBalance>('/Dashboard/WalletBalance');
 
@@ -31,6 +34,17 @@ export const getDashboardHappeningTodayEvents = (id: number) =>
 // API ENDS HERE
 
 // TYPES STARTS HERE
+
+export interface GetDashboardAdvertsData {
+  id: number;
+  name: string;
+  imageUrl: string;
+  adUrlLink: string;
+}
+
+interface GetDashboardAdvertsRes extends GenericApiResponse {
+  data: GetDashboardAdvertsData[];
+}
 
 interface GetWalletBalance extends GenericApiResponse {
   data: number;

@@ -8,7 +8,7 @@ import fonts from '@src/configs/fonts';
 import Size from '@src/utils/useResponsiveSize';
 
 interface Props {
-  onPress: () => void;
+  onPress: (() => void) | null;
   title?: string;
   description: string;
   buttonTitle: string;
@@ -28,11 +28,13 @@ const EmptyPersonnelComponent = (props: Props): React.JSX.Element => {
         </View>
         <AppText style={styles.title}>{title}</AppText>
         <AppText style={styles.description}>{description}</AppText>
-        <SubmitButton
-          style={styles.button}
-          title={buttonTitle}
-          onPress={onPress}
-        />
+        {!!onPress && (
+          <SubmitButton
+            style={styles.button}
+            title={buttonTitle}
+            onPress={onPress}
+          />
+        )}
       </View>
     </View>
   );

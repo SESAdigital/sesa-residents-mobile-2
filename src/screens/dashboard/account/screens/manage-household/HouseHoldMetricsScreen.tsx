@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { mapPropertyCategoryTypeToShortCharacter } from '@src/api/constants/data';
 import AppScreen from '@src/components/AppScreen';
@@ -10,6 +10,7 @@ import ActionSectionItem, {
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
 import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import {
+  MaterialSymbolsFamilyRestroomRounded,
   MaterialSymbolsLightBadgeOutlineRounded,
   MaterialSymbolsLightDeployedCodeAccountOutlineRounded,
   MaterialSymbolsLightEngineeringOutlineRounded,
@@ -34,6 +35,7 @@ import { useAuthStore } from '@src/stores/auth.store';
 import Size from '@src/utils/useResponsiveSize';
 import appConfig from '@src/utils/appConfig';
 import { checkPrivilegeEligibility } from '@src/utils';
+import EmptyPersonnelComponent from '@src/components/common/EmptyPersonnelComponent';
 
 const HouseHoldMetricsScreen = (): React.JSX.Element => {
   const { selectedHousehold } = useAppStateStore();
@@ -64,6 +66,13 @@ const HouseHoldMetricsScreen = (): React.JSX.Element => {
     }
   }
 
+  const handleAddAlphaOccupant = () => {
+    navigation.navigate(routes.MANAGE_ALPHA_OCCUPANTS_SCREEN, {
+      id,
+      name,
+    });
+  };
+
   const sections: ActionSectionItemData[] = [
     {
       title: 'Property Details',
@@ -91,11 +100,7 @@ const HouseHoldMetricsScreen = (): React.JSX.Element => {
       actions: [
         {
           title: 'Manage alpha occupants',
-          onPress: () =>
-            navigation.navigate(routes.MANAGE_ALPHA_OCCUPANTS_SCREEN, {
-              id,
-              name,
-            }),
+          onPress: handleAddAlphaOccupant,
           Icon: MaterialSymbolsLightGroupOutline,
           endText: handleLoading(
             `${data?.totalAlphaCount?.toLocaleString() || ''} added of ${
@@ -193,17 +198,44 @@ const HouseHoldMetricsScreen = (): React.JSX.Element => {
         )}
       </AppScreenHeader>
       <ScrollView
+        contentContainerStyle={{ flex: 1 }}
         refreshControl={
           <AppRefreshControl refreshing={isLoading} onRefresh={customRefetch} />
         }
       >
-        <ActionSectionItem disabled={isLoading} sections={sections} />
+        {!data ? (
+          <View style={styles.center}>
+            <EmptyPersonnelComponent
+              Icon={MaterialSymbolsFamilyRestroomRounded}
+              title="No household found"
+              description={
+                privileges?.isLandlordNonResident
+                  ? 'Tap “add alpha occupant” to begin adding a household.'
+                  : ''
+              }
+              buttonTitle="Add alpha occupant"
+              onPress={
+                privileges?.isLandlordNonResident
+                  ? handleAddAlphaOccupant
+                  : null
+              }
+            />
+          </View>
+        ) : (
+          <ActionSectionItem disabled={isLoading} sections={sections} />
+        )}
       </ScrollView>
     </AppScreen>
   );
 };
 
 const styles = StyleSheet.create({
+  center: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+  },
+
   headerTitle: {
     fontFamily: fonts.INTER_600,
     fontSize: Size.calcAverage(16),

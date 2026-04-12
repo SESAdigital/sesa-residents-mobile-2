@@ -24,6 +24,7 @@ import fonts from '@src/configs/fonts';
 import {
   useGetFees,
   useGetHouseholdMetrics,
+  useGetPropertyDetailsPrivileges,
   useGetWalletBalance,
 } from '@src/hooks/useGetRequests';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
@@ -32,6 +33,7 @@ import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import Size from '@src/utils/useResponsiveSize';
 import appConfig from '@src/utils/appConfig';
+import { checkPrivilegeEligibility } from '@src/utils';
 
 const HouseHoldMetricsScreen = (): React.JSX.Element => {
   const { selectedHousehold } = useAppStateStore();
@@ -45,6 +47,10 @@ const HouseHoldMetricsScreen = (): React.JSX.Element => {
     value: { data, isLoading },
     customRefetch,
   } = useGetHouseholdMetrics();
+
+  const {
+    value: { data: privileges },
+  } = useGetPropertyDetailsPrivileges();
 
   const name = data?.name || '';
 
@@ -96,6 +102,7 @@ const HouseHoldMetricsScreen = (): React.JSX.Element => {
               appConfig.APP_MAX_ALPHA_OCCUPANTS
             }`,
           ),
+          hideItem: !privileges?.isLandlordNonResident,
         },
         {
           title: 'Manage dependents',
@@ -107,6 +114,7 @@ const HouseHoldMetricsScreen = (): React.JSX.Element => {
               data?.dependentMaximumCount?.toLocaleString() || ''
             }`,
           ),
+          hideItem: !privileges?.isAlpha,
         },
 
         {
@@ -119,6 +127,7 @@ const HouseHoldMetricsScreen = (): React.JSX.Element => {
           endText: handleLoading(
             `${data?.totalHouseholdStaffCount?.toLocaleString() || ''}`,
           ),
+          hideItem: !privileges?.isAlpha,
         },
         {
           title: 'Manage site workers',
@@ -130,6 +139,7 @@ const HouseHoldMetricsScreen = (): React.JSX.Element => {
           endText: handleLoading(
             `${data?.totalSiteWorkerCount?.toLocaleString() || ''}`,
           ),
+          hideItem: !privileges?.isLandlordDeveloper,
         },
       ],
     },
@@ -144,6 +154,10 @@ const HouseHoldMetricsScreen = (): React.JSX.Element => {
           endText: handleLoading(
             `${data?.totalRFIDCount?.toLocaleString() || ''}`,
           ),
+          hideItem: !checkPrivilegeEligibility([
+            privileges?.isAlpha,
+            privileges?.isLandlordDeveloper,
+          ]),
         },
         {
           title: 'Manage access cards',
@@ -156,6 +170,10 @@ const HouseHoldMetricsScreen = (): React.JSX.Element => {
           endText: handleLoading(
             `${data?.totalAccessCardCount?.toLocaleString() || ''}`,
           ),
+          hideItem: !checkPrivilegeEligibility([
+            privileges?.isAlpha,
+            privileges?.isLandlordDeveloper,
+          ]),
         },
       ],
     },

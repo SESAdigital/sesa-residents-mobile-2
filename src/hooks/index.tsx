@@ -14,7 +14,7 @@ import { formatMoneyToTwoDecimals } from '@src/utils';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { useGetCurrentLocation } from './useCurrentLocation';
-import { useGetPropertyDetails } from './useGetRequests';
+import { useGetBillsMetrics, useGetPropertyDetails } from './useGetRequests';
 import { GetDashboardAdvertsData } from '@src/api/dashboard.api';
 
 export const useHandlePanicAlert = () => {
@@ -251,4 +251,10 @@ export const useAdvertActions = () => {
   };
 
   return { findAndDeleteOldAds };
+};
+
+export const useCheckPaymentNotOverdue = () => {
+  const { isEstatePaymentOverdue, isLoading } = useGetBillsMetrics();
+  const res = isEstatePaymentOverdue || isLoading;
+  return !res;
 };

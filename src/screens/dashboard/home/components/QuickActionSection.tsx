@@ -5,14 +5,21 @@ import { useAllHubItems } from '@src/assets/data';
 import AppText from '@src/components/AppText';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useGetPropertyDetails } from '@src/hooks/useGetRequests';
+import {
+  useGetBillsMetrics,
+  useGetPropertyDetails,
+} from '@src/hooks/useGetRequests';
 import routes from '@src/navigation/routes';
 import Size from '@src/utils/useResponsiveSize';
+import AppSkeletonLoader from '@src/components/AppSkeletonLoader';
+import AppAvatar from '@src/components/AppAvatar';
 
 const QuickActionSection = (): React.JSX.Element => {
   const navigation = useNavigation();
   const { quickActions, SelfAccessLoading } = useAllHubItems();
   useGetPropertyDetails();
+  const { handleOverDueCheck, isLoading, isEstatePaymentOverdue } =
+    useGetBillsMetrics();
 
   return (
     <View>
@@ -20,7 +27,7 @@ const QuickActionSection = (): React.JSX.Element => {
         <SelfAccessLoading />
         <AppText style={styles.quickActionsText}>Quick Actions</AppText>
         <TouchableOpacity
-          // @ts-expect-error nothing for now
+          // @ts-expect-error nothing for
           onPress={() => navigation.navigate(routes.MY_HUB_SCREEN)}
         >
           <AppText style={styles.goToHubText}>Go To Hub</AppText>
@@ -33,24 +40,49 @@ const QuickActionSection = (): React.JSX.Element => {
           showsHorizontalScrollIndicator={false}
         >
           {quickActions?.map(
-            ({ Icon, altTitle, title, bgColor, color, onPress }, index) => (
+            (
+              { Icon, altTitle, title, bgColor, route, color, onPress },
+              index,
+            ) => (
               <View
                 key={index}
                 style={{ paddingHorizontal: Size.calcWidth(14) }}
               >
-                <TouchableOpacity onPress={onPress} style={styles.actionButton}>
-                  <View
-                    style={[styles.iconContainer, { backgroundColor: bgColor }]}
-                  >
-                    <Icon
-                      color={color}
-                      height={Size.calcAverage(26)}
-                      width={Size.calcAverage(26)}
-                    />
-                  </View>
-                  <AppText style={styles.actionText}>
-                    {altTitle ?? title}
-                  </AppText>
+                <TouchableOpacity
+                  disabled={isLoading}
+                  onPress={() => handleOverDueCheck(onPress || null)}
+                  style={[
+                    styles.actionButton,
+                    isEstatePaymentOverdue &&
+                      route !== routes.BILLS_AND_COLLECTIONS_SCREEN && {
+                        opacity: 0.5,
+                      },
+                  ]}
+                >
+                  {isLoading ? (
+                    <AppAvatar isLoading size={Size.calcAverage(56)} />
+                  ) : (
+                    <View
+                      style={[
+                        styles.iconContainer,
+                        { backgroundColor: bgColor },
+                      ]}
+                    >
+                      <Icon
+                        color={color}
+                        height={Size.calcAverage(26)}
+                        width={Size.calcAverage(26)}
+                      />
+                    </View>
+                  )}
+
+                  {isLoading ? (
+                    <AppSkeletonLoader width={Size.calcWidth(50)} />
+                  ) : (
+                    <AppText style={styles.actionText}>
+                      {altTitle ?? title}
+                    </AppText>
+                  )}
                 </TouchableOpacity>
               </View>
             ),

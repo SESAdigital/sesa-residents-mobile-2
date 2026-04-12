@@ -169,6 +169,6 @@ export const allHubItems: HubItem[] = [
     title: 'Self Access',
     bgColor: colors.CYAN_200,
     color: colors.CYAN_100,
-    route: null,
+    route: '',
   },
 ];

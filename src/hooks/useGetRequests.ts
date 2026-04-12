@@ -27,13 +27,17 @@ import {
 } from '@src/api/dashboard.api';
 import { getHouseholdPropertyMetrics } from '@src/api/household.api';
 import { getSingleEmergencyContact } from '@src/api/profile.api';
-import { getPropertyDetails } from '@src/api/property-details.api';
+import {
+  getPropertyDetails,
+  getPropertyDetailsPrivileges,
+} from '@src/api/property-details.api';
 import { getUtilitiesFees } from '@src/api/utilities.api';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import { formatMoneyToTwoDecimals, getTotalPages } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { useAdvertActions } from './index.tsx';
+import { appToast } from '@src/utils/appToast.ts';
 
 export const useGetUserDetails = () => {
   const { data: profileData, isLoading: isProfileLoading } = useGetProfile();
@@ -478,6 +482,7 @@ export const useGetBillsMetrics = () => {
   const dueEstatePaymentCount =
     (data?.totalDueBillCount || 0) + (data?.totalDueCollectionCount || 0);
 
+  // const isEstatePaymentOverdue = true;
   const isEstatePaymentOverdue =
     !!data?.isBillOverDue || !!data?.isCollectionOverDue;
 
@@ -485,6 +490,16 @@ export const useGetBillsMetrics = () => {
     data?.dueBillDays || 0,
     data?.dueCollectionDays || 0,
   );
+
+  const handleOverDueCheck = (func: (() => void) | null) => {
+    if (isEstatePaymentOverdue) {
+      appToast.Info(
+        'Please clear your outstanding bills to access this functionality.',
+      );
+    } else {
+      func?.();
+    }
+  };
 
   return {
     unPaidEstatePaymentCount,
@@ -494,6 +509,7 @@ export const useGetBillsMetrics = () => {
     earliestPaymentDueDay,
     isEstatePaymentOverdue,
     isLoading,
+    handleOverDueCheck,
     customRefetch,
   };
 };
@@ -563,6 +579,39 @@ export const useGetDasboardAdverts = () => {
         return null;
       }
     },
+  });
+
+  const queryClient = useQueryClient();
+  const customRefetch = () => queryClient.resetQueries({ queryKey });
+
+  return {
+    value,
+    customRefetch,
+  };
+};
+
+export const useGetPropertyDetailsPrivileges = () => {
+  const { selectedProperty } = useAuthStore();
+  const id = selectedProperty?.id || 0;
+
+  const queryKey = [
+    queryKeys.GET_PROPERTY_DETAILS,
+    'getPropertyDetailsPrivileges',
+    id,
+  ];
+
+  const value = useQuery({
+    queryKey,
+    queryFn: async () => {
+      const response = await getPropertyDetailsPrivileges(id);
+      if (response.ok) {
+        return response?.data?.data;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
+    enabled: !!id,
   });
 
   const queryClient = useQueryClient();

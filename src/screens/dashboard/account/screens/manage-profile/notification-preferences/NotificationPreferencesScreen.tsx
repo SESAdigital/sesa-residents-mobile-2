@@ -22,11 +22,15 @@ import {
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useGetNotificationPreference } from '@src/hooks/useGetRequests';
+import {
+  useGetNotificationPreference,
+  useGetPropertyDetailsPrivileges,
+} from '@src/hooks/useGetRequests';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { checkPrivilegeEligibility } from '@src/utils';
 
 type ValueTitle =
   | 'All visitors’ access activity'
@@ -86,6 +90,10 @@ const NotificationPreferencesScreen = (): React.JSX.Element => {
     },
   });
 
+  const {
+    value: { data: privileges },
+  } = useGetPropertyDetailsPrivileges();
+
   const refetch = () => {
     queryClient.resetQueries({
       queryKey: [queryKeys.GET_NOTIFICATION_PREFERENCES],
@@ -97,7 +105,11 @@ const NotificationPreferencesScreen = (): React.JSX.Element => {
       Icon: MaterialSymbolsLightPersonAddOutlineRounded,
       title: 'All visitors’ access activity',
       description: "Receive updates about all visitors' access activity",
-      isDisabled: false,
+      isDisabled: !checkPrivilegeEligibility([
+        privileges?.isAlpha,
+        privileges?.isLandlordNonResident,
+        privileges?.isDependent,
+      ]),
       isChecked: !!notificationPreference?.allowVisitorAccessActivity,
       size: 26,
     },
@@ -105,7 +117,7 @@ const NotificationPreferencesScreen = (): React.JSX.Element => {
       Icon: MaterialSymbolsLightEngineeringOutlineRounded,
       title: 'Site workers’ access activity',
       description: "Receive updates on site workers' access activity.",
-      isDisabled: false,
+      isDisabled: !checkPrivilegeEligibility([privileges?.isLandlordDeveloper]),
       isChecked: !!notificationPreference?.allowSiteWorkerAccessActivity,
       size: 26,
     },
@@ -114,7 +126,7 @@ const NotificationPreferencesScreen = (): React.JSX.Element => {
       title: 'Occupants’ access activity',
       description: "Receive updates about occupants' access activity.",
       isChecked: !!notificationPreference?.allowOccupantAccessActivity,
-      isDisabled: false,
+      isDisabled: !checkPrivilegeEligibility([privileges?.isAlpha]),
       size: 26,
     },
     {
@@ -122,7 +134,11 @@ const NotificationPreferencesScreen = (): React.JSX.Element => {
       title: 'Vehicle tag usage activity',
       description: 'Receive updates about vehicle tag usage activity.',
       isChecked: !!notificationPreference?.allowRFIDUsageActivity,
-      isDisabled: false,
+      isDisabled: !checkPrivilegeEligibility([
+        privileges?.isAlpha,
+        privileges?.isLandlordResident,
+        privileges?.isLandlordNonResident,
+      ]),
       size: 24,
     },
     {
@@ -130,7 +146,11 @@ const NotificationPreferencesScreen = (): React.JSX.Element => {
       title: 'Access card usage activity',
       description: 'Receive updates about access card usage activity.',
       isChecked: !!notificationPreference?.allowAccessCardUsageActivity,
-      isDisabled: false,
+      isDisabled: !checkPrivilegeEligibility([
+        privileges?.isAlpha,
+        privileges?.isLandlordResident,
+        privileges?.isLandlordNonResident,
+      ]),
       size: 24,
     },
     {

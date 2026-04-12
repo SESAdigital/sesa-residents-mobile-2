@@ -6,6 +6,7 @@ import { allHubItems, ComingSoonTypes, HubItem, HubItemEnum } from './hubItems';
 import { useHandlePanicAlert } from '@src/hooks';
 import routes from '@src/navigation/routes';
 import { useHandleSelfAccess } from '@src/hooks/useHandleSelfAccess';
+import { useGetBillsMetrics } from '@src/hooks/useGetRequests';
 
 export { allHubItems, HubItemEnum } from './hubItems';
 
@@ -15,6 +16,7 @@ export const useAllHubItems = () => {
   const { setActiveModal } = useAppStateStore();
   const navigation = useAppNavigator();
   const { handlePanicAlertClick } = useHandlePanicAlert();
+  const { handleOverDueCheck } = useGetBillsMetrics();
   const { handleSelfAccessClick, SelfAccessLoading } = useHandleSelfAccess();
   const handleAction = (route: string | null) => {
     if (!route) return;
@@ -122,7 +124,7 @@ export const useAllHubItems = () => {
     if (item.title === 'Self Access') {
       return {
         ...item,
-        onPress: handleSelfAccessClick,
+        onPress: () => handleOverDueCheck(handleSelfAccessClick),
       };
     } else if (item.route === null) {
       return {
@@ -130,9 +132,20 @@ export const useAllHubItems = () => {
         onPress: () => handleComingSoon(item.title as ComingSoonTypes),
       };
     } else if (item.route === routes.PANIC_ALERT_SCREEN) {
-      return { ...item, onPress: handlePanicAlertClick };
+      return {
+        ...item,
+        onPress: () => handleOverDueCheck(handlePanicAlertClick),
+      };
+    } else if (item.route === routes.BILLS_AND_COLLECTIONS_SCREEN) {
+      return {
+        ...item,
+        onPress: () => handleAction(item.route),
+      };
     } else {
-      return { ...item, onPress: () => handleAction(item.route) };
+      return {
+        ...item,
+        onPress: () => handleOverDueCheck(() => handleAction(item.route)),
+      };
     }
   });
 

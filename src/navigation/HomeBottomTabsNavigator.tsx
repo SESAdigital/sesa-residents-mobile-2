@@ -19,6 +19,7 @@ import {
 import colors from '@src/configs/colors';
 import HomeScreen from '@src/screens/dashboard/home/HomeScreen';
 
+import { useCheckPaymentNotOverdue } from '@src/hooks';
 import AccountScreen from '@src/screens/dashboard/account/AccountScreen';
 import ActivityScreen from '@src/screens/dashboard/activity/ActivityScreen';
 import MyhubScreen from '@src/screens/dashboard/my-hub/MyhubScreen';
@@ -67,6 +68,7 @@ const HomeBottomTabsNavigator = createBottomTabNavigator({
 
     [routes.BOOKINGS_SCREEN]: {
       screen: BookingTopTabNavs,
+      if: useCheckPaymentNotOverdue,
       options: {
         title: 'Bookings',
         tabBarIcon: ({ focused }) =>
@@ -101,6 +103,7 @@ const HomeBottomTabsNavigator = createBottomTabNavigator({
     },
     [routes.ACTIVITY_SCREEN]: {
       screen: ActivityScreen,
+      if: useCheckPaymentNotOverdue,
       options: {
         title: 'Activity',
         tabBarIcon: ({ focused }) =>

@@ -20,6 +20,7 @@ export interface ActionItemData {
   onPress?: () => void;
   rightIcon?: React.JSX.Element;
   endText?: string | React.JSX.Element;
+  hideItem?: boolean;
 }
 
 interface Props {
@@ -34,7 +35,17 @@ const ActionItem = (props: Props): React.JSX.Element => {
   return (
     <View style={[styles.actionsContainer, containerStyle]}>
       {data.map((value, index) => {
-        const { Icon, title, onPress, rightIcon, description, endText } = value;
+        const {
+          Icon,
+          title,
+          onPress,
+          rightIcon,
+          description,
+          endText,
+          hideItem,
+        } = value;
+        if (hideItem) return null;
+
         return (
           <TouchableOpacity
             style={styles.actionRow}

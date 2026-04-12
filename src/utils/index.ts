@@ -81,7 +81,7 @@ export function maskEmail(email: string): string {
 }
 
 const getProperLink = (link: string) => {
-  if (!!link?.trim?.()) {
+  if (link?.trim?.()) {
     if (link?.startsWith('https://') || link?.startsWith('http://')) {
       return link;
     } else {
@@ -301,6 +301,7 @@ export const handlePushNotifiee = async (props: NotifProps) => {
     });
   } catch (error) {
     console.warn(`An error occured while handling notification ${error}`);
+
     appToast.Android(`An error occured while handling notification ${error}`);
   }
 };
@@ -316,3 +317,7 @@ export function formatPhoneNumberPrefill(val: string | number) {
     return normalizedNumber;
   }
 }
+
+export const checkPrivilegeEligibility = (val: (boolean | undefined)[]) => {
+  return val?.some(v => v === true);
+};

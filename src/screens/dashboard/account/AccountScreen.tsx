@@ -25,13 +25,17 @@ import {
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
-import { useGetProperties } from '@src/hooks/useGetRequests';
+import { useCheckPaymentNotOverdue } from '@src/hooks';
+import {
+  useGetProperties,
+  useGetPropertyDetailsPrivileges,
+} from '@src/hooks/useGetRequests';
 import SwitchPropertyModal from '@src/modals/SwitchPropertyModal';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
-import { getTotalPages } from '@src/utils';
+import { checkPrivilegeEligibility, getTotalPages } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 import AccessHistoryRow, {
@@ -47,6 +51,17 @@ const AccountScreen = (): React.JSX.Element => {
   const { selectedProperty } = useAuthStore();
   const navigation = useAppNavigator();
   const { data: properties, isLoading } = useGetProperties();
+  const {
+    value: { data: privileges },
+  } = useGetPropertyDetailsPrivileges();
+  const isPaymentEligible = useCheckPaymentNotOverdue();
+
+  const isHouseholdAllowed = checkPrivilegeEligibility([
+    privileges?.isAlpha,
+    privileges?.isLandlordDeveloper,
+    privileges?.isLandlordNonResident,
+    privileges?.isLandlordResident,
+  ]);
 
   const actions = [
     {
@@ -64,11 +79,14 @@ const AccountScreen = (): React.JSX.Element => {
       title: 'Manage Profile',
       onClick: () => navigation.navigate(routes.MANAGE_PROFILE_SCREEN),
     },
-    {
+  ];
+
+  if (isHouseholdAllowed && isPaymentEligible) {
+    actionButtons.push({
       title: 'Manage Household',
       onClick: () => navigation.navigate(routes.MANAGE_HOUSEHOLD_SCREEN),
-    },
-  ];
+    });
+  }
 
   const viewAccessInfo = () => {
     setActiveModal({
@@ -195,7 +213,7 @@ const AccountScreen = (): React.JSX.Element => {
             ))}
           </View> */}
 
-          <View style={styles.actionButtons}>
+          <View style={styles.actionButtonWrapper}>
             {actionButtons?.map(({ title, onClick }, index) => (
               <TouchableOpacity
                 style={styles.actionButton}
@@ -366,8 +384,7 @@ const styles = StyleSheet.create({
 
   actionButton: {
     backgroundColor: colors.WHITE_200,
-    width: '49%',
-    // width: '100%',
+    flex: 1,
     paddingVertical: Size.calcHeight(8),
     paddingHorizontal: Size.calcWidth(16),
     borderRadius: 100,
@@ -380,9 +397,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  actionButtons: {
+  actionButtonWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
+    columnGap: Size.calcWidth(10),
     justifyContent: 'space-between',
     paddingTop: Size.calcHeight(16),
     paddingBottom: Size.calcHeight(20),

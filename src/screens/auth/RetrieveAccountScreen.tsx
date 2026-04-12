@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import Joi from 'joi';
 import { Activity, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { postPreLogin, PreLoginReq } from '@src/api/auth.api';
 import { LoginModeData, LoginModeType } from '@src/api/constants/default';
@@ -70,82 +70,88 @@ const RetrieveAccountScreen = (): React.JSX.Element => {
   const isLoading = postPreLoginAPI?.isPending;
 
   return (
-    <AppKeyboardAvoidingView
-      keyboardVerticalOffset={-Size.calcHeight(50)}
-      style={{ flex: 1 }}
-    >
-      <AppScreen
-        showDownInset
-        style={{ paddingHorizontal: Size.calcWidth(21) }}
-      >
-        <AppBackHeaderTrimmed />
-        <AppText style={styles.title}>Welcome to SESA</AppText>
-        <AppText style={styles.subTitle}>
-          To get started, enter your associated email address or phone number.
-        </AppText>
-
-        <LoginModeToggle
-          selectedMode={selectedMode}
-          onSelectMode={setSelectedMode}
-        />
-
-        <View style={styles.content}>
-          <Activity mode={isEmailLogin ? 'visible' : 'hidden'}>
-            <AppTextInput
-              editable={!isLoading}
-              placeholder="Email Address"
-              label="Email Address"
-              control={control}
-              name="email"
-              keyboardType="email-address"
-            />
-            <View style={styles.informationContainer}>
-              <RiInformationFill
-                height={Size.calcAverage(17)}
-                width={Size.calcAverage(17)}
-                color={colors.BLACK_100}
-              />
-              <AppText style={styles.informationText}>
-                If your account is found, your login credentials will be sent to
-                your email.
-              </AppText>
-            </View>
-          </Activity>
-          <Activity mode={!isEmailLogin ? 'visible' : 'hidden'}>
-            <AppTextInput
-              editable={!isLoading}
-              maxLength={11}
-              placeholder="Phone Number"
-              label="Phone Number"
-              control={control}
-              name="phoneNumber"
-              keyboardType="number-pad"
-            />
-          </Activity>
-        </View>
-
-        <View style={styles.buttonContainer}>
-          <SubmitButton title="Continue" isLoading={false} onPress={onSubmit} />
-        </View>
-      </AppScreen>
+    <AppScreen showDownInset>
       <AppLoadingModal
         isLoading={isLoading}
         title="Looking up your account..."
       />
-    </AppKeyboardAvoidingView>
+      <AppBackHeaderTrimmed style={{ paddingHorizontal: Size.calcWidth(21) }} />
+
+      <AppKeyboardAvoidingView>
+        <ScrollView
+          showsVerticalScrollIndicator={true}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={styles.container}
+        >
+          <AppText style={styles.title}>Welcome to SESA</AppText>
+          <AppText style={styles.subTitle}>
+            To get started, enter your associated email address or phone number.
+          </AppText>
+
+          <LoginModeToggle
+            selectedMode={selectedMode}
+            onSelectMode={setSelectedMode}
+          />
+
+          <View style={styles.content}>
+            <Activity mode={isEmailLogin ? 'visible' : 'hidden'}>
+              <AppTextInput
+                editable={!isLoading}
+                placeholder="Email Address"
+                label="Email Address"
+                control={control}
+                name="email"
+                keyboardType="email-address"
+              />
+              <View style={styles.informationContainer}>
+                <RiInformationFill
+                  height={Size.calcAverage(17)}
+                  width={Size.calcAverage(17)}
+                  color={colors.BLACK_100}
+                />
+                <AppText style={styles.informationText}>
+                  If your account is found, your login credentials will be sent
+                  to your email.
+                </AppText>
+              </View>
+            </Activity>
+            <Activity mode={!isEmailLogin ? 'visible' : 'hidden'}>
+              <AppTextInput
+                editable={!isLoading}
+                maxLength={11}
+                placeholder="Phone Number"
+                label="Phone Number"
+                control={control}
+                name="phoneNumber"
+                keyboardType="number-pad"
+              />
+            </Activity>
+          </View>
+        </ScrollView>
+
+        <View style={styles.buttonContainer}>
+          <SubmitButton title="Continue" isLoading={false} onPress={onSubmit} />
+        </View>
+      </AppKeyboardAvoidingView>
+    </AppScreen>
   );
 };
 
 const styles = StyleSheet.create({
   buttonContainer: {
     paddingTop: Size.calcHeight(15),
-    paddingBottom: Size.calcHeight(40),
+    paddingBottom: Size.calcHeight(50),
+    paddingHorizontal: Size.calcWidth(21),
+  },
+
+  container: {
+    paddingHorizontal: Size.calcWidth(21),
+    paddingVertical: Size.calcHeight(26),
   },
 
   content: {
     paddingTop: Size.calcHeight(24),
-    flex: 1,
-    rowGap: Size.calcAverage(24),
+    rowGap: Size.calcAverage(26),
   },
 
   forgotPasswordContainer: {
@@ -183,7 +189,6 @@ const styles = StyleSheet.create({
     fontSize: Size.calcAverage(24),
     fontFamily: fonts.INTER_600,
     paddingBottom: Size.calcHeight(12),
-    paddingTop: Size.calcHeight(15),
   },
 });
 

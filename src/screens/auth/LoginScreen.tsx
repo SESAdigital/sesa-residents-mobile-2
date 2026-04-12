@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Joi from 'joi';
 import { Activity, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { getDeviceId } from 'react-native-device-info';
 
 import { authenticateWithOptions } from '@sbaiahmed1/react-native-biometrics';
@@ -18,6 +18,7 @@ import {
 } from '@src/api/constants/default';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
+import AppBackHeaderTrimmed from '@src/components/common/AppBackHeaderTrimmed';
 import AppCheckIcon from '@src/components/custom/AppCheckIcon';
 import AppKeyboardAvoidingView from '@src/components/custom/AppKeyboardAvoidingView';
 import AppTextInput from '@src/components/forms/AppTextInput';
@@ -36,7 +37,6 @@ import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
 import LoginModeToggle from './components/LoginModeToggle';
-import AppBackHeaderTrimmed from '@src/components/common/AppBackHeaderTrimmed';
 
 export interface LoginSchema {
   email?: string;
@@ -75,6 +75,8 @@ const LoginScreen = (): React.JSX.Element => {
     setLoginReq,
     loginReq,
     isBiometricEnabled,
+    setIsFirstTimeLogin,
+    isFirstTimeLogin,
   } = useAuthStore();
 
   const password = watch('password');
@@ -190,6 +192,7 @@ const LoginScreen = (): React.JSX.Element => {
         appToast.Success(response?.data?.message ?? 'Login successful');
         reset();
         setIsDoneOnboarding(true);
+        if (isFirstTimeLogin) setIsFirstTimeLogin(false);
       }
     } else {
       handleToastApiError(response);
@@ -229,10 +232,11 @@ const LoginScreen = (): React.JSX.Element => {
       if (result?.success) {
         handleBiometricSignIn();
       } else {
-        appToast.Info('Authentication failed: ' + result?.error);
+        // appToast.Info('Authentication failed: ' + result?.error);
       }
     } catch (error) {
-      appToast.Info('Authentication failed: ' + error);
+      console.error(error);
+      // appToast.Info('Authentication failed: ' + error);
     }
   };
 
@@ -279,75 +283,80 @@ const LoginScreen = (): React.JSX.Element => {
   }, [isAutoField]);
 
   return (
-    <AppKeyboardAvoidingView
-      keyboardVerticalOffset={-Size.calcHeight(50)}
-      style={{ flex: 1 }}
-    >
-      <AppScreen
-        showDownInset
-        style={{ paddingHorizontal: Size.calcWidth(21) }}
-      >
-        <AppBackHeaderTrimmed />
+    <AppScreen showDownInset>
+      <AppLoadingModal isLoading={isLoading} title="Logging you in..." />
 
-        <AppText style={styles.title}>Login to your account</AppText>
-        <AppText style={styles.subTitle}>
-          Need help logging in? Get Help
-        </AppText>
+      <AppBackHeaderTrimmed style={{ paddingHorizontal: Size.calcWidth(21) }} />
 
-        <LoginModeToggle selectedMode={loginMode} onSelectMode={setLoginMode} />
+      <AppKeyboardAvoidingView>
+        <ScrollView
+          showsVerticalScrollIndicator={true}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={styles.container}
+        >
+          <AppText style={styles.title}>Login to your account</AppText>
+          <AppText style={styles.subTitle}>
+            Need help logging in? Get Help
+          </AppText>
 
-        <View style={styles.content}>
-          <Activity mode={isEmailLogin ? 'visible' : 'hidden'}>
-            <AppTextInput
-              editable={!isLoading}
-              placeholder="Email Address"
-              label="Email Address"
-              control={control}
-              name="email"
-              keyboardType="email-address"
-            />
-          </Activity>
-          <Activity mode={!isEmailLogin ? 'visible' : 'hidden'}>
-            <AppTextInput
-              editable={!isLoading}
-              maxLength={11}
-              placeholder="Phone Number"
-              label="Phone Number"
-              control={control}
-              name="phoneNumber"
-              keyboardType="number-pad"
-            />
-          </Activity>
-          <AppTextInput
-            editable={!isLoading}
-            placeholder="Password"
-            label="Password"
-            control={control}
-            name="password"
-            secureTextEntry={!isPasswordVisible}
-            rightIcon={
-              <PasswordToggle
-                isVisible={!isPasswordVisible}
-                onClick={handleReveal}
-              />
-            }
+          <LoginModeToggle
+            selectedMode={loginMode}
+            onSelectMode={setLoginMode}
           />
-          <TouchableOpacity
-            style={styles.rememberMeContainer}
-            onPress={() => setIsPasswordRemembered(!isPasswordRemembered)}
-          >
-            <AppCheckIcon isChecked={isPasswordRemembered} />
-            <AppText style={styles.rememberMeText}>Remember Me</AppText>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleForgotPassword}
-            style={styles.forgotPasswordContainer}
-          >
-            <AppText style={styles.forgotPasswordText}>
-              Forgot your password?
-            </AppText>
-          </TouchableOpacity>
-        </View>
+
+          <View style={styles.content}>
+            <Activity mode={isEmailLogin ? 'visible' : 'hidden'}>
+              <AppTextInput
+                editable={!isLoading}
+                placeholder="Email Address"
+                label="Email Address"
+                control={control}
+                name="email"
+                keyboardType="email-address"
+              />
+            </Activity>
+            <Activity mode={!isEmailLogin ? 'visible' : 'hidden'}>
+              <AppTextInput
+                editable={!isLoading}
+                maxLength={11}
+                placeholder="Phone Number"
+                label="Phone Number"
+                control={control}
+                name="phoneNumber"
+                keyboardType="number-pad"
+              />
+            </Activity>
+            <AppTextInput
+              editable={!isLoading}
+              placeholder="Password"
+              label="Password"
+              control={control}
+              name="password"
+              secureTextEntry={!isPasswordVisible}
+              rightIcon={
+                <PasswordToggle
+                  isVisible={!isPasswordVisible}
+                  onClick={handleReveal}
+                />
+              }
+            />
+            <TouchableOpacity
+              style={styles.rememberMeContainer}
+              onPress={() => setIsPasswordRemembered(!isPasswordRemembered)}
+            >
+              <AppCheckIcon isChecked={isPasswordRemembered} />
+              <AppText style={styles.rememberMeText}>Remember Me</AppText>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleForgotPassword}
+              style={styles.forgotPasswordContainer}
+            >
+              <AppText style={styles.forgotPasswordText}>
+                Forgot your password?
+              </AppText>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
 
         <View style={styles.buttonContainer}>
           <SubmitButton
@@ -368,24 +377,28 @@ const LoginScreen = (): React.JSX.Element => {
             </TouchableOpacity>
           )}
         </View>
-      </AppScreen>
-      <AppLoadingModal isLoading={isLoading} title="Logging you in..." />
-    </AppKeyboardAvoidingView>
+      </AppKeyboardAvoidingView>
+    </AppScreen>
   );
 };
 
 const styles = StyleSheet.create({
   buttonContainer: {
     paddingTop: Size.calcHeight(15),
-    paddingBottom: Size.calcHeight(40),
+    paddingBottom: Size.calcHeight(50),
+    paddingHorizontal: Size.calcWidth(21),
     flexDirection: 'row',
     columnGap: Size.calcWidth(20),
   },
 
+  container: {
+    paddingHorizontal: Size.calcWidth(21),
+    paddingVertical: Size.calcHeight(26),
+  },
+
   content: {
     paddingTop: Size.calcHeight(24),
-    flex: 1,
-    rowGap: Size.calcAverage(24),
+    rowGap: Size.calcAverage(26),
   },
 
   forgotPasswordContainer: {
@@ -428,7 +441,6 @@ const styles = StyleSheet.create({
     fontSize: Size.calcAverage(24),
     fontFamily: fonts.INTER_600,
     paddingBottom: Size.calcHeight(12),
-    paddingTop: Size.calcHeight(24),
   },
 });
 

@@ -3,14 +3,13 @@ import { useMutation } from '@tanstack/react-query';
 import Joi from 'joi';
 import { Activity, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { postForgotPassword, PreLoginReq } from '@src/api/auth.api';
 import { LoginModeData, LoginModeType } from '@src/api/constants/default';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppGoBackHeader from '@src/components/common/AppGoBackHeader';
-import AppKeyboardAvoidingView from '@src/components/custom/AppKeyboardAvoidingView';
 import AppTextInput from '@src/components/forms/AppTextInput';
 import SubmitButton from '@src/components/forms/SubmitButton';
 import colors from '@src/configs/colors';
@@ -22,6 +21,7 @@ import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
 import LoginModeToggle from './components/LoginModeToggle';
+import AppKeyboardAvoidingView from '@src/components/custom/AppKeyboardAvoidingView';
 
 const schema = Joi.object<PreLoginReq>({
   email: joiSchemas.email.optional().allow(''),
@@ -81,13 +81,19 @@ const ForgotPasswordScreen = ({ route }: Props): React.JSX.Element => {
   });
 
   return (
-    <AppKeyboardAvoidingView
-      keyboardVerticalOffset={-Size.calcHeight(50)}
-      style={{ flex: 1 }}
-    >
-      <AppScreen showDownInset style={styles.container}>
-        <AppGoBackHeader />
-        <View style={styles.mainContainer}>
+    <AppScreen showDownInset>
+      <AppLoadingModal
+        isLoading={isLoading}
+        title="Looking up your account..."
+      />
+      <AppGoBackHeader />
+
+      <AppKeyboardAvoidingView>
+        <ScrollView
+          showsVerticalScrollIndicator={true}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={styles.container}
+        >
           <AppText style={styles.title}>Forgot your password?</AppText>
           <AppText style={styles.subTitle}>
             Enter your associated email address or phone number and we will send
@@ -122,36 +128,31 @@ const ForgotPasswordScreen = ({ route }: Props): React.JSX.Element => {
               />
             </Activity>
           </View>
+        </ScrollView>
 
-          <View style={styles.buttonContainer}>
-            <SubmitButton title="Continue" onPress={onSubmit} />
-          </View>
+        <View style={styles.buttonContainer}>
+          <SubmitButton title="Continue" onPress={onSubmit} />
         </View>
-      </AppScreen>
-      <AppLoadingModal
-        isLoading={isLoading}
-        title="Looking up your account..."
-      />
-    </AppKeyboardAvoidingView>
+      </AppKeyboardAvoidingView>
+    </AppScreen>
   );
 };
 
 const styles = StyleSheet.create({
   buttonContainer: {
     paddingTop: Size.calcHeight(15),
-    paddingBottom: Size.calcHeight(40),
+    paddingBottom: Size.calcHeight(50),
+    paddingHorizontal: Size.calcWidth(21),
   },
 
   container: {
-    backgroundColor: colors.WHITE_200,
-    flex: 1,
-    paddingHorizontal: 0,
+    paddingHorizontal: Size.calcWidth(21),
+    paddingVertical: Size.calcHeight(26),
   },
 
   content: {
     paddingTop: Size.calcHeight(24),
-    flex: 1,
-    rowGap: Size.calcAverage(24),
+    rowGap: Size.calcAverage(26),
   },
 
   forgotPasswordContainer: {
@@ -164,11 +165,6 @@ const styles = StyleSheet.create({
     color: colors.BLUE_200,
   },
 
-  mainContainer: {
-    flex: 1,
-    paddingHorizontal: Size.calcAverage(16),
-  },
-
   subTitle: {
     fontFamily: fonts.INTER_500,
     paddingBottom: Size.calcHeight(24),
@@ -178,7 +174,6 @@ const styles = StyleSheet.create({
     fontSize: Size.calcAverage(24),
     fontFamily: fonts.INTER_600,
     paddingBottom: Size.calcHeight(12),
-    paddingTop: Size.calcHeight(20),
   },
 });
 

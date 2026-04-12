@@ -22,7 +22,12 @@ const SetupWalletPinScreen = (): React.JSX.Element => {
   const navigation = useAppNavigator();
   const patchSetupPinAPI = useMutation({ mutationFn: patchSetupPin });
   const isLoading = patchSetupPinAPI?.isPending;
-  const { setIsDoneOnboarding, isDoneOnboarding } = useAuthStore();
+  const {
+    setIsDoneOnboarding,
+    setIsFirstTimeLogin,
+    isFirstTimeLogin,
+    isDoneOnboarding,
+  } = useAuthStore();
 
   const onBackPress = () => {
     if (isLoading) return;
@@ -47,6 +52,7 @@ const SetupWalletPinScreen = (): React.JSX.Element => {
 
     if (response?.ok) {
       if (!isDoneOnboarding) setIsDoneOnboarding(true);
+      if (isFirstTimeLogin) setIsFirstTimeLogin(false);
       appToast.Success(
         response?.data?.message || 'Wallet PIN set up successfully',
       );

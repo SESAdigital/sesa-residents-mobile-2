@@ -33,7 +33,7 @@ export const useGetCurrentLocation = () => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           getCurrentLocation();
         } else {
-          appToast.Info('Location permission denied.');
+          // appToast.Info('Location permission denied.');
         }
       } catch (err) {
         // TODO ADD LOGGING SERVICE
@@ -120,7 +120,7 @@ export const useWatchCurrentLocation = (): GenericLocation | null => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           return startWatchingLocation();
         } else {
-          appToast.Info('Location permission denied');
+          // appToast.Info('Location permission denied');
           return -1;
         }
       } catch (err) {

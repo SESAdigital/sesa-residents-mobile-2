@@ -198,7 +198,7 @@ const AddDependentFormScreen = ({ route }: Props): React.JSX.Element => {
       form={kycForm}
       onBackClick={onBackPress}
     />,
-    <DependentFormStep
+  <DependentFormStep
       onBackClick={onBackPress}
       key={AddDependentSteps.DEPENDENT_FORM_STEP}
       form={form}

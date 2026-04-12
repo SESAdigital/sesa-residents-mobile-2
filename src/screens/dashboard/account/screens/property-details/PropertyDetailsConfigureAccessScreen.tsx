@@ -1,7 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { patchPropertyDetailsAccessOptions } from '@src/api/property-details.api';
+import {
+  patchPropertyDetailsAccessOptions,
+  PatchPropertyDetailsAccessOptionsReq,
+} from '@src/api/property-details.api';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppScreenHeader from '@src/components/common/AppScreenHeader';
@@ -41,21 +44,15 @@ const PropertyDetailsConfigureAccessScreen = (): React.JSX.Element => {
 
     if (!propertyId) return appToast.Warning('Property not found');
 
-    const value =
-      type === 'Walk-in'
-        ? propertyDetails?.enableWalkIn
-        : propertyDetails?.enableGroupAccess;
+    const { enableGroupAccess, enableWalkIn } = getValue({
+      groupAccessValue: !!propertyDetails?.enableGroupAccess,
+      type,
+      walkInValue: !!propertyDetails?.enableWalkIn,
+    });
 
     const response = await patchPropertyDetailsAccessOptionsAPI?.mutateAsync({
       id: propertyId,
-      value: {
-        enableWalkIn:
-          type === 'Walk-in' ? !value : !!propertyDetails?.enableWalkIn,
-        enableGroupAccess:
-          type === 'Group access'
-            ? !value
-            : !!propertyDetails?.enableGroupAccess,
-      },
+      value: { enableWalkIn, enableGroupAccess },
     });
 
     if (response?.ok) {
@@ -145,3 +142,23 @@ const styles = StyleSheet.create({
 });
 
 export default PropertyDetailsConfigureAccessScreen;
+
+interface ValueProps {
+  type: 'Walk-in' | 'Group access';
+  walkInValue: boolean;
+  groupAccessValue: boolean;
+}
+function getValue({
+  type,
+  walkInValue,
+  groupAccessValue,
+}: ValueProps): PatchPropertyDetailsAccessOptionsReq {
+  return {
+    enableWalkIn:
+      type === 'Walk-in' ? !walkInValue : walkInValue && groupAccessValue,
+    enableGroupAccess:
+      type === 'Group access'
+        ? !groupAccessValue
+        : walkInValue && groupAccessValue,
+  };
+}

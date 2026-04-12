@@ -35,7 +35,7 @@ const CreateGroupAccessSuccessScreen = ({
   const detailList: DetailItem[][] = [
     [
       {
-        title: 'ACCESS CODE',
+        title: 'EXIT CODE',
         value: param?.code,
         isCopy: true,
       },

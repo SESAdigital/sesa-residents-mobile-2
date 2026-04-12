@@ -44,7 +44,10 @@ const DependentFormStep = (props: Props): React.JSX.Element => {
   };
   return (
     <AppKeyboardAvoidingView>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={styles.container}
+      >
         <ProfilePhotoPicker
           errorMessage={errors?.Photo?.message || ''}
           onDone={handleImageSelect}

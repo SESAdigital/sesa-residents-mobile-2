@@ -1,4 +1,10 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
@@ -7,7 +13,11 @@ import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
 import { MaterialSymbolsChevronLeftRounded } from '../icons';
 
-const AppBackHeaderTrimmed = (): React.JSX.Element => {
+interface Props {
+  style?: StyleProp<ViewStyle>;
+}
+
+const AppBackHeaderTrimmed = ({ style }: Props): React.JSX.Element => {
   const navigation = useAppNavigator();
 
   const onPress = () => {
@@ -19,7 +29,7 @@ const AppBackHeaderTrimmed = (): React.JSX.Element => {
   }
 
   return (
-    <View>
+    <View style={style}>
       <TouchableOpacity onPress={onPress} style={styles.headerButtonTrimmed}>
         <MaterialSymbolsChevronLeftRounded
           height={Size.calcAverage(35)}

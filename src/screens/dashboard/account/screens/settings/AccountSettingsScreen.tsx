@@ -22,10 +22,9 @@ import routes from '@src/navigation/routes';
 import { useAuthStore } from '@src/stores/auth.store';
 import { openURL } from '@src/utils';
 import appConfig from '@src/utils/appConfig';
-import { appToast } from '@src/utils/appToast';
 import Size from '@src/utils/useResponsiveSize';
-import { ActionItemData } from '../../../../../components/common/ActionItem';
-import ActionSectionItem from '../../../../../components/common/ActionSectionItem';
+import { ActionItemData } from '@src/components/common/ActionItem';
+import ActionSectionItem from '@src/components/common/ActionSectionItem';
 
 interface Section {
   title: string;
@@ -52,10 +51,11 @@ const AccountSettingsScreen = (): React.JSX.Element => {
       if (result?.success) {
         setIsBiometricEnabled(!isBiometricEnabled);
       } else {
-        appToast.Info('Authentication failed: ' + result?.error);
+        // appToast.Info('Authentication failed: ' + result?.error);
       }
     } catch (error) {
-      appToast.Info('Authentication failed: ' + error);
+      console.error(error);
+      // appToast.Info('Authentication failed: ' + error);
     }
   };
 

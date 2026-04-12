@@ -19,8 +19,13 @@ const NewDeviceVerificationScreen = (): React.JSX.Element => {
     mutationFn: patchValidateNewDeviceCode,
   });
   const isLoading = patchValidateNewDeviceCodeAPI.isPending;
-  const { isDoneOnboarding, setIsDoneOnboarding, loginResponse } =
-    useAuthStore();
+  const {
+    isDoneOnboarding,
+    setIsDoneOnboarding,
+    loginResponse,
+    isFirstTimeLogin,
+    setIsFirstTimeLogin,
+  } = useAuthStore();
 
   const handleDone = async (code: string) => {
     if (isLoading) return;
@@ -33,6 +38,7 @@ const NewDeviceVerificationScreen = (): React.JSX.Element => {
 
     if (response?.ok) {
       if (!isDoneOnboarding) setIsDoneOnboarding(true);
+      if (isFirstTimeLogin) setIsFirstTimeLogin(false);
       appToast.Success(response?.data?.message || 'Verification code accepted');
     } else {
       handleToastApiError(response);

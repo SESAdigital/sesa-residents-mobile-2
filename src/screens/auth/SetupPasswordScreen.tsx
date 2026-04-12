@@ -22,6 +22,7 @@ import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
+import { OnboardingStatusData } from '@src/api/constants/default';
 
 const schema = Joi.object<PatchSetupPasswordReq>({
   newPassword: joiSchemas.strictPassword,
@@ -77,11 +78,19 @@ const SetupPasswordScreen = ({ route }: Props): React.JSX.Element => {
       setLoginResponse(response?.data);
       reset();
       queryClient.invalidateQueries();
-      if (response?.data?.data?.isEmailVerified) {
+
+      if (
+        response?.data?.data?.onboardingStatus === OnboardingStatusData.PinSetup
+      ) {
+        navigation.replace(routes.ONE_LAST_STEP_SCREEN);
+      } else if (
+        response?.data?.data?.onboardingStatus ===
+        OnboardingStatusData.NewDevice
+      ) {
+        navigation.replace(routes.NEW_DEVICE_SCREEN);
+      } else {
         setIsDoneOnboarding(true);
         if (isFirstTimeLogin) setIsFirstTimeLogin(false);
-      } else {
-        navigation.replace(routes.ONE_LAST_STEP_SCREEN);
       }
     } else {
       handleToastApiError(response);

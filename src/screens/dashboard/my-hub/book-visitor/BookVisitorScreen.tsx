@@ -98,7 +98,7 @@ const BookVisitorScreen = (): React.JSX.Element => {
   return (
     <AppScreen showDownInset style={styles.container}>
       <AppScreenHeader>
-        <View>
+        <View style={{ paddingHorizontal: Size.calcWidth(20) }}>
           <AppText style={styles.headerTitle}>Book Visitor</AppText>
           <SwitchPropertyRow />
         </View>

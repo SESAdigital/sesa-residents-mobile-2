@@ -16,6 +16,7 @@ import { AppScreenProps, useAppNavigator } from '@src/navigation/AppNavigator';
 import { copyTextToClipboard } from '@src/utils';
 import appConfig from '@src/utils/appConfig';
 import Size from '@src/utils/useResponsiveSize';
+import { dayJSFormatter } from '@src/utils/time';
 
 interface DetailItem {
   title: string;
@@ -29,6 +30,13 @@ const BookVisitorSuccessScreen = ({ route }: Props): React.JSX.Element => {
   const param = route?.params;
   const navigation = useAppNavigator();
   const viewShotRef = useRef<ViewShot>(null);
+
+  const visitationDate = dayJSFormatter({
+    format: 'MMM D, YYYY',
+    value: param?.date || '',
+    shouldNotLocalize: true,
+    revalidateBackendFormat: true,
+  });
 
   const detailList: DetailItem[][] = [
     [
@@ -61,7 +69,7 @@ const BookVisitorSuccessScreen = ({ route }: Props): React.JSX.Element => {
       },
       {
         title: 'VISITATION DATE',
-        value: param?.date,
+        value: visitationDate,
       },
     ],
   ];
@@ -84,7 +92,7 @@ Hello ${param?.fullName},
 
 Here’s your access code for ${param?.propertyAddress}.
 
-Access date: ${param?.date}
+Access date: ${visitationDate}
 
 Access Code: ${param?.code}
 (expires at midnight)

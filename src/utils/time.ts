@@ -25,15 +25,42 @@ interface DayJSFormatterProps {
   value: Date | string;
   format: AcceptedDateTimeFormats;
   shouldNotLocalize?: boolean;
+  revalidateBackendFormat?: boolean;
 }
 
-export const dayJSFormatter = (props: DayJSFormatterProps) => {
-  const { value, format, shouldNotLocalize } = props;
-  if (!value) return '';
-  if (shouldNotLocalize) {
-    return dayjs(value).format(format);
+export const parseBackendDate = (value: string | Date) => {
+  if (typeof value === 'string' && value?.includes('/')) {
+    const [datePart, ...timeParts] = value?.split(' ');
+    const parts = datePart?.split('/');
+
+    if (parts?.length === 3) {
+      if (parts[0]?.length === 4) {
+        return value?.replace(/\//g, '-');
+      }
+      const [day, month, year] = parts;
+      const fullYear = year.length === 2 ? `20${year}` : year;
+      const timeStr = timeParts.length > 0 ? ` ${timeParts.join(' ')}` : '';
+      return `${fullYear}-${month}-${day}${timeStr}`;
+    }
   }
-  return dayjs(value).tz('Africa/Lagos').format(format);
+  return value;
+};
+
+export const dayJSFormatter = (props: DayJSFormatterProps) => {
+  const { value, format, shouldNotLocalize, revalidateBackendFormat } = props;
+  if (!value) return '';
+
+  let newValue = value;
+
+  if (revalidateBackendFormat) {
+    newValue = parseBackendDate(value);
+  }
+
+  if (shouldNotLocalize) {
+    return dayjs(newValue).format(format);
+  }
+
+  return dayjs(newValue).tz('Africa/Lagos').format(format);
 };
 
 export const checkInvalidDate = (value: string) => {

@@ -7,6 +7,8 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { postPreLogin, PreLoginReq } from '@src/api/auth.api';
 import { LoginModeData, LoginModeType } from '@src/api/constants/default';
+import ConfusedFaceIcon from '@src/assets/images/icons/emojione-confused-face.png';
+import MailIcon from '@src/assets/images/icons/mail-icon.png';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
 import AppBackHeaderTrimmed from '@src/components/common/AppBackHeaderTrimmed';
@@ -17,6 +19,9 @@ import { RiInformationFill } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import AppLoadingModal from '@src/modals/AppLoadingModal';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
+import routes from '@src/navigation/routes';
+import { useAppStateStore } from '@src/stores/appState.store';
 import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
@@ -32,7 +37,14 @@ const RetrieveAccountScreen = (): React.JSX.Element => {
   const [selectedMode, setSelectedMode] = useState<LoginModeType>(
     LoginModeData.EmailAddress,
   );
+  const { setActiveModal, closeActiveModal } = useAppStateStore();
   const postPreLoginAPI = useMutation({ mutationFn: postPreLogin });
+  const navigation = useAppNavigator();
+
+  const onYesButtonClick = () => {
+    closeActiveModal();
+    navigation.navigate(routes.LOGIN_SCREEN);
+  };
 
   const { handleSubmit, control } = useForm<PreLoginReq>({
     resolver: joiResolver(schema),
@@ -57,11 +69,36 @@ const RetrieveAccountScreen = (): React.JSX.Element => {
     });
 
     if (response?.ok && response?.data) {
-      appToast.Success(
-        response?.data?.message ?? 'Retrieve account successfully.',
-      );
+      setActiveModal({
+        modalType: 'INFORMATION_MODAL',
+        informationModal: {
+          title: 'Login credentials sent',
+          description: response?.data?.message ?? '',
+          icon: MailIcon,
+          yesButtonTitle: 'Continue',
+          onYesButtonClick: onYesButtonClick,
+          onNoButtonClick: null,
+        },
+      });
     } else {
-      handleToastApiError(response);
+      if (
+        response?.data?.message?.toLowerCase()?.trim()?.includes('password')
+      ) {
+        setActiveModal({
+          modalType: 'INFORMATION_MODAL',
+          informationModal: {
+            title: 'Existing user',
+            description:
+              'You are an existing user with active login credentials. Please click “continue” to login. If you cannot remember your password, click on forgot password on the login page or reach out to your estate manager',
+            icon: ConfusedFaceIcon,
+            yesButtonTitle: 'Continue',
+            onYesButtonClick: onYesButtonClick,
+            onNoButtonClick: null,
+          },
+        });
+      } else {
+        handleToastApiError(response);
+      }
     }
 
     return;

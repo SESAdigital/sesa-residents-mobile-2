@@ -10,6 +10,7 @@ import { useAuthStore } from '@src/stores/auth.store';
 import { openURL } from '@src/utils';
 import appConfig from '@src/utils/appConfig';
 import Size from '@src/utils/useResponsiveSize';
+import { patchAdvertClick, patchAdvertView } from '@src/api/adverts.api';
 
 const defaultAdvert: GetDashboardAdvertsData = {
   id: 0,
@@ -61,18 +62,24 @@ const AdvertsSection = (): React.JSX.Element => {
   }, [isAdvertsLoading, getLeastViewedAdvert]);
 
   useEffect(() => {
-    if (advertToDisplay && advertToDisplay.id !== defaultAdvert.id) {
-      incrementAdvertView(advertToDisplay.id);
+    if (advertToDisplay && advertToDisplay?.id !== defaultAdvert?.id) {
+      patchAdvertView(advertToDisplay?.id);
+      incrementAdvertView(advertToDisplay?.id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [advertToDisplay.id]);
+  }, [advertToDisplay?.id]);
+
+  const handleAdvertClick = () => {
+    patchAdvertClick(advertToDisplay?.id);
+    openURL(advertToDisplay?.adUrlLink);
+  };
 
   return (
     <View style={styles.imageContainer}>
       {isAdvertsLoading ? (
         <AppSkeletonLoader height="100%" style={styles.image} />
       ) : (
-        <TouchableOpacity onPress={() => openURL(advertToDisplay?.adUrlLink)}>
+        <TouchableOpacity onPress={handleAdvertClick}>
           <AppImage
             style={styles.image}
             resizeMode={advertToDisplay?.imageUrl ? 'cover' : 'contain'}

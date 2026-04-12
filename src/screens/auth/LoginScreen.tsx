@@ -36,6 +36,7 @@ import { handleToastApiError } from '@src/utils/handleErrors';
 import { joiSchemas } from '@src/utils/schema';
 import Size from '@src/utils/useResponsiveSize';
 import LoginModeToggle from './components/LoginModeToggle';
+import AppBackHeaderTrimmed from '@src/components/common/AppBackHeaderTrimmed';
 
 export interface LoginSchema {
   email?: string;
@@ -286,6 +287,8 @@ const LoginScreen = (): React.JSX.Element => {
         showDownInset
         style={{ paddingHorizontal: Size.calcWidth(21) }}
       >
+        <AppBackHeaderTrimmed />
+
         <AppText style={styles.title}>Login to your account</AppText>
         <AppText style={styles.subTitle}>
           Need help logging in? Get Help
@@ -425,7 +428,7 @@ const styles = StyleSheet.create({
     fontSize: Size.calcAverage(24),
     fontFamily: fonts.INTER_600,
     paddingBottom: Size.calcHeight(12),
-    paddingTop: Size.calcHeight(54),
+    paddingTop: Size.calcHeight(24),
   },
 });
 

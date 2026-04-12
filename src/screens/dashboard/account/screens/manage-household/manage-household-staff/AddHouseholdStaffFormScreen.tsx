@@ -172,8 +172,6 @@ const AddHouseholdStaffFormScreen = ({ route }: Props): React.JSX.Element => {
         householdStaffFormData.append('WorkDays[]', value?.toString?.());
       });
     }
-    console.log(householdStaffFormData);
-    console.log(initData);
 
     setIsAppModalLoading(true);
     const response = await postCreateHouseholdStaff(householdStaffFormData);

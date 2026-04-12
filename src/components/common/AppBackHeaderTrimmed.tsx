@@ -2,26 +2,22 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
+import { useAppNavigator } from '@src/navigation/AppNavigator';
 import Size from '@src/utils/useResponsiveSize';
 import AppText from '../AppText';
 import { MaterialSymbolsChevronLeftRounded } from '../icons';
-import { useAppNavigator } from '@src/navigation/AppNavigator';
 
-interface Props {
-  onBackPress?: () => void;
-}
-
-const AppBackHeaderTrimmed = (props: Props): React.JSX.Element => {
-  const { onBackPress } = props;
+const AppBackHeaderTrimmed = (): React.JSX.Element => {
   const navigation = useAppNavigator();
 
   const onPress = () => {
-    if (onBackPress) {
-      onBackPress();
-    } else {
-      navigation.goBack();
-    }
+    navigation?.goBack?.();
   };
+
+  if (!navigation?.canGoBack?.()) {
+    return <></>;
+  }
+
   return (
     <View>
       <TouchableOpacity onPress={onPress} style={styles.headerButtonTrimmed}>

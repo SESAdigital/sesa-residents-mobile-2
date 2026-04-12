@@ -9,6 +9,7 @@ import {
   useGetEventsHappeningToday,
   useGetGroupAccessHappeningToday,
   useGetBillsMetrics,
+  useGetDasboardAdverts,
 } from '@src/hooks/useGetRequests';
 import AdvertsSection from './components/AdvertsSection';
 
@@ -31,10 +32,16 @@ const HomeScreen = (): React.JSX.Element => {
     customRefetch: custonGroupAccessRefetch,
   } = useGetGroupAccessHappeningToday();
 
+  const {
+    value: { isLoading: isAdvertsLoading },
+    customRefetch: customAdvertsRefetch,
+  } = useGetDasboardAdverts();
+
   const handleRefetch = () => {
     customEventRefetch();
     customVisitorRefetch();
     custonGroupAccessRefetch();
+    customAdvertsRefetch();
     refetchPayments();
   };
 
@@ -42,7 +49,8 @@ const HomeScreen = (): React.JSX.Element => {
     isEventLoading ||
     isGroupAccessLoading ||
     isVisitorLoading ||
-    isPaymentsLoading;
+    isPaymentsLoading ||
+    isAdvertsLoading;
 
   return (
     <AppScreen>

@@ -8,10 +8,17 @@ import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
+import { useAuthStore } from '@src/stores/auth.store';
 import Size from '@src/utils/useResponsiveSize';
 
 const OnboardingScreen1 = (): React.JSX.Element => {
   const navigation = useAppNavigator();
+  const { setIsFirstTimeLogin } = useAuthStore();
+
+  const handlePress = () => {
+    navigation.navigate(routes.ONBOARDING_SCREEN_2);
+    setIsFirstTimeLogin(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -31,7 +38,7 @@ const OnboardingScreen1 = (): React.JSX.Element => {
         <SubmitButton
           title="Get Started"
           isLoading={false}
-          onPress={() => navigation.navigate(routes.ONBOARDING_SCREEN_2)}
+          onPress={handlePress}
         />
       </View>
     </View>

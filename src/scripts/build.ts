@@ -57,7 +57,7 @@ const suffix = suffixMap[flavor];
 
 // -------- Commands --------
 try {
-  console.log(`\n📦 Flavor: ${flavor} | Type: ${type} | Format: ${format}\n`);
+  console.warn(`\n📦 Flavor: ${flavor} | Type: ${type} | Format: ${format}\n`);
 
   // -------- LOCAL (DEBUG) --------
   if (type === 'debug') {
@@ -67,8 +67,8 @@ try {
       cmd += ` --appIdSuffix=${suffix}`;
     }
 
-    console.log(`🚀 Running app locally...\n`);
-    console.log(`${cmd} \n`);
+    console.warn(`🚀 Running app locally...\n`);
+    console.warn(`${cmd} \n`);
     execSync(cmd, { stdio: 'inherit' });
   }
 
@@ -90,8 +90,8 @@ try {
 
     const cmd = `cd android && ${envPrefix} gradlew clean  && gradlew ${gradleTask}`;
 
-    console.log(`🚀 Building ${format.toUpperCase()}...\n`);
-    console.log(`${cmd} \n`);
+    console.warn(`🚀 Building ${format.toUpperCase()}...\n`);
+    console.warn(`${cmd} \n`);
     execSync(cmd, { stdio: 'inherit' });
   }
 } catch (e) {

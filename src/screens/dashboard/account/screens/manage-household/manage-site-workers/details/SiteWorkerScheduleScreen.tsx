@@ -36,8 +36,6 @@ const SiteWorkerScheduleScreen = (): React.JSX.Element => {
     enabled: !!id,
   });
 
-  console.log({ data });
-
   const queryClient = useQueryClient();
   const customRefetch = () => queryClient.resetQueries({ queryKey });
 

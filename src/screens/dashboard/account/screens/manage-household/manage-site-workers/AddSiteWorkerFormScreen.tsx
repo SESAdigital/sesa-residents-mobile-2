@@ -187,8 +187,6 @@ const AddSiteWorkerFormScreen = ({ route }: Props): React.JSX.Element => {
         siteWorkerFormData.append('Workdays[]', value?.toString?.());
       });
     }
-    console.log(siteWorkerFormData);
-    console.log(initData);
 
     setIsAppModalLoading(true);
     const response = await postCreateSiteWorker(siteWorkerFormData);

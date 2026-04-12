@@ -9,6 +9,7 @@ import {
   getNotificationPreference,
 } from '@src/api/auth.api';
 import { DEFAULT_API_DATA_SIZE } from '@src/api/base.api';
+import { getBillsMetrics } from '@src/api/bills.api';
 import {
   getBookingsEventAttendees,
   getBookingsGroupAccessAttendees,
@@ -17,21 +18,22 @@ import {
 } from '@src/api/bookings.api';
 import queryKeys from '@src/api/constants/queryKeys';
 import {
+  getDashboardAdverts,
   getDashboardHappeningTodayEvents,
   getDashboardHappeningTodayGroupAccess,
   getDashboardHappeningTodayVisitors,
   getDashboardProperties,
   getWalletBalance,
 } from '@src/api/dashboard.api';
+import { getHouseholdPropertyMetrics } from '@src/api/household.api';
 import { getSingleEmergencyContact } from '@src/api/profile.api';
 import { getPropertyDetails } from '@src/api/property-details.api';
+import { getUtilitiesFees } from '@src/api/utilities.api';
+import { useAppStateStore } from '@src/stores/appState.store';
 import { useAuthStore } from '@src/stores/auth.store';
 import { formatMoneyToTwoDecimals, getTotalPages } from '@src/utils';
 import { handleToastApiError } from '@src/utils/handleErrors';
-import { getBillsMetrics } from '@src/api/bills.api';
-import { getUtilitiesFees } from '@src/api/utilities.api';
-import { getHouseholdPropertyMetrics } from '@src/api/household.api';
-import { useAppStateStore } from '@src/stores/appState.store';
+import { useAdvertActions } from './index.tsx';
 
 export const useGetUserDetails = () => {
   const { data: profileData, isLoading: isProfileLoading } = useGetProfile();
@@ -533,6 +535,34 @@ export const useGetHouseholdMetrics = () => {
       }
     },
     enabled: !!id,
+  });
+
+  const queryClient = useQueryClient();
+  const customRefetch = () => queryClient.resetQueries({ queryKey });
+
+  return {
+    value,
+    customRefetch,
+  };
+};
+
+export const useGetDasboardAdverts = () => {
+  const { findAndDeleteOldAds } = useAdvertActions();
+
+  const queryKey = ['getDashboardAdverts'];
+  const value = useQuery({
+    queryKey,
+    queryFn: async () => {
+      const response = await getDashboardAdverts();
+      if (response.ok) {
+        const finalData = response?.data?.data || [];
+        findAndDeleteOldAds(finalData);
+        return finalData;
+      } else {
+        handleToastApiError(response);
+        return null;
+      }
+    },
   });
 
   const queryClient = useQueryClient();

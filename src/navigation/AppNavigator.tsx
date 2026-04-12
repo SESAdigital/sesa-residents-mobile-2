@@ -136,6 +136,10 @@ import AddAlphaOccupantScreen from '@src/screens/dashboard/account/screens/manag
 import ManageAlphaOccupantsScreen from '@src/screens/dashboard/account/screens/manage-household/manage-alpha-occupants/ManageAlphaOccupantsScreen';
 import AddAlphaOccupantSuccessScreen from '@src/screens/dashboard/account/screens/manage-household/manage-alpha-occupants/AddAlphaOccupantSuccessScreen';
 
+function useCheckIsFirstTimeUser() {
+  const { isFirstTimeLogin } = useAuthStore();
+  return !!isFirstTimeLogin;
+}
 function useIsSignedIn() {
   const { loginResponse, isDoneOnboarding } = useAuthStore();
   return !!loginResponse?.data?.token && !!isDoneOnboarding;
@@ -274,11 +278,16 @@ const RootStack = createNativeStackNavigator({
   },
 
   groups: {
-    GUEST_USER: {
-      if: useIsSignedOut,
-      initialRouteName: routes.ONBOARDING_SCREEN_1,
+    FIRST_TIME_USER: {
+      if: useCheckIsFirstTimeUser,
       screens: {
         [routes.ONBOARDING_SCREEN_1]: OnboardingScreen1,
+      },
+    },
+
+    GUEST_USER: {
+      if: useIsSignedOut,
+      screens: {
         [routes.ONBOARDING_SCREEN_2]: OnboardingScreen2,
         [routes.LOGIN_SCREEN]: LoginScreen,
         [routes.RETRIEVE_ACCOUNT_SCREEN]: RetrieveAccountScreen,

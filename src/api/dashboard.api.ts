@@ -7,7 +7,7 @@ import {
 
 // API STARTS HERE
 
-export const getDasboardAdverts = () =>
+export const getDashboardAdverts = () =>
   baseApi.get<GetDashboardAdvertsRes>('/Dashboard/Adverts');
 
 export const getWalletBalance = () =>

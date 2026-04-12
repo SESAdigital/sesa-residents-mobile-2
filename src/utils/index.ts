@@ -80,9 +80,20 @@ export function maskEmail(email: string): string {
   return `${maskedUsername}@${domain}`;
 }
 
+const getProperLink = (link: string) => {
+  if (!!link?.trim?.()) {
+    if (link?.startsWith('https://') || link?.startsWith('http://')) {
+      return link;
+    } else {
+      return 'https://' + link;
+    }
+  }
+  return '';
+};
+
 export const openURL = async (url: string) => {
   try {
-    await Linking.openURL(url);
+    await Linking.openURL(getProperLink(url));
   } catch (error) {
     Alert.alert(`Don't know how to open this URL: ${url} ${error}`);
   }
@@ -289,7 +300,7 @@ export const handlePushNotifiee = async (props: NotifProps) => {
       },
     });
   } catch (error) {
-    console.log(`An error occured while handling notification ${error}`);
+    console.warn(`An error occured while handling notification ${error}`);
     appToast.Android(`An error occured while handling notification ${error}`);
   }
 };

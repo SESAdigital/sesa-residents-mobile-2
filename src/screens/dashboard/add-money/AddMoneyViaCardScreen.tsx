@@ -201,39 +201,3 @@ const styles = StyleSheet.create({
 });
 
 export default AddMoneyViaCardScreen;
-// <Paystack
-
-//                 billingEmail={profile?.email}
-//                 activityIndicatorColor="green"
-//                 onCancel={(e) => {
-//                      console.log(e);
-//                      showErrorMessage("Sorry, the payment process could not be completed", "Payment failed", { confirmLabel: "Ok, got it" })
-//                      router.back();
-//                 }}
-//                 onSuccess={(res) => {
-//                      if (res?.transactionRef) {
-//                           //@ts-ignore
-//                           dispatch(completeCardPayment(res?.transactionRef?.reference ?? "", {
-//                                onErrors(_, ex) {
-//                                     //@ts-ignore
-//                                     showErrorMessage(ex?.response?.data?.message ?? "We encountered an error processing your transaction. Please try again.", "Payment failed", { confirmLabel: "Ok, got it" })
-//                                     router.back();
-//                                },
-//                                onComplete() {
-//                                     dispatch(setPaymentForm({}))
-//                                     dispatch(fetchWalletBalance())
-//                                     dispatch(fetchUnreadCount())
-//                                     dispatch(setPaymentResult({
-//                                          amount: paymentForm?.amount,
-//                                          paymentMethodText: "Online - Paystack",
-//                                          purpose: "Wallet Funding",
-//                                          //@ts-ignore
-//                                          transactionRef: res.transactionRef?.reference ?? "No reference",
-//                                     } as IPaymentResult))
-//                                     router.replace("/wallet/wallet-funded")
-//                                }
-//                           }))
-//                      }
-//                 }}
-//                 autoStart={(profile?.email) ? true : false}
-//            />

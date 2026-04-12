@@ -218,7 +218,27 @@ const CreateEventsScreen = (): React.JSX.Element => {
 
   const onBackPress = () => {
     if (currentStep === CreateEventSteps.EVENT_TYPE_STEP) {
-      navigation.goBack();
+      // if (!form?.formState?.isDirty) {
+      //   navigation?.goBack?.();
+      // } else {
+      setActiveModal({
+        modalType: 'PROMT_MODAL',
+        promptModal: {
+          title: 'Are you sure?',
+          description:
+            'Your progress will be discarded. Are you sure you want to discard it?',
+          noButtonTitle: 'No, continue',
+          yesButtonTitle: "Yes, I'm Sure",
+          yesButtonProps: {
+            variant: 'DANGER',
+          },
+          onYesButtonClick: () => {
+            closeActiveModal();
+            navigation.goBack();
+          },
+        },
+      });
+      // }
     } else {
       setCurrentStep(val => val - 1);
     }

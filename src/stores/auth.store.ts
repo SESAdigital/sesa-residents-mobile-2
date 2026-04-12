@@ -19,6 +19,8 @@ export interface AuthStore {
   FCMToken: string | null;
   isDoneOnboarding: boolean;
   selectedProperty: GetDashboardPropertiesData | null;
+  adsLog: Record<number, number>;
+  isFirstTimeLogin: boolean;
 
   logout: () => void;
   tempLogout: () => void;
@@ -30,6 +32,8 @@ export interface AuthStore {
   setFCMToken: (value: string) => void;
   setIsBiometricEnabled: (value: boolean) => void;
   setLoginMode: (value: LoginModeType) => void;
+  setAdsLog: (value: Record<number, number>) => void;
+  setIsFirstTimeLogin: (value: boolean) => void;
 }
 
 const authStoreName = `useAuthStore-${appConfig.APP_CUSTOM_FLAVOUR}-${appConfig.APPLICATION_ID}`;
@@ -46,6 +50,8 @@ const doNotDeleteState = {
   isBiometricEnabled: false,
   FCMToken: null,
   loginMode: LoginModeData.EmailAddress,
+  adsLog: {},
+  isFirstTimeLogin: true,
 };
 
 export const authStore = createWithEqualityFn(
@@ -93,6 +99,11 @@ export const authStore = createWithEqualityFn(
         set(() => ({ isBiometricEnabled })),
 
       setLoginMode: loginMode => set(() => ({ loginMode })),
+
+      setAdsLog: adsLog => set(() => ({ adsLog })),
+
+      setIsFirstTimeLogin: isFirstTimeLogin =>
+        set(() => ({ isFirstTimeLogin })),
     }),
     {
       name: authStoreName,

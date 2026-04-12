@@ -1,6 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { SvgProps } from 'react-native-svg';
 
+import {
+  GetNotificationPreference,
+  patchNotificationPreference,
+  PatchNotificationPreferenceReq,
+} from '@src/api/auth.api';
 import queryKeys from '@src/api/constants/queryKeys';
 import AppScreen from '@src/components/AppScreen';
 import AppText from '@src/components/AppText';
@@ -8,27 +13,28 @@ import AppScreenHeader from '@src/components/common/AppScreenHeader';
 import AppRefreshControl from '@src/components/custom/AppRefreshControl';
 import AppSwitch from '@src/components/forms/AppSwitch';
 import {
-  MaterialSymbolsEngineeringOutline,
-  MaterialSymbolsGroupOutline,
-  MaterialSymbolsPersonAddOutline,
+  MaterialSymbolsLightBadgeOutlineRounded,
+  MaterialSymbolsLightEngineeringOutlineRounded,
+  MaterialSymbolsLightPersonAddOutlineRounded,
+  MaterialSymbolsLightStickyNote2OutlineRounded,
+  MaterialSymbolsLightSupervisorAccountOutline,
+  StreamlineInterfaceShareMegaPhone1BullhornLoudMegaphoneShareSpeakerTransmit,
 } from '@src/components/icons';
 import colors from '@src/configs/colors';
 import fonts from '@src/configs/fonts';
 import { useGetNotificationPreference } from '@src/hooks/useGetRequests';
+import { appToast } from '@src/utils/appToast';
+import { handleToastApiError } from '@src/utils/handleErrors';
 import Size from '@src/utils/useResponsiveSize';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import {
-  GetNotificationPreference,
-  patchNotificationPreference,
-  PatchNotificationPreferenceReq,
-} from '@src/api/auth.api';
-import { handleToastApiError } from '@src/utils/handleErrors';
-import { appToast } from '@src/utils/appToast';
 
 type ValueTitle =
   | 'All visitors’ access activity'
   | 'Site workers’ access activity'
-  | 'Occupants’ access activity';
+  | 'Occupants’ access activity'
+  | 'Vehicle tag usage activity'
+  | 'Access card usage activity'
+  | 'Announcement activity';
 
 interface Value {
   Icon: (props: SvgProps) => React.JSX.Element;
@@ -36,6 +42,7 @@ interface Value {
   description: string;
   isDisabled: boolean;
   isChecked: boolean;
+  size: number;
 }
 
 const NotificationPreferencesScreen = (): React.JSX.Element => {
@@ -87,25 +94,52 @@ const NotificationPreferencesScreen = (): React.JSX.Element => {
 
   const values: Value[] = [
     {
-      Icon: MaterialSymbolsPersonAddOutline,
+      Icon: MaterialSymbolsLightPersonAddOutlineRounded,
       title: 'All visitors’ access activity',
       description: "Receive updates about all visitors' access activity",
       isDisabled: false,
       isChecked: !!notificationPreference?.allowVisitorAccessActivity,
+      size: 26,
     },
     {
-      Icon: MaterialSymbolsEngineeringOutline,
+      Icon: MaterialSymbolsLightEngineeringOutlineRounded,
       title: 'Site workers’ access activity',
       description: "Receive updates on site workers' access activity.",
       isDisabled: false,
       isChecked: !!notificationPreference?.allowSiteWorkerAccessActivity,
+      size: 26,
     },
     {
-      Icon: MaterialSymbolsGroupOutline,
+      Icon: MaterialSymbolsLightSupervisorAccountOutline,
       title: 'Occupants’ access activity',
       description: "Receive updates about occupants' access activity.",
       isChecked: !!notificationPreference?.allowOccupantAccessActivity,
       isDisabled: false,
+      size: 26,
+    },
+    {
+      Icon: MaterialSymbolsLightStickyNote2OutlineRounded,
+      title: 'Vehicle tag usage activity',
+      description: 'Receive updates about vehicle tag usage activity.',
+      isChecked: !!notificationPreference?.allowRFIDUsageActivity,
+      isDisabled: false,
+      size: 24,
+    },
+    {
+      Icon: MaterialSymbolsLightBadgeOutlineRounded,
+      title: 'Access card usage activity',
+      description: 'Receive updates about access card usage activity.',
+      isChecked: !!notificationPreference?.allowAccessCardUsageActivity,
+      isDisabled: false,
+      size: 24,
+    },
+    {
+      Icon: StreamlineInterfaceShareMegaPhone1BullhornLoudMegaphoneShareSpeakerTransmit,
+      title: 'Announcement activity',
+      description: 'Receive updates about announcement activity.',
+      isChecked: !!notificationPreference?.allowAnnouncementActivity,
+      isDisabled: false,
+      size: 20,
     },
   ];
 
@@ -135,6 +169,12 @@ const NotificationPreferencesScreen = (): React.JSX.Element => {
       payload.allowSiteWorkerAccessActivity = value;
     } else if (type === 'Occupants’ access activity') {
       payload.allowOccupantAccessActivity = value;
+    } else if (type === 'Vehicle tag usage activity') {
+      payload.allowRFIDUsageActivity = value;
+    } else if (type === 'Access card usage activity') {
+      payload.allowAccessCardUsageActivity = value;
+    } else if (type === 'Announcement activity') {
+      payload.allowAnnouncementActivity = value;
     }
 
     const response = await patchNotificationPreferenceAPI.mutateAsync(payload);
@@ -168,8 +208,8 @@ const NotificationPreferencesScreen = (): React.JSX.Element => {
             <View style={styles.rowItem} key={index}>
               <Icon
                 color={colors.BLACK_200}
-                height={Size.calcAverage(20)}
-                width={Size.calcAverage(20)}
+                height={Size.calcAverage(props.size)}
+                width={Size.calcAverage(props.size)}
               />
               <View style={styles.rowContent}>
                 <AppText style={{ fontFamily: fonts.INTER_500 }}>

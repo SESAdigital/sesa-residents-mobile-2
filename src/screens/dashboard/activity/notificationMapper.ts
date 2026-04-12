@@ -36,7 +36,7 @@ const modifiedBillOrCollection: NotificationType[] = [
   NotificationTypeData.BILL_DELETED,
 ]; // TODO ASK ABOUT THIS IN BLUE
 
-console.log(modifiedBillOrCollection);
+console.warn(modifiedBillOrCollection);
 
 const deletedBillOrCollection: NotificationType[] = [
   NotificationTypeData.COLLECTION_DELETED,

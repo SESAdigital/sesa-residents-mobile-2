@@ -15,6 +15,7 @@ import { appToast } from '@src/utils/appToast';
 import { handleToastApiError } from '@src/utils/handleErrors';
 import { useGetCurrentLocation } from './useCurrentLocation';
 import { useGetPropertyDetails } from './useGetRequests';
+import { GetDashboardAdvertsData } from '@src/api/dashboard.api';
 
 export const useHandlePanicAlert = () => {
   const { latitude, longitude } = useGetCurrentLocation();
@@ -75,7 +76,10 @@ export const useHandlePanicAlert = () => {
   };
 
   const handlePanicAlertClick = () => {
-    if (!data) return appToast.Warning('Unable to get panic alert metrics.');
+    if (!data)
+      return appToast.Warning(
+        'Panic alert data is loading... please try again in a few seconds',
+      );
 
     if (!selectedProperty?.id)
       return appToast.Error('Please select a property');
@@ -216,4 +220,35 @@ export const useHandleTransactionRefresh = () => {
   };
 
   return { handleRefreshTransactionalData };
+};
+
+export const useAdvertActions = () => {
+  const { setAdsLog, adsLog } = useAuthStore();
+
+  const findAndDeleteOldAds = (advertsData: GetDashboardAdvertsData[]) => {
+    if (!advertsData || advertsData?.length < 1) return;
+    const allIds = advertsData?.map(ad => ad?.id);
+
+    const pastKeys = Object.keys(adsLog)
+      ?.map(key => Number(key))
+      .filter(key => !allIds.includes(key));
+
+    if (pastKeys?.length > 0) {
+      const newAdsLog = { ...adsLog };
+      pastKeys.forEach(id => {
+        delete newAdsLog[id];
+      });
+      setAdsLog(newAdsLog);
+    }
+
+    const newAdvertsLog = { ...adsLog };
+    advertsData?.forEach(ad => {
+      if (!newAdvertsLog[ad?.id]) {
+        newAdvertsLog[ad?.id] = 0;
+      }
+    });
+    setAdsLog(newAdvertsLog);
+  };
+
+  return { findAndDeleteOldAds };
 };

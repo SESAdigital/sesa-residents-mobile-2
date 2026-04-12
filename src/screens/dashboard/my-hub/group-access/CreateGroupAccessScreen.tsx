@@ -27,11 +27,12 @@ import { useAppNavigator } from '@src/navigation/AppNavigator';
 import routes from '@src/navigation/routes';
 import { useQueryClient } from '@tanstack/react-query';
 import queryKeys from '@src/api/constants/queryKeys';
+import useBackHandler from '@src/hooks/useBackHandler';
 
 const schema = Joi.object<PostGroupAccessReq>({
   visitationDate: Joi.string().required().label('Date of visitation'),
-  startTime: Joi.string().required().label('Start time'),
-  endTime: Joi.string().required().label('End time'),
+  startTime: Joi.string().optional().allow('').label('Start time'),
+  endTime: Joi.string().optional().allow('').label('End time'),
   isAllDay: Joi.boolean().optional(),
   isRepeat: Joi.boolean().optional(),
   repeatDays: Joi.array().items(Joi.string()).optional(),
@@ -103,6 +104,12 @@ const CreateGroupAccessScreen = (): React.JSX.Element => {
       return appToast.Warning('Invalid property selected');
     }
 
+    if (!isAllDay && (!startTime || !endTime)) {
+      setError('startTime', { message: 'Please select start time' });
+      setError('endTime', { message: 'Please select end time' });
+      return appToast.Warning('Please select start and end time');
+    }
+
     setActiveModal({
       modalType: 'PROMT_MODAL',
       promptModal: {
@@ -129,9 +136,31 @@ const CreateGroupAccessScreen = (): React.JSX.Element => {
     }
   };
 
+  const onBackPress = () => {
+    setActiveModal({
+      modalType: 'PROMT_MODAL',
+      promptModal: {
+        title: 'Are you sure?',
+        description:
+          'Your progress will be discarded. Are you sure you want to discard it?',
+        noButtonTitle: 'No, continue',
+        yesButtonTitle: "Yes, I'm Sure",
+        yesButtonProps: {
+          variant: 'DANGER',
+        },
+        onYesButtonClick: () => {
+          closeActiveModal();
+          navigation.goBack();
+        },
+      },
+    });
+  };
+
+  useBackHandler(onBackPress, 1);
+
   return (
     <AppScreen showDownInset>
-      <AppScreenHeader title="Create Group Access" />
+      <AppScreenHeader onBackPress={onBackPress} title="Create Group Access" />
 
       <AppKeyboardAvoidingView>
         <ScrollView
@@ -151,32 +180,34 @@ const CreateGroupAccessScreen = (): React.JSX.Element => {
               setValue('visitationDate', value);
             }}
           />
-          <View style={styles.dateContainer}>
-            <AppDateInput
-              label="Start Time"
-              placeholder="Start Time"
-              mode="time"
-              value={startTime || ''}
-              errorMessage={errors?.startTime?.message || ''}
-              setValue={value => {
-                if (errors?.startTime?.message)
-                  setError('startTime', { message: undefined });
-                setValue('startTime', value);
-              }}
-            />
-            <AppDateInput
-              label="End Time"
-              placeholder="End Time"
-              mode="time"
-              value={endTime || ''}
-              errorMessage={errors?.endTime?.message || ''}
-              setValue={value => {
-                if (errors?.endTime?.message)
-                  setError('endTime', { message: undefined });
-                setValue('endTime', value);
-              }}
-            />
-          </View>
+          <AppCollapse isVisible={!isAllDay}>
+            <View style={styles.dateContainer}>
+              <AppDateInput
+                label="Start Time"
+                placeholder="Start Time"
+                mode="time"
+                value={startTime || ''}
+                errorMessage={errors?.startTime?.message || ''}
+                setValue={value => {
+                  if (errors?.startTime?.message)
+                    setError('startTime', { message: undefined });
+                  setValue('startTime', value);
+                }}
+              />
+              <AppDateInput
+                label="End Time"
+                placeholder="End Time"
+                mode="time"
+                value={endTime || ''}
+                errorMessage={errors?.endTime?.message || ''}
+                setValue={value => {
+                  if (errors?.endTime?.message)
+                    setError('endTime', { message: undefined });
+                  setValue('endTime', value);
+                }}
+              />
+            </View>
+          </AppCollapse>
 
           <View style={styles.row}>
             <TouchableOpacity onPress={() => setValue('isAllDay', !isAllDay)}>
@@ -229,7 +260,7 @@ const CreateGroupAccessScreen = (): React.JSX.Element => {
           </View>
         </ScrollView>
         <View style={styles.footer}>
-          <InformationRow title="We will generate an access code for you to share with this visitor." />
+          <InformationRow title="For repeat group access, you can edit or cancel at anytime by going to the most recent group access." />
           <SubmitButton title="Continue" onPress={onSubmit} />
         </View>
       </AppKeyboardAvoidingView>

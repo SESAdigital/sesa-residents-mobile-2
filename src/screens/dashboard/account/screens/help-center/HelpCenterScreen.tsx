@@ -42,7 +42,7 @@ const HelpCenterScreen = (): React.JSX.Element => {
           Icon: MaterialSymbolsLightCallOutline,
         },
         {
-          title: 'Contact security guards',
+          title: 'Estate security guards',
           onPress: () => appToast.Info('Coming soon'),
           Icon: MaterialSymbolsLightShieldPersonOutlineRounded,
         },
@@ -63,7 +63,7 @@ const HelpCenterScreen = (): React.JSX.Element => {
         },
         {
           title: 'Frequently asked questions',
-          onPress: () => {},
+          onPress: () => openURL(`${appConfig.APP_WEBSITE_URL}/#faq`),
           Icon: MaterialSymbolsLightContactSupportOutline,
           rightIcon: (
             <RiExternalLinkLine

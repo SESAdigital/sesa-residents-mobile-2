@@ -88,7 +88,7 @@ try {
       ? `set ENVFILE=${envFile} &&`
       : `ENVFILE=${envFile}`;
 
-    const cmd = `cd android && ${envPrefix} gradlew ${gradleTask}`;
+    const cmd = `cd android && ${envPrefix} gradlew clean && gradlew ${gradleTask}`;
 
     console.warn(`🚀 Building ${format.toUpperCase()}...\n`);
     console.warn(`${cmd} \n`);

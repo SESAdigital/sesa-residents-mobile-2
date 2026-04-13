@@ -7,7 +7,7 @@
     "build:local": "yarn app-build --flavor=development --type=debug",
     "build:staging": "yarn app-build --flavor=staging --type=debug",
     "build:staging:apk": "yarn lint && yarn app-build --type=release --flavor=staging --format=apk",
-    "build:production:aab": "yarn release:patch && yarn app-build --flavor=production --type=release --format=aab",
+    "build:production:aab": "yarn lint && yarn release:patch && yarn app-build --flavor=production --type=release --format=aab",
     "dev": "yarn build:local",
     "ios": "react-native run-ios",
     "lint": "tsc --noEmit && eslint .",

@@ -87,8 +87,9 @@ try {
     const envPrefix = isWindows
       ? `set ENVFILE=${envFile} &&`
       : `ENVFILE=${envFile}`;
+    const gradleName = isWindows ? 'gradlew' : './gradlew';
 
-    const cmd = `cd android && ${envPrefix} gradlew clean && gradlew ${gradleTask}`;
+    const cmd = `cd android && ${envPrefix} ${gradleName} clean && ${gradleName} ${gradleTask}`;
 
     console.warn(`🚀 Building ${format.toUpperCase()}...\n`);
     console.warn(`${cmd} \n`);
